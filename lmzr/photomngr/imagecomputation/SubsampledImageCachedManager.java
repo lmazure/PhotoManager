@@ -138,7 +138,14 @@ public class SubsampledImageCachedManager {
 		// no subsampling required
 		if (i==0) return new SubsampledImage(photo.getImage(),1.0);
 		
-		final File file = new File(a_cacheDirectory+File.separator+photo.getFolder()+"§"+photo.getFilename()+"_"+i+".jpeg");
+		final File file = new File(a_cacheDirectory +
+				                   File.separator +
+				                   photo.getFolder() +
+				                   File.separator +
+				                   photo.getFilename() +
+				                   "," +
+				                   i + 
+				                   ".jpeg");
 		BufferedImage im = null;
 		
 		if (file.exists()) {
@@ -169,10 +176,15 @@ public class SubsampledImageCachedManager {
 	 */
 	public static void recordImage(final BufferedImage image,
 			                       final File file) {
+		// create the directory
+		final File directory = file.getParentFile();
+		directory.mkdir();
+		
+		// save the file
 		try {
-			DataOutputStream sortie = new DataOutputStream(new FileOutputStream(file));
-			JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(sortie);
-			JPEGEncodeParam param = enc.getDefaultJPEGEncodeParam(image);
+			final DataOutputStream sortie = new DataOutputStream(new FileOutputStream(file));
+			final JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(sortie);
+			final JPEGEncodeParam param = enc.getDefaultJPEGEncodeParam(image);
 			param.setQuality(1f, false);
 			enc.setJPEGEncodeParam(param);
 			enc.encode(image);
