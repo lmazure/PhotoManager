@@ -217,6 +217,7 @@ public class PhotoEditorComponent extends JPanel
                     public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
                     	final GPSData gps = GPSDatabase.getGPSData(((HierarchicalCompoundString)(a_photoList.getValueAt(a_selection.getSelection()[0],PhotoList.PARAM_LOCATION))));
                     	if (gps==null) return;
+                    	if (!gps.isComplete()) return;
                     	try {
 	                    	final String[] commandLine = { "C:\\Program Files\\Mozilla Firefox\\firefox.exe", 
 	                    			                       "http://maps.google.com/maps?q="+
@@ -505,7 +506,7 @@ public class PhotoEditorComponent extends JPanel
         a_location.setText(location);
     	final GPSData gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
     	if (location!=null) {
-	    	if (gps!=null) {
+	    	if ( gps != null && gps.isComplete() ) {
 	        	a_map.setEnabled(true);
 	        	a_map.setText("map "+gps.getLocation().toString());
 	    	} else {
