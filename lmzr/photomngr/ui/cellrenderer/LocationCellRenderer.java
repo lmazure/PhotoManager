@@ -29,9 +29,9 @@ public class LocationCellRenderer extends JTextField
     public Component getTableCellRendererComponent(final JTable table,
                                                    final Object value,
                                                    final boolean isSelected,
-                                                   @SuppressWarnings("unused") final boolean hasFocus,
+                                                   final boolean hasFocus,
                                                    final int row,
-                                                   @SuppressWarnings("unused") final int column) {
+                                                   final int column) {
         if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());

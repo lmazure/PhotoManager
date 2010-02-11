@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import lmzr.util.string.HierarchicalCompoundString;
-import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
  * @author Laurent

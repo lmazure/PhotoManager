@@ -779,7 +779,7 @@ public class ConcretePhotoList extends Object
 	 * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
 	 */
 	@Override
-	public void performLocationMapTranslation(Map<String, String> map) {
+	public void performLocationMapTranslation(@SuppressWarnings("unused") Map<String, String> map) {
 //TODO a implémenter
 		}
 
