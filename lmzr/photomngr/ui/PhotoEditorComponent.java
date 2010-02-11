@@ -28,13 +28,14 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import lmzr.photomngr.data.GPSData;
-import lmzr.photomngr.data.GPSDatabase;
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
+import lmzr.photomngr.data.GPS.GPSData;
+import lmzr.photomngr.data.GPS.GPSDatabase;
+import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
@@ -215,8 +216,9 @@ public class PhotoEditorComponent extends JPanel
         a_map.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
-                    	final GPSData gps = GPSDatabase.getGPSData(((HierarchicalCompoundString)(a_photoList.getValueAt(a_selection.getSelection()[0],PhotoList.PARAM_LOCATION))));
-                    	if (gps==null) return;
+                    	final GPSRecord gpsRecord = GPSDatabase.getGPSData(((HierarchicalCompoundString)(a_photoList.getValueAt(a_selection.getSelection()[0],PhotoList.PARAM_LOCATION))));
+                    	if (gpsRecord==null) return;
+                    	final GPSData gps = gpsRecord.getGPSData();
                     	if (!gps.isComplete()) return;
                     	try {
 	                    	final String[] commandLine = { "C:\\Program Files\\Mozilla Firefox\\firefox.exe", 
@@ -225,7 +227,7 @@ public class PhotoEditorComponent extends JPanel
 	                    			                 + "+"
 	                    			                 + gps.getLongitude()
 	                    			                 + "+("
-	                    			                 + URLEncoder.encode(gps.getLocation().toLongString().replace(">","/"),"UTF-8")
+	                    			                 + URLEncoder.encode(gpsRecord.getLocation().toLongString().replace(">","/"),"UTF-8")
 	                    			                 +")&ll="
 	                    			                 + gps.getLatitude()
 	                    			                 + ","
@@ -504,9 +506,9 @@ public class PhotoEditorComponent extends JPanel
         }
         String location = photo.getIndexData().getLocation().toLongString();
         a_location.setText(location);
-    	final GPSData gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
+    	final GPSRecord gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
     	if (location!=null) {
-	    	if ( gps != null && gps.isComplete() ) {
+	    	if ( gps != null && gps.getGPSData().isComplete() ) {
 	        	a_map.setEnabled(true);
 	        	a_map.setText("map "+gps.getLocation().toString());
 	    	} else {

@@ -1,9 +1,7 @@
-package lmzr.photomngr.data;
+package lmzr.photomngr.data.GPS;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import lmzr.util.string.HierarchicalCompoundString;
 
 /**
  * @author Laurent
@@ -11,7 +9,6 @@ import lmzr.util.string.HierarchicalCompoundString;
  */
 public class GPSData {
 
-	private HierarchicalCompoundString a_location;
 	private double a_latitudeMin;
 	private double a_longitudeMin;
     private double a_latitudeMax;
@@ -21,18 +18,15 @@ public class GPSData {
 	 * Create a new GPS point
 	 * some coordinate strings can be set to null, this means that the coordinates is undefined
 	 * 
-	 * @param location
 	 * @param latitudeMin
 	 * @param longitudeMin
 	 * @param latitudeMax
 	 * @param longitudeMax
 	 */
-	public GPSData(final HierarchicalCompoundString location,
-			       final String latitudeMin,
+	public GPSData(final String latitudeMin,
 			       final String longitudeMin,
 			       final String latitudeMax,
 			       final String longitudeMax) {
-		a_location = location;
 		setLagitudeMin(latitudeMin);
 		setLongitudeMin(longitudeMin);
 		setLagitudeMax(latitudeMax);
@@ -180,14 +174,7 @@ public class GPSData {
 		if (Double.isNaN(a_longitudeMin)) return null;
 		if (Double.isNaN(a_longitudeMax)) return null;
 		return Math.abs(a_longitudeMax-a_longitudeMin);
-	}
-	
-	/**
-	 * @return location
-	 */
-	public HierarchicalCompoundString getLocation() {
-		return a_location;
-	}
+	}	
 
 	/**
 	 * parse a string into a longitude

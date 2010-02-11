@@ -49,8 +49,8 @@ import java.io.File;
 import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ConcretePhotoList;
-import lmzr.photomngr.data.GPSDatabase;
 import lmzr.photomngr.data.ListSelectionManager;
+import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 
