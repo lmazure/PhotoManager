@@ -64,6 +64,7 @@ public class Main implements WindowListener {
     final private String s_root;
     final private PhotoDisplayer a_displayer;
     final private PhotoListDisplay a_listDisplay;
+    final private GPSDataDisplay a_GPSDisplay;
     final private GPSDatabase a_GPSDatabase;
     
     /**
@@ -94,6 +95,8 @@ public class Main implements WindowListener {
         final int i = a_list.getRowCount()-1;
         a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);
 
+        a_GPSDisplay = new GPSDataDisplay(a_GPSDatabase);
+        
         a_listDisplay.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         a_listDisplay.addWindowListener(this);
         a_listDisplay.setBounds(new Rectangle(0,0,1280,300));
@@ -103,6 +106,11 @@ public class Main implements WindowListener {
         a_displayer.addWindowListener(this);
         a_displayer.setBounds(new Rectangle(100,300,1000,720));
         a_displayer.setVisible(true);
+
+        a_GPSDisplay.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        a_GPSDisplay.addWindowListener(this);
+        a_GPSDisplay.setBounds(new Rectangle(100,300,1000,720));
+        a_GPSDisplay.setVisible(true);
     }
 
     /**

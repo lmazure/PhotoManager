@@ -223,19 +223,19 @@ public class PhotoEditorComponent extends JPanel
                     	try {
 	                    	final String[] commandLine = { "C:\\Program Files\\Mozilla Firefox\\firefox.exe", 
 	                    			                       "http://maps.google.com/maps?q="+
-	                    			                 + gps.getLatitude()
+	                    			                 + gps.getLatitudeAsDouble()
 	                    			                 + "+"
-	                    			                 + gps.getLongitude()
+	                    			                 + gps.getLongitudeAsDouble()
 	                    			                 + "+("
 	                    			                 + URLEncoder.encode(gpsRecord.getLocation().toLongString().replace(">","/"),"UTF-8")
 	                    			                 +")&ll="
-	                    			                 + gps.getLatitude()
+	                    			                 + gps.getLatitudeAsDouble()
 	                    			                 + ","
-	                    			                 + gps.getLongitude()
+	                    			                 + gps.getLongitudeAsDouble()
 	                    			                 + "&spn="
-	                    			                 + gps.getLatitudeRange()
+	                    			                 + gps.getLatitudeRangeAsDouble()
 	                    			                 + ","
-	                    			                 + gps.getLongitudeRange()
+	                    			                 + gps.getLongitudeRangeAsDouble()
 	                    			                 + "&t=h&hl=fr" };
 						    Runtime.getRuntime().exec(commandLine);
                 		} catch (final IOException e1) {

@@ -104,7 +104,7 @@ public class GPSData {
 	 * @return central latitude
 	 *         null if undefined
 	 */
-	public Double getLatitude() {
+	public Double getLatitudeAsDouble() {
 		if (Double.isNaN(a_latitudeMin)) return null;
 		if (Double.isNaN(a_latitudeMax)) return null;
 		return (a_latitudeMin+a_latitudeMax)/2;
@@ -114,25 +114,43 @@ public class GPSData {
 	 * @return minimum latitude
 	 *         null if undefined
 	 */
-	public Double getLatitudeMin() {
+	public Double getLatitudeMinAsDouble() {
 		if (Double.isNaN(a_latitudeMin)) return null;
 		return a_latitudeMin;
+	}
+
+   /**
+	 * @return minimum latitude
+	 *         null if undefined
+	 */
+	public String getLatitudeMin() {
+		if (Double.isNaN(a_latitudeMin)) return null;
+		return formatLatitude(a_latitudeMin);
 	}
 
    /**
 	 * @return maximum latitude
 	 *         null if undefined
 	 */
-	public Double getLatitudeMax() {
+	public Double getLatitudeMaxAsDouble() {
 		if (Double.isNaN(a_latitudeMax)) return null;
 		return a_latitudeMax;
 	}
 	
+   /**
+	 * @return maximum latitude
+	 *         null if undefined
+	 */
+	public String getLatitudeMax() {
+		if (Double.isNaN(a_latitudeMax)) return null;
+		return formatLatitude(a_latitudeMax);
+	}
+
 	/**
 	 * @return latitude range
 	 *         null if undefined
 	 */
-	public Double getLatitudeRange() {
+	public Double getLatitudeRangeAsDouble() {
 		if (Double.isNaN(a_latitudeMin)) return null;
 		if (Double.isNaN(a_latitudeMax)) return null;
 		return Math.abs(a_latitudeMax-a_latitudeMin);
@@ -142,7 +160,7 @@ public class GPSData {
 	 * @return central longitude
 	 *         null if undefined
 	 */
-	public Double getLongitude() {
+	public Double getLongitudeAsDouble() {
 		if (Double.isNaN(a_longitudeMin)) return null;
 		if (Double.isNaN(a_longitudeMax)) return null;
 		return (a_longitudeMin+a_longitudeMax)/2;
@@ -152,16 +170,34 @@ public class GPSData {
 	 * @return minimum longitude
 	 *         null if undefined
 	 */
-	public Double getLongitudeMin() {
+	public Double getLongitudeMinAsDouble() {
 		if (Double.isNaN(a_longitudeMin)) return null;
 		return a_longitudeMin;
+	}
+
+   /**
+	 * @return minimum longitude
+	 *         null if undefined
+	 */
+	public String getLongitudeMin() {
+		if (Double.isNaN(a_longitudeMin)) return null;
+		return formatLongitude(a_longitudeMin);
 	}
 
    /**
 	 * @return maximum longitude
 	 *         null if undefined
 	 */
-	public Double getLongitudeMax() {
+	public String getLongitudeMax() {
+		if (Double.isNaN(a_longitudeMax)) return null;
+		return formatLongitude(a_longitudeMax);
+	}
+
+	/**
+	 * @return maximum longitude
+	 *         null if undefined
+	 */
+	public Double getLongitudeMaxAsDouble() {
 		if (Double.isNaN(a_longitudeMax)) return null;
 		return a_longitudeMax;
 	}
@@ -170,7 +206,7 @@ public class GPSData {
 	 * @return longitude range
 	 *         null if undefined
 	 */
-	public Double getLongitudeRange() {
+	public Double getLongitudeRangeAsDouble() {
 		if (Double.isNaN(a_longitudeMin)) return null;
 		if (Double.isNaN(a_longitudeMax)) return null;
 		return Math.abs(a_longitudeMax-a_longitudeMin);
@@ -220,4 +256,39 @@ public class GPSData {
 		}
 		return value;
 	}
+	
+	/**
+	 * format a longitude expressed as a double into a string
+	 * @param latitude
+	 * @return
+	 */
+	private String formatLongitude(final double latitude) {
+		return formatXxitude(latitude,'E','O');
+	}
+
+	/**
+	 * format a latitude expressed as a double into a string
+	 * @param longitude
+	 * @return
+	 */
+	private String formatLatitude(final double longitude) {
+		return formatXxitude(longitude,'N','S');
+	}
+	
+	private String formatXxitude(final double coordinate,
+                                 final char positiveLetter,
+                                 final char negativeLetter) {
+		
+		final double val = Math.abs(coordinate)+1./7200.; // to avoid rounding errors
+		final int degrees = (int)Math.floor(val);
+		final int minutes = (int)Math.floor((val-degrees)*60);
+		final int seconds = (int)Math.floor(((val-degrees)*60-minutes)*60);
+		
+		return String.format("%c %d° %d' %d''",
+				             (coordinate>0) ? positiveLetter : negativeLetter,
+				             degrees,
+				             minutes,
+				             seconds);
+		}
+
 }
