@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
+import org.jdesktop.swingx.tree.TreeModelSupport;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
 import lmzr.util.io.StringTableFromToExcel;
@@ -41,6 +42,7 @@ public class GPSDatabase implements TreeTableModel {
 
 	final private HierarchicalCompoundStringFactory a_locationFactory;
     final private HashMap<HierarchicalCompoundString,GPSData> a_data;
+    final private TreeModelSupport a_support; 
 
     
     /**
@@ -88,6 +90,8 @@ public class GPSDatabase implements TreeTableModel {
     public GPSDatabase(final String excelFilename,
 	                   final HierarchicalCompoundStringFactory locationFactory) {
         
+    	a_support = new TreeModelSupport(this);
+    	
     	a_locationFactory = locationFactory;
     	
         String data[][] = null;
@@ -128,7 +132,7 @@ public class GPSDatabase implements TreeTableModel {
 	public Class<?> getColumnClass(final int columnIndex) {
 		switch (columnIndex) {
 		case PARAM_LOCATION:
-			return HierarchicalCompoundString.class;
+			return String.class;
 		case PARAM_LATITUDE_MIN:
 			return String.class;
 		case PARAM_LATITUDE_MAX:
@@ -187,11 +191,11 @@ public class GPSDatabase implements TreeTableModel {
 			                 final int columnIndex) {
 		
 		final HierarchicalCompoundString location = (HierarchicalCompoundString)node;
-		GPSData data = a_data.get(location);
+		final GPSData data = a_data.get(location);
 		
 		switch (columnIndex) {
 		case PARAM_LOCATION:
-			return location;
+			return location.toShortString();
 		case PARAM_LATITUDE_MIN:
 			if (data==null) return "";
 			return data.getLatitudeMin();
@@ -214,7 +218,20 @@ public class GPSDatabase implements TreeTableModel {
 	 */
 	@Override
 	public boolean isCellEditable(final Object node,
-			                      final int column) {
+			                      final int columnIndex) {
+		switch (columnIndex) {
+		case PARAM_LOCATION:
+			return false;
+		case PARAM_LATITUDE_MIN:
+			return true;
+		case PARAM_LATITUDE_MAX:
+			return true;
+		case PARAM_LONGITUDE_MIN:
+			return true;
+		case PARAM_LONGITUDE_MAX:
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -224,17 +241,38 @@ public class GPSDatabase implements TreeTableModel {
 	@Override
 	public void setValueAt(final Object value,
 			               final Object node,
-			               final int column) {
-		// TODO Auto-generated method stub
+			               final int columnIndex) {
 		
-	}
-
-	/**
-	 * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
-	 */
-	@Override
-	public void addTreeModelListener(final TreeModelListener listener) {
-		a_locationFactory.addTreeModelListener(listener);
+		final HierarchicalCompoundString location = (HierarchicalCompoundString)node;
+		GPSData data = a_data.get(location);
+		if ( data == null ) {
+			data = new GPSData(null,null,null,null);
+		}
+		
+		final String str = (String)value;
+		try {
+			switch (columnIndex) {
+			case PARAM_LOCATION:
+				break;
+			case PARAM_LATITUDE_MIN:
+				data.setLatitudeMin(str);
+				break;
+			case PARAM_LATITUDE_MAX:
+				data.setLatitudeMax(str);
+				break;
+			case PARAM_LONGITUDE_MIN:
+				data.setLongitudeMin(str);
+				break;
+			case PARAM_LONGITUDE_MAX:
+				data.setLongitudeMax(str);
+				break;
+			}
+			a_data.put(location, data);
+			a_support.fireChildChanged(HierarchicalCompoundStringFactory.getPath(location.getParent()),
+					                   a_locationFactory.getIndexOfChild(location.getParent(),location),
+					                   location);
+		} catch (final IllegalArgumentException e) {
+		}
 	}
 
 	/**
@@ -280,11 +318,21 @@ public class GPSDatabase implements TreeTableModel {
 	}
 
 	/**
+	 * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+	 */
+	@Override
+	public void addTreeModelListener(final TreeModelListener listener) {
+		a_locationFactory.addTreeModelListener(listener);
+		a_support.addTreeModelListener(listener);
+	}
+
+   /**
 	 * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
 	 */
 	@Override
 	public void removeTreeModelListener(final TreeModelListener listener) {
 		a_locationFactory.removeTreeModelListener(listener);
+		a_support.removeTreeModelListener(listener);
 	}
 
 	/**

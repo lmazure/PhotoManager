@@ -27,9 +27,9 @@ public class GPSData {
 			       final String longitudeMin,
 			       final String latitudeMax,
 			       final String longitudeMax) {
-		setLagitudeMin(latitudeMin);
+		setLatitudeMin(latitudeMin);
 		setLongitudeMin(longitudeMin);
-		setLagitudeMax(latitudeMax);
+		setLatitudeMax(latitudeMax);
 		setLongitudeMax(longitudeMax);
 	}
 
@@ -78,7 +78,7 @@ public class GPSData {
 	 * 
 	 * @param laditudeMin
 	 */
-	public void setLagitudeMin(final String latitudeMin) {
+	public void setLatitudeMin(final String latitudeMin) {
 		if ( latitudeMin != null ) {
 			a_latitudeMin = parseLatitude(latitudeMin);			
 		} else {
@@ -92,7 +92,7 @@ public class GPSData {
 	 * 
 	 * @param lagitudeMax
 	 */
-	public void setLagitudeMax(final String latitudeMax) {
+	public void setLatitudeMax(final String latitudeMax) {
 		if ( latitudeMax != null ) {
 			a_latitudeMax = parseLatitude(latitudeMax);			
 		} else {
