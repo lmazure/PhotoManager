@@ -23,6 +23,8 @@ import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
+import lmzr.photomngr.data.SaveEvent;
+import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.ui.action.ActionCopy;
 import lmzr.photomngr.ui.action.ActionCopyFromNext;
 import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
@@ -36,7 +38,7 @@ import lmzr.photomngr.ui.action.PhotoManagerAction;
  * @author Laurent
  */
 public class PhotoListDisplay extends JFrame
-                              implements ListSelectionListener, PhotoListMetaDataListener {
+                              implements ListSelectionListener, SaveListener {
 
 	final private JMenuBar a_menubar;
 	final private PhotoListTable a_table;
@@ -49,11 +51,6 @@ public class PhotoListDisplay extends JFrame
 	final private ActionCopyFromNext a_actionCopyFromNext;
 	final private ActionCopyFromPrevious a_actionCopyFromPrevious;
 	
-
-	
-	
-
-
 	/**
 	 * Action to rename a folder
 	 */
@@ -130,8 +127,8 @@ public class PhotoListDisplay extends JFrame
 
 		a_table = new PhotoListTable(unfilteredList,filteredList);
 
-	    photoListMetaDataChanged(new PhotoListMetaDataEvent(filteredList,PhotoListMetaDataEvent.PHOTOLIST_IS_SAVED));
-        filteredList.addMetaListener(this);
+	    saveChanged(new SaveEvent(filteredList,a_list.isSaved()));
+        filteredList.addSaveListener(this);
 
         a_menubar = new JMenuBar();
 		setJMenuBar(a_menubar);
@@ -199,13 +196,10 @@ public class PhotoListDisplay extends JFrame
     }
 
     /**
-     * @see lmzr.photomngr.data.PhotoListMetaDataListener#photoListMetaDataChanged(lmzr.photomngr.data.PhotoListMetaDataEvent)
+     * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
-    public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
-    	if (e.getChange()==PhotoListMetaDataEvent.PHOTOLIST_IS_SAVED) {
-            final PhotoList list = (PhotoList)e.getSource();
-            setTitle("photo list " + (list.isSaved() ? "[saved]" : "[modified]") );
-        }
+    public void saveChanged(final SaveEvent e) {
+        setTitle("photo list - [photo data is " + (e.isSaved() ? "saved]" : "modified]") );
     }
     
     /**

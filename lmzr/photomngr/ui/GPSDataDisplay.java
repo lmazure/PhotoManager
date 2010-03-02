@@ -12,6 +12,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
+import lmzr.photomngr.data.SaveEvent;
+import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.ui.action.ActionCopy;
 import lmzr.photomngr.ui.action.ActionCopyFromNext;
@@ -20,7 +22,8 @@ import lmzr.photomngr.ui.action.ActionPaste;
 import lmzr.photomngr.ui.action.ActionQuit;
 import lmzr.photomngr.ui.action.ActionSave;
 
-public class GPSDataDisplay extends JFrame {
+public class GPSDataDisplay extends JFrame
+                            implements SaveListener {
 	
 	final private GPSTreeTable a_treeTable;
 	final private JMenuBar a_menubar;
@@ -38,7 +41,7 @@ public class GPSDataDisplay extends JFrame {
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		ActionSave a_actionSave = new ActionSave("Save", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",null /*filteredList*/); //TODO gérer le dernier argument
+		ActionSave a_actionSave = new ActionSave("Save", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",database);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
 		final ActionQuit actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",null /*filteredList*/);  //TODO gérer le dernier argument
@@ -65,6 +68,16 @@ public class GPSDataDisplay extends JFrame {
 		pane.setLayout(new BorderLayout());
 		final JScrollPane scrollPane = new JScrollPane(a_treeTable);
 		pane.add(scrollPane, BorderLayout.CENTER);
+		
+		database.addSaveListener(this);
+		
+		saveChanged(new SaveEvent(database, database.isSaved()));
 	}
 
+	@Override
+	public void saveChanged(final SaveEvent e) {
+        setTitle("GPS data - [GPS data is " + (e.isSaved() ? "saved]" : "modified]") );
+	}
+
+	
 }

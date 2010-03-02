@@ -12,7 +12,7 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 /**
  * @author Laurent
  */
-public interface PhotoList extends TableModel {
+public interface PhotoList extends TableModel, SaveableModel {
 
     /**
      * 
@@ -221,6 +221,16 @@ public interface PhotoList extends TableModel {
      * @param l
      */
     public abstract void removeMetaListener(final PhotoListMetaDataListener l);
+
+    /**
+     * @param l
+     */
+    public abstract void addSaveListener(final SaveListener l);
+
+    /**
+     * @param l
+     */
+    public abstract void removeSaveListener(final SaveListener l);
 
     /**
      * @throws IOException

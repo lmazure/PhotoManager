@@ -8,13 +8,6 @@ import java.util.EventObject;
  */
 public class PhotoListMetaDataEvent extends EventObject {
 
-    /**
-     * Comment for <code>PHOTOLIST_IS_SAVED</code>
-     */
-    static final public int PHOTOLIST_IS_SAVED = 0;
-    /**
-     * 
-     */
     static final public int FILTER_HAS_CHANGED = 1;
 
     final private int a_change;

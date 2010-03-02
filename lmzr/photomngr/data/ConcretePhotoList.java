@@ -27,11 +27,12 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
  * @author Laurent
  */
 public class ConcretePhotoList extends Object
-                               implements PhotoList {
+                               implements PhotoList, SaveableModel {
     
     final private Vector<Photo> a_listOfPhotos;
     final private Vector<TableModelListener> a_listOfListeners;
     final private Vector<PhotoListMetaDataListener> a_listOfMetaDataListeners;
+    final private Vector<SaveListener> a_listOfSaveListeners;
     final private String a_excelFilename;
     final private HierarchicalCompoundStringFactory a_locationFactory;
     final private MultiHierarchicalCompoundStringFactory a_subjectFactory;
@@ -48,6 +49,7 @@ public class ConcretePhotoList extends Object
         
         a_listOfListeners = new Vector<TableModelListener>();
         a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
+        a_listOfSaveListeners = new Vector<SaveListener>();
         a_locationFactory = new HierarchicalCompoundStringFactory();
         a_subjectFactory = new MultiHierarchicalCompoundStringFactory();
         a_authorFactory = new AuthorFactory(); 
@@ -167,8 +169,8 @@ public class ConcretePhotoList extends Object
     private void setAsUnsaved() {
         if (a_isSaved) {
             a_isSaved = false;
-            final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this, PhotoListMetaDataEvent.PHOTOLIST_IS_SAVED);
-            for (PhotoListMetaDataListener l : a_listOfMetaDataListeners) l.photoListMetaDataChanged(f);
+            final SaveEvent f = new SaveEvent(this, false);
+            for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
         }    	
     }
 
@@ -177,8 +179,8 @@ public class ConcretePhotoList extends Object
      */
     private void setAsSaved() {
         a_isSaved = true;
-        final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this, PhotoListMetaDataEvent.PHOTOLIST_IS_SAVED);
-        for (PhotoListMetaDataListener l : a_listOfMetaDataListeners) l.photoListMetaDataChanged(f);
+        final SaveEvent f = new SaveEvent(this, true);
+        for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
     }
 
     /**
@@ -624,6 +626,16 @@ public class ConcretePhotoList extends Object
         a_listOfMetaDataListeners.remove(l);
     }
 
+	@Override
+	public void addSaveListener(final SaveListener l) {
+        a_listOfSaveListeners.add(l);
+	}
+
+	@Override
+	public void removeSaveListener(final SaveListener l) {
+        a_listOfSaveListeners.remove(l);
+	}
+
     /**
      * @return location factory
      */
@@ -710,7 +722,7 @@ public class ConcretePhotoList extends Object
         // create the new file
         StringTableFromToExcel.save(a_excelFilename,data);
         
-        // notify the MetaDataListerners
+        // notify the SaveListerners
         setAsSaved();
     }
     

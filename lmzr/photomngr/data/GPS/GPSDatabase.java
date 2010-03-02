@@ -1,7 +1,12 @@
 package lmzr.photomngr.data.GPS;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
@@ -9,6 +14,9 @@ import javax.swing.tree.TreePath;
 import org.jdesktop.swingx.tree.TreeModelSupport;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
+import lmzr.photomngr.data.SaveEvent;
+import lmzr.photomngr.data.SaveListener;
+import lmzr.photomngr.data.SaveableModel;
 import lmzr.util.io.StringTableFromToExcel;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
@@ -17,7 +25,7 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
  * @author Laurent
  *
  */
-public class GPSDatabase implements TreeTableModel {
+public class GPSDatabase implements TreeTableModel, SaveableModel {
 
 	/**
 	 * 
@@ -43,6 +51,9 @@ public class GPSDatabase implements TreeTableModel {
 	final private HierarchicalCompoundStringFactory a_locationFactory;
     final private HashMap<HierarchicalCompoundString,GPSData> a_data;
     final private TreeModelSupport a_support; 
+    final private String a_excelFilename;
+    final private Vector<SaveListener> a_listOfSaveListeners;
+    private boolean a_isSaved;
 
     
     /**
@@ -92,6 +103,7 @@ public class GPSDatabase implements TreeTableModel {
         
     	a_support = new TreeModelSupport(this);
     	
+    	a_excelFilename = excelFilename;
     	a_locationFactory = locationFactory;
     	
         String data[][] = null;
@@ -108,6 +120,10 @@ public class GPSDatabase implements TreeTableModel {
         	final HierarchicalCompoundString l = locationFactory.create(data[i][0]);
         	a_data.put(l,new GPSData(data[i][1],data[i][2],data[i][3],data[i][4]));
         }
+        
+        a_listOfSaveListeners = new Vector<SaveListener>();
+
+        setAsSaved();
     }
     
     /**
@@ -255,19 +271,24 @@ public class GPSDatabase implements TreeTableModel {
 			case PARAM_LOCATION:
 				break;
 			case PARAM_LATITUDE_MIN:
+				if ( str.equals(data.getLatitudeMin())) return;
 				data.setLatitudeMin(str);
 				break;
 			case PARAM_LATITUDE_MAX:
+				if ( str.equals(data.getLatitudeMax())) return;
 				data.setLatitudeMax(str);
 				break;
 			case PARAM_LONGITUDE_MIN:
+				if ( str.equals(data.getLongitudeMin())) return;
 				data.setLongitudeMin(str);
 				break;
 			case PARAM_LONGITUDE_MAX:
+				if ( str.equals(data.getLongitudeMax())) return;
 				data.setLongitudeMax(str);
 				break;
 			}
 			a_data.put(location, data);
+			setAsUnsaved();
 			a_support.fireChildChanged(HierarchicalCompoundStringFactory.getPath(location.getParent()),
 					                   a_locationFactory.getIndexOfChild(location.getParent(),location),
 					                   location);
@@ -344,4 +365,96 @@ public class GPSDatabase implements TreeTableModel {
 		// TODO Auto-generated method stub
 		
 	}
+	
+    /**
+     * @throws IOException
+     */
+    public void save() throws IOException {
+    	
+    	if (a_isSaved) return;
+
+    	// prepare the data
+        final String data[][] = new String[a_data.size()+1][];
+        data[0] = new String[5];
+        data[0][0] = "location";
+        data[0][1] = "min. latitude";
+        data[0][2] = "min. longitude";
+        data[0][3] = "max. latitude";
+        data[0][4] = "max. longitude";
+
+        int i = 1;
+        for ( HierarchicalCompoundString location : a_data.keySet() ) {
+            data[i] = new String[5];
+            data[i][0] = location.toLongString();
+            final GPSData gps = a_data.get(location);
+            data[i][1] = gps.getLatitudeMin();
+            if ( data[i][1] == null ) data[i+1][1]="";
+            data[i][2] = gps.getLongitudeMin();
+            if ( data[i][2] == null ) data[i+2][1]="";
+            data[i][3] = gps.getLatitudeMax();
+            if ( data[i][3] == null ) data[i+3][1]="";
+            data[i][4] = gps.getLongitudeMax();
+            if ( data[i][4] == null ) data[i+4][1]="";
+            i++;
+        }
+        
+        // keep a copy of the old file
+		final Calendar now = Calendar.getInstance();
+        final NumberFormat f2 = new DecimalFormat("00");
+        final NumberFormat f3 = new DecimalFormat("000");
+        final String backupName = Integer.toString(now.get(Calendar.YEAR)) + 
+		                          "_" + f2.format(now.get(Calendar.MONTH)+1)+ 
+		                          "_" + f2.format(now.get(Calendar.DAY_OF_MONTH)) +
+		                          "_" + f2.format(now.get(Calendar.HOUR_OF_DAY)) +
+		                          "_" + f2.format(now.get(Calendar.MINUTE)) +
+		                          "_" + f2.format(now.get(Calendar.SECOND)) +
+                                  "_" + f3.format(now.get(Calendar.MILLISECOND));
+        final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
+        final File file = new File(a_excelFilename);
+        final File file2 = new File(name);
+        if (!file.renameTo(file2)) throw new IOException("Failed to rename "+a_excelFilename+" into "+name);
+        
+        // create the new file
+        StringTableFromToExcel.save(a_excelFilename,data);
+        
+        // notify the SaveListerners
+        setAsSaved();
+    }
+    
+    /**
+     * @return flag indicating if the current values are saved
+     */
+    public boolean isSaved() {
+        return a_isSaved;
+    }
+    
+    /**
+     * record and notify that the data saved on disk is obsolete
+     */
+    private void setAsUnsaved() {
+        if (a_isSaved) {
+            a_isSaved = false;
+            final SaveEvent f = new SaveEvent(this, false);
+            for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
+        }    	
+    }
+
+    /**
+     * record and notify that the data saved on disk is obsolete
+     */
+    private void setAsSaved() {
+        a_isSaved = true;
+        final SaveEvent f = new SaveEvent(this, true);
+        for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
+    }
+
+	public void addSaveListener(final SaveListener l) {
+        a_listOfSaveListeners.add(l);
+	}
+
+	public void removeSaveListener(final SaveListener l) {
+        a_listOfSaveListeners.remove(l);
+	}
+
+
 }

@@ -14,6 +14,8 @@ import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
+import lmzr.photomngr.data.SaveEvent;
+import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
@@ -23,7 +25,7 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 /**
  * @author Laurent Mazuré
  */
-public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, TableModelListener {
+public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, SaveListener, TableModelListener {
 
     final private PhotoList a_list;
     final private int a_indexFromSource[];
@@ -31,6 +33,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     private int a_rowCount;
     final private Vector<TableModelListener> a_listOfListeners;
     final private Vector<PhotoListMetaDataListener> a_listOfMetaDataListeners;
+    final private Vector<SaveListener> a_listOfSaveListeners;
     private PhotoListFilter a_filter;
 
     /**
@@ -43,7 +46,9 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         a_indexToSource = new int[n];
         a_listOfListeners = new Vector<TableModelListener>();
         a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
+        a_listOfSaveListeners = new Vector<SaveListener>();
         a_list.addMetaListener(this);
+        a_list.addSaveListener(this);
         a_list.addTableModelListener(this);
 	    final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(PhotoOriginality.getTraits(),PhotoList.PARAM_ORIGINALITY);
 	    final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(PhotoPrivacy.getTraits(),PhotoList.PARAM_PRIVACY);
@@ -160,6 +165,16 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         a_listOfMetaDataListeners.remove(l);
     }
 
+	@Override
+	public void addSaveListener(final SaveListener l) {
+		a_listOfSaveListeners.add(l);
+	}
+
+	@Override
+	public void removeSaveListener(final SaveListener l) {
+		a_listOfSaveListeners.remove(l);
+	}
+
     /**
      * @see lmzr.photomngr.data.PhotoList#save()
      */
@@ -172,7 +187,15 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
         final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this,e.getChange());
-        for (int i=0; i<a_listOfMetaDataListeners.size(); i++) a_listOfMetaDataListeners.get(i).photoListMetaDataChanged(f);
+        for (PhotoListMetaDataListener l: a_listOfMetaDataListeners) l.photoListMetaDataChanged(f);
+    }
+
+    /**
+     * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
+     */
+    public void saveChanged(final SaveEvent e) {
+        final SaveEvent f = new SaveEvent(this,e.isSaved());
+        for (SaveListener l: a_listOfSaveListeners) l.saveChanged(f);
     }
 
     /**
@@ -304,4 +327,5 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	public void performLocationMapTranslation(Map<String, String> map) {
 		a_list.performLocationMapTranslation(map);
 	}
+
 }

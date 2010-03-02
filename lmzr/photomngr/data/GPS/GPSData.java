@@ -284,11 +284,20 @@ public class GPSData {
 		final int minutes = (int)Math.floor((val-degrees)*60);
 		final int seconds = (int)Math.floor(((val-degrees)*60-minutes)*60);
 		
-		return String.format("%c %d° %d' %d''",
-				             (coordinate>0) ? positiveLetter : negativeLetter,
-				             degrees,
-				             minutes,
-				             seconds);
-		}
+//		return String.format("%c %d° %d' %d''",
+//				             (coordinate>0) ? positiveLetter : negativeLetter,
+//				             degrees,
+//				             minutes,
+//				             seconds);
+		return "" +
+		       ( (coordinate>0) ? positiveLetter : negativeLetter ) +
+		       " " +
+		       degrees +
+		       "° " +
+		       minutes +
+		       "' " +
+		       seconds +
+		       "''";
+	}
 
 }

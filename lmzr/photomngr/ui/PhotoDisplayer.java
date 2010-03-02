@@ -26,6 +26,8 @@ import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
+import lmzr.photomngr.data.SaveEvent;
+import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
@@ -43,7 +45,7 @@ import lmzr.util.string.HierarchicalCompoundString;
  * display a photo is an independent window
  */
 public class PhotoDisplayer extends JFrame
-                            implements PhotoListMetaDataListener {
+                            implements SaveListener {
 
     final private FilteredPhotoList a_photoList;
     final private ListSelectionManager a_selection;
@@ -517,10 +519,10 @@ public class PhotoDisplayer extends JFrame
                           final ListSelectionManager selection) throws HeadlessException {
         
         super();
-        photoListMetaDataChanged(new PhotoListMetaDataEvent(photoList,PhotoListMetaDataEvent.PHOTOLIST_IS_SAVED));
+        saveChanged(new SaveEvent(photoList,photoList.isSaved()));
         
         a_photoList = photoList;
-        a_photoList.addMetaListener(this);
+        a_photoList.addSaveListener(this);
         a_selection = selection;
         a_displayer = new PhotoDisplayerComponent(photoList, subsampler, a_selection);
         getContentPane().add(a_displayer,BorderLayout.CENTER);
@@ -638,13 +640,11 @@ public class PhotoDisplayer extends JFrame
 	}
 	
     /**
-     * @see lmzr.photomngr.data.PhotoListMetaDataListener#photoListMetaDataChanged(lmzr.photomngr.data.PhotoListMetaDataEvent)
+     * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
-    public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
-    	if (e.getChange()==PhotoListMetaDataEvent.PHOTOLIST_IS_SAVED) {
-            final PhotoList list = (PhotoList)e.getSource();
-            setTitle("photo display " + ( list.isSaved() ? "[saved]" : "[modified]") );
-        }
+    public void saveChanged(final SaveEvent e) {
+        setTitle("photo display - [photo data is " + (e.isSaved() ? "saved]" : "modified]") );
+
     }
 
     /**
