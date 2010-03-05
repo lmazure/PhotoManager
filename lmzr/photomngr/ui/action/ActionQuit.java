@@ -6,13 +6,15 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import lmzr.photomngr.data.PhotoList;
+import lmzr.photomngr.data.GPS.GPSDatabase;
 
 /**
  * Action to quit
  */
 public class ActionQuit extends PhotoManagerAction {
 
-	final PhotoList a_list;
+	final PhotoList a_photoList;
+	final GPSDatabase a_GPSDatabase;
 
 	/**
 	 * @param text
@@ -25,9 +27,11 @@ public class ActionQuit extends PhotoManagerAction {
 	                  final int mnemonic,
 	                  final KeyStroke accelerator,
 	                  final String tooltipText,
-	                  final PhotoList list) {
+	                  final PhotoList list,
+	                  final GPSDatabase GPSDatabase) {
         super(text, mnemonic, accelerator, tooltipText);
-        a_list = list;
+        a_photoList = list;
+        a_GPSDatabase = GPSDatabase;
 	}
 
 
@@ -42,10 +46,18 @@ public class ActionQuit extends PhotoManagerAction {
      * 
      */
     public void controlledExit() {
-	    if (a_list.isSaved()) {
+	    if ( a_photoList.isSaved() && a_GPSDatabase.isSaved() ) {
 			System.exit(0);
 	    } else {
-		    final int a = JOptionPane.showConfirmDialog(null,"Do you really want to exit without saving?","Exit",JOptionPane.OK_CANCEL_OPTION);
+	    	String message = "Do you really want to exit without saving ";
+	    	if ( !a_photoList.isSaved() && !a_GPSDatabase.isSaved() ) {
+	    		message += "the photo data and the GPS data?";
+	    	} else if ( !a_photoList.isSaved() ) {
+	    		message += "the photo data?";
+	    	} else {
+	    		message += "the GPS data?";
+	    	}
+		    final int a = JOptionPane.showConfirmDialog(null,message,"Exit",JOptionPane.OK_CANCEL_OPTION);
 	        if ( a == JOptionPane.OK_OPTION ) {
 				System.exit(0);		            
 	        }

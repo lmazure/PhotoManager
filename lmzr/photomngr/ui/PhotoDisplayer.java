@@ -24,8 +24,6 @@ import javax.swing.KeyStroke;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.data.PhotoListMetaDataEvent;
-import lmzr.photomngr.data.PhotoListMetaDataListener;
 import lmzr.photomngr.data.SaveEvent;
 import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
@@ -48,6 +46,7 @@ public class PhotoDisplayer extends JFrame
                             implements SaveListener {
 
     final private FilteredPhotoList a_photoList;
+    final private GPSDatabase a_GPSDatabase;
     final private ListSelectionManager a_selection;
 	final private JMenuBar a_menubar;
 	final private PhotoEditorComponent a_editor;
@@ -519,10 +518,14 @@ public class PhotoDisplayer extends JFrame
                           final ListSelectionManager selection) throws HeadlessException {
         
         super();
-        saveChanged(new SaveEvent(photoList,photoList.isSaved()));
         
         a_photoList = photoList;
         a_photoList.addSaveListener(this);
+        a_GPSDatabase = GPSDatabase;
+        a_GPSDatabase.addSaveListener(this);
+        
+        saveChanged(new SaveEvent(photoList,photoList.isSaved()));
+        
         a_selection = selection;
         a_displayer = new PhotoDisplayerComponent(photoList, subsampler, a_selection);
         getContentPane().add(a_displayer,BorderLayout.CENTER);
@@ -542,7 +545,7 @@ public class PhotoDisplayer extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		final ActionSave actionSave = new ActionSave("Save", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",photoList);
+		final ActionSave actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_photoList);
 		final JMenuItem itemSave = new JMenuItem(actionSave);
 		menuFile.add(itemSave);
 		final ActionExportSubjects actionExportSubjects = new ActionExportSubjects("Export subjects", KeyEvent.CHAR_UNDEFINED, null,"Export the list of subjects");
@@ -554,7 +557,7 @@ public class PhotoDisplayer extends JFrame
 		final ActionCreateCopiesForPrinting actionCreateCopiesForPrinting = new ActionCreateCopiesForPrinting("Create copies for printing", KeyEvent.CHAR_UNDEFINED, null,"Copies the file for a printing");
 		final JMenuItem itemCreateCopiesForPrinting = new JMenuItem(actionCreateCopiesForPrinting);
 		menuFile.add(itemCreateCopiesForPrinting);
-		a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",photoList);
+		a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",a_photoList,a_GPSDatabase);
 		final JMenuItem itemQuit = new JMenuItem(a_actionQuit);
 		menuFile.add(itemQuit);
 
@@ -643,7 +646,10 @@ public class PhotoDisplayer extends JFrame
      * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
     public void saveChanged(final SaveEvent e) {
-        setTitle("photo display - [photo data is " + (e.isSaved() ? "saved]" : "modified]") );
+        setTitle("photo display - [photo data is " +
+        		 (a_photoList.isSaved() ? "saved]" : "modified]") +
+        		 " [GPS data is " +
+        		 (a_GPSDatabase.isSaved() ? "saved]" : "modified]") );
 
     }
 
@@ -651,6 +657,6 @@ public class PhotoDisplayer extends JFrame
      * 
      */
     public void controlledExit() {
-    	a_actionQuit.controlledExit();
+    	a_actionQuit.controlledExit(); // TODO fix this dirty hack
     }
 }

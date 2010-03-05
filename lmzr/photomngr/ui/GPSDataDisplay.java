@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -41,12 +42,9 @@ public class GPSDataDisplay extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		ActionSave a_actionSave = new ActionSave("Save", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",database);
+		ActionSave a_actionSave = new ActionSave("Save GPS data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",database);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
-		final ActionQuit actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",null /*filteredList*/);  //TODO gérer le dernier argument
-		final JMenuItem itemQuit = new JMenuItem(actionQuit);
-		menuFile.add(itemQuit);
 
 		final JMenu menuEdit = new JMenu("Edit");
 		menuEdit.setMnemonic(KeyEvent.VK_E);
@@ -69,6 +67,11 @@ public class GPSDataDisplay extends JFrame
 		final JScrollPane scrollPane = new JScrollPane(a_treeTable);
 		pane.add(scrollPane, BorderLayout.CENTER);
 		
+		a_treeTable.getInputMap().put((KeyStroke)actionCopy.getValue(Action.ACCELERATOR_KEY),actionCopy.getValue(Action.NAME));
+		a_treeTable.getActionMap().put(actionCopy.getValue(Action.NAME),actionCopy);
+		a_treeTable.getInputMap().put((KeyStroke)actionPaste.getValue(Action.ACCELERATOR_KEY),actionPaste.getValue(Action.NAME));
+		a_treeTable.getActionMap().put(actionPaste.getValue(Action.NAME),actionPaste);
+
 		database.addSaveListener(this);
 		
 		saveChanged(new SaveEvent(database, database.isSaved()));

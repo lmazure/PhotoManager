@@ -136,12 +136,9 @@ public class PhotoListDisplay extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		a_actionSave = new ActionSave("Save", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",filteredList);
+		a_actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",filteredList);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
-		final ActionQuit actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",filteredList);
-		final JMenuItem itemQuit = new JMenuItem(actionQuit);
-		menuFile.add(itemQuit);
 
 
 		final JMenu menuEdit = new JMenu("Edit");
