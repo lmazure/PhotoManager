@@ -36,7 +36,7 @@ public abstract class ActionExport extends PhotoManagerAction {
 	}
 
 	private void dump(final BufferedWriter out,
-			final HierarchicalCompoundString string) {
+			          final HierarchicalCompoundString string) {
 		try {
 			out.write(string.toLongString());
 			out.write("\n");

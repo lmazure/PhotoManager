@@ -35,7 +35,7 @@ public class Exporter {
 	/**
 	 * @param photoList
 	 */
-	public void export(final FilteredPhotoList photoList) {
+	public void export(final PhotoList photoList) {
 		final Random rand = new Random();
 		BufferedWriter index = null;
 		final JFileChooser fc = new JFileChooser((File)null);

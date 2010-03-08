@@ -30,6 +30,7 @@ import lmzr.photomngr.ui.action.ActionCopyFromNext;
 import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
 import lmzr.photomngr.ui.action.ActionPaste;
 import lmzr.photomngr.ui.action.ActionQuit;
+import lmzr.photomngr.ui.action.ActionRenameFolder;
 import lmzr.photomngr.ui.action.ActionSave;
 import lmzr.photomngr.ui.action.PhotoManagerAction;
 
@@ -44,76 +45,14 @@ public class PhotoListDisplay extends JFrame
 	final private PhotoListTable a_table;
 	final PhotoList a_list;
 	final ListSelectionManager a_selection;
-	final private ActionSave a_actionSave;
+	final public ActionSave a_actionSave;
 	final private ActionRenameFolder a_actionRenameFolder;
 	final private ActionCopy a_actionCopy;
 	final private ActionPaste a_actionPaste;
 	final private ActionCopyFromNext a_actionCopyFromNext;
 	final private ActionCopyFromPrevious a_actionCopyFromPrevious;
 	
-	/**
-	 * Action to rename a folder
-	 */
-	private class ActionRenameFolder extends PhotoManagerAction {
-	
-		/**
-		 * @param text
-		 * @param mnemonic
-		 * @param accelerator
-		 * @param tooltipText
-		 */
-		public ActionRenameFolder(final String text,
-                                  final int mnemonic,
-                                  final KeyStroke accelerator,
-                                  final String tooltipText) {
-			super(text, mnemonic, accelerator, tooltipText);
-		}
-	
-	
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(final ActionEvent e) {
-			
-			if (!a_list.isSaved()) {
-		        JOptionPane.showMessageDialog(PhotoListDisplay.this,
-	                                          "Cannot rename a file if the current data is not saved",
-	                                          "Rename error",
-	                                          JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			
-		    final Photo photo = a_list.getPhoto(a_selection.getSelection()[0]);
-			final String oldFolderName = photo.getFolder();
-			final String newFolderName = JOptionPane.showInputDialog(PhotoListDisplay.this,
-					                                                 "new folder name?",
-					                                                 oldFolderName);
-		    if (newFolderName == null) return;  // user clicked cancel
 
-		    // rename the directory
-		    final File photoFile = new File(photo.getFullPath());
-		    final File oldFolderFile = photoFile.getParentFile();
-		    final File newFolderFile = new File(oldFolderFile.getParentFile(),newFolderName);
-		    if (!oldFolderFile.renameTo(newFolderFile)) {
-		        JOptionPane.showMessageDialog(PhotoListDisplay.this,
-                        "Failed to rename \""+oldFolderFile+"\" into \""+newFolderFile+"\"",
-                        "Rename error",
-                        JOptionPane.ERROR_MESSAGE);
-		        return;
-		    }
-		    
-		    // update the data recorded in the list
-		    for (int i=0; i<a_list.getRowCount(); i++) {
-		    	if ( ((String)a_list.getValueAt(i, PhotoList.PARAM_FOLDER)).equals(oldFolderName) ) {
-		    		a_list.setValueAt(newFolderName, i, PhotoList.PARAM_FOLDER);
-		    	}
-		    }
-
-		    // save
-			a_actionSave.actionPerformed(e); //TODO ce hack est vraiment très sale!!!
-		}
-	}
-	
 
     /**
      * @param unfilteredList
@@ -130,6 +69,13 @@ public class PhotoListDisplay extends JFrame
 	    saveChanged(new SaveEvent(filteredList,a_list.isSaved()));
         filteredList.addSaveListener(this);
 
+		// listen to change of the selection column(s)
+		a_selection = new ListSelectionManager(filteredList,getLineSelectionListModel());
+		a_selection.addListener(this);
+		
+		// listen to change of the selection row(s)
+		getColumnSelectionListModel().addListSelectionListener(this);
+		
         a_menubar = new JMenuBar();
 		setJMenuBar(a_menubar);
 		
@@ -156,7 +102,7 @@ public class PhotoListDisplay extends JFrame
 		a_actionCopyFromNext = new ActionCopyFromNext("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
 		final JMenuItem itemCopyFromNext = new JMenuItem(a_actionCopyFromNext);
 		menuEdit.add(itemCopyFromNext);
-		a_actionRenameFolder = new ActionRenameFolder("Rename folder", KeyEvent.CHAR_UNDEFINED, null,"Rename the folder");
+		a_actionRenameFolder = new ActionRenameFolder("Rename folder", KeyEvent.CHAR_UNDEFINED, null,"Rename the folder",this,a_list,a_selection);
 		final JMenuItem itemRenameFolder = new JMenuItem(a_actionRenameFolder);
 		menuEdit.add(itemRenameFolder);
 
@@ -170,12 +116,6 @@ public class PhotoListDisplay extends JFrame
 		a_table.getInputMap().put((KeyStroke)a_actionPaste.getValue(Action.ACCELERATOR_KEY),a_actionPaste.getValue(Action.NAME));
 		a_table.getActionMap().put(a_actionPaste.getValue(Action.NAME),a_actionPaste);
 
-		// listen to change of the selection column(s)
-		a_selection = new ListSelectionManager(filteredList,getLineSelectionListModel());
-		a_selection.addListener(this);
-		
-		// listen to change of the selection row(s)
-		getColumnSelectionListModel().addListSelectionListener(this);
 }
     
     /**

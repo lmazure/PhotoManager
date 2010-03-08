@@ -27,6 +27,10 @@ import lmzr.photomngr.data.phototrait.PhotoQuality;
 import lmzr.photomngr.data.phototrait.PhotoTrait;
 import lmzr.photomngr.exporter.Exporter;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
+import lmzr.photomngr.ui.action.ActionChangeOriginality;
+import lmzr.photomngr.ui.action.ActionChangePrivacy;
+import lmzr.photomngr.ui.action.ActionChangeQuality;
+import lmzr.photomngr.ui.action.ActionCreateCopiesForPrinting;
 import lmzr.photomngr.ui.action.ActionDisplayEditor;
 import lmzr.photomngr.ui.action.ActionEditLocations;
 import lmzr.photomngr.ui.action.ActionEditSubjects;
@@ -37,6 +41,7 @@ import lmzr.photomngr.ui.action.ActionFullScreen;
 import lmzr.photomngr.ui.action.ActionNextPhoto;
 import lmzr.photomngr.ui.action.ActionPreviousPhoto;
 import lmzr.photomngr.ui.action.ActionQuit;
+import lmzr.photomngr.ui.action.ActionResetNumberOfCopies;
 import lmzr.photomngr.ui.action.ActionSave;
 import lmzr.photomngr.ui.action.PhotoManagerAction;
 
@@ -55,140 +60,6 @@ public class PhotoDisplayer extends JFrame
 	private boolean a_isFullScreen;
 	private Rectangle a_bounds;
 	final ActionQuit a_actionQuit;
-    
-	
-	/**
-	 * Action to change a trait of the selected photos
-	 */
-	private class ActionChangeTrait extends PhotoManagerAction {
-	
-	    final PhotoTrait a_value;
-	    final int a_indexInPhotoList;
-	    
-		/**
-		 * @param value
-		 * @param name
-		 * @param indexInPhotoList
-		 */
-		public ActionChangeTrait(final PhotoTrait value,
-		                         final String name,
-		                         final int indexInPhotoList) {
-	        super(value.toString(), 0, null, "set " + name + " to "+value.toString());
-	        a_value = value;
-	        a_indexInPhotoList = indexInPhotoList;
-		}
-	
-	
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
-			final int select[] = a_selection.getSelection();
-			for (int i=0; i<select.length; i++) {
-				a_photoList.setValueAt(a_value,select[i],a_indexInPhotoList);
-			}
-		}
-	}
-	
-	/**
-	 * Action to display the quality of the selected photos
-	 */
-	private class ActionChangeQuality extends ActionChangeTrait {
-	
-		/**
-		 * @param value
-		 */
-		public ActionChangeQuality(final PhotoQuality value) {
-	        super(value,"quality",PhotoList.PARAM_QUALITY);
-		}	
-	}
-	
-	/**
-	 * Action to display the originality of the selected photos
-	 */
-	private class ActionChangeOriginality extends ActionChangeTrait {
-	
-		/**
-		 * @param value
-		 */
-		public ActionChangeOriginality(final PhotoOriginality value) {
-	        super(value,"originality",PhotoList.PARAM_ORIGINALITY);
-		}	
-	}
-
-	/**
-	 * Action to display the privacy of the selected photos
-	 */
-	private class ActionChangePrivacy extends ActionChangeTrait {
-	
-		/**
-		 * @param value
-		 */
-		public ActionChangePrivacy(final PhotoPrivacy value) {
-	        super(value,"privacy",PhotoList.PARAM_PRIVACY);
-		}	
-	}
-
-	/**
-	 * Action to create exportable copies
-	 */
-	private class ActionCreateCopiesForPrinting extends PhotoManagerAction {
-	
-		/**
-		 * @param text
-		 * @param mnemonic
-		 * @param accelerator
-		 * @param tooltipText
-		 */
-		public ActionCreateCopiesForPrinting(final String text,
-		                                     final int mnemonic,
-		                                     final KeyStroke accelerator,
-		                                     final String tooltipText) {
-	        super(text, mnemonic, accelerator, tooltipText);
-		}
-	
-	
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
-
-			final Exporter exporter = new Exporter(PhotoDisplayer.this);
-			exporter.export(a_photoList);
-
-		}
-	}
-
-	/**
-	 * Action to reset the number of copies
-	 */
-	private class ActionResetNumberOfCopies extends PhotoManagerAction {
-	
-		/**
-		 * @param text
-		 * @param mnemonic
-		 * @param accelerator
-		 * @param tooltipText
-		 */
-		public ActionResetNumberOfCopies(final String text,
-				                         final int mnemonic,
-				                         final KeyStroke accelerator,
-				                         final String tooltipText) {
-	        super(text, mnemonic, accelerator, tooltipText);
-		}
-	
-	
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
-			for (int i=0; i<a_photoList.getRowCount(); i++) {
-				if ( ((Integer)a_photoList.getValueAt(i, PhotoList.PARAM_COPIES)).intValue() > 0 ) {
-					a_photoList.setValueAt(new Integer(0),i, PhotoList.PARAM_COPIES);
-				}
-			}
-		}
-	}
 
     /**
      * @param photoList
@@ -239,7 +110,7 @@ public class PhotoDisplayer extends JFrame
 		final ActionExportLocations actionExportLocations = new ActionExportLocations("Export locations", KeyEvent.CHAR_UNDEFINED, null,"Export the list of locations",this,a_photoList);
 		final JMenuItem itemExportLocations = new JMenuItem(actionExportLocations);
 		menuFile.add(itemExportLocations);
-		final ActionCreateCopiesForPrinting actionCreateCopiesForPrinting = new ActionCreateCopiesForPrinting("Create copies for printing", KeyEvent.CHAR_UNDEFINED, null,"Copies the file for a printing");
+		final ActionCreateCopiesForPrinting actionCreateCopiesForPrinting = new ActionCreateCopiesForPrinting("Create copies for printing", KeyEvent.CHAR_UNDEFINED, null,"Copies the file for a printing",this,a_photoList);
 		final JMenuItem itemCreateCopiesForPrinting = new JMenuItem(actionCreateCopiesForPrinting);
 		menuFile.add(itemCreateCopiesForPrinting);
 		a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",a_photoList,a_GPSDatabase);
@@ -268,22 +139,22 @@ public class PhotoDisplayer extends JFrame
 		final JMenu submenuEditQuality = new JMenu("Set Quality");
 		for (int i=0; i<PhotoQuality.getTraits().length; i++) {
 		    final PhotoQuality v = (PhotoQuality)(PhotoQuality.getTraits()[i]);
-		    submenuEditQuality.add(new JMenuItem(new ActionChangeQuality(v)));
+		    submenuEditQuality.add(new JMenuItem(new ActionChangeQuality(v,a_photoList,a_selection)));
 		}
 		menuEdit.add(submenuEditQuality);
 		final JMenu submenuEditOriginality = new JMenu("Set Originality");
 		for (int i=0; i<PhotoOriginality.getTraits().length; i++) {
 		    final PhotoOriginality v = (PhotoOriginality)(PhotoOriginality.getTraits()[i]);
-		    submenuEditOriginality.add(new JMenuItem(new ActionChangeOriginality(v)));
+		    submenuEditOriginality.add(new JMenuItem(new ActionChangeOriginality(v,a_photoList,a_selection)));
 		}
 		menuEdit.add(submenuEditOriginality);
 		final JMenu submenuEditPrivacy = new JMenu("Set Privacy");
 		for (int i=0; i<PhotoPrivacy.getTraits().length; i++) {
 		    final PhotoPrivacy v = (PhotoPrivacy)(PhotoPrivacy.getTraits()[i]);
-		    submenuEditPrivacy.add(new JMenuItem(new ActionChangePrivacy(v)));
+		    submenuEditPrivacy.add(new JMenuItem(new ActionChangePrivacy(v,a_photoList,a_selection)));
 		}
 		menuEdit.add(submenuEditPrivacy);
-		final ActionResetNumberOfCopies actionResetNumberOfCopies = new ActionResetNumberOfCopies("Reset numbers of copîes", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero");
+		final ActionResetNumberOfCopies actionResetNumberOfCopies = new ActionResetNumberOfCopies("Reset numbers of copîes", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
 		final JMenuItem itemResetNumberOfCopies = new JMenuItem(actionResetNumberOfCopies);
 		menuEdit.add(itemResetNumberOfCopies);
 		final ActionEditSubjects actionEditSubjects = new ActionEditSubjects("Edit subjects", KeyEvent.CHAR_UNDEFINED, null,"Display the subject editor",this,a_photoList);
