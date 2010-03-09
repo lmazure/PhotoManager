@@ -39,6 +39,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
+import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
 import lmzr.photomngr.ui.action.PhotoManagerAction;
 import lmzr.photomngr.ui.celleditor.AuthorCellEditor;
 import lmzr.photomngr.ui.celleditor.CopiesCellEditor;
@@ -212,36 +213,7 @@ public class PhotoEditorComponent extends JPanel
 	        panel.add(a_play[i]);
 	        a_play[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }
-        a_map = new JButton("map");
-        a_map.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
-                    	final GPSRecord gpsRecord = GPSDatabase.getGPSData(((HierarchicalCompoundString)(a_photoList.getValueAt(a_selection.getSelection()[0],PhotoList.PARAM_LOCATION))));
-                    	if (gpsRecord==null) return;
-                    	final GPSData gps = gpsRecord.getGPSData();
-                    	if (!gps.isComplete()) return;
-                    	try {
-	                    	final String[] commandLine = { "C:\\Program Files\\Mozilla Firefox\\firefox.exe", 
-	                    			                       "http://maps.google.com/maps?q="+
-	                    			                 + gps.getLatitudeAsDouble()
-	                    			                 + "+"
-	                    			                 + gps.getLongitudeAsDouble()
-	                    			                 + "+("
-	                    			                 + URLEncoder.encode(gpsRecord.getLocation().toLongString().replace(">","/"),"UTF-8")
-	                    			                 +")&ll="
-	                    			                 + gps.getLatitudeAsDouble()
-	                    			                 + ","
-	                    			                 + gps.getLongitudeAsDouble()
-	                    			                 + "&spn="
-	                    			                 + gps.getLatitudeRangeAsDouble()
-	                    			                 + ","
-	                    			                 + gps.getLongitudeRangeAsDouble()
-	                    			                 + "&t=h&hl=fr" };
-						    Runtime.getRuntime().exec(commandLine);
-                		} catch (final IOException e1) {
-                			// TODO Auto-generated catch block
-                			e1.printStackTrace();
-                		}}});
+        a_map = new JButton(new ActionLaunchGoogleMaps("Map", KeyEvent.CHAR_UNDEFINED, null,"display Google Maps",a_GPSDatabase, a_photoList, a_selection));
         panel.add(a_map);
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         

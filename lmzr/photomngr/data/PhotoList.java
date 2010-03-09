@@ -255,11 +255,11 @@ public interface PhotoList extends TableModel, SaveableModel {
 	/**
 	 * @param map
 	 */
-	public abstract void performSubjectMapTranslation(Map<String, String> map);
+	public abstract void performSubjectMapTranslation(final Map<String, String> map);
 
 	/**
 	 * @param map
 	 */
-	void performLocationMapTranslation(Map<String, String> map);
+	void performLocationMapTranslation(final Map<String, String> map);
 
 }

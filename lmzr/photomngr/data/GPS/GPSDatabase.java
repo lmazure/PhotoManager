@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.event.TreeModelListener;
@@ -233,7 +234,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 * @see org.jdesktop.swingx.treetable.TreeTableModel#isCellEditable(java.lang.Object, int)
 	 */
 	@Override
-	public boolean isCellEditable(final Object node,
+	public boolean isCellEditable(@SuppressWarnings("unused") final Object node,
 			                      final int columnIndex) {
 		switch (columnIndex) {
 		case PARAM_LOCATION:
@@ -360,8 +361,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
 	 */
 	@Override
-	public void valueForPathChanged(final TreePath arg0,
-			                        final Object arg1) {
+	public void valueForPathChanged(@SuppressWarnings("unused") final TreePath arg0,
+			                        @SuppressWarnings("unused") final Object arg1) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -448,12 +449,37 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
     }
 
+	/**
+	 * @param l
+	 */
 	public void addSaveListener(final SaveListener l) {
         a_listOfSaveListeners.add(l);
 	}
 
+	/**
+	 * @param l
+	 */
 	public void removeSaveListener(final SaveListener l) {
         a_listOfSaveListeners.remove(l);
+	}
+
+	/**
+	 * @param map
+	 */
+	public void performLocationMapTranslation(final Map<String, String> map) {
+		
+		for ( String oldLoc: map.keySet()) {
+			
+			final String newLoc = map.get(oldLoc);
+			final HierarchicalCompoundString oldLocation = a_locationFactory.create(oldLoc);
+			final HierarchicalCompoundString newLocation = a_locationFactory.create(newLoc);
+			
+			final GPSData data = a_data.get(oldLocation);
+
+			if ( data != null ) {
+				a_data.put(newLocation, data.clone());
+			}
+		}
 	}
 
 

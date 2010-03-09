@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * @author Laurent
  *
  */
-public class GPSData {
+public class GPSData implements Cloneable {
 
 	private double a_latitudeMin;
 	private double a_longitudeMin;
@@ -33,6 +33,10 @@ public class GPSData {
 		setLongitudeMax(longitudeMax);
 	}
 
+	public GPSData clone() {
+		return new GPSData(getLatitudeMin(),getLongitudeMin(),getLatitudeMax(),getLongitudeMax());
+	}
+	
 	/**
 	 * @return true if the GPS coordinates are correct, false otherwise
 	 */
@@ -284,11 +288,6 @@ public class GPSData {
 		final int minutes = (int)Math.floor((val-degrees)*60);
 		final int seconds = (int)Math.floor(((val-degrees)*60-minutes)*60);
 		
-//		return String.format("%c %d° %d' %d''",
-//				             (coordinate>0) ? positiveLetter : negativeLetter,
-//				             degrees,
-//				             minutes,
-//				             seconds);
 		return "" +
 		       ( (coordinate>0) ? positiveLetter : negativeLetter ) +
 		       " " +

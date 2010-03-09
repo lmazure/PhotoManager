@@ -13,7 +13,8 @@ import lmzr.photomngr.ui.SubjectBatchEditor;
 /**
  * Action to edit the list of subjects
  */
-public class ActionEditSubjects extends PhotoManagerAction implements MapTranslationPerformer {
+public class ActionEditSubjects extends PhotoManagerAction
+                                implements MapTranslationPerformer {
 
 	final private JFrame a_frame;
 	final private FilteredPhotoList a_photoList;
@@ -30,6 +31,7 @@ public class ActionEditSubjects extends PhotoManagerAction implements MapTransla
 			final String tooltipText,
 			final JFrame frame,
 			final FilteredPhotoList photoList) {
+		
 		super(text, mnemonic, accelerator, tooltipText);
 		a_frame = frame;
 		a_photoList = photoList;
@@ -39,16 +41,17 @@ public class ActionEditSubjects extends PhotoManagerAction implements MapTransla
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+		
 		final SubjectBatchEditor editor = new SubjectBatchEditor(a_frame,
-				a_photoList.getSubjectFactory().getRootAsHierarchicalCompoundString(),
-				this);
+				                                                 a_photoList.getSubjectFactory().getRootAsHierarchicalCompoundString(),
+				                                                 this);
 		editor.setVisible(true);
 	}
 
 	/**
 	 * @see lmzr.photomngr.ui.MapTranslationPerformer#performMapTranslation(java.util.Map)
 	 */
-	public void performMapTranslation(Map<String,String> map) {
+	public void performMapTranslation(final Map<String,String> map) {
 		a_photoList.performSubjectMapTranslation(map);
 	}
 }

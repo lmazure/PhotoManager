@@ -316,7 +316,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	 * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
 	 */
 	@Override
-	public void performSubjectMapTranslation(Map<String, String> map) {
+	public void performSubjectMapTranslation(final Map<String, String> map) {
 		a_list.performSubjectMapTranslation(map);
 	}
 
@@ -324,7 +324,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	 * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
 	 */
 	@Override
-	public void performLocationMapTranslation(Map<String, String> map) {
+	public void performLocationMapTranslation(final Map<String, String> map) {
 		a_list.performLocationMapTranslation(map);
 	}
 

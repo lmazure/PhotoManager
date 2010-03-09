@@ -770,7 +770,7 @@ public class ConcretePhotoList extends Object
 	 * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
 	 */
 	@Override
-	public void performSubjectMapTranslation(Map<String, String> map) {
+	public void performSubjectMapTranslation(final Map<String, String> map) {
         for (int i=0; i<a_listOfPhotos.size(); i++) {
         	final MultiHierarchicalCompoundString oldSubjects = getPhoto(i).getIndexData().getSubject();
         	final HierarchicalCompoundString[] oldParts = oldSubjects.getParts();
@@ -791,8 +791,13 @@ public class ConcretePhotoList extends Object
 	 * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
 	 */
 	@Override
-	public void performLocationMapTranslation(@SuppressWarnings("unused") Map<String, String> map) {
-//TODO a implémenter
-		}
+	public void performLocationMapTranslation(final Map<String, String> map) {
+        for (int i=0; i<a_listOfPhotos.size(); i++) {
+        	final String location = getPhoto(i).getIndexData().getLocation().toLongString();
+        	if (map.containsKey(location)) {
+        		setValueAt(map.get(location),i,PARAM_LOCATION);
+        	}
+        }
+	}
 
 }
