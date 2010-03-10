@@ -59,14 +59,8 @@ import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
  */
 public class Main implements WindowListener {
 
-    final private ConcretePhotoList a_list;
-    final private FilteredPhotoList a_filteredList;
-    final private String s_root;
-    final private PhotoDisplayer a_displayer;
-    final private PhotoListDisplay a_listDisplay;
-    final private GPSDataDisplay a_GPSDisplay;
-    final private GPSDatabase a_GPSDatabase;
-    
+	private final PhotoDisplayer a_displayer;
+	
     /**
      * @param args
      */
@@ -80,14 +74,14 @@ public class Main implements WindowListener {
      */
     public Main(final String root,
     		    final String cache) {
-        s_root = root;
+        final String s_root = root;
         
-        a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root);
-        a_filteredList = new FilteredPhotoList(a_list);
+        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root);
+        final FilteredPhotoList a_filteredList = new FilteredPhotoList(a_list);
 
-        a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt", a_list.getLocationFactory());
+        final GPSDatabase a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt", a_list.getLocationFactory());
         
-        a_listDisplay = new PhotoListDisplay(a_list,a_filteredList);
+        final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,a_filteredList);
         final ListSelectionManager selection = new ListSelectionManager(a_filteredList,a_listDisplay.getLineSelectionListModel());
         
         a_displayer = new PhotoDisplayer(a_filteredList, a_GPSDatabase, new SubsampledImageCachedManager(cache), selection);
@@ -95,7 +89,6 @@ public class Main implements WindowListener {
         final int i = a_list.getRowCount()-1;
         a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);
 
-        a_GPSDisplay = new GPSDataDisplay(a_GPSDatabase);
         
         a_listDisplay.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         a_listDisplay.addWindowListener(this);
@@ -106,11 +99,6 @@ public class Main implements WindowListener {
         a_displayer.addWindowListener(this);
         a_displayer.setBounds(new Rectangle(100,300,1000,720));
         a_displayer.setVisible(true);
-
-        a_GPSDisplay.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        a_GPSDisplay.addWindowListener(this);
-        a_GPSDisplay.setBounds(new Rectangle(100,300,1000,720));
-        a_GPSDisplay.setVisible(true);
     }
 
     /**
@@ -124,7 +112,7 @@ public class Main implements WindowListener {
      * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
      */
     public void windowClosing(@SuppressWarnings("unused") final WindowEvent e) {
-        a_displayer.controlledExit();
+        a_displayer.controlledExit(); //TODO dirty hack
     }
 
     /**

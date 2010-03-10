@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.SaveableModel;
 
 /**
@@ -14,7 +13,7 @@ import lmzr.photomngr.data.SaveableModel;
  */
 public class ActionSave extends PhotoManagerAction {
 
-	final SaveableModel a_model;
+	private final SaveableModel a_model;
 
 	/**
 	 * @param text

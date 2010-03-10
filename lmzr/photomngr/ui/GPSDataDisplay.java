@@ -16,11 +16,11 @@ import javax.swing.KeyStroke;
 import lmzr.photomngr.data.SaveEvent;
 import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
+import lmzr.photomngr.ui.action.ActionClose;
 import lmzr.photomngr.ui.action.ActionCopy;
 import lmzr.photomngr.ui.action.ActionCopyFromNext;
 import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
 import lmzr.photomngr.ui.action.ActionPaste;
-import lmzr.photomngr.ui.action.ActionQuit;
 import lmzr.photomngr.ui.action.ActionSave;
 
 public class GPSDataDisplay extends JFrame
@@ -28,12 +28,15 @@ public class GPSDataDisplay extends JFrame
 	
 	final private GPSTreeTable a_treeTable;
 	final private JMenuBar a_menubar;
+	final private GPSDatabase a_GPSdatabase;
 	
-	GPSDataDisplay(final GPSDatabase database) {
+	public GPSDataDisplay(final GPSDatabase GPSDatabase) {
 		
 		super();
 
-		a_treeTable = new GPSTreeTable(database);
+		a_GPSdatabase = GPSDatabase;
+		
+		a_treeTable = new GPSTreeTable(a_GPSdatabase);
 		a_treeTable.setRootVisible(true);
 
         a_menubar = new JMenuBar();
@@ -42,9 +45,12 @@ public class GPSDataDisplay extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		ActionSave a_actionSave = new ActionSave("Save GPS data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",database);
+		ActionSave a_actionSave = new ActionSave("Save GPS data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_GPSdatabase);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
+		ActionClose a_actionClose = new ActionClose("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
+		final JMenuItem itemClose = new JMenuItem(a_actionClose);
+		menuFile.add(itemClose);
 
 		final JMenu menuEdit = new JMenu("Edit");
 		menuEdit.setMnemonic(KeyEvent.VK_E);
@@ -72,11 +78,18 @@ public class GPSDataDisplay extends JFrame
 		a_treeTable.getInputMap().put((KeyStroke)actionPaste.getValue(Action.ACCELERATOR_KEY),actionPaste.getValue(Action.NAME));
 		a_treeTable.getActionMap().put(actionPaste.getValue(Action.NAME),actionPaste);
 
-		database.addSaveListener(this);
+		a_GPSdatabase.addSaveListener(this);
 		
-		saveChanged(new SaveEvent(database, database.isSaved()));
+		saveChanged(new SaveEvent(a_GPSdatabase, a_GPSdatabase.isSaved()));
 	}
 
+	@Override
+	public void dispose() {
+		System.out.println("closed");
+		a_GPSdatabase.addSaveListener(this);
+		super.dispose();
+	}
+	
 	@Override
 	public void saveChanged(final SaveEvent e) {
         setTitle("GPS data - [GPS data is " + (e.isSaved() ? "saved]" : "modified]") );

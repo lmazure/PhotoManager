@@ -29,6 +29,7 @@ import lmzr.photomngr.ui.action.ActionChangePrivacy;
 import lmzr.photomngr.ui.action.ActionChangeQuality;
 import lmzr.photomngr.ui.action.ActionCreateCopiesForPrinting;
 import lmzr.photomngr.ui.action.ActionDisplayEditor;
+import lmzr.photomngr.ui.action.ActionDisplayGPSDatabase;
 import lmzr.photomngr.ui.action.ActionEditLocations;
 import lmzr.photomngr.ui.action.ActionEditSubjects;
 import lmzr.photomngr.ui.action.ActionExportLocations;
@@ -96,6 +97,9 @@ public class PhotoDisplayer extends JFrame
 		final ActionSave actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_photoList);
 		final JMenuItem itemSave = new JMenuItem(actionSave);
 		menuFile.add(itemSave);
+		final ActionDisplayGPSDatabase actionDisplayGPSDatabase = new ActionDisplayGPSDatabase("Display GPS database", KeyEvent.VK_UNDEFINED, null,"Display GPS database",a_GPSDatabase);
+		final JMenuItem itemDisplayGPSDatabase = new JMenuItem(actionDisplayGPSDatabase);
+		menuFile.add(itemDisplayGPSDatabase);
 		final ActionExportSubjects actionExportSubjects = new ActionExportSubjects("Export subjects", KeyEvent.CHAR_UNDEFINED, null,"Export the list of subjects",this,a_photoList);
 		final JMenuItem itemExportSubjects = new JMenuItem(actionExportSubjects);
 		menuFile.add(itemExportSubjects);
