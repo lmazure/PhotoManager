@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,7 +32,6 @@ import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
-import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
@@ -50,7 +48,6 @@ import lmzr.photomngr.ui.player.Player;
 import lmzr.photomngr.ui.player.Player_QuickTime;
 import lmzr.photomngr.ui.player.Player_VideoLAN;
 import lmzr.photomngr.ui.player.Player_WindowsMediaPlayer;
-import lmzr.util.string.HierarchicalCompoundString;
 
 /**
  * @author Laurent Mazuré

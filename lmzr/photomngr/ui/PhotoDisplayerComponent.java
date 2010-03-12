@@ -25,6 +25,7 @@ import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.imagecomputation.ImageComputationManager;
 import lmzr.photomngr.imagecomputation.ImageComputationParameters;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
+import lmzr.photomngr.scheduler.Scheduler;
 
 /**
  * @author Laurent
@@ -39,13 +40,16 @@ public class PhotoDisplayerComponent extends JComponent
     private PhotoDisplayerComponentSlot[] a_slots;
     private int[] a_photoIndex;
     private int a_startX, a_startY;
+    final private Scheduler a_scheduler;
     
     /**
+     * @param executor
      * @param photoList
      * @param subsampler
      * @param selection
      */
-    public PhotoDisplayerComponent(final PhotoList photoList,
+    public PhotoDisplayerComponent(final Scheduler scheduler,
+                                   final PhotoList photoList,
     							   final SubsampledImageCachedManager subsampler,
                                    final ListSelectionManager selection) {
         super();
@@ -59,11 +63,12 @@ public class PhotoDisplayerComponent extends JComponent
         a_photoList.addTableModelListener(this);
         setLayout(new GridLayout(1,1));
         a_slots = new PhotoDisplayerComponentSlot[1];
-        a_slots[0] = new PhotoDisplayerComponentSlot(a_subsampler);
+        a_slots[0] = new PhotoDisplayerComponentSlot(scheduler,a_subsampler);
         a_slots[0].setName("initial slot");
         add(a_slots[0]);
         a_photoIndex = new int[1];
         a_photoIndex[0] = -1;
+        a_scheduler = scheduler;
     }
     
     /**
@@ -159,7 +164,7 @@ public class PhotoDisplayerComponent extends JComponent
         if ( n > a_slots.length ) {
             final PhotoDisplayerComponentSlot slots[] = new PhotoDisplayerComponentSlot[n];
             for (int i =0; i<a_slots.length; i++) slots[i]=a_slots[i];
-            for (int i=a_slots.length; i<n; i++) slots[i]=new PhotoDisplayerComponentSlot(a_subsampler);
+            for (int i=a_slots.length; i<n; i++) slots[i]=new PhotoDisplayerComponentSlot(a_scheduler,a_subsampler);
             a_slots = slots;
             a_photoIndex = new int[n];
         } else if ( n < a_slots.length ) {

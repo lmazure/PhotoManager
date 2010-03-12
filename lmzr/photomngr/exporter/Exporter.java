@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 
 import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.data.filter.FilteredPhotoList;
 
 /**
  * @author Laurent

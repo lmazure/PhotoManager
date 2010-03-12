@@ -4,14 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
@@ -19,20 +17,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import lmzr.photomngr.data.ListSelectionManager;
-import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.data.PhotoListMetaDataEvent;
-import lmzr.photomngr.data.PhotoListMetaDataListener;
 import lmzr.photomngr.data.SaveEvent;
 import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.ui.action.ActionCopy;
 import lmzr.photomngr.ui.action.ActionCopyFromNext;
 import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
 import lmzr.photomngr.ui.action.ActionPaste;
-import lmzr.photomngr.ui.action.ActionQuit;
 import lmzr.photomngr.ui.action.ActionRenameFolder;
 import lmzr.photomngr.ui.action.ActionSave;
-import lmzr.photomngr.ui.action.PhotoManagerAction;
 
 
 /**

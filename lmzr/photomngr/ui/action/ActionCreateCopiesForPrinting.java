@@ -8,7 +8,6 @@ import javax.swing.KeyStroke;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.exporter.Exporter;
-import lmzr.photomngr.ui.PhotoDisplayer;
 
 /**
  * Action to create exportable copies

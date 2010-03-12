@@ -53,6 +53,7 @@ import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
+import lmzr.photomngr.scheduler.Scheduler;
 
 /**
  * @author Laurent Mazuré
@@ -84,7 +85,9 @@ public class Main implements WindowListener {
         final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,a_filteredList);
         final ListSelectionManager selection = new ListSelectionManager(a_filteredList,a_listDisplay.getLineSelectionListModel());
         
-        a_displayer = new PhotoDisplayer(a_filteredList, a_GPSDatabase, new SubsampledImageCachedManager(cache), selection);
+        final Scheduler scheduler = new Scheduler();
+
+        a_displayer = new PhotoDisplayer(scheduler, a_filteredList, a_GPSDatabase, new SubsampledImageCachedManager(cache), selection);
         
         final int i = a_list.getRowCount()-1;
         a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);

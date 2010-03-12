@@ -3,8 +3,6 @@ package lmzr.photomngr.imagecomputation;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 //import javax.swing.SwingUtilities;
@@ -12,6 +10,7 @@ import java.util.concurrent.Future;
 import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoHeaderData;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager.SubsampledImage;
+import lmzr.photomngr.scheduler.Scheduler;
 
 /**
  *
@@ -20,7 +19,7 @@ public class ImageComputationManager {
 
     final private ImageComputationCache a_cache;
     final private SubsampledImageCachedManager a_subsampler;
-    final private ExecutorService a_executor;
+    final private Scheduler a_scheduler;
 
     /**
      * @param photo
@@ -157,12 +156,14 @@ public class ImageComputationManager {
     }
     
     /**
+     * @param executor
      * @param subsampler
      */
-    public ImageComputationManager(final SubsampledImageCachedManager subsampler) {
+    public ImageComputationManager(final Scheduler scheduler,
+    		                       final SubsampledImageCachedManager subsampler) {
         a_cache = new ImageComputationCache();
         a_subsampler = subsampler;
-        a_executor = Executors.newFixedThreadPool(8);
+        a_scheduler = scheduler;
     }
     
     /**
@@ -183,7 +184,7 @@ public class ImageComputationManager {
             return null;
         }
 		// the image to compute is not in the cache
-		return a_executor.submit(new Computer(photo,params,consumer));
+		return a_scheduler.submit(new Computer(photo,params,consumer));
     }
     
 }

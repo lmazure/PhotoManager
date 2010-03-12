@@ -37,6 +37,7 @@ import lmzr.photomngr.imagecomputation.ImageComputationConsumer;
 import lmzr.photomngr.imagecomputation.ImageComputationManager;
 import lmzr.photomngr.imagecomputation.ImageComputationParameters;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
+import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.photomngr.ui.player.Player_myself;
 
 /**
@@ -58,14 +59,16 @@ public class PhotoDisplayerComponentSlot extends JComponent
 	private Component a_visual, a_controlPanel;
 
     /**
+     * @param executor
      * @param subsampler
      */
-    public PhotoDisplayerComponentSlot(final SubsampledImageCachedManager subsampler) {
+    public PhotoDisplayerComponentSlot(final Scheduler scheduler,
+                                       final SubsampledImageCachedManager subsampler) {
         super();
         
         // initialize the ImageComputationManager if this has not already been done
         if ( a_computationManager == null ) {
-        	a_computationManager = new ImageComputationManager(subsampler);
+        	a_computationManager = new ImageComputationManager(scheduler,subsampler);
         }
 		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
         addComponentListener(this);

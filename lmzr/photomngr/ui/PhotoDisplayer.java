@@ -24,6 +24,7 @@ import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
+import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.photomngr.ui.action.ActionChangeOriginality;
 import lmzr.photomngr.ui.action.ActionChangePrivacy;
 import lmzr.photomngr.ui.action.ActionChangeQuality;
@@ -56,13 +57,15 @@ public class PhotoDisplayer extends JFrame
 	final ActionQuit a_actionQuit;
 
     /**
+     * @param executor
      * @param photoList
      * @param GPSDatabase
-     * @param subsampler SubsampledImageCachedManager used to manage cached images
+     * @param subsampler
      * @param selection
      * @throws HeadlessException
      */
-    public PhotoDisplayer(final FilteredPhotoList photoList,
+    public PhotoDisplayer(final Scheduler scheduler,
+    		              final FilteredPhotoList photoList,
     		              final GPSDatabase GPSDatabase,
     		              final SubsampledImageCachedManager subsampler,
                           final ListSelectionManager selection) throws HeadlessException {
@@ -76,7 +79,7 @@ public class PhotoDisplayer extends JFrame
         
         saveChanged(new SaveEvent(photoList,photoList.isSaved()));
         
-    	final PhotoDisplayerComponent displayer = new PhotoDisplayerComponent(photoList, subsampler, selection);
+    	final PhotoDisplayerComponent displayer = new PhotoDisplayerComponent(scheduler, photoList, subsampler, selection);
         getContentPane().add(displayer,BorderLayout.CENTER);
     	final PhotoEditorComponent editor = new PhotoEditorComponent(photoList, a_GPSDatabase, selection);
         getContentPane().add(editor,BorderLayout.EAST);
