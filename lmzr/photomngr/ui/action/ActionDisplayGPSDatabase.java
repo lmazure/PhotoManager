@@ -9,6 +9,10 @@ import javax.swing.WindowConstants;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.ui.GPSDataDisplay;
 
+/**
+ * @author Laurent
+ *
+ */
 public class ActionDisplayGPSDatabase extends PhotoManagerAction {
 
 	private final GPSDatabase a_GPSDatabase;
@@ -18,7 +22,7 @@ public class ActionDisplayGPSDatabase extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
-	 * @param list 
+	 * @param GPSDatabase 
 	 */
 	public ActionDisplayGPSDatabase(final String text,
  	                                final int mnemonic,

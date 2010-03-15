@@ -26,6 +26,9 @@ public class ActionEditLocations extends PhotoManagerAction
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param frame 
+	 * @param photoList 
+	 * @param GPSDatabase 
 	 */
 	public ActionEditLocations(final String text,
 			final int mnemonic,

@@ -18,6 +18,7 @@ public class ActionDisplayEditor extends PhotoManagerAction {
 		 * @param mnemonic
 		 * @param accelerator
 		 * @param tooltipText
+		 * @param editor 
 		 */
 		public ActionDisplayEditor(final String text,
                           final int mnemonic,

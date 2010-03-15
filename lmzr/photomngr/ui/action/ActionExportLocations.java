@@ -19,6 +19,8 @@ public class ActionExportLocations extends ActionExport {
 		 * @param mnemonic
 		 * @param accelerator
 		 * @param tooltipText
+		 * @param frame 
+		 * @param photoList 
 		 */
 		public ActionExportLocations(final String text,
                                     final int mnemonic,

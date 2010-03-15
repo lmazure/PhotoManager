@@ -57,7 +57,7 @@ public class PhotoDisplayer extends JFrame
 	final ActionQuit a_actionQuit;
 
     /**
-     * @param executor
+     * @param scheduler 
      * @param photoList
      * @param GPSDatabase
      * @param subsampler

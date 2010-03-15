@@ -19,12 +19,13 @@ public class ActionFullScreen extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param photoDisplayer 
 	 */
 	public ActionFullScreen(final String text,
-			final int mnemonic,
-			final KeyStroke accelerator,
-			final String tooltipText,
-			final PhotoDisplayer photoDisplayer) {
+		         	        final int mnemonic,
+		         	        final KeyStroke accelerator,
+		         	        final String tooltipText,
+		         	        final PhotoDisplayer photoDisplayer) {
 		super(text, mnemonic, accelerator, tooltipText);
 		a_photoDisplayer = photoDisplayer;
 	}

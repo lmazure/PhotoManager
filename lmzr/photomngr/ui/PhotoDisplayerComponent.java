@@ -43,7 +43,7 @@ public class PhotoDisplayerComponent extends JComponent
     final private Scheduler a_scheduler;
     
     /**
-     * @param executor
+     * @param scheduler 
      * @param photoList
      * @param subsampler
      * @param selection

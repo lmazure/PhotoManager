@@ -22,13 +22,15 @@ public class ActionCreateCopiesForPrinting extends PhotoManagerAction {
 		 * @param mnemonic
 		 * @param accelerator
 		 * @param tooltipText
+		 * @param frame 
+		 * @param photoList 
 		 */
 		public ActionCreateCopiesForPrinting(final String text,
 		                                     final int mnemonic,
 		                                     final KeyStroke accelerator,
 		                                     final String tooltipText,
 		                                     final JFrame frame,
-					                			final  FilteredPhotoList photoList) {
+					                	     final  FilteredPhotoList photoList) {
 	        super(text, mnemonic, accelerator, tooltipText);
 	        a_frame = frame;
 	        a_photoList = photoList;

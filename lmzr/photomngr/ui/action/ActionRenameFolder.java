@@ -25,14 +25,17 @@ public class ActionRenameFolder extends PhotoManagerAction {
 		 * @param mnemonic
 		 * @param accelerator
 		 * @param tooltipText
+		 * @param photoListDisplay 
+		 * @param photoList 
+		 * @param selection 
 		 */
 		public ActionRenameFolder(final String text,
                                   final int mnemonic,
                                   final KeyStroke accelerator,
-      		                    final String tooltipText,
-      		                    final PhotoListDisplay photoListDisplay,
-    	                        final PhotoList photoList,
-                             	final ListSelectionManager selection) {
+      		                      final String tooltipText,
+      		                      final PhotoListDisplay photoListDisplay,
+      		                      final PhotoList photoList,
+      		                      final ListSelectionManager selection) {
     	        super(text, mnemonic, accelerator, tooltipText);
     	        a_photoListDisplay = photoListDisplay;
     	        a_photoList = photoList;

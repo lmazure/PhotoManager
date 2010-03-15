@@ -23,6 +23,7 @@ public class ActionPaste extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param table 
 	 */
 	public ActionPaste(final String text,
                        final int mnemonic,

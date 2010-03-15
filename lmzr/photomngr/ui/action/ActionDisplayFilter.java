@@ -23,6 +23,9 @@ public class ActionDisplayFilter extends PhotoManagerAction {
 		 * @param mnemonic
 		 * @param accelerator
 		 * @param tooltipText
+		 * @param photoDisplayer 
+		 * @param photoList 
+		 * @param selection 
 		 */
 		public ActionDisplayFilter(final String text,
                             final int mnemonic,

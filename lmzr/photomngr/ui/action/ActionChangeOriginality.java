@@ -12,10 +12,12 @@ public class ActionChangeOriginality extends ActionChangeTrait {
 
 	/**
 	 * @param value
+	 * @param photoList 
+	 * @param selection 
 	 */
 	public ActionChangeOriginality(final PhotoOriginality value,
-            final FilteredPhotoList photoList,
- 			final ListSelectionManager selection) {
+                                   final FilteredPhotoList photoList,
+ 			                       final ListSelectionManager selection) {
         super(value,"originality",PhotoList.PARAM_ORIGINALITY,photoList,selection);
 	}	
 

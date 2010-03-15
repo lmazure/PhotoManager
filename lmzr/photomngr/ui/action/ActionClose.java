@@ -17,7 +17,7 @@ public class ActionClose extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
-	 * @param list 
+	 * @param frame 
 	 */
 	public ActionClose(final String text,
  	                   final int mnemonic,

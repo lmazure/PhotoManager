@@ -18,12 +18,13 @@ public class ActionNextPhoto extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param selection 
 	 */
 	public ActionNextPhoto(final String text,
-			final int mnemonic,
-			final KeyStroke accelerator,
-			final String tooltipText,
-			final ListSelectionManager selection) {
+			               final int mnemonic,
+			               final KeyStroke accelerator,
+			               final String tooltipText,
+			               final ListSelectionManager selection) {
 		super(text, mnemonic, accelerator, tooltipText);
 		a_selection = selection;
 	}

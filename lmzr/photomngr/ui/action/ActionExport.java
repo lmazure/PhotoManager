@@ -25,12 +25,13 @@ public abstract class ActionExport extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param frame 
 	 */
 	public ActionExport(final String text,
-			final int mnemonic,
-			final KeyStroke accelerator,
-			final String tooltipText,
-			final JFrame frame) {
+			            final int mnemonic,
+			            final KeyStroke accelerator,
+			            final String tooltipText,
+			            final JFrame frame) {
 		super(text, mnemonic, accelerator, tooltipText);
 		a_frame = frame;
 	}

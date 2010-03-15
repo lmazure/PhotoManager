@@ -18,6 +18,7 @@ public class ActionCopyFromNext extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param table 
 	 */
 	public ActionCopyFromNext(final String text,
                               final int mnemonic,

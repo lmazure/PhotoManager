@@ -1,0 +1,1 @@
+java -Xmx450M -cp ".;..\utilities;..\exif;..\..\Mes documents\lib\XSwing 1.6\lib\swingx-1.6.jar;C:\Program Files\JMF2.1.1e\lib\jmf.jar" lmzr.photomngr.ui.Main "I:/images/classified" "I:/cache" &

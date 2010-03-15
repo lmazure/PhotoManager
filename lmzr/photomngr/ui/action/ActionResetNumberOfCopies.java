@@ -19,6 +19,7 @@ public class ActionResetNumberOfCopies extends PhotoManagerAction {
 		 * @param mnemonic
 		 * @param accelerator
 		 * @param tooltipText
+		 * @param photoList 
 		 */
 		public ActionResetNumberOfCopies(final String text,
 				                         final int mnemonic,

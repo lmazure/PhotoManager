@@ -6,6 +6,10 @@ import lmzr.photomngr.ui.cellrenderer.GPSDataCellRenderer;
 
 import org.jdesktop.swingx.JXTreeTable;
 
+/**
+ * @author Laurent
+ *
+ */
 public class GPSTreeTable extends JXTreeTable {
 
 	GPSTreeTable(final GPSDatabase database) {

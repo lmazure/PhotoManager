@@ -11,6 +11,10 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.photomngr.ui.mapdisplayer.GoogleMapDisplayer;
 import lmzr.util.string.HierarchicalCompoundString;
 
+/**
+ * @author Laurent
+ *
+ */
 public class ActionLaunchGoogleMaps extends PhotoManagerAction {
 
 	final private GPSDatabase a_GPSDatabase;
@@ -22,6 +26,9 @@ public class ActionLaunchGoogleMaps extends PhotoManagerAction {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param GPSDatabase 
+	 * @param photoList 
+	 * @param selection 
 	 */
 	public ActionLaunchGoogleMaps(final String text,
 			                      final int mnemonic,

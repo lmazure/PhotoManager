@@ -59,7 +59,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
 	private Component a_visual, a_controlPanel;
 
     /**
-     * @param executor
+     * @param scheduler 
      * @param subsampler
      */
     public PhotoDisplayerComponentSlot(final Scheduler scheduler,

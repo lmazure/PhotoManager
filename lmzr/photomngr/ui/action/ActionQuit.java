@@ -22,6 +22,7 @@ public class ActionQuit extends PhotoManagerAction {
 	 * @param accelerator
 	 * @param tooltipText
 	 * @param list 
+	 * @param GPSDatabase 
 	 */
 	public ActionQuit(final String text,
 	                  final int mnemonic,

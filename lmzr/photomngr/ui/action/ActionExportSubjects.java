@@ -19,6 +19,8 @@ public class ActionExportSubjects extends ActionExport {
 		 * @param mnemonic
 		 * @param accelerator
 		 * @param tooltipText
+		 * @param frame 
+		 * @param photoList 
 		 */
 		public ActionExportSubjects(final String text,
                                     final int mnemonic,

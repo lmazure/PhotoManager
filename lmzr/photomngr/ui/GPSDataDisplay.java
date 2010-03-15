@@ -23,6 +23,10 @@ import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
 import lmzr.photomngr.ui.action.ActionPaste;
 import lmzr.photomngr.ui.action.ActionSave;
 
+/**
+ * @author Laurent
+ *
+ */
 public class GPSDataDisplay extends JFrame
                             implements SaveListener {
 	
@@ -30,6 +34,9 @@ public class GPSDataDisplay extends JFrame
 	final private JMenuBar a_menubar;
 	final private GPSDatabase a_GPSdatabase;
 	
+	/**
+	 * @param GPSDatabase
+	 */
 	public GPSDataDisplay(final GPSDatabase GPSDatabase) {
 		
 		super();
@@ -83,6 +90,9 @@ public class GPSDataDisplay extends JFrame
 		saveChanged(new SaveEvent(a_GPSdatabase, a_GPSdatabase.isSaved()));
 	}
 
+	/**
+	 * @see java.awt.Window#dispose()
+	 */
 	@Override
 	public void dispose() {
 		System.out.println("closed");
@@ -90,6 +100,9 @@ public class GPSDataDisplay extends JFrame
 		super.dispose();
 	}
 	
+	/**
+	 * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
+	 */
 	@Override
 	public void saveChanged(final SaveEvent e) {
         setTitle("GPS data - [GPS data is " + (e.isSaved() ? "saved]" : "modified]") );

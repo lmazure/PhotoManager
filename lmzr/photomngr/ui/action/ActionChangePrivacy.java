@@ -12,10 +12,12 @@ public class ActionChangePrivacy extends ActionChangeTrait {
 
 	/**
 	 * @param value
+	 * @param photoList 
+	 * @param selection 
 	 */
 	public ActionChangePrivacy(final PhotoPrivacy value,
-            final FilteredPhotoList photoList,
- 			final ListSelectionManager selection) {
+                               final FilteredPhotoList photoList,
+ 			                   final ListSelectionManager selection) {
         super(value,"privacy",PhotoList.PARAM_PRIVACY,photoList,selection);
 	}	
 

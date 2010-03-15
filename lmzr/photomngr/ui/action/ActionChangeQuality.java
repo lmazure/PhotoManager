@@ -12,10 +12,12 @@ public class ActionChangeQuality extends ActionChangeTrait {
 
 	/**
 	 * @param value
+	 * @param photoList 
+	 * @param selection 
 	 */
 	public ActionChangeQuality(final PhotoQuality value,
-            final FilteredPhotoList photoList,
- 			final ListSelectionManager selection) {
+                               final FilteredPhotoList photoList,
+ 			                   final ListSelectionManager selection) {
         super(value,"quality",PhotoList.PARAM_QUALITY,photoList,selection);
 	}	
 

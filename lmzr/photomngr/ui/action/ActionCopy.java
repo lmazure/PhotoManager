@@ -23,6 +23,7 @@ public class ActionCopy extends PhotoManagerAction implements ClipboardOwner {
 	 * @param mnemonic
 	 * @param accelerator
 	 * @param tooltipText
+	 * @param table 
 	 */
 	public ActionCopy(final String text,
                       final int mnemonic,

@@ -20,12 +20,14 @@ public class ActionChangeTrait extends PhotoManagerAction {
 	 * @param value
 	 * @param name
 	 * @param indexInPhotoList
+	 * @param photoList 
+	 * @param selection 
 	 */
 	public ActionChangeTrait(final PhotoTrait value,
 			                 final String name,
 			                 final int indexInPhotoList,
 			                 final FilteredPhotoList photoList,
-			     			final ListSelectionManager selection) {
+		 	     			 final ListSelectionManager selection) {
 		super(value.toString(), 0, null, "set " + name + " to " + value.toString());
 		a_value = value;
 		a_indexInPhotoList = indexInPhotoList;
