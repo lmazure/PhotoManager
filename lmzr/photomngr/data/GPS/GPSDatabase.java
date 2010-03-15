@@ -48,6 +48,10 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 * 
 	 */
 	static final public int PARAM_LONGITUDE_MAX = 4;
+	/**
+	 * 
+	 */
+	static final public int PARAM_GPS_DATA = 5;
 
 	final private HierarchicalCompoundStringFactory a_locationFactory;
     final private HashMap<HierarchicalCompoundString,GPSData> a_data;
@@ -158,6 +162,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			return String.class;
 		case PARAM_LONGITUDE_MAX:
 			return String.class;
+		case PARAM_GPS_DATA:
+			return GPSRecord.class;
 		}
 		
 		return null;
@@ -168,7 +174,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 */
 	@Override
 	public int getColumnCount() {
-		return PARAM_LONGITUDE_MAX + 1;
+		return PARAM_GPS_DATA + 1;
 	}
 
 	/**
@@ -180,13 +186,15 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		case PARAM_LOCATION:
 			return "location";
 		case PARAM_LATITUDE_MIN:
-		return "min. latitude";
+		    return "min. latitude";
 		case PARAM_LATITUDE_MAX:
-		return "max. latitude";
+		    return "max. latitude";
 		case PARAM_LONGITUDE_MIN:
-		return "min. longitude";
+		    return "min. longitude";
 		case PARAM_LONGITUDE_MAX:
-		return "max. longitude";
+		    return "max. longitude";
+		case PARAM_GPS_DATA:
+		    return "map";
 		}
 		
 		return null;
@@ -225,6 +233,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		case PARAM_LONGITUDE_MAX:
 			if (data==null) return "";
 			return data.getLongitudeMax();
+		case PARAM_GPS_DATA:
+			return new GPSRecord(location,data);
 		}
 		
 		return null;
@@ -247,6 +257,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			return true;
 		case PARAM_LONGITUDE_MAX:
 			return true;
+		case PARAM_GPS_DATA:
+			return true; // necessary because the column contains buttons and clicks are handled by the CellEditor
 		}
 		
 		return false;
@@ -286,6 +298,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			case PARAM_LONGITUDE_MAX:
 				if ( str.equals(data.getLongitudeMax())) return;
 				data.setLongitudeMax(str);
+				break;
+			case PARAM_GPS_DATA:
 				break;
 			}
 			a_data.put(location, data);

@@ -2,15 +2,12 @@ package lmzr.photomngr.ui.cellrenderer;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Vector;
 
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -19,14 +16,11 @@ import javax.swing.table.TableCellRenderer;
 public class SubjectCellRenderer extends JTextArea
                                  implements TableCellRenderer {
 
-    final private Vector<CellEditorListener> a_listenerList;
-
     /**
      * 
      */
     public SubjectCellRenderer() {
         super();
-        a_listenerList = new Vector<CellEditorListener>();
     }
     
     /**
@@ -76,20 +70,4 @@ public class SubjectCellRenderer extends JTextArea
         }
         return this;
     }
-
-    /**
-     * 
-     */
-    protected void fireEditingStopped() {
-        final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingStopped(e);
-    } 
-
-    /**
-     * 
-     */
-    protected void fireEditingCanceled() {
-        final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingCanceled(e);
-    }    
 }

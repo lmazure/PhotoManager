@@ -130,7 +130,6 @@ public class ImageComputationManager {
          */
         public void run() {
             try {
-            	System.out.println("run photo="+a_photo.getFullPath());
             	final SubsampledImage image = a_subsampler.getImage(a_photo, a_params, 1.0);
 	            if ( image.getImage() == null ) {
 	                a_consumer.consumeImageComputation(a_photo,a_params,null);
