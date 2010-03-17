@@ -17,6 +17,9 @@ public class GPSDataDeleteCellRenderer extends JButton
 
 
 
+    /**
+     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
+     */
     @Override
     public Component getTableCellRendererComponent(@SuppressWarnings("unused") final JTable table,
                                                    final Object value,

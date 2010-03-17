@@ -8,6 +8,9 @@ import java.util.EventObject;
  */
 public class PhotoListMetaDataEvent extends EventObject {
 
+    /**
+     * 
+     */
     static final public int FILTER_HAS_CHANGED = 1;
 
     final private int a_change;

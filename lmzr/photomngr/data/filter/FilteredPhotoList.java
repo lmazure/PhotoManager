@@ -165,11 +165,17 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         a_listOfMetaDataListeners.remove(l);
     }
 
+	/**
+	 * @see lmzr.photomngr.data.PhotoList#addSaveListener(lmzr.photomngr.data.SaveListener)
+	 */
 	@Override
 	public void addSaveListener(final SaveListener l) {
 		a_listOfSaveListeners.add(l);
 	}
 
+	/**
+	 * @see lmzr.photomngr.data.PhotoList#removeSaveListener(lmzr.photomngr.data.SaveListener)
+	 */
 	@Override
 	public void removeSaveListener(final SaveListener l) {
 		a_listOfSaveListeners.remove(l);

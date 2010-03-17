@@ -21,7 +21,8 @@ public class DateCellRenderer extends DefaultTableCellRenderer {
     /**
      * @see javax.swing.table.DefaultTableCellRenderer#setValue(java.lang.Object)
      */
-    public void setValue(final Object value) {
+    @Override
+	public void setValue(final Object value) {
         Date date = (Date)value;
         if (date!=null) {
             super.setValue(format.format(date));

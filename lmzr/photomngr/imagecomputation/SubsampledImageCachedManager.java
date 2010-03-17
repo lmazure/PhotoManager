@@ -34,7 +34,7 @@ public class SubsampledImageCachedManager {
 		
 		/**
 		 * @param image
-		 * @param zoom
+		 * @param subsampling
 		 */
 		private SubsampledImage(final BufferedImage image,
 								final double subsampling) {
@@ -43,14 +43,14 @@ public class SubsampledImageCachedManager {
 		}
 		
 		/**
-		 * @return
+		 * @return subsampling
 		 */
 		public double getSubsampling() {
 			return a_subsampling;
 		}
 		
 		/**
-		 * @return
+		 * @return image
 		 */
 		public BufferedImage getImage() {
 			return a_image;
@@ -73,7 +73,7 @@ public class SubsampledImageCachedManager {
 	 * @param photo
 	 * @param params
 	 * @param subsamplingFactor
-	 * @return
+	 * @return subsampled image
 	 */
 	public SubsampledImage getImage(final Photo photo,
 								    final ImageComputationParameters params,
