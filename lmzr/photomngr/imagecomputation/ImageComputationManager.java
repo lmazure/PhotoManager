@@ -155,7 +155,7 @@ public class ImageComputationManager {
     }
     
     /**
-     * @param executor
+     * @param scheduler
      * @param subsampler
      */
     public ImageComputationManager(final Scheduler scheduler,
@@ -185,6 +185,7 @@ public class ImageComputationManager {
 		// the image to compute is not in the cache
 		return a_scheduler.submit("compute image "+photo.getFilename()+" for display",
 				                  Scheduler.Category.CATEGORY_NOW,
+                                  Scheduler.Priority.PRIORITY_VERY_HIGH,
 				                  1.0,
 				                  new Computer(photo,params,consumer));
     }

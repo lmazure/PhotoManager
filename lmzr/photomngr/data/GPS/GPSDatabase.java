@@ -51,7 +51,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	/**
 	 * 
 	 */
-	static final public int PARAM_GPS_DATA = 5;
+	static final public int PARAM_GPS_DATA_FOR_MAPPING = 5;
+    /**
+     * 
+     */
+    static final public int PARAM_GPS_DATA_FOR_DELETING = 6;
 
 	final private HierarchicalCompoundStringFactory a_locationFactory;
     final private HashMap<HierarchicalCompoundString,GPSData> a_data;
@@ -162,7 +166,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			return String.class;
 		case PARAM_LONGITUDE_MAX:
 			return String.class;
-		case PARAM_GPS_DATA:
+		case PARAM_GPS_DATA_FOR_MAPPING:
+        case PARAM_GPS_DATA_FOR_DELETING:
 			return GPSRecord.class;
 		}
 		
@@ -174,7 +179,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 */
 	@Override
 	public int getColumnCount() {
-		return PARAM_GPS_DATA + 1;
+		return PARAM_GPS_DATA_FOR_DELETING + 1;
 	}
 
 	/**
@@ -193,8 +198,10 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		    return "min. longitude";
 		case PARAM_LONGITUDE_MAX:
 		    return "max. longitude";
-		case PARAM_GPS_DATA:
+		case PARAM_GPS_DATA_FOR_MAPPING:
 		    return "map";
+        case PARAM_GPS_DATA_FOR_DELETING:
+            return "delete";
 		}
 		
 		return null;
@@ -233,7 +240,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		case PARAM_LONGITUDE_MAX:
 			if (data==null) return "";
 			return data.getLongitudeMax();
-		case PARAM_GPS_DATA:
+		case PARAM_GPS_DATA_FOR_MAPPING:
+        case PARAM_GPS_DATA_FOR_DELETING:
 			return new GPSRecord(location,data);
 		}
 		
@@ -257,7 +265,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			return true;
 		case PARAM_LONGITUDE_MAX:
 			return true;
-		case PARAM_GPS_DATA:
+		case PARAM_GPS_DATA_FOR_MAPPING:
+        case PARAM_GPS_DATA_FOR_DELETING:
 			return true; // necessary because the column contains buttons and clicks are handled by the CellEditor
 		}
 		
@@ -284,25 +293,46 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			case PARAM_LOCATION:
 				break;
 			case PARAM_LATITUDE_MIN:
-				if ( str.equals(data.getLatitudeMin())) return;
+			    if ( value == null ) {
+			        if ( data.getLatitudeMin() == null ) return;
+			    } else {
+				    if ( str.equals(data.getLatitudeMin())) return;
+			    }
 				data.setLatitudeMin(str);
 				break;
 			case PARAM_LATITUDE_MAX:
-				if ( str.equals(data.getLatitudeMax())) return;
+                if ( value == null ) {
+                    if ( data.getLatitudeMax() == null ) return;
+                } else {
+                    if ( str.equals(data.getLatitudeMax())) return;
+                }
 				data.setLatitudeMax(str);
 				break;
 			case PARAM_LONGITUDE_MIN:
-				if ( str.equals(data.getLongitudeMin())) return;
+                if ( value == null ) {
+                    if ( data.getLongitudeMin() == null ) return;
+                } else {
+                    if ( str.equals(data.getLongitudeMin())) return;
+                }
 				data.setLongitudeMin(str);
 				break;
 			case PARAM_LONGITUDE_MAX:
-				if ( str.equals(data.getLongitudeMax())) return;
+                if ( value == null ) {
+                    if ( data.getLongitudeMax() == null ) return;
+                } else {
+                    if ( str.equals(data.getLongitudeMax())) return;
+                }
 				data.setLongitudeMax(str);
 				break;
-			case PARAM_GPS_DATA:
+			case PARAM_GPS_DATA_FOR_MAPPING:
+	        case PARAM_GPS_DATA_FOR_DELETING:
 				break;
 			}
-			a_data.put(location, data);
+			if ( data.isEmpty() ) {
+			    a_data.remove(location);
+			} else {
+	            a_data.put(location, data);			    
+			}
 			setAsUnsaved();
 			a_support.fireChildChanged(HierarchicalCompoundStringFactory.getPath(location.getParent()),
 					                   a_locationFactory.getIndexOfChild(location.getParent(),location),

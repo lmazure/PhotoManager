@@ -33,12 +33,16 @@ public class GPSData implements Cloneable {
 		setLongitudeMax(longitudeMax);
 	}
 
-	public GPSData clone() {
+	/**
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+    public GPSData clone() {
 		return new GPSData(getLatitudeMin(),getLongitudeMin(),getLatitudeMax(),getLongitudeMax());
 	}
 	
 	/**
-	 * @return true if the GPS coordinates are correct, false otherwise
+	 * @return true if the GPS coordinates are fully defined, false otherwise
 	 */
 	public boolean isComplete() {
 		if (Double.isNaN(a_latitudeMin)) return false;
@@ -47,7 +51,18 @@ public class GPSData implements Cloneable {
 		if (Double.isNaN(a_longitudeMax)) return false;
 		return true;
 	}
-	
+
+	/**
+     * @return true if at least no GPS coordinates is defined, false otherwise
+     */
+    public boolean isEmpty() {
+        if (!Double.isNaN(a_latitudeMin)) return false;
+        if (!Double.isNaN(a_latitudeMax)) return false;      
+        if (!Double.isNaN(a_longitudeMin)) return false;
+        if (!Double.isNaN(a_longitudeMax)) return false;
+        return true;
+    }
+
 	/**
 	 * Set the minimum longitude
 	 * The string can be null, this means that the minimum longitude is undefined
@@ -80,7 +95,7 @@ public class GPSData implements Cloneable {
 	 * Set the minimum latitude
 	 * The string can be null, this means that the minimum latitude is undefined
 	 * 
-	 * @param laditudeMin
+	 * @param latitudeMin
 	 */
 	public void setLatitudeMin(final String latitudeMin) {
 		if ( latitudeMin != null ) {
@@ -94,7 +109,7 @@ public class GPSData implements Cloneable {
 	 * Set the maximum latitude
 	 * The string can be null, this means that the maximum latitude is undefined
 	 * 
-	 * @param lagitudeMax
+	 * @param latitudeMax
 	 */
 	public void setLatitudeMax(final String latitudeMax) {
 		if ( latitudeMax != null ) {

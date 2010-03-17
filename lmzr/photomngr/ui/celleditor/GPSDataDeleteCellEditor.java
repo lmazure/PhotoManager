@@ -9,36 +9,47 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
-import lmzr.photomngr.data.GPS.GPSData;
+import org.jdesktop.swingx.JXTreeTable;
+
+import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
-import lmzr.photomngr.ui.mapdisplayer.GoogleMapDisplayer;
 import lmzr.util.string.HierarchicalCompoundString;
 
-public class GPSDataCellEditor extends JButton implements TableCellEditor {
-	
-    public GPSDataCellEditor() {
-        super("Button");        
+/**
+ * @author lmazure
+ *
+ */
+public class GPSDataDeleteCellEditor extends JButton
+                                     implements TableCellEditor {
+    
+    /**
+     * 
+     */
+    public GPSDataDeleteCellEditor() {
+        super();        
     }
 
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
-    public Component getTableCellEditorComponent(@SuppressWarnings("unused") final JTable table,
-    		                                     final Object value,
+    public Component getTableCellEditorComponent(final JTable table,
+                                                 final Object value,
                                                  @SuppressWarnings("unused") final boolean isSelected, 
                                                  @SuppressWarnings("unused") final int row,
                                                  @SuppressWarnings("unused") final int column) {
-    	
-	    final GPSRecord record = (GPSRecord) value;
-	    final HierarchicalCompoundString location = record.getLocation();
-	    final GPSData GPSData = record.getGPSData();
+        
+        final JXTreeTable treeTable = (JXTreeTable) table;
+        final GPSDatabase database = (GPSDatabase) treeTable.getTreeTableModel();
+        final GPSRecord record = (GPSRecord) value;
+        final HierarchicalCompoundString location = record.getLocation();
 
-	    if ( GPSData != null) {
-			(new GoogleMapDisplayer()).displayMap(location, GPSData);	    	
-	    }
-	    
-	    setText("map " + record.getLocation().toShortString());
-	    setEnabled( ( record.getGPSData() != null) &&  record.getGPSData().isComplete() );
+        database.setValueAt(null, location, GPSDatabase.PARAM_LATITUDE_MIN);
+        database.setValueAt(null, location, GPSDatabase.PARAM_LATITUDE_MAX);
+        database.setValueAt(null, location, GPSDatabase.PARAM_LONGITUDE_MIN);
+        database.setValueAt(null, location, GPSDatabase.PARAM_LONGITUDE_MAX);
+        
+        setText("delete");
+        setEnabled(false);
 
         return this;
     }
