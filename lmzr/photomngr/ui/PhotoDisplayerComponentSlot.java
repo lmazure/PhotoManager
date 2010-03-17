@@ -401,6 +401,8 @@ public class PhotoDisplayerComponentSlot extends JComponent
     /**
      * Block until the processor has transitioned to the given state.
      * Return false if the transition failed.
+     * @param state
+     * @return
      */
     boolean waitForState(final int state) {
     	//System.out.println("Wait for state: " + getStateString(state));

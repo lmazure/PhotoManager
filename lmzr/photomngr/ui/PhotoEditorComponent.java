@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -38,7 +36,7 @@ import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
 import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
-import lmzr.photomngr.ui.action.PhotoManagerAction;
+import lmzr.photomngr.ui.action.ActionStartPlayer;
 import lmzr.photomngr.ui.celleditor.AuthorCellEditor;
 import lmzr.photomngr.ui.celleditor.CopiesCellEditor;
 import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
@@ -86,52 +84,6 @@ public class PhotoEditorComponent extends JPanel
     private boolean a_isAdjusting;
     int a_previousSelection[];
 
-	/**
-	 * Action to paste
-	 */
-	private class ActionStartPlayer extends PhotoManagerAction {
-	
-		final private Player a_player;
-		
-		/**
-		 * @param player
-		 * @param text
-		 * @param mnemonic
-		 * @param accelerator
-		 * @param tooltipText
-		 */
-		public ActionStartPlayer(final Player player,
-				                 final String text,
-				                 final int mnemonic,
-				                 final KeyStroke accelerator,
-				                 final String tooltipText) {
-			super(text, mnemonic, accelerator, tooltipText);
-			a_player = player;
-		}
-	
-	
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
-			
-        	try {
-            	final String[] commandLine = { a_player.getExecutable().getAbsolutePath(),
-            			                       a_photoList.getPhoto(a_selection.getSelection()[0]).getFullPath() };
-			    Runtime.getRuntime().exec(commandLine);
-    		} catch (final IOException e1) {
-    			// TODO Auto-generated catch block
-    			e1.printStackTrace();
-    		}
-		}
-		
-		/**
-		 * @return return the player launched by the action
-		 */
-		public Player getPlayer() {
-			return a_player;
-		}
-	}
 	
     /**
      * @param photoList
@@ -202,11 +154,13 @@ public class PhotoEditorComponent extends JPanel
         
         a_play = new JButton[a_players.length];
         for (int i=0; i<a_players.length; i++) {
-	        a_play[i] = new JButton(new ActionStartPlayer( a_players[i],
-	        		                                       a_players[i].getName(),
+	        a_play[i] = new JButton(new ActionStartPlayer( a_players[i].getName(),
 	        		                                       KeyEvent.CHAR_UNDEFINED,
 	        		                                       null,
-	        		                                       "start "+a_players[i].getName()));
+	        		                                       "start "+a_players[i].getName(),
+	        		                                       a_photoList,
+	        		                                       a_selection,
+	        		                                       a_players[i]));
 	        panel.add(a_play[i]);
 	        a_play[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }

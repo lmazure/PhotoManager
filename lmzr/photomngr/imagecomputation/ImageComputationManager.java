@@ -183,7 +183,10 @@ public class ImageComputationManager {
             return null;
         }
 		// the image to compute is not in the cache
-		return a_scheduler.submit(new Computer(photo,params,consumer));
+		return a_scheduler.submit("compute image "+photo.getFilename()+" for display",
+				                  Scheduler.Category.CATEGORY_NOW,
+				                  1.0,
+				                  new Computer(photo,params,consumer));
     }
     
 }
