@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
@@ -127,7 +128,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         
         for (int i=1; i<data.length; i++) {
         	final HierarchicalCompoundString l = locationFactory.create(data[i][0]);
-        	a_data.put(l,new GPSData(data[i][1],data[i][2],data[i][3],data[i][4]));
+        	final GPSData d = new GPSData( (data[i][1].length()==0) ? null : data[i][1],
+                                           (data[i][2].length()==0) ? null : data[i][2],
+                                           (data[i][3].length()==0) ? null : data[i][3],
+                                           (data[i][3].length()==0) ? null : data[i][4] );        	        
+        	a_data.put(l,d);
         }
         
         a_listOfSaveListeners = new Vector<SaveListener>();
@@ -287,13 +292,14 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			data = new GPSData(null,null,null,null);
 		}
 		
-		final String str = (String)value;
+		String str = (String)value;
 		try {
 			switch (columnIndex) {
 			case PARAM_LOCATION:
 				break;
 			case PARAM_LATITUDE_MIN:
-			    if ( value == null ) {
+			    if ( str.length() == 0 ) str = null;
+			    if ( str == null ) {
 			        if ( data.getLatitudeMin() == null ) return;
 			    } else {
 				    if ( str.equals(data.getLatitudeMin())) return;
@@ -301,7 +307,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 				data.setLatitudeMin(str);
 				break;
 			case PARAM_LATITUDE_MAX:
-                if ( value == null ) {
+                if ( str.length() == 0 ) str = null;
+                if ( str == null ) {
                     if ( data.getLatitudeMax() == null ) return;
                 } else {
                     if ( str.equals(data.getLatitudeMax())) return;
@@ -309,7 +316,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 				data.setLatitudeMax(str);
 				break;
 			case PARAM_LONGITUDE_MIN:
-                if ( value == null ) {
+                if ( str.length() == 0 ) str = null;
+                if ( str == null ) {
                     if ( data.getLongitudeMin() == null ) return;
                 } else {
                     if ( str.equals(data.getLongitudeMin())) return;
@@ -317,7 +325,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 				data.setLongitudeMin(str);
 				break;
 			case PARAM_LONGITUDE_MAX:
-                if ( value == null ) {
+                if ( str.length() == 0 ) str = null;
+                if ( str == null ) {
                     if ( data.getLongitudeMax() == null ) return;
                 } else {
                     if ( str.equals(data.getLongitudeMax())) return;
@@ -338,6 +347,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 					                   a_locationFactory.getIndexOfChild(location.getParent(),location),
 					                   location);
 		} catch (final IllegalArgumentException e) {
+	          JOptionPane.showMessageDialog(null,
+                      "Incorrect coordinate\n"+e.toString(),
+                      "Edit error",
+                      JOptionPane.ERROR_MESSAGE);
+
 		}
 	}
 
@@ -433,13 +447,13 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
             data[i][0] = location.toLongString();
             final GPSData gps = a_data.get(location);
             data[i][1] = gps.getLatitudeMin();
-            if ( data[i][1] == null ) data[i+1][1]="";
+            if ( data[i][1] == null ) data[i][1]="";
             data[i][2] = gps.getLongitudeMin();
-            if ( data[i][2] == null ) data[i+2][1]="";
+            if ( data[i][2] == null ) data[i][2]="";
             data[i][3] = gps.getLatitudeMax();
-            if ( data[i][3] == null ) data[i+3][1]="";
+            if ( data[i][3] == null ) data[i][3]="";
             data[i][4] = gps.getLongitudeMax();
-            if ( data[i][4] == null ) data[i+4][1]="";
+            if ( data[i][4] == null ) data[i][4]="";
             i++;
         }
         
