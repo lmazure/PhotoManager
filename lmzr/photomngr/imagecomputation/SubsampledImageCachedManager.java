@@ -29,8 +29,8 @@ public class SubsampledImageCachedManager {
 	 */
 	public class SubsampledImage {
 		
-		BufferedImage a_image;
-		double a_subsampling;
+		final private BufferedImage a_image;
+		final private double a_subsampling;
 		
 		/**
 		 * @param image
@@ -58,9 +58,9 @@ public class SubsampledImageCachedManager {
 	}
 	
 	
-	static String a_cacheDirectory;
-	final double reductionFactor = 2;
-	final int minSize = 32;
+	private static String a_cacheDirectory;
+	private final double reductionFactor = 2;
+	private final int minSize = 32;
 	
 	/**
 	 * @param cacheDirectory directory where will be stored the cached files

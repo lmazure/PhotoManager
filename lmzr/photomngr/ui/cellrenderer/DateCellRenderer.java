@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class DateCellRenderer extends DefaultTableCellRenderer {
 
-    final static DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.MEDIUM);
+    final private static DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.MEDIUM);
 
     /**
      * 

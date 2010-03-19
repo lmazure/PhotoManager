@@ -13,8 +13,8 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
  */
 public class ActionQuit extends PhotoManagerAction {
 
-	final PhotoList a_photoList;
-	final GPSDatabase a_GPSDatabase;
+	final private PhotoList a_photoList;
+	final private GPSDatabase a_GPSDatabase;
 
 	/**
 	 * @param text

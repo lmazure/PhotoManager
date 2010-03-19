@@ -82,7 +82,7 @@ public class PhotoEditorComponent extends JPanel
     final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
     private JButton a_play[];
     private boolean a_isAdjusting;
-    int a_previousSelection[];
+    private int a_previousSelection[];
 
 	
     /**

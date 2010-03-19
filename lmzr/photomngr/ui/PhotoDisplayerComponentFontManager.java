@@ -9,9 +9,9 @@ import java.awt.Font;
 public class PhotoDisplayerComponentFontManager {
 
     private Font s_theFont1;
-    int s_fontSize1;
+    private int s_fontSize1;
     private Font s_theFont2;
-    int s_fontSize2;
+    private int s_fontSize2;
     
     /**
      * 

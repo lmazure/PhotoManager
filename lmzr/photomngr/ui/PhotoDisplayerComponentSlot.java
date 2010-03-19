@@ -320,8 +320,8 @@ public class PhotoDisplayerComponentSlot extends JComponent
     
   
     
-    Object waitSync = new Object();
-    boolean stateTransitionOK = true;
+    private Object waitSync = new Object();
+    private boolean stateTransitionOK = true;
 
 
     /**

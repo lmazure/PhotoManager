@@ -14,6 +14,12 @@ public class PhotoTraitEncoding {
     final private String a_names[];
     final private String a_undefined;
 
+    /**
+     * @param minValue
+     * @param maxValue
+     * @param names
+     * @param undefined
+     */
     PhotoTraitEncoding(final int minValue,
                        final int maxValue,
                        final String[] names,

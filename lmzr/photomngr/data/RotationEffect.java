@@ -14,11 +14,11 @@ import javax.media.format.VideoFormat;
  *
  */
 public class RotationEffect implements Effect {
-    Format inputFormat;
-    Format outputFormat;
-    Format[] inputFormats;
-    Format[] outputFormats;
-    Photo a_photo;
+    //private Format inputFormat;
+    private Format outputFormat;
+    private Format[] inputFormats;
+    private Format[] outputFormats;
+    private Photo a_photo;
 
     /**
      * @param photo 
@@ -79,7 +79,7 @@ public class RotationEffect implements Effect {
      * @see javax.media.Codec#setInputFormat(javax.media.Format)
      */
     public Format setInputFormat(final Format input) {
-		inputFormat = input;
+		//inputFormat = input;
 		return input;
     }
 

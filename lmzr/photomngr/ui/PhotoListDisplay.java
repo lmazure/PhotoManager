@@ -36,8 +36,8 @@ public class PhotoListDisplay extends JFrame
 
 	final private JMenuBar a_menubar;
 	final private PhotoListTable a_table;
-	final PhotoList a_list;
-	final ListSelectionManager a_selection;
+	final private PhotoList a_list;
+	final private ListSelectionManager a_selection;
 	final public ActionSave a_actionSave;
 	final private ActionRenameFolder a_actionRenameFolder;
 	final private ActionCopy a_actionCopy;

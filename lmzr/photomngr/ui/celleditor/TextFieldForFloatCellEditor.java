@@ -22,6 +22,9 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
 
    final private Vector<CellEditorListener> a_listenerList;
 
+	/**
+	 * 
+	 */
 	TextFieldForFloatCellEditor() {
 		super();
         a_listenerList = new Vector<CellEditorListener>();

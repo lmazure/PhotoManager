@@ -44,8 +44,10 @@ public class DataFormat {
 		
 	final private String a_format;
 	final private String a_extensions[];
+	
 	/**
 	 * @param format
+	 * @param extensions
 	 */
 	private DataFormat(final String format,
 			           final String extensions[]) {

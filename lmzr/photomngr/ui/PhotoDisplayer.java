@@ -54,7 +54,7 @@ public class PhotoDisplayer extends JFrame
 	final private JMenuBar a_menubar;
 	private boolean a_isFullScreen;
 	private Rectangle a_bounds;
-	final ActionQuit a_actionQuit;
+	private final ActionQuit a_actionQuit;
 
     /**
      * @param scheduler 

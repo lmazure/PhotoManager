@@ -12,8 +12,8 @@ import lmzr.photomngr.data.phototrait.PhotoTrait;
 public class ActionChangeTrait extends PhotoManagerAction {
 
 	final private FilteredPhotoList a_photoList;
-	final PhotoTrait a_value;
-	final int a_indexInPhotoList;
+	final private PhotoTrait a_value;
+	final private int a_indexInPhotoList;
 	final private ListSelectionManager a_selection;
 
 	/**

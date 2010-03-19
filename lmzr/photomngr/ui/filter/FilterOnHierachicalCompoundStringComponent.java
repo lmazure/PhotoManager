@@ -16,7 +16,7 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
  */
 public class FilterOnHierachicalCompoundStringComponent extends FilterComponent {
 
-	final CheckTreeManager a_display;
+	final private CheckTreeManager a_display;
 	
     /**
      * @param title
