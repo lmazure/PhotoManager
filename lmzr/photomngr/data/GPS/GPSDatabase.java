@@ -131,7 +131,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         	final GPSData d = new GPSData( (data[i][1].length()==0) ? null : data[i][1],
                                            (data[i][2].length()==0) ? null : data[i][2],
                                            (data[i][3].length()==0) ? null : data[i][3],
-                                           (data[i][3].length()==0) ? null : data[i][4] );        	        
+                                           (data[i][4].length()==0) ? null : data[i][4] );        	        
         	a_data.put(l,d);
         }
         
@@ -204,7 +204,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		case PARAM_LONGITUDE_MAX:
 		    return "max. longitude";
 		case PARAM_GPS_DATA_FOR_MAPPING:
-		    return "map";
+		    return "Google maps";
         case PARAM_GPS_DATA_FOR_DELETING:
             return "delete";
 		}
@@ -298,7 +298,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			case PARAM_LOCATION:
 				break;
 			case PARAM_LATITUDE_MIN:
-			    if ( str.length() == 0 ) str = null;
+			    if ( str!=null && str.length()==0 ) str = null;
 			    if ( str == null ) {
 			        if ( data.getLatitudeMin() == null ) return;
 			    } else {
@@ -307,7 +307,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 				data.setLatitudeMin(str);
 				break;
 			case PARAM_LATITUDE_MAX:
-                if ( str.length() == 0 ) str = null;
+                if ( str!=null && str.length()==0 ) str = null;
                 if ( str == null ) {
                     if ( data.getLatitudeMax() == null ) return;
                 } else {
@@ -316,7 +316,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 				data.setLatitudeMax(str);
 				break;
 			case PARAM_LONGITUDE_MIN:
-                if ( str.length() == 0 ) str = null;
+                if ( str!=null && str.length()==0 ) str = null;
                 if ( str == null ) {
                     if ( data.getLongitudeMin() == null ) return;
                 } else {
@@ -325,7 +325,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 				data.setLongitudeMin(str);
 				break;
 			case PARAM_LONGITUDE_MAX:
-                if ( str.length() == 0 ) str = null;
+                if ( str!=null && str.length()==0 ) str = null;
                 if ( str == null ) {
                     if ( data.getLongitudeMax() == null ) return;
                 } else {
