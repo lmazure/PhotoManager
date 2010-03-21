@@ -44,7 +44,7 @@ public class Scheduler {
      * 
      */
     public Scheduler() {
-    	a_executor = Executors.newFixedThreadPool(8);
+    	a_executor = Executors.newFixedThreadPool(2);
     }
     
     /**

@@ -17,7 +17,7 @@ import lmzr.photomngr.scheduler.Scheduler;
  */
 public class ImageComputationManager {
 
-    final private ImageComputationCache a_cache;
+    final private ImageComputationCacheSoftRef a_cache;
     final private SubsampledImageCachedManager a_subsampler;
     final private Scheduler a_scheduler;
 
@@ -160,7 +160,7 @@ public class ImageComputationManager {
      */
     public ImageComputationManager(final Scheduler scheduler,
     		                       final SubsampledImageCachedManager subsampler) {
-        a_cache = new ImageComputationCache();
+        a_cache = new ImageComputationCacheSoftRef();
         a_subsampler = subsampler;
         a_scheduler = scheduler;
     }
