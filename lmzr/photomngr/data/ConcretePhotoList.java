@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -29,6 +30,7 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 public class ConcretePhotoList extends Object
                                implements PhotoList, SaveableModel {
     
+    final private ReentrantReadWriteLock a_lock;
     final private Vector<Photo> a_listOfPhotos;
     final private Vector<TableModelListener> a_listOfListeners;
     final private Vector<PhotoListMetaDataListener> a_listOfMetaDataListeners;
@@ -47,6 +49,7 @@ public class ConcretePhotoList extends Object
     public ConcretePhotoList(final String excelFilename,
                              final String rootDirPhoto) {
         
+        a_lock = new ReentrantReadWriteLock();
         a_listOfListeners = new Vector<TableModelListener>();
         a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
         a_listOfSaveListeners = new Vector<SaveListener>();
@@ -137,7 +140,14 @@ public class ConcretePhotoList extends Object
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
-        return a_listOfPhotos.size();
+        
+        a_lock.readLock().lock();
+        
+        final int rowCount = a_listOfPhotos.size();
+        
+        a_lock.readLock().unlock();
+        
+        return rowCount;
     }
     
     /**
@@ -153,34 +163,65 @@ public class ConcretePhotoList extends Object
      * @return photo
      */
     public Photo getPhoto(final int rowIndex) {
-        return a_listOfPhotos.get(rowIndex);
+
+        a_lock.readLock().lock();
+        
+        final Photo photo = a_listOfPhotos.get(rowIndex);
+        
+        a_lock.readLock().unlock();
+        
+        return photo;
     }
 
     /**
      * @return flag indicating if the current values are saved
      */
     public boolean isSaved() {
-        return a_isSaved;
+
+        a_lock.readLock().lock();
+        
+        final boolean isSaved = a_isSaved;
+        
+        a_lock.readLock().unlock();
+        
+        return isSaved;
     }
     
     /**
      * record and notify that the data saved on disk is obsolete
      */
     private void setAsUnsaved() {
+
+        a_lock.readLock().lock();
+        
         if (a_isSaved) {
-            a_isSaved = false;
-            final SaveEvent f = new SaveEvent(this, false);
-            for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
-        }    	
+            a_lock.readLock().unlock();
+            a_lock.writeLock().lock();
+            if (a_isSaved) {
+                a_isSaved = false;
+                final SaveEvent f = new SaveEvent(this, false);
+                for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
+            }
+            a_lock.writeLock().unlock();
+        } else {
+            a_lock.readLock().unlock();           
+        }
+        
     }
 
     /**
      * record and notify that the data saved on disk is obsolete
      */
     private void setAsSaved() {
+
+        a_lock.writeLock().lock();
+
         a_isSaved = true;
+        
         final SaveEvent f = new SaveEvent(this, true);
         for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
+        
+        a_lock.writeLock().unlock();        
     }
 
     /**
@@ -360,85 +401,130 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
-    public Object getValueAt(final int rowIndex, final int columnIndex) {
+    public Object getValueAt(final int rowIndex,
+                             final int columnIndex) {
+        Object value = null;
+        
+        a_lock.readLock().lock();
+        
         switch (columnIndex) {
         case PARAM_FOLDER:
-            return getPhoto(rowIndex).getFolder();
+            value = getPhoto(rowIndex).getFolder();
+            break;
         case PARAM_FILENAME:
-            return getPhoto(rowIndex).getFilename();
+            value = getPhoto(rowIndex).getFilename();
+            break;
         case PARAM_LOCATION:
-            return getPhoto(rowIndex).getIndexData().getLocation();
+            value = getPhoto(rowIndex).getIndexData().getLocation();
+            break;
         case PARAM_ORIENTATION:
-            return new Integer(getPhoto(rowIndex).getHeaderData().getOrientation());
+            value = new Integer(getPhoto(rowIndex).getHeaderData().getOrientation());
+            break;
         case PARAM_SUBJECT:
-            return getPhoto(rowIndex).getIndexData().getSubject();
+            value = getPhoto(rowIndex).getIndexData().getSubject();
+            break;
         case PARAM_QUALITY:
-            return getPhoto(rowIndex).getIndexData().getQuality();
+            value = getPhoto(rowIndex).getIndexData().getQuality();
+            break;
         case PARAM_ORIGINALITY:
-            return getPhoto(rowIndex).getIndexData().getOriginality();
+            value = getPhoto(rowIndex).getIndexData().getOriginality();
+            break;
         case PARAM_PRIVACY:
-            return getPhoto(rowIndex).getIndexData().getPrivacy();
+            value = getPhoto(rowIndex).getIndexData().getPrivacy();
+            break;
         case PARAM_DATE:
-            return getPhoto(rowIndex).getHeaderData().getDate();
+            value = getPhoto(rowIndex).getHeaderData().getDate();
+            break;
         case PARAM_PANORAMA:
-            return getPhoto(rowIndex).getIndexData().getPanorama();
+            value = getPhoto(rowIndex).getIndexData().getPanorama();
+            break;
         case PARAM_PANORAMA_FIRST:
-            return getPhoto(rowIndex).getIndexData().getPanoramaFirst();
+            value = getPhoto(rowIndex).getIndexData().getPanoramaFirst();
+            break;
         case PARAM_AUTHOR:
-            return getPhoto(rowIndex).getIndexData().getAuthor();
+            value = getPhoto(rowIndex).getIndexData().getAuthor();
+            break;
         case PARAM_COPIES:
-            return new Integer(getPhoto(rowIndex).getIndexData().getCopies());
+            value = new Integer(getPhoto(rowIndex).getIndexData().getCopies());
+            break;
         case PARAM_ZOOM:
-            return new Float(getPhoto(rowIndex).getIndexData().getZoom());
+            value = new Float(getPhoto(rowIndex).getIndexData().getZoom());
+            break;
         case PARAM_FOCUS_X:
-            return new Float(getPhoto(rowIndex).getIndexData().getFocusX());
+            value = new Float(getPhoto(rowIndex).getIndexData().getFocusX());
+            break;
         case PARAM_FOCUS_Y:
-            return new Float(getPhoto(rowIndex).getIndexData().getFocusY());
+            value = new Float(getPhoto(rowIndex).getIndexData().getFocusY());
+            break;
         case PARAM_ROTATION:
-            return new Float(getPhoto(rowIndex).getIndexData().getRotation());
+            value = new Float(getPhoto(rowIndex).getIndexData().getRotation());
+            break;
         case PARAM_MANUFACTURER:
-            return getPhoto(rowIndex).getHeaderData().getManufacturer();
+            value = getPhoto(rowIndex).getHeaderData().getManufacturer();
+            break;
         case PARAM_MODEL:
-            return getPhoto(rowIndex).getHeaderData().getModel();
+            value = getPhoto(rowIndex).getHeaderData().getModel();
+            break;
         case PARAM_EXPOSURE_TIME:
-            return getPhoto(rowIndex).getHeaderData().getExposureTime();
+            value = getPhoto(rowIndex).getHeaderData().getExposureTime();
+            break;
         case PARAM_SHUTTER_SPEED:
-            return getPhoto(rowIndex).getHeaderData().getShutterSpeed();
+            value = getPhoto(rowIndex).getHeaderData().getShutterSpeed();
+            break;
         case PARAM_APERTURE_VALUE:
-            return getPhoto(rowIndex).getHeaderData().getApertureValue();
+            value = getPhoto(rowIndex).getHeaderData().getApertureValue();
+            break;
         case PARAM_FLASH:
-            return getPhoto(rowIndex).getHeaderData().getFlash();
+            value = getPhoto(rowIndex).getHeaderData().getFlash();
+            break;
         case PARAM_FOCAL_LENGTH:
-            return getPhoto(rowIndex).getHeaderData().getFocalLength();
+            value = getPhoto(rowIndex).getHeaderData().getFocalLength();
+            break;
         case PARAM_CANON_SELF_TIMER_DELAY:
-            return getPhoto(rowIndex).getHeaderData().getCanonSelfTimerDelay();
+            value = getPhoto(rowIndex).getHeaderData().getCanonSelfTimerDelay();
+            break;
         case PARAM_CANON_FLASH_MODE:
-            return getPhoto(rowIndex).getHeaderData().getCanonFlashMode();
+            value = getPhoto(rowIndex).getHeaderData().getCanonFlashMode();
+            break;
         case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
-            return getPhoto(rowIndex).getHeaderData().getCanonContinuousDriveMode();
+            value = getPhoto(rowIndex).getHeaderData().getCanonContinuousDriveMode();
+            break;
         case PARAM_CANON_FOCUS_MODE:
-            return getPhoto(rowIndex).getHeaderData().getCanonFocusMode();
+            value = getPhoto(rowIndex).getHeaderData().getCanonFocusMode();
+            break;
         case PARAM_CANON_ISO:
-            return getPhoto(rowIndex).getHeaderData().getCanonISO();
+            value = getPhoto(rowIndex).getHeaderData().getCanonISO();
+            break;
         case PARAM_CANON_SUBJECT_DISTANCE:
-            return getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance();
+            value = getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance();
+            break;
         case PARAM_HEIGHT:
-            return new Integer(getPhoto(rowIndex).getHeaderData().getHeight());
+            value = new Integer(getPhoto(rowIndex).getHeaderData().getHeight());
+            break;
         case PARAM_WITDH:
-            return new Integer(getPhoto(rowIndex).getHeaderData().getWidth());
+            value = new Integer(getPhoto(rowIndex).getHeaderData().getWidth());
+            break;
         case PARAM_FORMAT:
-        	return getPhoto(rowIndex).getFormat();
+            value = getPhoto(rowIndex).getFormat();
+            break;
         }
-        return null;
+        
+        a_lock.readLock().unlock();
+
+        return value;
     }
     
     /**
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
-    public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
+    public void setValueAt(final Object value,
+                           final int rowIndex,
+                           final int columnIndex) {
     	
     	final NumberFormat format = NumberFormat.getInstance();
     	
+        a_lock.writeLock().lock();
+
         switch (columnIndex) {
         case PARAM_FOLDER: {
         	final String v = (String)value;
@@ -457,8 +543,9 @@ public class ConcretePhotoList extends Object
         	} else {
                 subject = a_subjectFactory.create((String)value);
         	}
-            if ( subject.equals(getPhoto(rowIndex).getIndexData().getSubject()) ) return;
-            getPhoto(rowIndex).getIndexData().setSubject(subject);
+            if ( !subject.equals(getPhoto(rowIndex).getIndexData().getSubject()) ) {
+                getPhoto(rowIndex).getIndexData().setSubject(subject);
+            }
             break; }
         case PARAM_LOCATION: {
         	HierarchicalCompoundString location; 
@@ -467,14 +554,16 @@ public class ConcretePhotoList extends Object
         	} else {
         		location = a_locationFactory.create((String)value);
         	}
-            if ( location==getPhoto(rowIndex).getIndexData().getLocation() ) return;
-            getPhoto(rowIndex).getIndexData().setLocation(location);
+            if ( location!=getPhoto(rowIndex).getIndexData().getLocation() ) {
+                getPhoto(rowIndex).getIndexData().setLocation(location);                
+            }
             break; }
         case PARAM_AUTHOR: {
             final String v = (String)value;
             final String vv = a_authorFactory.create(v);
-            if ( vv==getPhoto(rowIndex).getIndexData().getAuthor() ) return;
-            getPhoto(rowIndex).getIndexData().setAuthor(v);
+            if ( vv!=getPhoto(rowIndex).getIndexData().getAuthor() ) {
+                getPhoto(rowIndex).getIndexData().setAuthor(v);                
+            }
             break; }
         case PARAM_QUALITY: {
             PhotoQuality quality;
@@ -483,8 +572,9 @@ public class ConcretePhotoList extends Object
         	} else {
         		quality = PhotoQuality.parse((String)value);
         	}
-            if (quality.equals(getPhoto(rowIndex).getIndexData().getQuality())) return;
-            getPhoto(rowIndex).getIndexData().setQuality(quality);
+            if ( !quality.equals(getPhoto(rowIndex).getIndexData().getQuality()) ) {
+                getPhoto(rowIndex).getIndexData().setQuality(quality);                
+            }
             break; }
         case PARAM_ORIGINALITY: {
             PhotoOriginality originality;
@@ -493,8 +583,9 @@ public class ConcretePhotoList extends Object
         	} else {
         		originality = PhotoOriginality.parse((String)value);
         	}
-            if (originality.equals(getPhoto(rowIndex).getIndexData().getOriginality())) return;
-            getPhoto(rowIndex).getIndexData().setOriginality(originality);
+            if ( !originality.equals(getPhoto(rowIndex).getIndexData().getOriginality()) ) {
+                getPhoto(rowIndex).getIndexData().setOriginality(originality);                
+            }
             break; }
         case PARAM_PRIVACY: {
             PhotoPrivacy privacy;
@@ -503,8 +594,9 @@ public class ConcretePhotoList extends Object
         	} else {
         		privacy = PhotoPrivacy.parse((String)value);
         	}
-            if (privacy.equals(getPhoto(rowIndex).getIndexData().getPrivacy())) return;
-            getPhoto(rowIndex).getIndexData().setPrivacy(privacy);
+            if ( !privacy.equals(getPhoto(rowIndex).getIndexData().getPrivacy()) ) {
+                getPhoto(rowIndex).getIndexData().setPrivacy(privacy);                
+            }
             break; }
         case PARAM_COPIES: {
             Integer copies;
@@ -518,8 +610,9 @@ public class ConcretePhotoList extends Object
 					return;
 				}
         	}
-            if ( copies.intValue() == getPhoto(rowIndex).getIndexData().getCopies() ) return;
-            getPhoto(rowIndex).getIndexData().setCopies(copies.intValue());
+            if ( copies.intValue() != getPhoto(rowIndex).getIndexData().getCopies() ) {
+                getPhoto(rowIndex).getIndexData().setCopies(copies.intValue());                
+            }
             break; }
         case PARAM_ZOOM: {
             Float zoom;
@@ -533,8 +626,9 @@ public class ConcretePhotoList extends Object
 					return;
 				}
         	}
-            if ( zoom.floatValue() == getPhoto(rowIndex).getIndexData().getZoom() ) return;
-            getPhoto(rowIndex).getIndexData().setZoom(zoom.floatValue());
+            if ( zoom.floatValue() != getPhoto(rowIndex).getIndexData().getZoom() ) {
+                getPhoto(rowIndex).getIndexData().setZoom(zoom.floatValue());                
+            }
             break; }
         case PARAM_FOCUS_X: {
             Float focusX;
@@ -548,8 +642,10 @@ public class ConcretePhotoList extends Object
 					return;
 				}
         	}
-            if ( focusX.floatValue() == getPhoto(rowIndex).getIndexData().getFocusX() ) return;
-            getPhoto(rowIndex).getIndexData().setFocusX(focusX.floatValue());
+            if ( focusX.floatValue() != getPhoto(rowIndex).getIndexData().getFocusX() ) {
+                getPhoto(rowIndex).getIndexData().setFocusX(focusX.floatValue());
+                
+            }
             break; }
         case PARAM_FOCUS_Y: {
             Float focusY;
@@ -563,8 +659,10 @@ public class ConcretePhotoList extends Object
 					return;
 				}
         	}
-            if ( focusY.floatValue() == getPhoto(rowIndex).getIndexData().getFocusY() ) return;
-            getPhoto(rowIndex).getIndexData().setFocusY(focusY.floatValue());
+            if ( focusY.floatValue() != getPhoto(rowIndex).getIndexData().getFocusY() ) {
+                getPhoto(rowIndex).getIndexData().setFocusY(focusY.floatValue());
+                
+            }
             break; }
         case PARAM_ROTATION: {
             Float rotation;
@@ -577,25 +675,32 @@ public class ConcretePhotoList extends Object
             vnorm = vnorm % 360;
             if (vnorm>180) vnorm -= 360;
             if (vnorm<=-180) vnorm += 360;
-            if ( vnorm == getPhoto(rowIndex).getIndexData().getRotation() ) return;
-            getPhoto(rowIndex).getIndexData().setRotation(vnorm);
+            if ( vnorm != getPhoto(rowIndex).getIndexData().getRotation() ) {
+                getPhoto(rowIndex).getIndexData().setRotation(vnorm);                
+            }
             break; }
         case PARAM_PANORAMA: {
             final String v = (String)value;
-            if ( v==getPhoto(rowIndex).getIndexData().getPanorama() ) return;
-            getPhoto(rowIndex).getIndexData().setPanorama(v);
+            if ( v != getPhoto(rowIndex).getIndexData().getPanorama() ) {
+                getPhoto(rowIndex).getIndexData().setPanorama(v);                
+            }
             break; }
         case PARAM_PANORAMA_FIRST: {
             final String v = (String)value;
-            if ( v==getPhoto(rowIndex).getIndexData().getPanoramaFirst() ) return;
-            getPhoto(rowIndex).getIndexData().setPanoramaFirst(v);
+            if ( v != getPhoto(rowIndex).getIndexData().getPanoramaFirst() ) {
+                getPhoto(rowIndex).getIndexData().setPanoramaFirst(v);                
+            }
             break; }
         default:
             return;
         }
+        
         final TableModelEvent e = new TableModelEvent(this, rowIndex, rowIndex, columnIndex);
         for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
+        
         setAsUnsaved();
+        
+        a_lock.writeLock().lock();
     }
     
     /**
@@ -668,7 +773,14 @@ public class ConcretePhotoList extends Object
      */
     public void save() throws IOException {
     	
-    	if (a_isSaved) return;
+        // get the lock
+        a_lock.readLock().lock();
+
+        // check that the data is not already saved
+    	if (a_isSaved) {
+            a_lock.readLock().unlock();
+    	    return;
+    	}
     	
     	// prepare the data
         final String data[][] = new String[a_listOfPhotos.size()+1][];
@@ -709,6 +821,9 @@ public class ConcretePhotoList extends Object
             data[i+1][14] = Float.toString(indexData.getRotation());
         }
         
+        // free the lock
+        a_lock.readLock().unlock();
+
         // keep a copy of the old file
 		final Calendar now = Calendar.getInstance();
         final NumberFormat f2 = new DecimalFormat("00");
@@ -730,6 +845,7 @@ public class ConcretePhotoList extends Object
         
         // notify the SaveListerners
         setAsSaved();
+        
     }
     
     /**
@@ -777,6 +893,9 @@ public class ConcretePhotoList extends Object
 	 */
 	@Override
 	public void performSubjectMapTranslation(final Map<String, String> map) {
+
+	    a_lock.writeLock().lock();
+
         for (int i=0; i<a_listOfPhotos.size(); i++) {
         	final MultiHierarchicalCompoundString oldSubjects = getPhoto(i).getIndexData().getSubject();
         	final HierarchicalCompoundString[] oldParts = oldSubjects.getParts();
@@ -791,6 +910,8 @@ public class ConcretePhotoList extends Object
         	}
     		setValueAt(newSubjectsAsString.substring(1), i, PARAM_SUBJECT);
         }
+
+        a_lock.writeLock().unlock();
 	}
 	
 	/**
@@ -798,12 +919,17 @@ public class ConcretePhotoList extends Object
 	 */
 	@Override
 	public void performLocationMapTranslation(final Map<String, String> map) {
+
+       a_lock.writeLock().lock();
+
         for (int i=0; i<a_listOfPhotos.size(); i++) {
         	final String location = getPhoto(i).getIndexData().getLocation().toLongString();
         	if (map.containsKey(location)) {
         		setValueAt(map.get(location),i,PARAM_LOCATION);
         	}
         }
+        
+        a_lock.writeLock().unlock();        
 	}
 
 }

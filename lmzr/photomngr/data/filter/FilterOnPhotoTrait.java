@@ -43,9 +43,10 @@ public class FilterOnPhotoTrait {
     /**
      * @param list
      * @param index
-     * @return does the photo fulfils the filter?
+     * @return does the photo fulfill the filter?
      */
-    public boolean filter(final PhotoList list, final int index) {
+    public boolean filter(final PhotoList list,
+                          final int index) {
         final PhotoTrait trait = (PhotoTrait)list.getValueAt(index,a_parameter);
         int value = trait.getValue();
         if (value==Integer.MIN_VALUE) value=a_traits[a_traits.length-2].getValue()+1;
