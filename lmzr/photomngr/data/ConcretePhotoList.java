@@ -44,7 +44,7 @@ public class ConcretePhotoList extends Object
     
     /**
      * @param excelFilename
-     * @param rootDirPhoto
+     * @param rootDirPhoto directory containing the photo folders
      */
     public ConcretePhotoList(final String excelFilename,
                              final String rootDirPhoto) {
@@ -85,9 +85,9 @@ public class ConcretePhotoList extends Object
         a_listOfPhotos = new Vector<Photo>();
 
         String previousFolderName = "";
-        Vector<String> currentFolderContent = new Vector<String>();
-        final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto); 
-        for (int i=1; i<data.length; i++) {
+        final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto);
+        int i;
+        for (i=1; i<data.length; i++) {
             final String folderName = data[i][0];
             if ( ! previousFolderName.equals(folderName) ) {
                 if ( folderListOnDisk.contains(folderName)) {
@@ -95,45 +95,103 @@ public class ConcretePhotoList extends Object
                 } else { 
                     System.err.println("folder \""+folderName+"\" does not exists on the disk");
                 }
-                for (int j=0; j<currentFolderContent.size(); j++) {
-                    final String fileName = currentFolderContent.get(j);                    
-                    final Photo photo = new Photo(previousFolderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
-                    a_listOfPhotos.add(photo);
-                    System.err.println(photo.getFullPath()+" is missing from the index");                    
-                    setAsUnsaved();
+                if ( !previousFolderName.equals("") ) {
+                    parseAndInsertMissingFolderContent(rootDirPhoto,previousFolderName,i-1);                    
                 }
-                currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
                 previousFolderName = folderName;
             }
             final String fileName = data[i][1];
             final Photo photo = new Photo(folderName,fileName,data[i],a_locationFactory,a_subjectFactory,a_authorFactory);
             a_listOfPhotos.add(photo);
-            if ( currentFolderContent.contains(fileName) ) {
-                currentFolderContent.remove(fileName);
+        }
+        parseAndInsertMissingFolderContent(rootDirPhoto,previousFolderName,i-1);
+        for (i=0; i<folderListOnDisk.size(); i++) {
+            final String folderName = folderListOnDisk.get(i);                    
+            System.err.println("folder \""+folderName+"\" is missing from the index");   
+            insertForlderContent(rootDirPhoto,folderName);
+        }
+                
+    }
+    
+    
+    
+
+    /**
+     * add the image of a folder which are on the disk if they are not in the database
+     * @param rootDirPhoto directory containing the photo folders
+     * @param folderName
+     * @param lastIndex index of the last image of the folder plus one
+     */
+    private void parseAndInsertMissingFolderContent(final String rootDirPhoto,
+                                                    final String folderName,
+                                                    int lastIndex) {
+
+       
+        a_lock.writeLock().lock();
+
+        // we need to find the last images of the folder in the database
+        // this one may have moved further away in the Vector since we may have inserted images before
+        if ( a_listOfPhotos.size()== 0 ) {
+            lastIndex = 1;
+        } else {
+            while ( !folderName.equals(a_listOfPhotos.get(lastIndex-1).getFolder()) ) {
+                lastIndex++;
+            }
+            while ( lastIndex < a_listOfPhotos.size() &&
+                    folderName.equals(a_listOfPhotos.get(lastIndex).getFolder()) ) {
+                lastIndex ++;
+            }
+        }
+        
+        final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
+
+        for ( int i = lastIndex-1;  i>=0; i-- ) {
+            final Photo photo = getPhoto(i);
+            final String folder = photo.getFolder();
+            if ( ! folder.equals(folderName)) break;
+            final String file = photo.getFilename();
+            if ( currentFolderContent.contains(file) ) {
+                currentFolderContent.remove(file);
             } else {
                 System.err.println(photo.getFullPath()+" does not exist on the disk");
             }
         }
+
+        for (int i=0; i<currentFolderContent.size(); i++) {
+            final String fileName = currentFolderContent.get(i);                    
+            final Photo photo = new Photo(folderName,fileName,new String[]{folderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+            a_listOfPhotos.add(lastIndex,photo);
+            lastIndex++;
+            System.err.println(photo.getFullPath()+" is missing from the index");                    
+        }
+
+        setAsUnsaved();        
+
+        a_lock.writeLock().unlock();
+    }
+
+    /**
+     * add the images of a folder which is on the disk, but not in the database
+     * @param rootDirPhoto directory containing the photo folders
+     * @param folderName
+     */
+    private void insertForlderContent(final String rootDirPhoto,
+                                      final String folderName) {
+
+        a_lock.writeLock().lock();
+
+        final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
+        
         for (int j=0; j<currentFolderContent.size(); j++) {
             final String fileName = currentFolderContent.get(j);                    
-            final Photo photo = new Photo(previousFolderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+            final Photo photo = new Photo(folderName,fileName,new String[]{folderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
             a_listOfPhotos.add(photo);
-            System.err.println(photo.getFullPath()+" is missing from the index");
-            setAsUnsaved();
+            System.err.println(photo.getFullPath()+" is missing from the index");                    
         }
-        for (int i=0; i<folderListOnDisk.size(); i++) {
-            final String folderName = folderListOnDisk.get(i);                    
-            System.err.println("folder \""+folderName+"\" is missing from the index");                    
-            currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
-            for (int j=0; j<currentFolderContent.size(); j++) {
-                final String fileName = currentFolderContent.get(j);                    
-                final Photo photo = new Photo(folderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
-                a_listOfPhotos.add(photo);
-                System.err.println(photo.getFullPath()+" is missing from the index");                    
-            }
-            setAsUnsaved();
-        }
-                
+        
+        setAsUnsaved();        
+
+        a_lock.writeLock().unlock();
     }
     
     /**
@@ -188,25 +246,17 @@ public class ConcretePhotoList extends Object
     }
     
     /**
-     * record and notify that the data saved on disk is obsolete
+     * record and notify that the data saved on disk is obsolete<BR/>
+     * <B>the write lock must be owned by the calling routine</B>
      */
     private void setAsUnsaved() {
 
-        a_lock.readLock().lock();
-        
         if (a_isSaved) {
-            a_lock.readLock().unlock();
-            a_lock.writeLock().lock();
-            if (a_isSaved) {
-                a_isSaved = false;
-                final SaveEvent f = new SaveEvent(this, false);
-                for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
-            }
-            a_lock.writeLock().unlock();
-        } else {
-            a_lock.readLock().unlock();           
+            a_isSaved = false;
+            final SaveEvent f = new SaveEvent(this, false);
+            for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
         }
-        
+
     }
 
     /**
