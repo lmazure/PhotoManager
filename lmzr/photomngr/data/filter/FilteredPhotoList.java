@@ -61,7 +61,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	    final FilterOnFormat filterOnFormat = new FilterOnFormat(DataFormat.getAllFormats());
 	    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor(list.getAuthorFactory().getAuthors());
 	    final FilterOnCopies filterOnCopies = new FilterOnCopies();
-        applyFilter(new PhotoListFilter(filterOnOriginality,
+        setFilter(new PhotoListFilter(filterOnOriginality,
         		                        filterOnPrivacy,
         		                        filterOnQuality,
         		                        filterOnLocation,
@@ -247,6 +247,31 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	            }
 	        }
     		for (TableModelListener l : a_listOfListeners) l.tableChanged(new TableModelEvent(this, outFirstRow, outLastRow));
+    		
+    	} else if ( e.getType()==TableModelEvent.INSERT ) {
+    	    
+    	    applyFilter();
+    	    
+    	    int firstFilteredRow = 1;
+            int lastFilteredRow = 1;
+    	    
+    	    for (int i=e.getFirstRow(); i<=e.getLastRow(); i++) {
+    	           final int index = a_indexToSource[i];
+    	            if ( index!=-1 ){
+    	                if ( firstFilteredRow==-1 ) firstFilteredRow=index;
+    	                lastFilteredRow = index;
+    	            }
+    	    }
+    	    
+    	    if ( firstFilteredRow!=-1) {
+    	        final TableModelEvent ne = new TableModelEvent(this,
+    	                                                       firstFilteredRow,
+    	                                                       lastFilteredRow,
+    	                                                       TableModelEvent.ALL_COLUMNS,
+    	                                                       TableModelEvent.INSERT);
+                for (TableModelListener l : a_listOfListeners) l.tableChanged(ne);
+    	    }
+    	    
     	} else {
     		for (TableModelListener l : a_listOfListeners) l.tableChanged(new TableModelEvent(this));
     	}
@@ -265,9 +290,8 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     	for (int i=0; i<select.length; i++) fromSelect[i] = a_indexFromSource[select[i]];
     	
     	// apply the new filter
-        applyFilter(filter);
-        
-        
+        setFilter(filter);
+               
         // send events
         final TableModelEvent e = new TableModelEvent(this);
         tableChanged(e);
@@ -302,12 +326,19 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     /**
      * @param filter
      */
-    private void applyFilter(final PhotoListFilter filter) {
+    private void setFilter(final PhotoListFilter filter) {
     	a_filter = filter;
+    	applyFilter();
+    }
+    
+    /**
+     * 
+     */
+    private void applyFilter() {
         final int n = a_list.getRowCount();
         a_rowCount = 0;
         for (int i=0; i<n; i++) {
-            if (filter.filter(a_list,i)) {
+            if (a_filter.filter(a_list,i)) {
                 a_indexFromSource[a_rowCount] = i;
                 a_indexToSource[i] = a_rowCount;
                 a_rowCount++;

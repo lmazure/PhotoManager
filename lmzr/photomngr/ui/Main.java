@@ -75,9 +75,12 @@ public class Main implements WindowListener {
      */
     public Main(final String root,
     		    final String cache) {
+
         final String s_root = root;
         
-        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root);
+        final Scheduler scheduler = new Scheduler();
+
+        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root, scheduler);
         final FilteredPhotoList a_filteredList = new FilteredPhotoList(a_list);
 
         final GPSDatabase a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt", a_list.getLocationFactory());
@@ -85,8 +88,6 @@ public class Main implements WindowListener {
         final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,a_filteredList);
         final ListSelectionManager selection = new ListSelectionManager(a_filteredList,a_listDisplay.getLineSelectionListModel());
         
-        final Scheduler scheduler = new Scheduler();
-
         a_displayer = new PhotoDisplayer(scheduler, a_filteredList, a_GPSDatabase, new SubsampledImageCachedManager(cache), selection);
         
         final int i = a_list.getRowCount()-1;

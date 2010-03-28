@@ -129,6 +129,7 @@ public class ImageComputationManager {
          * @see java.lang.Runnable#run()
          */
         public void run() {
+            System.out.println("run @ Computer @ "+a_photo.getFullPath());
             try {
             	final SubsampledImage image = a_subsampler.getImage(a_photo, a_params, 1.0);
 	            if ( image.getImage() == null ) {
@@ -183,7 +184,7 @@ public class ImageComputationManager {
             return null;
         }
 		// the image to compute is not in the cache
-		return a_scheduler.submit("compute image "+photo.getFilename()+" for display",
+		return a_scheduler.submit("compute image \""+photo.getFilename()+"\" for display",
 				                  Scheduler.Category.CATEGORY_NOW,
                                   Scheduler.Priority.PRIORITY_VERY_HIGH,
 				                  1.0,

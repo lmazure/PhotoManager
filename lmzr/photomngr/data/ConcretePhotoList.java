@@ -18,6 +18,7 @@ import javax.swing.event.TableModelListener;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
+import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.util.io.StringTableFromToExcel;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
@@ -45,9 +46,11 @@ public class ConcretePhotoList extends Object
     /**
      * @param excelFilename
      * @param rootDirPhoto directory containing the photo folders
+     * @param scheduler 
      */
     public ConcretePhotoList(final String excelFilename,
-                             final String rootDirPhoto) {
+                             final String rootDirPhoto,
+                             final Scheduler scheduler) {
         
         a_lock = new ReentrantReadWriteLock();
         a_listOfListeners = new Vector<TableModelListener>();
@@ -87,6 +90,8 @@ public class ConcretePhotoList extends Object
         String previousFolderName = "";
         final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto);
         int i;
+        final double deltaIncrFLoat = 1.0 / ( folderListOnDisk.size() + 1 );
+        double incrFloat = deltaIncrFLoat;
         for (i=1; i<data.length; i++) {
             final String folderName = data[i][0];
             if ( ! previousFolderName.equals(folderName) ) {
@@ -96,7 +101,17 @@ public class ConcretePhotoList extends Object
                     System.err.println("folder \""+folderName+"\" does not exists on the disk");
                 }
                 if ( !previousFolderName.equals("") ) {
-                    parseAndInsertMissingFolderContent(rootDirPhoto,previousFolderName,i-1);                    
+                    final String name = previousFolderName;
+                    final int incr = i - 1;
+                    scheduler.submit("parse folder \""+folderName+"\" for inserting missing images",
+                            Scheduler.Category.CATEGORY_NOW,
+                            Scheduler.Priority.PRIORITY_MEDIUM,
+                            incrFloat,
+                            new Runnable() {
+                                @Override public void run() { parseAndInsertMissingFolderContent(rootDirPhoto,name,incr); }
+                            });
+                    incrFloat += deltaIncrFLoat; 
+                                        
                 }
                 previousFolderName = folderName;
             }
@@ -107,8 +122,15 @@ public class ConcretePhotoList extends Object
         parseAndInsertMissingFolderContent(rootDirPhoto,previousFolderName,i-1);
         for (i=0; i<folderListOnDisk.size(); i++) {
             final String folderName = folderListOnDisk.get(i);                    
-            System.err.println("folder \""+folderName+"\" is missing from the index");   
-            insertForlderContent(rootDirPhoto,folderName);
+            System.err.println("folder \""+folderName+"\" is missing from the index");
+            scheduler.submit("parse folder \""+folderName+"\" for inserting all images",
+                             Scheduler.Category.CATEGORY_NOW,
+                             Scheduler.Priority.PRIORITY_MEDIUM,
+                             incrFloat,
+                             new Runnable() {
+                                 @Override public void run() { insertForlderContent(rootDirPhoto,folderName); }
+                             });
+            incrFloat += deltaIncrFLoat; 
         }
                 
     }
@@ -126,7 +148,10 @@ public class ConcretePhotoList extends Object
                                                     final String folderName,
                                                     int lastIndex) {
 
-       
+        System.out.println("run @ parseAndInsertMissingFolderContent @ "+folderName);
+
+        final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
+
         a_lock.writeLock().lock();
 
         // we need to find the last images of the folder in the database
@@ -143,8 +168,6 @@ public class ConcretePhotoList extends Object
             }
         }
         
-        final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
-
         for ( int i = lastIndex-1;  i>=0; i-- ) {
             final Photo photo = getPhoto(i);
             final String folder = photo.getFolder();
@@ -157,15 +180,23 @@ public class ConcretePhotoList extends Object
             }
         }
 
-        for (int i=0; i<currentFolderContent.size(); i++) {
-            final String fileName = currentFolderContent.get(i);                    
-            final Photo photo = new Photo(folderName,fileName,new String[]{folderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
-            a_listOfPhotos.add(lastIndex,photo);
-            lastIndex++;
-            System.err.println(photo.getFullPath()+" is missing from the index");                    
+        if ( currentFolderContent.size()>0 ) {
+            for (int i=0; i<currentFolderContent.size(); i++) {
+                final String fileName = currentFolderContent.get(i);                    
+                final Photo photo = new Photo(folderName,fileName,new String[]{folderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+                a_listOfPhotos.add(lastIndex,photo);
+                lastIndex++;
+                System.err.println(photo.getFullPath()+" is missing from the index");                    
+            }
+            setAsUnsaved();        
         }
 
-        setAsUnsaved();        
+        final TableModelEvent e = new TableModelEvent(this,
+                                                      lastIndex-1-currentFolderContent.size(),
+                                                      lastIndex-1,
+                                                      TableModelEvent.ALL_COLUMNS,
+                                                      TableModelEvent.INSERT);
+        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
 
         a_lock.writeLock().unlock();
     }
@@ -178,10 +209,17 @@ public class ConcretePhotoList extends Object
     private void insertForlderContent(final String rootDirPhoto,
                                       final String folderName) {
 
-        a_lock.writeLock().lock();
+        System.out.println("run @ insertForlderContent @ "+folderName);
 
         final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
         
+        if ( currentFolderContent.size() == 0 ) {
+            System.err.println("folder \""+folderName+"\" is empty");
+            return;
+        }
+        
+        a_lock.writeLock().lock();
+
         for (int j=0; j<currentFolderContent.size(); j++) {
             final String fileName = currentFolderContent.get(j);                    
             final Photo photo = new Photo(folderName,fileName,new String[]{folderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
@@ -189,6 +227,13 @@ public class ConcretePhotoList extends Object
             System.err.println(photo.getFullPath()+" is missing from the index");                    
         }
         
+        final TableModelEvent e = new TableModelEvent(this,
+                                                      a_listOfPhotos.size()-1-currentFolderContent.size(),
+                                                      a_listOfPhotos.size()-1,
+                                                      TableModelEvent.ALL_COLUMNS,
+                                                      TableModelEvent.INSERT);
+        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
+
         setAsUnsaved();        
 
         a_lock.writeLock().unlock();
