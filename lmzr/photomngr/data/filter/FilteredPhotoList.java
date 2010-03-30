@@ -28,8 +28,8 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, SaveListener, TableModelListener {
 
     final private PhotoList a_list;
-    final private int a_indexFromSource[];
-    final private int a_indexToSource[];
+    private int a_indexFromSource[];
+    private int a_indexToSource[];
     private int a_rowCount;
     final private Vector<TableModelListener> a_listOfListeners;
     final private Vector<PhotoListMetaDataListener> a_listOfMetaDataListeners;
@@ -250,6 +250,10 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     		
     	} else if ( e.getType()==TableModelEvent.INSERT ) {
     	    
+            final int n = a_list.getRowCount();
+            a_indexFromSource = new int[n];
+            a_indexToSource = new int[n];
+
     	    applyFilter();
     	    
     	    int firstFilteredRow = 1;

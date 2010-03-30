@@ -37,9 +37,10 @@ public class FilterOnAuthor {
     /**
      * @param list
      * @param index
-     * @return does the photo fulfils the filter?
+     * @return does the photo fulfill the filter?
      */
-    public boolean filter(final PhotoList list, final int index) {
+    public boolean filter(final PhotoList list,
+                          final int index) {
         final String author = (String)list.getValueAt(index,PhotoList.PARAM_AUTHOR);
         int i = 0;
         while ( author != a_authors[i] ) i++;
