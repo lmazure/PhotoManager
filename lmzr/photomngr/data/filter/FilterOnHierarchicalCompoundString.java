@@ -23,11 +23,13 @@ public class FilterOnHierarchicalCompoundString {
 	}
 	
     /**
+     * this method shall be called only if the filter is enabled
      * @param list
      * @param index
-     * @return does the photo fullfils the filter?
+     * @return does the photo fulfill the filter?
      */
     public boolean filter(final PhotoList list, final int index) {
+        
     	if (a_values==null) return true;
     	final Object value = list.getValueAt(index,a_parameter);
     	if ( list.getColumnClass(a_parameter)==HierarchicalCompoundString.class ) {

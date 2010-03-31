@@ -104,7 +104,7 @@ public class FilterDisplay extends JDialog {
         p.add(a_format);
         a_format.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_author = new FilterOnAuthorComponent("author",filter.getFilterOnAuthor());
+        a_author = new FilterOnAuthorComponent("author",list.getAuthorFactory(),filter.getFilterOnAuthor());
         p.add(a_author);
         a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -133,7 +133,7 @@ public class FilterDisplay extends JDialog {
 				    final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(a_subject3.getValues(),PhotoList.PARAM_SUBJECT);
 				    final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(a_subject4.getValues(),PhotoList.PARAM_SUBJECT);
 				    final FilterOnFormat filterOnFormat = new FilterOnFormat(DataFormat.getAllFormats(),a_format.getValues());  
-				    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor(list.getAuthorFactory().getAuthors(),a_author.getValues());  
+				    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor(a_author.getValues());  
 				    final FilterOnCopies filterOnCopies = new FilterOnCopies(a_copies.getMin(),a_copies.getMax());  
                     final PhotoListFilter f = new PhotoListFilter(filterOnOriginality,
                     		                                      filterOnPrivacy,

@@ -36,9 +36,10 @@ public class FilterOnFormat {
     }
 
     /**
+     * this method shall be called only if the filter is enabled
      * @param list
      * @param index
-     * @return does the photo fulfils the filter?
+     * @return does the photo fulfill the filter?
      */
     public boolean filter(final PhotoList list, final int index) {
         final DataFormat format = (DataFormat)list.getValueAt(index,PhotoList.PARAM_FORMAT);

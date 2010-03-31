@@ -59,7 +59,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	    final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(null,PhotoList.PARAM_SUBJECT);
 	    final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(null,PhotoList.PARAM_SUBJECT);
 	    final FilterOnFormat filterOnFormat = new FilterOnFormat(DataFormat.getAllFormats());
-	    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor(list.getAuthorFactory().getAuthors());
+	    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor();
 	    final FilterOnCopies filterOnCopies = new FilterOnCopies();
         setFilter(new PhotoListFilter(filterOnOriginality,
         		                        filterOnPrivacy,

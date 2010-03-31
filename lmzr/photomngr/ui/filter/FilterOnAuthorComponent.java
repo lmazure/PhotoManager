@@ -1,8 +1,11 @@
 package lmzr.photomngr.ui.filter;
 
+import java.util.HashSet;
+
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 
+import lmzr.photomngr.data.AuthorFactory;
 import lmzr.photomngr.data.filter.FilterOnAuthor;
 
 /**
@@ -14,9 +17,11 @@ public class FilterOnAuthorComponent extends FilterComponent {
     
     /**
      * @param label
+     * @param authorFactory
      * @param filter
      */
     public FilterOnAuthorComponent(final String label,
+                                   final AuthorFactory authorFactory,
                                    final FilterOnAuthor filter) {
         super(label);
         
@@ -24,10 +29,17 @@ public class FilterOnAuthorComponent extends FilterComponent {
 
 		setFilterEnabled(filter.isEnabled());
         
-        a_check = new JCheckBox[filter.getAuthors().length];
-        for (int i=0; i<filter.getAuthors().length; i++) {
-            a_check[i] = new JCheckBox(filter.getAuthors()[i]);
-            a_check[i].setSelected((filter==null)?true:filter.getValues()[i]);
+		final String[] authors = authorFactory.getAuthors();
+		final HashSet<String> filteredAuthors = filter.getFilteredAuthors();
+		
+        a_check = new JCheckBox[authors.length];
+        for (int i=0; i<authors.length; i++) {
+            a_check[i] = new JCheckBox(authors[i]);
+            if (filter.isEnabled()) {
+                a_check[i].setSelected(filteredAuthors.contains(authors[i]));
+            } else {
+                a_check[i].setSelected(true);
+            }
             getPane().add(a_check[i]);
         }        
     }
@@ -35,13 +47,18 @@ public class FilterOnAuthorComponent extends FilterComponent {
     /**
      * @return null if the field is not enabled, the values of the filter otherwise
      */
-    public boolean[] getValues() {
-        final boolean[] values = new boolean[a_check.length];
+    public HashSet<String> getValues() {
+        HashSet<String> filteredAuthors;
         if (isFilterEnabled()) {
-            for (int i=0; i<a_check.length; i++) values[i] = a_check[i].isSelected();        
+            filteredAuthors = new HashSet<String>();
+            for (int i=0; i<a_check.length; i++) {
+                if ( a_check[i].isSelected() ) {
+                    filteredAuthors.add(a_check[i].getText());
+                }
+            }
         } else {
-            for (int i=0; i<a_check.length; i++) values[i] = true;        
+            filteredAuthors = null;
         }
-        return values;
+        return filteredAuthors;
     }
 }

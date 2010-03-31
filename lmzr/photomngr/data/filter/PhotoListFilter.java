@@ -58,21 +58,21 @@ public class PhotoListFilter {
     
     /**
      * @param list
-     * @param index does the photo fulfils the filter?
-     * @return does the photo fulfils the filter?
+     * @param index
+     * @return does the photo fulfill the filter?
      */
     boolean filter(final PhotoList list, final int index) {
-        if ( !a_filterOnFormat.filter(list,index) ) return false;
-        if ( !a_filterOnOriginality.filter(list,index) ) return false;
-        if ( !a_filterOnPrivacy.filter(list,index) ) return false;
-        if ( !a_filterOnQuality.filter(list,index) ) return false;
-        if ( !a_filterOnAuthor.filter(list, index)) return false;
-        if ( !a_filterOnCopies.filter(list, index)) return false;
-        if ( !a_filterOnLocation.filter(list,index) ) return false;
-        if ( !a_filterOnSubject1.filter(list,index) ) return false;
-        if ( !a_filterOnSubject2.filter(list,index) ) return false;
-        if ( !a_filterOnSubject3.filter(list,index) ) return false;
-        if ( !a_filterOnSubject4.filter(list,index) ) return false;
+        if ( a_filterOnFormat.isEnabled() && !a_filterOnFormat.filter(list,index) ) return false;
+        if ( a_filterOnOriginality.isEnabled() && !a_filterOnOriginality.filter(list,index) ) return false;
+        if ( a_filterOnPrivacy.isEnabled() && !a_filterOnPrivacy.filter(list,index) ) return false;
+        if ( a_filterOnQuality.isEnabled() && !a_filterOnQuality.filter(list,index) ) return false;
+        if ( a_filterOnAuthor.isEnabled() && !a_filterOnAuthor.filter(list, index)) return false;
+        if ( a_filterOnCopies.isEnabled() && !a_filterOnCopies.filter(list, index)) return false;
+        if ( a_filterOnLocation.isEnabled() && !a_filterOnLocation.filter(list,index) ) return false;
+        if ( a_filterOnSubject1.isEnabled() && !a_filterOnSubject1.filter(list,index) ) return false;
+        if ( a_filterOnSubject2.isEnabled() && !a_filterOnSubject2.filter(list,index) ) return false;
+        if ( a_filterOnSubject3.isEnabled() && !a_filterOnSubject3.filter(list,index) ) return false;
+        if ( a_filterOnSubject4.isEnabled() && !a_filterOnSubject4.filter(list,index) ) return false;
         return true;
     }
     

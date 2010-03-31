@@ -32,6 +32,7 @@ public class FilterOnCopies {
     }
     
     /**
+     * this method shall be called only if the filter is enabled
      * @param list
      * @param index
      * @return does the photo fulfill the filter?
