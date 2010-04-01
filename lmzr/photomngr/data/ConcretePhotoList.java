@@ -80,18 +80,6 @@ public class ConcretePhotoList extends Object
             System.exit(1);
         }
         
-        // quick check that the data is not corrupted
-        for (int i=1; i<data.length; i++) {
-            if (data[i][0]=="") {
-                System.err.println(excelFilename+" is corrupted: no folder name a line "+(i+1));
-                System.exit(1);
-            }
-            if (data[i][1]=="") {
-                System.err.println(excelFilename+" is corrupted: no file name a line "+(i+1));
-                System.exit(1);
-            }
-        }
-        
         // update the list of files relatively to the content of the file system
         Photo.setRootDirectory(rootDirPhoto);
 
@@ -103,6 +91,14 @@ public class ConcretePhotoList extends Object
         final double deltaIncrFLoat = 1.0 / ( folderListOnDisk.size() + 1 );
         double incrFloat = deltaIncrFLoat;
         for (i=1; i<data.length; i++) {
+            if (data[i][0]=="") {
+                System.err.println(excelFilename+" is corrupted: no folder name at line "+(i+1));
+                System.exit(1);
+            }
+            if (data[i][1]=="") {
+                System.err.println(excelFilename+" is corrupted: no file name at line "+(i+1));
+                System.exit(1);
+            }
             final String folderName = data[i][0];
             if ( ! previousFolderName.equals(folderName) ) {
                 if ( folderListOnDisk.contains(folderName)) {
@@ -154,7 +150,19 @@ public class ConcretePhotoList extends Object
         a_lock.writeLock().unlock();
 
         final TableModelEvent e = new TableModelEvent(this);
-        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
+        for (TableModelListener l : a_listOfListeners) {
+            final TableModelListener listener = l;
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override public void run() { listener.tableChanged(e); }
+                });
+            } catch (final InterruptedException e1) {
+                e1.printStackTrace();
+            } catch (final InvocationTargetException e1) {
+                e1.printStackTrace();
+            }
+        }
+
     }
     
     
@@ -733,7 +741,7 @@ public class ConcretePhotoList extends Object
         		copies = (Integer)value;
         	} else {
         		try {
-					copies= format.parse((String)value).intValue();
+					copies = format.parse((String)value).intValue();
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 					return;
@@ -749,7 +757,7 @@ public class ConcretePhotoList extends Object
         		zoom = (Float)value;
         	} else {
         		try {
-					zoom= format.parse((String)value).floatValue();
+					zoom = format.parse((String)value).floatValue();
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 					return;
@@ -765,7 +773,7 @@ public class ConcretePhotoList extends Object
         		focusX = (Float)value;
         	} else {
         		try {
-					focusX= format.parse((String)value).floatValue();
+					focusX = format.parse((String)value).floatValue();
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 					return;
@@ -782,7 +790,7 @@ public class ConcretePhotoList extends Object
         		focusY = (Float)value;
         	} else {
         		try {
-					focusY= format.parse((String)value).floatValue();
+					focusY = format.parse((String)value).floatValue();
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 					return;
@@ -798,7 +806,7 @@ public class ConcretePhotoList extends Object
         	if ( value instanceof Float ) {
         		rotation = (Float)value;
         	} else {
-        		rotation= Float.parseFloat((String)value);
+        		rotation = Float.parseFloat((String)value);
         	}
             float vnorm = rotation.floatValue();
             vnorm = vnorm % 360;

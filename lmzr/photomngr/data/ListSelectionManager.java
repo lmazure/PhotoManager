@@ -30,13 +30,13 @@ public class ListSelectionManager {
 		
         if ( a_selection.getMinSelectionIndex() == -1 ) return new int[0];
         
-        Vector<Integer> v = new Vector<Integer>();
+        final Vector<Integer> v = new Vector<Integer>();
         
         for (int i=a_selection.getMinSelectionIndex(); i<=a_selection.getMaxSelectionIndex(); i++) {
         	if (a_selection.isSelectedIndex(i)) v.add(Integer.valueOf(i)); 
         }
 
-        int r[] = new int[v.size()];
+        final int r[] = new int[v.size()];
         for (int i=0; i<v.size(); i++) r[i] = v.get(i).intValue();
         
         return r;

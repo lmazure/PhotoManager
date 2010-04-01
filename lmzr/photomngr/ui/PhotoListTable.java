@@ -136,7 +136,8 @@ public class PhotoListTable extends JTable {
      * @param rowIndex
      * @param vColIndex
      */
-    private void scrollToVisible(final int rowIndex, final int vColIndex) {
+    private void scrollToVisible(final int rowIndex,
+                                 final int vColIndex) {
     	
         final JViewport viewport = (JViewport)getParent();
            
