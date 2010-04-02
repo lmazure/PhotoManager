@@ -5,6 +5,8 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
+import javax.swing.SwingUtilities;
+
 //import javax.swing.SwingUtilities;
 
 import lmzr.photomngr.data.Photo;
@@ -146,7 +148,10 @@ public class ImageComputationManager {
 	            
 	            a_cache.record(a_photo, a_params, im);
 	            
-	            a_consumer.consumeImageComputation(a_photo,a_params,im);
+	            SwingUtilities.invokeLater(new Runnable() {
+	                @Override public void run() { a_consumer.consumeImageComputation(a_photo,a_params,im); }
+	            });
+	            
             } catch (final Throwable ex) {
             	ex.printStackTrace();
             	//throw(ex);

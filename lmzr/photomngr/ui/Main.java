@@ -45,9 +45,6 @@ import java.awt.Rectangle;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ConcretePhotoList;
@@ -82,7 +79,7 @@ public class Main implements WindowListener {
         
         final Scheduler scheduler = new Scheduler();
 
-        final ConcretePhotoList a_list = new ConcretePhotoList();
+        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root, scheduler);
         final FilteredPhotoList a_filteredList = new FilteredPhotoList(a_list);
 
         final GPSDatabase a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt", a_list.getLocationFactory());
@@ -92,6 +89,9 @@ public class Main implements WindowListener {
         
         a_displayer = new PhotoDisplayer(scheduler, a_filteredList, a_GPSDatabase, new SubsampledImageCachedManager(cache), selection);
         
+        final int i = a_list.getRowCount()-1;
+        a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);
+
         a_listDisplay.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         a_listDisplay.addWindowListener(this);
         a_listDisplay.setBounds(new Rectangle(0,0,1280,300));
@@ -100,23 +100,7 @@ public class Main implements WindowListener {
         a_displayer.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         a_displayer.addWindowListener(this);
         a_displayer.setBounds(new Rectangle(100,300,1000,720));
-        a_displayer.setVisible(true);
-        
-        
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override public void run() {
-                    a_list.initialize(s_root+File.separator+"photo_ref.txt", s_root, scheduler);
-                    final int i = a_list.getRowCount()-1;
-                    a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);
-                }
-            });
-        } catch (final InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (final InvocationTargetException e1) {
-            e1.printStackTrace();
-        }
-
+        a_displayer.setVisible(true);        
     }
 
     /**

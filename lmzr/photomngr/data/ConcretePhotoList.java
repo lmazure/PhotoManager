@@ -2,7 +2,6 @@ package lmzr.photomngr.data;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -11,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.Vector;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
@@ -33,12 +31,11 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 public class ConcretePhotoList extends Object
                                implements PhotoList, SaveableModel {
     
-    final private ReentrantReadWriteLock a_lock;
     final private Vector<Photo> a_listOfPhotos;
     final private Vector<TableModelListener> a_listOfListeners;
     final private Vector<PhotoListMetaDataListener> a_listOfMetaDataListeners;
     final private Vector<SaveListener> a_listOfSaveListeners;
-    private String a_excelFilename;
+    final private String a_excelFilename;
     final private HierarchicalCompoundStringFactory a_locationFactory;
     final private MultiHierarchicalCompoundStringFactory a_subjectFactory;
     final private AuthorFactory a_authorFactory;
@@ -46,10 +43,14 @@ public class ConcretePhotoList extends Object
     
     
     /**
+     * @param excelFilename
+     * @param rootDirPhoto directory containing the photo folders
+     * @param scheduler
      */
-    public ConcretePhotoList() {
-        
-        a_lock = new ReentrantReadWriteLock();
+    public ConcretePhotoList(final String excelFilename,
+                             final String rootDirPhoto,
+                             final Scheduler scheduler) {
+
         a_listOfListeners = new Vector<TableModelListener>();
         a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
         a_listOfSaveListeners = new Vector<SaveListener>();
@@ -58,17 +59,7 @@ public class ConcretePhotoList extends Object
         a_authorFactory = new AuthorFactory(); 
         a_listOfPhotos = new Vector<Photo>();
         a_isSaved = true;
-    }
-    
-    /**
-     * @param excelFilename
-     * @param rootDirPhoto directory containing the photo folders
-     * @param scheduler
-     */
-    public void initialize(final String excelFilename,
-                           final String rootDirPhoto,
-                           final Scheduler scheduler) {
-
+ 
         a_excelFilename = excelFilename;
 
         // load the data
@@ -82,8 +73,6 @@ public class ConcretePhotoList extends Object
         
         // update the list of files relatively to the content of the file system
         Photo.setRootDirectory(rootDirPhoto);
-
-        a_lock.writeLock().lock();
 
         String previousFolderName = "";
         final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto);
@@ -121,7 +110,12 @@ public class ConcretePhotoList extends Object
                 previousFolderName = folderName;
             }
             final String fileName = data[i][1];
-            final Photo photo = new Photo(folderName,fileName,data[i],a_locationFactory,a_subjectFactory,a_authorFactory);
+            final Photo photo = new Photo(folderName,
+                                          fileName,
+                                          data[i],
+                                          a_locationFactory,
+                                          a_subjectFactory,
+                                          a_authorFactory);
             a_listOfPhotos.add(photo);
         }
         final String name = previousFolderName;
@@ -142,63 +136,50 @@ public class ConcretePhotoList extends Object
                              Scheduler.Priority.PRIORITY_MEDIUM,
                              incrFloat,
                              new Runnable() {
-                                 @Override public void run() { insertForlderContent(rootDirPhoto,folderName); }
+                                 @Override public void run() { parseFolderContent(rootDirPhoto,folderName); }
                              });
             incrFloat += deltaIncrFLoat; 
         }
-
-        a_lock.writeLock().unlock();
-
-        final TableModelEvent e = new TableModelEvent(this);
-        for (TableModelListener l : a_listOfListeners) {
-            final TableModelListener listener = l;
-            try {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    @Override public void run() { listener.tableChanged(e); }
-                });
-            } catch (final InterruptedException e1) {
-                e1.printStackTrace();
-            } catch (final InvocationTargetException e1) {
-                e1.printStackTrace();
-            }
-        }
-
     }
     
     
-    
+    /**
+     * @param folderName
+     * @param startIndex index to start to look at the last image of the folder
+     * (this is used for optimization if you know that the last image cannot be before this index, provide 0 if you know nothing)
+     * @return the index of the last image of a folder
+     */
+    private int getIndexOfLastImageOfFolder(final String folderName,
+                                            final int startIndex)
+    {
+        if ( a_listOfPhotos.size()== 0 ) return 0;
+
+        int index = startIndex;
+        
+        while ( !folderName.equals(a_listOfPhotos.get(index-1).getFolder()) ) index++;
+
+        while ( index < a_listOfPhotos.size() && folderName.equals(a_listOfPhotos.get(index).getFolder()) ) index ++;
+        
+        return index-1;
+    }
 
     /**
-     * add the image of a folder which are on the disk if they are not in the database
+     * add the images of a folder which are on the disk if they are not in the database
      * @param rootDirPhoto directory containing the photo folders
      * @param folderName
-     * @param lastIndex index of the last image of the folder plus one
+     * @param minimumPossibleIndexOfLastImage minimum possible value of the index of the last image of the folder plus one
      */
     private void parseAndInsertMissingFolderContent(final String rootDirPhoto,
                                                     final String folderName,
-                                                    int lastIndex) {
+                                                    final int minimumPossibleIndexOfLastImage) {
 
         System.out.println("run @ parseAndInsertMissingFolderContent @ "+folderName);
 
         final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
 
-        a_lock.writeLock().lock();
-
-        // we need to find the last images of the folder in the database
-        // this one may have moved further away in the Vector since we may have inserted images before
-        if ( a_listOfPhotos.size()== 0 ) {
-            lastIndex = 1;
-        } else {
-            while ( !folderName.equals(a_listOfPhotos.get(lastIndex-1).getFolder()) ) {
-                lastIndex++;
-            }
-            while ( lastIndex < a_listOfPhotos.size() &&
-                    folderName.equals(a_listOfPhotos.get(lastIndex).getFolder()) ) {
-                lastIndex ++;
-            }
-        }
+        int index = getIndexOfLastImageOfFolder(folderName, minimumPossibleIndexOfLastImage) + 1;
         
-        for ( int i = lastIndex-1;  i>=0; i-- ) {
+        for ( int i = index-1;  i>=0; i-- ) {
             final Photo photo = getPhoto(i);
             final String folder = photo.getFolder();
             if ( ! folder.equals(folderName)) break;
@@ -209,40 +190,47 @@ public class ConcretePhotoList extends Object
                 System.err.println(photo.getFullPath()+" does not exist on the disk");
             }
         }
-
-        if ( currentFolderContent.size()>0 ) {
-            for (int i=0; i<currentFolderContent.size(); i++) {
-                final String fileName = currentFolderContent.get(i);                    
-                final Photo photo = new Photo(folderName,fileName,new String[]{folderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
-                a_listOfPhotos.add(lastIndex,photo);
-                lastIndex++;
-                System.err.println(photo.getFullPath()+" is missing from the index");                    
-            }
-            setAsUnsaved();        
+        
+        if (currentFolderContent.size()>0) {
+            final int i = index;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override public void run() { insertMissingFolderContent(folderName, currentFolderContent, i); }
+            });
         }
+    }
+    
 
-        a_lock.readLock().lock();
-        a_lock.writeLock().unlock();
+    /**
+     * @param folderName
+     * @param folderContent
+     * @param minimumPossibleIndexOfLastImage
+     */
+    private void insertMissingFolderContent(final String folderName,
+                                            final Vector<String> folderContent,
+                                            final int minimumPossibleIndexOfLastImage) {
+            
+        int index = getIndexOfLastImageOfFolder(folderName, minimumPossibleIndexOfLastImage) + 1;
+        
+        for (int i=0; i<folderContent.size(); i++) {
+            final String fileName = folderContent.get(i);                    
+            final Photo photo = new Photo(folderName,
+                                          fileName,
+                                          new String[]{folderName,fileName},
+                                          a_locationFactory,
+                                          a_subjectFactory,
+                                          a_authorFactory);
+            a_listOfPhotos.add(index,photo);
+            index++;
+            System.err.println(photo.getFullPath()+" is missing from the index");                    
+        }
+        setAsUnsaved();        
 
         final TableModelEvent e = new TableModelEvent(this,
-                                                      lastIndex-1-currentFolderContent.size(),
-                                                      lastIndex-1,
+                                                      index-1-folderContent.size(),
+                                                      index-1,
                                                       TableModelEvent.ALL_COLUMNS,
                                                       TableModelEvent.INSERT);
-        for (TableModelListener l : a_listOfListeners) {
-            final TableModelListener listener = l;
-            try {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    @Override public void run() { listener.tableChanged(e); }
-                });
-            } catch (final InterruptedException e1) {
-                e1.printStackTrace();
-            } catch (final InvocationTargetException e1) {
-                e1.printStackTrace();
-            }
-        }
-
-        a_lock.readLock().unlock();
+        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
     }
 
     /**
@@ -250,8 +238,8 @@ public class ConcretePhotoList extends Object
      * @param rootDirPhoto directory containing the photo folders
      * @param folderName
      */
-    private void insertForlderContent(final String rootDirPhoto,
-                                      final String folderName) {
+    private void parseFolderContent(final String rootDirPhoto,
+                                    final String folderName) {
 
         System.out.println("run @ insertForlderContent @ "+folderName);
 
@@ -262,39 +250,38 @@ public class ConcretePhotoList extends Object
             return;
         }
         
-        a_lock.writeLock().lock();
-
-        for (int j=0; j<currentFolderContent.size(); j++) {
-            final String fileName = currentFolderContent.get(j);                    
-            final Photo photo = new Photo(folderName,fileName,new String[]{folderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override public void run() { insertFullFolderContent(folderName, currentFolderContent); }
+        });
+    }
+    
+    /**
+     * @param folderName
+     * @param folderContent
+     */
+    private void insertFullFolderContent(final String folderName,
+                                         final Vector<String> folderContent) {
+        
+        for (int j=0; j<folderContent.size(); j++) {
+            final String fileName = folderContent.get(j);                    
+            final Photo photo = new Photo(folderName,
+                                          fileName,
+                                          new String[]{folderName,fileName},
+                                          a_locationFactory,
+                                          a_subjectFactory,
+                                          a_authorFactory);
             a_listOfPhotos.add(photo);
             System.err.println(photo.getFullPath()+" is missing from the index");                    
         }
         
-        a_lock.readLock().lock();
-        a_lock.writeLock().unlock();
-
         final TableModelEvent e = new TableModelEvent(this,
-                                                      a_listOfPhotos.size()-1-currentFolderContent.size(),
+                                                      a_listOfPhotos.size()-1-folderContent.size(),
                                                       a_listOfPhotos.size()-1,
                                                       TableModelEvent.ALL_COLUMNS,
                                                       TableModelEvent.INSERT);
-        for (TableModelListener l : a_listOfListeners) {
-            final TableModelListener listener = l;
-            try {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    @Override public void run() { listener.tableChanged(e); }
-                });
-            } catch (final InterruptedException e1) {
-                e1.printStackTrace();
-            } catch (final InvocationTargetException e1) {
-                e1.printStackTrace();
-            }
-        }
+        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
 
         setAsUnsaved();        
-
-        a_lock.readLock().unlock();
     }
     
     /**
@@ -355,14 +342,10 @@ public class ConcretePhotoList extends Object
      */
     private void setAsSaved() {
 
-        a_lock.writeLock().lock();
-
         a_isSaved = true;
         
         final SaveEvent f = new SaveEvent(this, true);
         for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
-        
-        a_lock.writeLock().unlock();        
     }
 
     /**
@@ -660,8 +643,6 @@ public class ConcretePhotoList extends Object
     	
     	final NumberFormat format = NumberFormat.getInstance();
     	
-        a_lock.writeLock().lock();
-
         switch (columnIndex) {
         case PARAM_FOLDER: {
         	final String v = (String)value;
@@ -836,8 +817,6 @@ public class ConcretePhotoList extends Object
         for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
         
         setAsUnsaved();
-        
-        a_lock.writeLock().lock();
     }
     
     /**
@@ -910,12 +889,8 @@ public class ConcretePhotoList extends Object
      */
     public void save() throws IOException {
     	
-        // get the lock
-        a_lock.readLock().lock();
-
         // check that the data is not already saved
     	if (a_isSaved) {
-            a_lock.readLock().unlock();
     	    return;
     	}
     	
@@ -958,9 +933,6 @@ public class ConcretePhotoList extends Object
             data[i+1][14] = Float.toString(indexData.getRotation());
         }
         
-        // free the lock
-        a_lock.readLock().unlock();
-
         // keep a copy of the old file
 		final Calendar now = Calendar.getInstance();
         final NumberFormat f2 = new DecimalFormat("00");
@@ -1031,8 +1003,6 @@ public class ConcretePhotoList extends Object
 	@Override
 	public void performSubjectMapTranslation(final Map<String, String> map) {
 
-	    a_lock.writeLock().lock();
-
         for (int i=0; i<a_listOfPhotos.size(); i++) {
         	final MultiHierarchicalCompoundString oldSubjects = getPhoto(i).getIndexData().getSubject();
         	final HierarchicalCompoundString[] oldParts = oldSubjects.getParts();
@@ -1047,8 +1017,6 @@ public class ConcretePhotoList extends Object
         	}
     		setValueAt(newSubjectsAsString.substring(1), i, PARAM_SUBJECT);
         }
-
-        a_lock.writeLock().unlock();
 	}
 	
 	/**
@@ -1057,16 +1025,13 @@ public class ConcretePhotoList extends Object
 	@Override
 	public void performLocationMapTranslation(final Map<String, String> map) {
 
-       a_lock.writeLock().lock();
-
         for (int i=0; i<a_listOfPhotos.size(); i++) {
         	final String location = getPhoto(i).getIndexData().getLocation().toLongString();
         	if (map.containsKey(location)) {
         		setValueAt(map.get(location),i,PARAM_LOCATION);
         	}
         }
-        
-        a_lock.writeLock().unlock();
+
 	}
 
 }
