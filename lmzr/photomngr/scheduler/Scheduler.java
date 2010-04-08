@@ -1,8 +1,8 @@
 package lmzr.photomngr.scheduler;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import lmzr.photomngr.scheduler.PriorityExecutor.PriorityRunnable;
 
 /**
  * @author lmazure
@@ -38,13 +38,13 @@ public class Scheduler {
         PRIORITY_VERY_LOW
 	}
 	
-    private final ExecutorService a_executor;
+    private final PriorityExecutor a_executor;
 
     /**
      * 
      */
     public Scheduler() {
-    	a_executor = Executors.newFixedThreadPool(2);
+    	a_executor = new PriorityExecutor(2);
     }
     
     /**
@@ -60,6 +60,9 @@ public class Scheduler {
     		                final Priority priority,
     		                final double subpriority,
     		                final Runnable task) {
-    	return a_executor.submit(task);
+        
+        System.out.println("added "+description);
+        final PriorityRunnable prunnable = new PriorityRunnable(category,priority,subpriority,task);
+    	return a_executor.submit(prunnable);
     }
 }
