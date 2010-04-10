@@ -45,6 +45,8 @@ import java.awt.Rectangle;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ConcretePhotoList;
@@ -59,7 +61,7 @@ import lmzr.photomngr.scheduler.Scheduler;
  */
 public class Main implements WindowListener {
 
-	private final PhotoDisplayer a_displayer;
+	private PhotoDisplayer a_displayer;
 	
     /**
      * @param args
@@ -74,6 +76,18 @@ public class Main implements WindowListener {
      */
     public Main(final String root,
     		    final String cache) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override public void run() { start(root, cache); }
+        });
+
+    }
+    
+    /**
+     * @param root
+     * @param cache
+     */
+    private void start(final String root,
+                       final String cache) {
 
         final String s_root = root;
         

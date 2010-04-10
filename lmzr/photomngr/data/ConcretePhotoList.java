@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -61,6 +62,8 @@ public class ConcretePhotoList extends Object
         a_isSaved = true;
  
         a_excelFilename = excelFilename;
+        
+        final LinkedList<Runnable> runnables = new LinkedList<Runnable>();
 
         // load the data
         String data[][] = null;
@@ -77,8 +80,6 @@ public class ConcretePhotoList extends Object
         String previousFolderName = "";
         final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto);
         int i;
-        final double deltaIncrFLoat = 1.0 / ( folderListOnDisk.size() + 1 );
-        double incrFloat = deltaIncrFLoat;
         for (i=1; i<data.length; i++) {
             if (data[i][0]=="") {
                 System.err.println(excelFilename+" is corrupted: no folder name at line "+(i+1));
@@ -98,14 +99,8 @@ public class ConcretePhotoList extends Object
                 if ( !previousFolderName.equals("") ) {
                     final String name = previousFolderName;
                     final int incr = i - 1;
-                    scheduler.submit("parse folder \""+name+"\" for inserting missing images",
-                            Scheduler.Category.CATEGORY_NOW,
-                            Scheduler.Priority.PRIORITY_MEDIUM,
-                            incrFloat,
-                            new Runnable() {
-                                @Override public void run() { parseAndInsertMissingFolderContent(rootDirPhoto,name,incr); }
-                            });
-                    incrFloat += deltaIncrFLoat;                                         
+                    // "parse folder \""+name+"\" for inserting missing images",
+                    runnables.add( new Runnable() { @Override public void run() { parseAndInsertMissingFolderContent(rootDirPhoto,name,incr); }});
                 }
                 previousFolderName = folderName;
             }
@@ -120,25 +115,23 @@ public class ConcretePhotoList extends Object
         }
         final String name = previousFolderName;
         final int incr = i - 1;
-        scheduler.submit("parse folder \""+name+"\" for inserting missing images",
-                Scheduler.Category.CATEGORY_NOW,
-                Scheduler.Priority.PRIORITY_MEDIUM,
-                incrFloat,
-                new Runnable() {
-                    @Override public void run() { parseAndInsertMissingFolderContent(rootDirPhoto,name,incr); }
-                });
-        incrFloat += deltaIncrFLoat;                                         
+        //"parse folder \""+name+"\" for inserting missing images",
+        runnables.add(new Runnable() { @Override public void run() { parseAndInsertMissingFolderContent(rootDirPhoto,name,incr); }});
         for (i=0; i<folderListOnDisk.size(); i++) {
             final String folderName = folderListOnDisk.get(i);                    
             System.err.println("folder \""+folderName+"\" is missing from the index");
-            scheduler.submit("parse folder \""+folderName+"\" for inserting all images",
-                             Scheduler.Category.CATEGORY_NOW,
-                             Scheduler.Priority.PRIORITY_MEDIUM,
-                             incrFloat,
-                             new Runnable() {
-                                 @Override public void run() { parseFolderContent(rootDirPhoto,folderName); }
-                             });
-            incrFloat += deltaIncrFLoat; 
+            //"parse folder \""+folderName+"\" for inserting all images",
+            runnables.add(new Runnable() { @Override public void run() { parseFolderContent(rootDirPhoto,folderName); }});
+        }
+        
+        for ( Runnable r : runnables ) {
+            final double deltaIncrFLoat = 1.0 / ( folderListOnDisk.size() + 1 );
+            double incrFloat = deltaIncrFLoat;
+            scheduler.submit("parse folder for inserting images",
+                    Scheduler.Category.CATEGORY_NOW,
+                    Scheduler.Priority.PRIORITY_MEDIUM,
+                    incrFloat,
+                    r);
         }
     }
     
@@ -173,7 +166,7 @@ public class ConcretePhotoList extends Object
                                                     final String folderName,
                                                     final int minimumPossibleIndexOfLastImage) {
 
-        System.out.println("run @ parseAndInsertMissingFolderContent @ "+folderName);
+        //System.out.println("run @ parseAndInsertMissingFolderContent @ "+folderName);
 
         final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
 

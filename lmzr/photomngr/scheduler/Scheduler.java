@@ -2,8 +2,6 @@ package lmzr.photomngr.scheduler;
 
 import java.util.concurrent.Future;
 
-import lmzr.photomngr.scheduler.PriorityExecutor.PriorityRunnable;
-
 /**
  * @author lmazure
  *
@@ -61,7 +59,7 @@ public class Scheduler {
     		                final double subpriority,
     		                final Runnable task) {
         
-        System.out.println("added "+description);
+        //System.out.println("added "+description);
         final PriorityRunnable prunnable = new PriorityRunnable(category,priority,subpriority,task);
     	return a_executor.submit(prunnable);
     }
