@@ -1,5 +1,7 @@
 package lmzr.photomngr.data;
 
+// the asynchronous version which has been given up because slower is recorded in revision 33
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -8,18 +10,15 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
-import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.util.io.StringTableFromToExcel;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
@@ -45,26 +44,20 @@ public class ConcretePhotoList extends Object
     
     /**
      * @param excelFilename
-     * @param rootDirPhoto directory containing the photo folders
-     * @param scheduler
+     * @param rootDirPhoto
      */
     public ConcretePhotoList(final String excelFilename,
-                             final String rootDirPhoto,
-                             final Scheduler scheduler) {
-
+                             final String rootDirPhoto) {
+        
         a_listOfListeners = new Vector<TableModelListener>();
         a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
         a_listOfSaveListeners = new Vector<SaveListener>();
         a_locationFactory = new HierarchicalCompoundStringFactory();
         a_subjectFactory = new MultiHierarchicalCompoundStringFactory();
         a_authorFactory = new AuthorFactory(); 
-        a_listOfPhotos = new Vector<Photo>();
-        a_isSaved = true;
- 
         a_excelFilename = excelFilename;
+        a_isSaved = true;
         
-        final LinkedList<Runnable> runnables = new LinkedList<Runnable>();
-
         // load the data
         String data[][] = null;
         try {
@@ -74,21 +67,26 @@ public class ConcretePhotoList extends Object
             System.exit(1);
         }
         
-        // update the list of files relatively to the content of the file system
-        Photo.setRootDirectory(rootDirPhoto);
-
-        String previousFolderName = "";
-        final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto);
-        int i;
-        for (i=1; i<data.length; i++) {
+        // quick check that the data is not corrupted
+        for (int i=1; i<data.length; i++) {
             if (data[i][0]=="") {
-                System.err.println(excelFilename+" is corrupted: no folder name at line "+(i+1));
+                System.err.println(excelFilename+" is corrupted: no folder name a line "+(i+1));
                 System.exit(1);
             }
             if (data[i][1]=="") {
-                System.err.println(excelFilename+" is corrupted: no file name at line "+(i+1));
+                System.err.println(excelFilename+" is corrupted: no file name a line "+(i+1));
                 System.exit(1);
             }
+        }
+        
+        // update the list of files relatively to the content of the file system
+        Photo.setRootDirectory(rootDirPhoto);
+        a_listOfPhotos = new Vector<Photo>();
+
+        String previousFolderName = "";
+        Vector<String> currentFolderContent = new Vector<String>();
+        final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto); 
+        for (int i=1; i<data.length; i++) {
             final String folderName = data[i][0];
             if ( ! previousFolderName.equals(folderName) ) {
                 if ( folderListOnDisk.contains(folderName)) {
@@ -96,185 +94,45 @@ public class ConcretePhotoList extends Object
                 } else { 
                     System.err.println("folder \""+folderName+"\" does not exists on the disk");
                 }
-                if ( !previousFolderName.equals("") ) {
-                    final String name = previousFolderName;
-                    final int incr = i - 1;
-                    // "parse folder \""+name+"\" for inserting missing images",
-                    runnables.add( new Runnable() { @Override public void run() { parseAndInsertMissingFolderContent(rootDirPhoto,name,incr); }});
+                for (int j=0; j<currentFolderContent.size(); j++) {
+                    final String fileName = currentFolderContent.get(j);                    
+                    final Photo photo = new Photo(previousFolderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+                    a_listOfPhotos.add(photo);
+                    System.err.println(photo.getFullPath()+" is missing from the index");                    
+                    setAsUnsaved();
                 }
+                currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
                 previousFolderName = folderName;
             }
             final String fileName = data[i][1];
-            final Photo photo = new Photo(folderName,
-                                          fileName,
-                                          data[i],
-                                          a_locationFactory,
-                                          a_subjectFactory,
-                                          a_authorFactory);
+            final Photo photo = new Photo(folderName,fileName,data[i],a_locationFactory,a_subjectFactory,a_authorFactory);
             a_listOfPhotos.add(photo);
-        }
-        final String name = previousFolderName;
-        final int incr = i - 1;
-        //"parse folder \""+name+"\" for inserting missing images",
-        runnables.add(new Runnable() { @Override public void run() { parseAndInsertMissingFolderContent(rootDirPhoto,name,incr); }});
-        for (i=0; i<folderListOnDisk.size(); i++) {
-            final String folderName = folderListOnDisk.get(i);                    
-            System.err.println("folder \""+folderName+"\" is missing from the index");
-            //"parse folder \""+folderName+"\" for inserting all images",
-            runnables.add(new Runnable() { @Override public void run() { parseFolderContent(rootDirPhoto,folderName); }});
-        }
-        
-        for ( Runnable r : runnables ) {
-            final double deltaIncrFLoat = 1.0 / ( folderListOnDisk.size() + 1 );
-            double incrFloat = deltaIncrFLoat;
-            scheduler.submit("parse folder for inserting images",
-                    Scheduler.Category.CATEGORY_NOW,
-                    Scheduler.Priority.PRIORITY_MEDIUM,
-                    incrFloat,
-                    r);
-        }
-    }
-    
-    
-    /**
-     * @param folderName
-     * @param startIndex index to start to look at the last image of the folder
-     * (this is used for optimization if you know that the last image cannot be before this index, provide 0 if you know nothing)
-     * @return the index of the last image of a folder
-     */
-    private int getIndexOfLastImageOfFolder(final String folderName,
-                                            final int startIndex)
-    {
-        if ( a_listOfPhotos.size()== 0 ) return 0;
-
-        int index = startIndex;
-        
-        while ( !folderName.equals(a_listOfPhotos.get(index-1).getFolder()) ) index++;
-
-        while ( index < a_listOfPhotos.size() && folderName.equals(a_listOfPhotos.get(index).getFolder()) ) index ++;
-        
-        return index-1;
-    }
-
-    /**
-     * add the images of a folder which are on the disk if they are not in the database
-     * @param rootDirPhoto directory containing the photo folders
-     * @param folderName
-     * @param minimumPossibleIndexOfLastImage minimum possible value of the index of the last image of the folder plus one
-     */
-    private void parseAndInsertMissingFolderContent(final String rootDirPhoto,
-                                                    final String folderName,
-                                                    final int minimumPossibleIndexOfLastImage) {
-
-        //System.out.println("run @ parseAndInsertMissingFolderContent @ "+folderName);
-
-        final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
-
-        int index = getIndexOfLastImageOfFolder(folderName, minimumPossibleIndexOfLastImage) + 1;
-        
-        for ( int i = index-1;  i>=0; i-- ) {
-            final Photo photo = getPhoto(i);
-            final String folder = photo.getFolder();
-            if ( ! folder.equals(folderName)) break;
-            final String file = photo.getFilename();
-            if ( currentFolderContent.contains(file) ) {
-                currentFolderContent.remove(file);
+            if ( currentFolderContent.contains(fileName) ) {
+                currentFolderContent.remove(fileName);
             } else {
                 System.err.println(photo.getFullPath()+" does not exist on the disk");
             }
         }
-        
-        if (currentFolderContent.size()>0) {
-            final int i = index;
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override public void run() { insertMissingFolderContent(folderName, currentFolderContent, i); }
-            });
-        }
-    }
-    
-
-    /**
-     * @param folderName
-     * @param folderContent
-     * @param minimumPossibleIndexOfLastImage
-     */
-    private void insertMissingFolderContent(final String folderName,
-                                            final Vector<String> folderContent,
-                                            final int minimumPossibleIndexOfLastImage) {
-            
-        int index = getIndexOfLastImageOfFolder(folderName, minimumPossibleIndexOfLastImage) + 1;
-        
-        for (int i=0; i<folderContent.size(); i++) {
-            final String fileName = folderContent.get(i);                    
-            final Photo photo = new Photo(folderName,
-                                          fileName,
-                                          new String[]{folderName,fileName},
-                                          a_locationFactory,
-                                          a_subjectFactory,
-                                          a_authorFactory);
-            a_listOfPhotos.add(index,photo);
-            index++;
-            System.err.println(photo.getFullPath()+" is missing from the index");                    
-        }
-        setAsUnsaved();        
-
-        final TableModelEvent e = new TableModelEvent(this,
-                                                      index-1-folderContent.size(),
-                                                      index-1,
-                                                      TableModelEvent.ALL_COLUMNS,
-                                                      TableModelEvent.INSERT);
-        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
-    }
-
-    /**
-     * add the images of a folder which is on the disk, but not in the database
-     * @param rootDirPhoto directory containing the photo folders
-     * @param folderName
-     */
-    private void parseFolderContent(final String rootDirPhoto,
-                                    final String folderName) {
-
-        System.out.println("run @ insertForlderContent @ "+folderName);
-
-        final Vector<String>currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
-        
-        if ( currentFolderContent.size() == 0 ) {
-            System.err.println("folder \""+folderName+"\" is empty");
-            return;
-        }
-        
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override public void run() { insertFullFolderContent(folderName, currentFolderContent); }
-        });
-    }
-    
-    /**
-     * @param folderName
-     * @param folderContent
-     */
-    private void insertFullFolderContent(final String folderName,
-                                         final Vector<String> folderContent) {
-        
-        for (int j=0; j<folderContent.size(); j++) {
-            final String fileName = folderContent.get(j);                    
-            final Photo photo = new Photo(folderName,
-                                          fileName,
-                                          new String[]{folderName,fileName},
-                                          a_locationFactory,
-                                          a_subjectFactory,
-                                          a_authorFactory);
+        for (int j=0; j<currentFolderContent.size(); j++) {
+            final String fileName = currentFolderContent.get(j);                    
+            final Photo photo = new Photo(previousFolderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
             a_listOfPhotos.add(photo);
-            System.err.println(photo.getFullPath()+" is missing from the index");                    
+            System.err.println(photo.getFullPath()+" is missing from the index");
+            setAsUnsaved();
         }
-        
-        final TableModelEvent e = new TableModelEvent(this,
-                                                      a_listOfPhotos.size()-1-folderContent.size(),
-                                                      a_listOfPhotos.size()-1,
-                                                      TableModelEvent.ALL_COLUMNS,
-                                                      TableModelEvent.INSERT);
-        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
-
-        setAsUnsaved();        
+        for (int i=0; i<folderListOnDisk.size(); i++) {
+            final String folderName = folderListOnDisk.get(i);                    
+            System.err.println("folder \""+folderName+"\" is missing from the index");                    
+            currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
+            for (int j=0; j<currentFolderContent.size(); j++) {
+                final String fileName = currentFolderContent.get(j);                    
+                final Photo photo = new Photo(folderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+                a_listOfPhotos.add(photo);
+                System.err.println(photo.getFullPath()+" is missing from the index");                    
+            }
+            setAsUnsaved();
+        }
+                
     }
     
     /**

@@ -256,8 +256,8 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 
     	    applyFilter();
     	    
-    	    int firstFilteredRow = 1;
-            int lastFilteredRow = 1;
+    	    int firstFilteredRow = -1;
+            int lastFilteredRow = -1;
     	    
     	    for (int i=e.getFirstRow(); i<=e.getLastRow(); i++) {
     	           final int index = a_indexToSource[i];
