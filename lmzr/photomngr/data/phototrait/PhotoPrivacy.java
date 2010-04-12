@@ -5,11 +5,7 @@ package lmzr.photomngr.data.phototrait;
  */
 public class PhotoPrivacy extends PhotoTrait {
 
-    static final private PhotoTraitEncoding  g_encoding = 
-        new PhotoTraitEncoding(0, 
-                               4, 
-                               new String[] {"anyone", "knowledgeable", "friends", "familly", "personal"},
-                               "unclassified");
+    static final private String[] g_encoding = new String[] {"anyone", "knowledgeable", "friends", "familly", "personal"};
 
     private PhotoPrivacy(final int value) {
         super(value);

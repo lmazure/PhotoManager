@@ -4,6 +4,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 
 import lmzr.photomngr.data.filter.FilterOnPhotoTrait;
+import lmzr.photomngr.data.phototrait.PhotoTrait;
 
 /**
  * 
@@ -23,11 +24,14 @@ public class FilterOnTraitDisplayComponent extends FilterComponent {
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
 		setFilterEnabled(filter.isEnabled());
+		
+		final PhotoTrait[] traits = filter.getTraits();
+		final boolean[] values = filter.getValues();
         
         a_check = new JCheckBox[filter.getTraits().length];
-        for (int i=0; i<filter.getTraits().length; i++) {
-            a_check[i] = new JCheckBox(filter.getTraits()[i].toString());
-            a_check[i].setSelected((filter==null)?true:filter.getValues()[i]);
+        for (int i=0; i<traits.length; i++) {
+            a_check[i] = new JCheckBox(traits[i].toString());
+            a_check[i].setSelected((filter==null)?true:values[i]);
             getPane().add(a_check[i]);
         }        
     }

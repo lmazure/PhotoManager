@@ -5,11 +5,7 @@ package lmzr.photomngr.data.phototrait;
  */
 public class PhotoOriginality extends PhotoTrait {
 
-    static final private PhotoTraitEncoding  g_encoding = 
-        new PhotoTraitEncoding(-2, 
-                               2, 
-                               new String[] {"overused", "too common", "common", "rare", "exceptional"},
-                               "unclassified");
+    static final private String[] g_encoding =  new String[] {"overused", "too common", "common", "rare", "exceptional"};
 
     private PhotoOriginality(final int value) {
         super(value);

@@ -6,13 +6,25 @@ package lmzr.photomngr.data.phototrait;
 public class PhotoTrait {
 
     final private int a_value;
+    
+    /**
+     * integer value encoding a undefined trait
+     */
+    static final public int UNDEFINED_TRAIT_VALUE = -1;
+    
+    /**
+     * string value encoding a undefined trait
+     */
+    static final public String UNDEFINED_TRAID_STRING = "unclassified";
 
+    
     /**
      * @param value
      */
     protected PhotoTrait(final int value) {
         a_value = value;
     }
+    
     
     /**
      * @see java.lang.Object#equals(java.lang.Object)
@@ -23,6 +35,7 @@ public class PhotoTrait {
       return (((PhotoTrait)other).a_value == a_value);
     }
     
+    
     /**
      * @return value
      */
@@ -30,47 +43,46 @@ public class PhotoTrait {
         return a_value;
     }
     
+    
     /**
      * @param str
      * @param encoding
      * @return PhotoTrait encoded by str
      */
     protected static int parse(final String str,
-                               final PhotoTraitEncoding encoding) {
-        if ( str == null ) return Integer.MIN_VALUE;
+                               final String[] encoding) {
+        if ( str == null ) return UNDEFINED_TRAIT_VALUE;
         try {
-            int i = Integer.parseInt(str);
-            if ( i>=encoding.getMinValue() && i<=encoding.getMaxValue()) return i;
-            return Integer.MIN_VALUE;
+            final int i = Integer.parseInt(str);
+            if ( i<encoding.length ) return i;
+            return UNDEFINED_TRAIT_VALUE;
         } catch (final NumberFormatException e) {
-            for (int i=0; i<=(encoding.getMaxValue()-encoding.getMinValue()); i++) {
-                if ( str.compareToIgnoreCase(encoding.getNames()[i])==0 ) {
-                    return (i+encoding.getMinValue()); 
-                }
+            for (int i=0; i<encoding.length; i++) {
+                if ( str.compareToIgnoreCase(encoding[i])==0 ) return i; 
             }
-            return Integer.MIN_VALUE;
+            return UNDEFINED_TRAIT_VALUE;
         }        
     }
 
+    
     /**
      * @param encoding
      * @return String encoding the PhotoTrait
      */
-    protected String toString(final PhotoTraitEncoding encoding) {
-        if ( a_value==Integer.MIN_VALUE ) return encoding.getUndefined();
-        return encoding.getNames()[a_value-encoding.getMinValue()];
+    protected String toString(final String[] encoding) {
+        if ( a_value==UNDEFINED_TRAIT_VALUE ) return UNDEFINED_TRAID_STRING;
+        return encoding[a_value];
     }
 
+    
     /**
      * @param encoding
      * @return traits
      */
-    static protected int[] getValues(final PhotoTraitEncoding encoding) {
-        int traits[] = new int[encoding.getMaxValue()-encoding.getMinValue()+2];
-        for (int i=0; i<=(encoding.getMaxValue()-encoding.getMinValue()); i++) {
-            traits[i] = i+encoding.getMinValue();
-        }
-        traits[encoding.getMaxValue()-encoding.getMinValue()+1] = Integer.MIN_VALUE;
+    static protected int[] getValues(final String[] encoding) {
+        final int traits[] = new int[encoding.length+1];
+        for (int i=0; i<encoding.length; i++) traits[i] = i;
+        traits[encoding.length] = UNDEFINED_TRAIT_VALUE;
         return traits;
     }
 }

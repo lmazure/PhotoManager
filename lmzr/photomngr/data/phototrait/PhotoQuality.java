@@ -5,11 +5,7 @@ package lmzr.photomngr.data.phototrait;
  */
 public class PhotoQuality extends PhotoTrait {
 
-    static final private PhotoTraitEncoding  g_encoding = 
-        new PhotoTraitEncoding(-3, 
-                               3, 
-                               new String[] {"awful", "very bad", "bad", "middle", "good", "very good", "excellent"},
-                               "unclassified");
+    static final private String[] g_encoding = new String[] {"awful", "very bad", "bad", "middle", "good", "very good", "excellent"};
 
     private PhotoQuality(final int value) {
         super(value);

@@ -49,10 +49,10 @@ public class FilterOnPhotoTrait {
     public boolean filter(final PhotoList list,
                           final int index) {
         final PhotoTrait trait = (PhotoTrait)list.getValueAt(index,a_parameter);
-        int value = trait.getValue();
-        if (value==Integer.MIN_VALUE) value=a_traits[a_traits.length-2].getValue()+1;
-        value -= a_traits[0].getValue();
-        return a_values[value];
+        for (int i =0; i<a_traits.length; i++) {
+            if ( trait.equals(a_traits[i]) ) return a_values[i];
+        }
+        throw new AssertionError();
     }
     
     /**
