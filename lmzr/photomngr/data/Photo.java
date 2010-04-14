@@ -31,27 +31,42 @@ public class Photo {
     }
     
     /**
+     * @param data
+     * @param locationFactory 
+     * @param subjectFactory 
+     * @param authorFactory 
+     */
+    public Photo(final String data[],
+                 final HierarchicalCompoundStringFactory locationFactory,
+                 final MultiHierarchicalCompoundStringFactory subjectFactory,
+                 final AuthorFactory authorFactory) {
+        a_folder = data[0];
+        a_filename = data[1];
+        a_format = s_formatFactory.createFormat(getFullPath());
+        a_indexData = new PhotoIndexData(data, locationFactory, subjectFactory, authorFactory);
+        a_headerData = new PhotoHeaderData(getFullPath(),a_format);
+        a_isOK = true;
+    }
+   
+    /**
      * @param folderName
      * @param filename
-     * @param data
      * @param locationFactory 
      * @param subjectFactory 
      * @param authorFactory 
      */
     public Photo(final String folderName,
                  final String filename,
-                 final String data[],
                  final HierarchicalCompoundStringFactory locationFactory,
                  final MultiHierarchicalCompoundStringFactory subjectFactory,
                  final AuthorFactory authorFactory) {
         a_folder = folderName;
         a_filename = filename;
         a_format = s_formatFactory.createFormat(getFullPath());
-        a_indexData = new PhotoIndexData(data, locationFactory, subjectFactory, authorFactory);
+        a_indexData = new PhotoIndexData(locationFactory, subjectFactory, authorFactory);
         a_headerData = new PhotoHeaderData(getFullPath(),a_format);
         a_isOK = true;
     }
-    
     /**
      * @return the image
      */

@@ -49,12 +49,6 @@ public class ImageComputationCacheSoftRef {
         Photo getPhoto() {
             return a_photo;
         }
-        /**
-         * @return Returns the params.
-         */
-        int getSize() {
-            return a_params.getHeight()*a_params.getWidth();
-        }
     }
     
     final private LinkedList<SoftReference<Record>> a_list;

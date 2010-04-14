@@ -96,7 +96,7 @@ public class ConcretePhotoList extends Object
                 }
                 for (int j=0; j<currentFolderContent.size(); j++) {
                     final String fileName = currentFolderContent.get(j);                    
-                    final Photo photo = new Photo(previousFolderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+                    final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
                     a_listOfPhotos.add(photo);
                     System.err.println(photo.getFullPath()+" is missing from the index");                    
                     setAsUnsaved();
@@ -105,7 +105,7 @@ public class ConcretePhotoList extends Object
                 previousFolderName = folderName;
             }
             final String fileName = data[i][1];
-            final Photo photo = new Photo(folderName,fileName,data[i],a_locationFactory,a_subjectFactory,a_authorFactory);
+            final Photo photo = new Photo(data[i],a_locationFactory,a_subjectFactory,a_authorFactory);
             a_listOfPhotos.add(photo);
             if ( currentFolderContent.contains(fileName) ) {
                 currentFolderContent.remove(fileName);
@@ -115,7 +115,7 @@ public class ConcretePhotoList extends Object
         }
         for (int j=0; j<currentFolderContent.size(); j++) {
             final String fileName = currentFolderContent.get(j);                    
-            final Photo photo = new Photo(previousFolderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+            final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
             a_listOfPhotos.add(photo);
             System.err.println(photo.getFullPath()+" is missing from the index");
             setAsUnsaved();
@@ -126,7 +126,7 @@ public class ConcretePhotoList extends Object
             currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
             for (int j=0; j<currentFolderContent.size(); j++) {
                 final String fileName = currentFolderContent.get(j);                    
-                final Photo photo = new Photo(folderName,fileName,new String[]{previousFolderName,fileName},a_locationFactory,a_subjectFactory,a_authorFactory);
+                final Photo photo = new Photo(folderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
                 a_listOfPhotos.add(photo);
                 System.err.println(photo.getFullPath()+" is missing from the index");                    
             }

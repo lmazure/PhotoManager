@@ -37,66 +37,53 @@ public class PhotoIndexData {
                           final HierarchicalCompoundStringFactory locationFactory,
                           final MultiHierarchicalCompoundStringFactory subjectFactory,
                           final AuthorFactory authorFactory) {
-        a_location = locationFactory.create((data.length>2 && data[2].length()>0) ? data[2] : "");
-        a_subject = subjectFactory.create((data.length>3 && data[3].length()>0) ? data[3].replaceAll("\\+","\n") : "");
-        a_quality = PhotoQuality.parse( (data.length>4 && data[4].length()>0) ? data[4] : null );
-        a_originality = PhotoOriginality.parse( (data.length>5 && data[5].length()>0) ? data[5] : null );
-        a_privacy = PhotoPrivacy.parse( (data.length>6 && data[6].length()>0) ? data[6] : null );
-        a_panorama = (data.length>7) ? data[7] : "";
-        a_panoramaFirst = (data.length>8) ? data[8] : "";
-        a_author = authorFactory.create((data.length>9) ? data[9] : "");
-        if (data.length>10) {
-            try {
-                a_copies = Integer.parseInt(data[10]);
-            } catch (final NumberFormatException e) {
-                System.err.println("failed to translate copies \""+data[10]+"\" into an integer");
-                a_copies = 0;
-            }
-        } else {
-            a_copies = 0;
-        }
-        if (data.length>11) {
-            try {
-                a_zoom = Float.parseFloat(data[11]);
-            } catch (final NumberFormatException e) {
-                System.err.println("failed to translate zoom \""+data[11]+"\" into a float");
-                a_zoom = 1.f;
-            }
-        } else {
-            a_zoom = 1.f;
-        }
-        if (data.length>12) {
-            try {
-                a_focus_x = Float.parseFloat(data[12]);
-            } catch (final NumberFormatException e) {
-                System.err.println("failed to translate focus X \""+data[12]+"\" into a float");
-                a_focus_x = 0.f;
-            }
-        } else {
-        	a_focus_x = 0.f;
-        }
-        if (data.length>13) {
-            try {
-                a_focus_y = Float.parseFloat(data[13]);
-            } catch (final NumberFormatException e) {
-                System.err.println("failed to translate focus Y \""+data[13]+"\" into a float");
-                a_focus_y = 0.f;
-            }
-        } else {
-        	a_focus_y = 0.f;
-        }
-        if (data.length>14) {
-            try {
-                a_rotation = Float.parseFloat(data[14]);
-            } catch (final NumberFormatException e) {
-                System.err.println("failed to translate rotation \""+data[14]+"\" into a float");
-                a_rotation = 0.f;
-            }
-        } else {
-        	a_rotation = 0.f;
+        a_location = locationFactory.create(data[2]);
+        a_subject = subjectFactory.create(data[3]);
+        a_quality = PhotoQuality.parse(data[4]);
+        a_originality = PhotoOriginality.parse(data[5]);
+        a_privacy = PhotoPrivacy.parse(data[6]);
+        a_panorama = data[7];
+        a_panoramaFirst = data[8];
+        a_author = authorFactory.create(data[9]);
+        a_copies = 0;
+        a_zoom = 1.f;
+        a_focus_x = 0.f;
+        a_focus_y = 0.f;
+        a_rotation = 0.f;
+        try {
+            a_copies = Integer.parseInt(data[10]);
+            a_zoom = Float.parseFloat(data[11]);
+            a_focus_x = Float.parseFloat(data[12]);
+            a_focus_y = Float.parseFloat(data[13]);
+        } catch (final NumberFormatException e) {
+            System.err.println("failed to parse data");
+            e.printStackTrace();
         }
     }
-    
+
+    /**
+     * @param locationFactory
+     * @param subjectFactory
+     * @param authorFactory 
+     */
+    public PhotoIndexData(final HierarchicalCompoundStringFactory locationFactory,
+                          final MultiHierarchicalCompoundStringFactory subjectFactory,
+                          final AuthorFactory authorFactory) {
+        a_location = locationFactory.create("");
+        a_subject = subjectFactory.create("");
+        a_quality = PhotoQuality.parse("");
+        a_originality = PhotoOriginality.parse("");
+        a_privacy = PhotoPrivacy.parse("");
+        a_panorama = "";
+        a_panoramaFirst = "";
+        a_author = authorFactory.create("");
+        a_copies = 0;
+        a_zoom = 1.f;
+        a_focus_x = 0.f;
+        a_focus_y = 0.f;
+        a_rotation = 0.f;
+    }
+
     /**
      * @return subject
      */
