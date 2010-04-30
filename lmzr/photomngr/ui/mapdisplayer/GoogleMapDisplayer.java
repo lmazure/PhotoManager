@@ -30,7 +30,9 @@ public class GoogleMapDisplayer implements MapDisplayer {
 		if (!GPSData.isComplete()) return;
 
 		try {
-			final String[] commandLine = { "C:\\Program Files\\Mozilla Firefox\\firefox.exe", 
+			//final String dirtyPath = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+			final String dirtyPath = "C:\\Documents and Settings\\All Users\\Application Data\\Mozilla Firefox\\firefox.exe";
+			final String[] commandLine = { dirtyPath, 
 					"http://maps.google.com/maps?q="+
 					+ GPSData.getLatitudeAsDouble()
 					+ "+"

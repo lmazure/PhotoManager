@@ -458,7 +458,8 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getHeaderData().getFlash();
             break;
         case PARAM_FOCAL_LENGTH:
-            value = new Double(getPhoto(rowIndex).getHeaderData().getFocalLength());
+        	PhotoHeaderData d = getPhoto(rowIndex).getHeaderData();
+            value = new Double(d.getFocalLength());
             break;
         case PARAM_SELF_TIMER_MODE:
             value = getPhoto(rowIndex).getHeaderData().getCanonSelfTimerDelay();

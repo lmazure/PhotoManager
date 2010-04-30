@@ -3,6 +3,7 @@ package lmzr.photomngr.data;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -18,11 +19,13 @@ public class Photo {
     private String a_folder;
     private String a_filename;
     final private PhotoIndexData a_indexData;
-    final private PhotoHeaderData a_headerData;
+    private PhotoHeaderData a_headerData;
     final private DataFormat a_format;
     private boolean a_isOK;
     static private DataFormatFactory s_formatFactory = new DataFormatFactory();
     
+    static final StringPool s_pool = new StringPool(); 
+
     /**
      * @param rootDir
      */
@@ -40,11 +43,11 @@ public class Photo {
                  final HierarchicalCompoundStringFactory locationFactory,
                  final MultiHierarchicalCompoundStringFactory subjectFactory,
                  final AuthorFactory authorFactory) {
-        a_folder = data[0];
+        a_folder = s_pool.replace(data[0]);
         a_filename = data[1];
         a_format = s_formatFactory.createFormat(getFullPath());
         a_indexData = new PhotoIndexData(data, locationFactory, subjectFactory, authorFactory);
-        a_headerData = new PhotoHeaderData(getFullPath(),a_format);
+        a_headerData = null;
         a_isOK = true;
     }
    
@@ -60,17 +63,18 @@ public class Photo {
                  final HierarchicalCompoundStringFactory locationFactory,
                  final MultiHierarchicalCompoundStringFactory subjectFactory,
                  final AuthorFactory authorFactory) {
-        a_folder = folderName;
+        a_folder = s_pool.replace(folderName);
         a_filename = filename;
         a_format = s_formatFactory.createFormat(getFullPath());
         a_indexData = new PhotoIndexData(locationFactory, subjectFactory, authorFactory);
-        a_headerData = new PhotoHeaderData(getFullPath(),a_format);
+        a_headerData = null;
         a_isOK = true;
     }
     /**
      * @return the image
      */
     public BufferedImage getImage() {
+    	
         if ( !a_isOK ) return null;
     	String filename = getFullPath();
     	
@@ -135,6 +139,10 @@ public class Photo {
      * @return data extracted from the photo header
      */
     public PhotoHeaderData getHeaderData() {
+    	if ( a_headerData == null ) {
+            a_headerData = new PhotoHeaderData(getFullPath(),a_format);
+    	}
+    	
         return a_headerData;
     }
 
