@@ -116,43 +116,47 @@ public interface PhotoList extends TableModel, SaveableModel {
     /**
      * 
      */
-    static final public int PARAM_CANON_SELF_TIMER_DELAY = 24;
+    static final public int PARAM_SELF_TIMER_MODE = 24;
     /**
      * 
      */
-    static final public int PARAM_CANON_FLASH_MODE = 25;
+    static final public int PARAM_CANON_SELF_TIMER_DELAY = 25;
     /**
      * 
      */
-    static final public int PARAM_CANON_CONTINUOUS_DRIVE_MODE = 26;
+    static final public int PARAM_CANON_FLASH_MODE = 26;
     /**
      * 
      */
-    static final public int PARAM_CANON_FOCUS_MODE = 27;
+    static final public int PARAM_CANON_CONTINUOUS_DRIVE_MODE = 27;
     /**
      * 
      */
-    static final public int PARAM_CANON_ISO = 28;
+    static final public int PARAM_CANON_FOCUS_MODE = 28;
     /**
      * 
      */
-    static final public int PARAM_CANON_SUBJECT_DISTANCE = 29;
+    static final public int PARAM_CANON_ISO = 29;
     /**
      * 
      */
-    static final public int PARAM_WITDH = 30;
+    static final public int PARAM_CANON_SUBJECT_DISTANCE = 30;
     /**
      * 
      */
-    static final public int PARAM_HEIGHT = 31;
+    static final public int PARAM_WITDH = 31;
     /**
      * 
      */
-    static final public int PARAM_FORMAT = 32;
+    static final public int PARAM_HEIGHT = 32;
     /**
      * 
      */
-    static final public int NB_PARAM = 33;
+    static final public int PARAM_FORMAT = 33;
+    /**
+     * 
+     */
+    static final public int NB_PARAM = 34;
 
     /**
      * @see javax.swing.table.TableModel#getRowCount()

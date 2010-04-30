@@ -252,6 +252,8 @@ public class ConcretePhotoList extends Object
             return "flash (header)";
         case PARAM_FOCAL_LENGTH:
             return "focal lenght (header)";
+        case PARAM_SELF_TIMER_MODE:
+            return "Self timer mode (header)";
         case PARAM_CANON_SELF_TIMER_DELAY:
             return "Canon self timer delay (header)";
         case PARAM_CANON_FLASH_MODE:
@@ -291,14 +293,18 @@ public class ConcretePhotoList extends Object
         case PARAM_SHUTTER_SPEED:
         case PARAM_APERTURE_VALUE:
         case PARAM_FLASH:
+            return String.class;
         case PARAM_FOCAL_LENGTH:
+            return Double.class;
+        case PARAM_SELF_TIMER_MODE:
         case PARAM_CANON_SELF_TIMER_DELAY:
         case PARAM_CANON_FLASH_MODE:
         case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
         case PARAM_CANON_FOCUS_MODE:
         case PARAM_CANON_ISO:
-        case PARAM_CANON_SUBJECT_DISTANCE:
             return String.class;
+        case PARAM_CANON_SUBJECT_DISTANCE:
+            return Integer.class;
         case PARAM_ZOOM:
         case PARAM_FOCUS_X:
         case PARAM_FOCUS_Y:
@@ -359,6 +365,7 @@ public class ConcretePhotoList extends Object
         case PARAM_APERTURE_VALUE:
         case PARAM_FLASH:
         case PARAM_FOCAL_LENGTH:
+        case PARAM_SELF_TIMER_MODE:
         case PARAM_CANON_SELF_TIMER_DELAY:
         case PARAM_CANON_FLASH_MODE:
         case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
@@ -451,7 +458,10 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getHeaderData().getFlash();
             break;
         case PARAM_FOCAL_LENGTH:
-            value = getPhoto(rowIndex).getHeaderData().getFocalLength();
+            value = new Double(getPhoto(rowIndex).getHeaderData().getFocalLength());
+            break;
+        case PARAM_SELF_TIMER_MODE:
+            value = getPhoto(rowIndex).getHeaderData().getCanonSelfTimerDelay();
             break;
         case PARAM_CANON_SELF_TIMER_DELAY:
             value = getPhoto(rowIndex).getHeaderData().getCanonSelfTimerDelay();
@@ -469,7 +479,7 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getHeaderData().getCanonISO();
             break;
         case PARAM_CANON_SUBJECT_DISTANCE:
-            value = getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance();
+            value = new Integer(getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance());
             break;
         case PARAM_HEIGHT:
             value = new Integer(getPhoto(rowIndex).getHeaderData().getHeight());

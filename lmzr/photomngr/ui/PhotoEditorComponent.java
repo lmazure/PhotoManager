@@ -466,13 +466,14 @@ public class PhotoEditorComponent extends JPanel
         if ( photo.getHeaderData().getApertureValue()!=null) parameters = parameters + "Aperture Value: " + photo.getHeaderData().getApertureValue() + "\n";
         if ( photo.getHeaderData().getShutterSpeed()!=null) parameters = parameters + "Shutter Speed: " + photo.getHeaderData().getShutterSpeed() + "\n";
         if ( photo.getHeaderData().getFlash()!=null) parameters = parameters + "Flash: " + photo.getHeaderData().getFlash() + "\n";
-        if ( photo.getHeaderData().getFocalLength()!=null) parameters = parameters + "Focal Length: " + photo.getHeaderData().getFocalLength() + "\n";
+        if ( photo.getHeaderData().getFocalLength()>=0.0) parameters = parameters + "Focal Length: " + photo.getHeaderData().getFocalLength() + "\n";
+        if ( photo.getHeaderData().getSelfTimerMode()!=null) parameters = parameters + "Self Timer Mode: " + photo.getHeaderData().getCanonSelfTimerDelay() + "\n";
         if ( photo.getHeaderData().getCanonSelfTimerDelay()!=null) parameters = parameters + "Canon Self Timer Delay: " + photo.getHeaderData().getCanonSelfTimerDelay() + "\n";
         if ( photo.getHeaderData().getCanonFlashMode()!=null) parameters = parameters + "Canon Flash Mode: " + photo.getHeaderData().getCanonFlashMode() + "\n";
         if ( photo.getHeaderData().getCanonContinuousDriveMode()!=null) parameters = parameters + "Canon Continuous Drive Mode: " + photo.getHeaderData().getCanonContinuousDriveMode() + "\n";
         if ( photo.getHeaderData().getCanonFocusMode()!=null) parameters = parameters + "Canon Focus Mode: " + photo.getHeaderData().getCanonFocusMode() + "\n";
         if ( photo.getHeaderData().getCanonISO()!=null) parameters = parameters + "Canon ISO: " + photo.getHeaderData().getCanonISO() + "\n";
-        if ( photo.getHeaderData().getCanonSubjectDistance()!=null) parameters = parameters + "Canon Subject Distance: " + photo.getHeaderData().getCanonSubjectDistance() + "\n";
+        if ( photo.getHeaderData().getCanonSubjectDistance()>=0) parameters = parameters + "Canon Subject Distance: " + photo.getHeaderData().getCanonSubjectDistance() + "\n";
         if (parameters.length()>0) parameters = parameters.substring(0,parameters.length()-1);
         a_parameters.setText(parameters);
         

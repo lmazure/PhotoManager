@@ -36,13 +36,14 @@ public class PhotoHeaderData {
     private String a_shutter_speed;
     private String a_aperture_value;
     private String a_flash;
-    private String a_focal_length;
+    private Double a_focal_length;
+    private String a_self_timer_mode;
     private String a_canon_self_timer_delay;
     private String a_canon_flash_mode;
     private String a_canon_continuous_drive_mode;
     private String a_canon_focus_mode;
     private String a_canon_iso;
-    private String a_canon_subject_distance;
+    private int a_canon_subject_distance;
     
     static final private int DEFAULT_ORIENTATION = 1;
     final private Date DEFAULT_DATE = null;
@@ -52,13 +53,14 @@ public class PhotoHeaderData {
     final private String DEFAULT_SHUTTER_SPEED = null;
     final private String DEFAULT_APERTURE_VALUE = null;
     final private String DEFAULT_FLASH = null;
-    final private String DEFAULT_FOCAL_LENGTH = null;
+    final private Double DEFAULT_FOCAL_LENGTH = -1.0;
+    final private String DEFAULT_SELF_TIMER_MODE = null;
     final private String DEFAULT_CANON_SELF_TIMER_DELAY = null;
     final private String DEFAULT_CANON_FLASH_MODE = null;
     final private String DEFAULT_CANON_CONTINUOUS_DRIVE_MODE = null;
     final private String DEFAULT_CANON_FOCUS_MODE = null;
     final private String DEFAULT_CANON_ISO = null;
-    final private String DEFAULT_CANON_SUBJECT_DISTANCE = null;
+    final private int DEFAULT_CANON_SUBJECT_DISTANCE = -1;
 
     /**
      * @param filename
@@ -163,9 +165,17 @@ public class PhotoHeaderData {
     /**
      * @return focal length (tag 0x920A)
      */
-    public String getFocalLength() {
+    public Double getFocalLength() {
         if (!a_loaded) load();
         return a_focal_length;    	
+    }
+
+    /**
+     * @return Self timer mode
+     */
+    public String getSelfTimerMode() {
+        if (!a_loaded) load();
+        return a_self_timer_mode;    	
     }
 
     /**
@@ -209,9 +219,9 @@ public class PhotoHeaderData {
     }
 
     /**
-     * @return Canon subject distance (tag 0xC213)
+     * @return Canon subject distance (tag 0xC213), -1 if undefined
      */
-    public String getCanonSubjectDistance() {
+    public int getCanonSubjectDistance() {
         if (!a_loaded) load();
         return a_canon_subject_distance;    	
     }
@@ -219,7 +229,11 @@ public class PhotoHeaderData {
     /**
      */
     private void load() {
+    	
         a_loaded = true;
+        
+        a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+        
         try {
         	String filename = a_filename;
         	// if this is an AVI file, try to read the corresponding THM file
@@ -269,9 +283,16 @@ public class PhotoHeaderData {
                     	} else if (tag.getTagType() == ExifDirectory.TAG_FLASH) {
                     		a_flash = directory.getDescription(tag.getTagType());
                     	} else if (tag.getTagType() == ExifDirectory.TAG_FOCAL_LENGTH) {
-                    		a_focal_length = directory.getDescription(tag.getTagType());
+                			try {
+                    			final String value = directory.getDescription(tag.getTagType()).replace(" mm","").replace(",",".");
+                    			a_focal_length = Double.parseDouble(value);
+                			} catch (final NumberFormatException e) {
+                	        	a_focal_length = DEFAULT_FOCAL_LENGTH;
+                    			System.err.println("unexpected value for TAG_FOCAL_LENGTH");
+                    			e.printStackTrace();
+                    		}
                     	} else if (tag.getTagType() == ExifDirectory.TAG_SELF_TIMER_MODE) {
-                    		a_focal_length = directory.getDescription(tag.getTagType());
+                    		a_self_timer_mode = directory.getDescription(tag.getTagType());
                     	} else if (getManufacturer()!=null && getManufacturer().equalsIgnoreCase("canon")) { 
                     		if (tag.getTagType() == CanonMakernoteDirectory.TAG_CANON_STATE1_SELF_TIMER_DELAY) {
                     			a_canon_self_timer_delay = directory.getDescription(tag.getTagType());
@@ -284,7 +305,14 @@ public class PhotoHeaderData {
                     		} else if (tag.getTagType() == CanonMakernoteDirectory.TAG_CANON_STATE1_ISO) {
                     			a_canon_iso = directory.getDescription(tag.getTagType());
                     		} else if (tag.getTagType() == CanonMakernoteDirectory.TAG_CANON_STATE2_SUBJECT_DISTANCE) {
-                    			a_canon_subject_distance = directory.getDescription(tag.getTagType());
+                    			try {
+	                    			final String value = directory.getDescription(tag.getTagType());
+	                    			a_canon_subject_distance = Integer.parseInt(value);
+                    			} catch (final NumberFormatException e) {
+                    				a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+	                    			System.err.println("unexpected value for TAG_CANON_STATE2_SUBJECT_DISTANCE");
+	                    			e.printStackTrace();
+	                    		}
                     		}
                     	}
                     } catch (final MetadataException e) {
@@ -302,6 +330,7 @@ public class PhotoHeaderData {
         	a_aperture_value = DEFAULT_APERTURE_VALUE;
         	a_flash = DEFAULT_FLASH;
         	a_focal_length = DEFAULT_FOCAL_LENGTH;
+        	a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
         	a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
         	a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
         	a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
@@ -311,7 +340,8 @@ public class PhotoHeaderData {
         }
         
         // JPEG file with no tag (I'll have to read the JPEG and EXIF specifications...)
-        if ( a_format == DataFormat.JPEG && a_width == 0 && a_height == 0 ) {
+        if ( a_format == DataFormat.JPEG &&
+        	( a_width == 0 || a_height == 0 ) ) {
         	final File file = new File(a_filename);
         	if (file.exists()) {
 	        	try {
