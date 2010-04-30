@@ -55,6 +55,7 @@ public class PhotoIndexData {
             a_zoom = Float.parseFloat(data[11]);
             a_focus_x = Float.parseFloat(data[12]);
             a_focus_y = Float.parseFloat(data[13]);
+            a_rotation = Float.parseFloat(data[14]);
         } catch (final NumberFormatException e) {
             System.err.println("failed to parse data");
             e.printStackTrace();
