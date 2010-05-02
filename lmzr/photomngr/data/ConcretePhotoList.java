@@ -19,6 +19,7 @@ import javax.swing.event.TableModelListener;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
+import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.util.io.StringTableFromToExcel;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
@@ -39,15 +40,18 @@ public class ConcretePhotoList extends Object
     final private HierarchicalCompoundStringFactory a_locationFactory;
     final private MultiHierarchicalCompoundStringFactory a_subjectFactory;
     final private AuthorFactory a_authorFactory;
+    final private Scheduler a_scheduler;
     private boolean a_isSaved; 
     
     
     /**
      * @param excelFilename
      * @param rootDirPhoto
+     * @param scheduler 
      */
     public ConcretePhotoList(final String excelFilename,
-                             final String rootDirPhoto) {
+                             final String rootDirPhoto,
+                             final Scheduler scheduler) {
         
         a_listOfListeners = new Vector<TableModelListener>();
         a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
@@ -56,6 +60,7 @@ public class ConcretePhotoList extends Object
         a_subjectFactory = new MultiHierarchicalCompoundStringFactory();
         a_authorFactory = new AuthorFactory(); 
         a_excelFilename = excelFilename;
+        a_scheduler = scheduler;
         a_isSaved = true;
         
         // load the data
@@ -803,28 +808,49 @@ public class ConcretePhotoList extends Object
             data[i+1][14] = Float.toString(indexData.getRotation());
         }
         
-        // keep a copy of the old file
-		final Calendar now = Calendar.getInstance();
-        final NumberFormat f2 = new DecimalFormat("00");
-        final NumberFormat f3 = new DecimalFormat("000");
-        final String backupName = Integer.toString(now.get(Calendar.YEAR)) + 
-		                          "_" + f2.format(now.get(Calendar.MONTH)+1)+ 
-		                          "_" + f2.format(now.get(Calendar.DAY_OF_MONTH)) +
-		                          "_" + f2.format(now.get(Calendar.HOUR_OF_DAY)) +
-		                          "_" + f2.format(now.get(Calendar.MINUTE)) +
-		                          "_" + f2.format(now.get(Calendar.SECOND)) +
-                                  "_" + f3.format(now.get(Calendar.MILLISECOND));
-        final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
-        final File file = new File(a_excelFilename);
-        final File file2 = new File(name);
-        if (!file.renameTo(file2)) throw new IOException("Failed to rename "+a_excelFilename+" into "+name);
+        a_scheduler.submit("save index file",
+                Scheduler.Category.CATEGORY_NOW,
+                Scheduler.Priority.PRIORITY_LOW,
+                0.0,
+                new Runnable() {
+                    @Override public void run() {
+                        save(data);
+                        }
+                });
         
-        // create the new file
-        StringTableFromToExcel.save(a_excelFilename,data);
         
         // notify the SaveListerners
-        setAsSaved();
+        setAsSaved(); //TODO this is not correct if the saving fails
+    }
+    
+    /**
+     * @param data
+     */
+    private void save(final String data[][]) {
         
+        try {
+            // keep a copy of the old file
+    		final Calendar now = Calendar.getInstance();
+            final NumberFormat f2 = new DecimalFormat("00");
+            final NumberFormat f3 = new DecimalFormat("000");
+            final String backupName = Integer.toString(now.get(Calendar.YEAR)) + 
+    		                          "_" + f2.format(now.get(Calendar.MONTH)+1)+ 
+    		                          "_" + f2.format(now.get(Calendar.DAY_OF_MONTH)) +
+    		                          "_" + f2.format(now.get(Calendar.HOUR_OF_DAY)) +
+    		                          "_" + f2.format(now.get(Calendar.MINUTE)) +
+    		                          "_" + f2.format(now.get(Calendar.SECOND)) +
+                                      "_" + f3.format(now.get(Calendar.MILLISECOND));
+            final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
+            final File file = new File(a_excelFilename);
+            final File file2 = new File(name);
+            if (!file.renameTo(file2)) throw new IOException("Failed to rename "+a_excelFilename+" into "+name);
+            
+            // create the new file
+            StringTableFromToExcel.save(a_excelFilename,data);
+        } catch (final IOException e) {
+            System.err.println("failed to save index file");
+            e.printStackTrace();
+        }
     }
     
     /**
