@@ -787,16 +787,9 @@ public class ConcretePhotoList extends Object
             data[i+1][1] = photo.getFilename();
             data[i+1][2] = (indexData.getLocation().toLongString()==null) ? "" : indexData.getLocation().toLongString();
             data[i+1][3] = (indexData.getSubject().toString()==null) ? "" : indexData.getSubject().toString();
-            
-            // record the traits as integers => non maintainable, but the reading is much faster 
-            data[i+1][4] = Integer.toString(indexData.getQuality().getValue());
-            data[i+1][5] = Integer.toString(indexData.getOriginality().getValue());
-            data[i+1][6] = Integer.toString(indexData.getPrivacy().getValue());
-            
-            // records the traits as strings => maintainable, but the reading is much slower
-//            data[i+1][4] = indexData.getQuality().toString();
-//            data[i+1][5] = indexData.getOriginality().toString();
-//            data[i+1][6] = indexData.getPrivacy().toString();
+            data[i+1][4] = indexData.getQuality().toString();
+            data[i+1][5] = indexData.getOriginality().toString();
+            data[i+1][6] = indexData.getPrivacy().toString();
             
             data[i+1][7] = (indexData.getPanorama()==null) ? "" : indexData.getPanorama();
             data[i+1][8] = (indexData.getPanoramaFirst()==null) ? "" : indexData.getPanoramaFirst();
@@ -815,7 +808,7 @@ public class ConcretePhotoList extends Object
                 new Runnable() {
                     @Override public void run() {
                         save(data);
-                        }
+                    }
                 });
         
         

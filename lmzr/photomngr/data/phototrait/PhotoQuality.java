@@ -1,11 +1,25 @@
 package lmzr.photomngr.data.phototrait;
 
+import java.util.HashMap;
+
 /**
  * @author Laurent
  */
 public class PhotoQuality extends PhotoTrait {
 
     static final private String[] g_encoding = new String[] {"awful", "very bad", "bad", "middle", "good", "very good", "excellent"};
+    static final private HashMap<String, PhotoQuality> g_pool = new HashMap<String, PhotoQuality>();
+    static final private PhotoQuality g_undefined = new PhotoQuality(UNDEFINED_TRAIT_VALUE);
+    
+    static {
+        for (int i=0; i<g_encoding.length; i++) {
+        	final PhotoQuality p = new PhotoQuality(i);
+        	g_pool.put(g_encoding[i],p);
+        	g_pool.put(Integer.toString(i),p);        	
+        }
+        g_pool.put(UNDEFINED_TRAIT_STRING,g_undefined);
+        g_pool.put(Integer.toString(UNDEFINED_TRAIT_VALUE),g_undefined);
+    }
 
     private PhotoQuality(final int value) {
         super(value);
@@ -16,8 +30,7 @@ public class PhotoQuality extends PhotoTrait {
      */
     @Override
 	public boolean equals(final Object other) {
-      if ( ! (other instanceof PhotoQuality) ) return false;
-      return super.equals(other);
+    	return other == this;
     }
 
 
@@ -26,7 +39,12 @@ public class PhotoQuality extends PhotoTrait {
      * @return PhotoQuality encoded by str
      */
     static public PhotoQuality parse(final String str) {
-        return new PhotoQuality(parse(str,g_encoding));
+    	final PhotoQuality p = g_pool.get(str);
+    	if ( p == null ) {
+    		return g_undefined;
+    	} else {
+    		return p;
+    	}
     }
     
     
@@ -42,9 +60,11 @@ public class PhotoQuality extends PhotoTrait {
      * @return traits
      */
     static public PhotoTrait[] getTraits() {
-        final int v[] = getValues(g_encoding);
-        final PhotoQuality traits[] = new PhotoQuality[v.length];
-        for (int i=0; i<v.length; i++) traits[i] = new PhotoQuality(v[i]);
+        final PhotoTrait traits[] = new PhotoTrait[g_encoding.length+1];
+        for (int i=0; i<g_encoding.length; i++) {
+        	traits[i] = g_pool.get(Integer.toString(i));
+        }
+        traits[g_encoding.length] = g_undefined;
         return traits;
     }
 
