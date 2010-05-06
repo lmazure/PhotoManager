@@ -25,6 +25,11 @@ public class PhotoTrait {
         a_value = value;
     }
     
+    @Override
+	public int hashCode() {
+		return a_value;
+	}
+
     /**
      * @return value
      */

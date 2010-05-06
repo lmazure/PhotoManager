@@ -42,9 +42,8 @@ public class PhotoQuality extends PhotoTrait {
     	final PhotoQuality p = g_pool.get(str);
     	if ( p == null ) {
     		return g_undefined;
-    	} else {
-    		return p;
     	}
+    	return p;
     }
     
     
@@ -56,7 +55,12 @@ public class PhotoQuality extends PhotoTrait {
         return toString(g_encoding);
     }
     
-    /**
+    @Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	/**
      * @return traits
      */
     static public PhotoTrait[] getTraits() {

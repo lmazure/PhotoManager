@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -20,10 +21,13 @@ import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.SaveEvent;
 import lmzr.photomngr.data.SaveListener;
+import lmzr.photomngr.data.GPS.GPSDatabase;
+import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.photomngr.ui.action.ActionCopy;
 import lmzr.photomngr.ui.action.ActionCopyFromNext;
 import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
 import lmzr.photomngr.ui.action.ActionPaste;
+import lmzr.photomngr.ui.action.ActionQuit;
 import lmzr.photomngr.ui.action.ActionRenameFolder;
 import lmzr.photomngr.ui.action.ActionSave;
 
@@ -50,9 +54,13 @@ public class PhotoListDisplay extends JFrame
     /**
      * @param unfilteredList
      * @param filteredList
+     * @param GPSDatabase
+     * @param scheduler
      */
     public PhotoListDisplay(final PhotoList unfilteredList,
-    		                final PhotoList filteredList) {
+    		                final PhotoList filteredList,
+      		                final GPSDatabase GPSDatabase,
+      		                final Scheduler scheduler) {
 	    super();
 	    
 	    a_list = filteredList;
@@ -78,7 +86,9 @@ public class PhotoListDisplay extends JFrame
 		a_actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",filteredList);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
-
+		final ActionQuit a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",filteredList,GPSDatabase,scheduler);
+		final JMenuItem itemQuit = new JMenuItem(a_actionQuit);
+		menuFile.add(itemQuit);
 
 		final JMenu menuEdit = new JMenu("Edit");
 		menuEdit.setMnemonic(KeyEvent.VK_E);
@@ -109,6 +119,9 @@ public class PhotoListDisplay extends JFrame
 		a_table.getInputMap().put((KeyStroke)a_actionPaste.getValue(Action.ACCELERATOR_KEY),a_actionPaste.getValue(Action.NAME));
 		a_table.getActionMap().put(a_actionPaste.getValue(Action.NAME),a_actionPaste);
 
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		new WindowClosingListener(this,
+                new WindowClosingListener.Callback() { @Override public void windowClosing() { a_actionQuit.controlledExit(); }});
 }
     
     /**
@@ -135,7 +148,7 @@ public class PhotoListDisplay extends JFrame
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
-    public void valueChanged(@SuppressWarnings("unused") final ListSelectionEvent e) {
+    public void valueChanged(final ListSelectionEvent e) {
 
 		final int select[] = a_selection.getSelection();
 

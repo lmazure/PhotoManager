@@ -1,5 +1,7 @@
 package lmzr.photomngr.scheduler;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
@@ -36,13 +38,15 @@ public class Scheduler {
         PRIORITY_VERY_LOW
 	}
 	
-    private final PriorityExecutor a_executor;
+    private final PriorityExecutor a_executorCPU;
+    private final ExecutorService a_executorIO;
 
     /**
      * 
      */
     public Scheduler() {
-    	a_executor = new PriorityExecutor(2);
+    	a_executorCPU = new PriorityExecutor(2);
+    	a_executorIO = Executors.newSingleThreadExecutor();
     }
     
     /**
@@ -53,14 +57,26 @@ public class Scheduler {
      * @param task
      * @return future result of the task
      */
-    public Future<?> submit(final String description,
-    		                final Category category,
-    		                final Priority priority,
-    		                final double subpriority,
-    		                final Runnable task) {
+    public Future<?> submitCPU(final String description,
+    		                   final Category category,
+    		                   final Priority priority,
+    		                   final double subpriority,
+    		                   final Runnable task) {
         
-        //System.out.println("added "+description);
+        System.out.println("added CPU task: "+description);
         final PriorityRunnable prunnable = new PriorityRunnable(category,priority,subpriority,task);
-    	return a_executor.submit(prunnable);
+    	return a_executorCPU.submit(prunnable);
+    }
+
+    /**
+     * @param description textual description of the task
+     * @param task
+     * @return future result of the task
+     */
+    public Future<?> submitIO(final String description,
+   		                      final Runnable task) {
+        
+        System.out.println("added IO task: "+description);
+    	return a_executorIO.submit(task);
     }
 }

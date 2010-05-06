@@ -42,12 +42,9 @@
 package lmzr.photomngr.ui;
 
 import java.awt.Rectangle;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ConcretePhotoList;
 import lmzr.photomngr.data.ListSelectionManager;
@@ -59,7 +56,7 @@ import lmzr.photomngr.scheduler.Scheduler;
 /**
  * @author Laurent Mazuré
  */
-public class Main implements WindowListener {
+public class Main {
 
 	private PhotoDisplayer a_displayer;
 	
@@ -98,7 +95,7 @@ public class Main implements WindowListener {
 
         final GPSDatabase a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt", a_list.getLocationFactory());
         
-        final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,a_filteredList);
+        final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,a_filteredList,a_GPSDatabase,scheduler);
         final ListSelectionManager selection = new ListSelectionManager(a_filteredList,a_listDisplay.getLineSelectionListModel());
         
         a_displayer = new PhotoDisplayer(scheduler, a_filteredList, a_GPSDatabase, new SubsampledImageCachedManager(cache), selection);
@@ -106,63 +103,10 @@ public class Main implements WindowListener {
         final int i = a_list.getRowCount()-1;
         a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);
 
-        a_listDisplay.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        a_listDisplay.addWindowListener(this);
         a_listDisplay.setBounds(new Rectangle(0,0,1280,300));
         a_listDisplay.setVisible(true);
         
-        a_displayer.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        a_displayer.addWindowListener(this);
         a_displayer.setBounds(new Rectangle(100,300,1000,720));
         a_displayer.setVisible(true);        
-    }
-
-    /**
-     * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
-     */
-    public void windowOpened(@SuppressWarnings("unused") final WindowEvent e) {        
-        //
-    }
-
-    /**
-     * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
-     */
-    public void windowClosing(@SuppressWarnings("unused") final WindowEvent e) {
-        a_displayer.controlledExit(); //TODO dirty hack
-    }
-
-    /**
-     * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
-     */
-    public void windowClosed(@SuppressWarnings("unused") final WindowEvent e) {
-        //
-    }
-
-    /**
-     * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
-     */
-    public void windowIconified(@SuppressWarnings("unused") final WindowEvent e) {
-        //
-    }
-
-    /**
-     * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
-     */
-    public void windowDeiconified(@SuppressWarnings("unused") final WindowEvent e) {
-        //
-    }
-
-    /**
-     * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
-     */
-    public void windowActivated(@SuppressWarnings("unused") final WindowEvent e) {
-        //
-    }
-
-    /**
-     * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
-     */
-    public void windowDeactivated(@SuppressWarnings("unused") final WindowEvent e) {
-        //
     }
 }

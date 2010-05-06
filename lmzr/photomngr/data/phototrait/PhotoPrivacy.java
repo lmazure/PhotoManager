@@ -43,9 +43,8 @@ public class PhotoPrivacy extends PhotoTrait {
     	final PhotoPrivacy p = g_pool.get(str);
     	if ( p == null ) {
     		return g_undefined;
-    	} else {
-    		return p;
     	}
+    	return p;
     }
     
     
@@ -57,6 +56,12 @@ public class PhotoPrivacy extends PhotoTrait {
         return toString(g_encoding);
     }
     
+    @Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+
     /**
      * @return traits
      */

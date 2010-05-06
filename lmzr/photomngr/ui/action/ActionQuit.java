@@ -7,6 +7,7 @@ import javax.swing.KeyStroke;
 
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.GPS.GPSDatabase;
+import lmzr.photomngr.scheduler.Scheduler;
 
 /**
  * Action to quit
@@ -15,6 +16,7 @@ public class ActionQuit extends PhotoManagerAction {
 
 	final private PhotoList a_photoList;
 	final private GPSDatabase a_GPSDatabase;
+    final private Scheduler a_scheduler;
 
 	/**
 	 * @param text
@@ -29,17 +31,19 @@ public class ActionQuit extends PhotoManagerAction {
 	                  final KeyStroke accelerator,
 	                  final String tooltipText,
 	                  final PhotoList list,
-	                  final GPSDatabase GPSDatabase) {
+	                  final GPSDatabase GPSDatabase,
+	                  final Scheduler scheduler) {
         super(text, mnemonic, accelerator, tooltipText);
         a_photoList = list;
         a_GPSDatabase = GPSDatabase;
+        a_scheduler = scheduler;
 	}
 
 
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 	    controlledExit();
 	}
 	
@@ -48,7 +52,8 @@ public class ActionQuit extends PhotoManagerAction {
      */
     public void controlledExit() {
 	    if ( a_photoList.isSaved() && a_GPSDatabase.isSaved() ) {
-			System.exit(0);
+            a_scheduler.submitIO("exit",
+                    new Runnable() { @Override public void run() { System.exit(0); } });
 	    } else {
 	    	String message = "Do you really want to exit without saving ";
 	    	if ( !a_photoList.isSaved() && !a_GPSDatabase.isSaved() ) {
@@ -60,7 +65,8 @@ public class ActionQuit extends PhotoManagerAction {
 	    	}
 		    final int a = JOptionPane.showConfirmDialog(null,message,"Exit",JOptionPane.OK_CANCEL_OPTION);
 	        if ( a == JOptionPane.OK_OPTION ) {
-				System.exit(0);		            
+	            a_scheduler.submitIO("exit",
+                        new Runnable() { @Override public void run() { System.exit(0); } });
 	        }
 	    }
     }

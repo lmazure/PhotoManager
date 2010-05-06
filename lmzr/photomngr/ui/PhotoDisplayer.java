@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.SaveEvent;
@@ -54,7 +55,6 @@ public class PhotoDisplayer extends JFrame
 	final private JMenuBar a_menubar;
 	private boolean a_isFullScreen;
 	private Rectangle a_bounds;
-	private final ActionQuit a_actionQuit;
 
     /**
      * @param scheduler 
@@ -86,7 +86,7 @@ public class PhotoDisplayer extends JFrame
         
         addComponentListener(new ComponentAdapter() {
             @Override
-			public void componentResized(@SuppressWarnings("unused") final ComponentEvent e) {
+			public void componentResized(final ComponentEvent e) {
                 repaint();
             }
         });
@@ -112,7 +112,7 @@ public class PhotoDisplayer extends JFrame
 		final ActionCreateCopiesForPrinting actionCreateCopiesForPrinting = new ActionCreateCopiesForPrinting("Create copies for printing", KeyEvent.CHAR_UNDEFINED, null,"Copies the file for a printing",this,a_photoList);
 		final JMenuItem itemCreateCopiesForPrinting = new JMenuItem(actionCreateCopiesForPrinting);
 		menuFile.add(itemCreateCopiesForPrinting);
-		a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",a_photoList,a_GPSDatabase);
+		final ActionQuit a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",a_photoList,a_GPSDatabase,scheduler);
 		final JMenuItem itemQuit = new JMenuItem(a_actionQuit);
 		menuFile.add(itemQuit);
 
@@ -169,6 +169,10 @@ public class PhotoDisplayer extends JFrame
 		final JMenuItem itemFilter = new JMenuItem(actionFilter);
 		filterView.add(itemFilter);
 		
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		new WindowClosingListener(this,
+				                  new WindowClosingListener.Callback() { @Override public void windowClosing() { a_actionQuit.controlledExit(); }});
+
         a_isFullScreen = false;
     }
 
@@ -200,18 +204,11 @@ public class PhotoDisplayer extends JFrame
     /**
      * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
-    public void saveChanged(@SuppressWarnings("unused") final SaveEvent e) {
+    public void saveChanged(final SaveEvent e) {
         setTitle("photo display - [photo data is " +
         		 (a_photoList.isSaved() ? "saved]" : "modified]") +
         		 " [GPS data is " +
         		 (a_GPSDatabase.isSaved() ? "saved]" : "modified]") );
 
-    }
-
-    /**
-     * 
-     */
-    public void controlledExit() {
-    	a_actionQuit.controlledExit(); // TODO fix this dirty hack
     }
 }

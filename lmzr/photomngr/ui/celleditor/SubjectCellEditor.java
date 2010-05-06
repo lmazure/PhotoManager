@@ -186,7 +186,7 @@ public class SubjectCellEditor extends JComponent
         	a_edit.setAlignmentX(0.f);
         	a_edit.addActionListener(new ActionListener() {
         		// ceci est un copier/coller de ci-dessous
-        		public void actionPerformed(@SuppressWarnings("unused") ActionEvent event) {
+        		public void actionPerformed(ActionEvent event) {
         			transferPropositionButtonTextToTextfield(a_propositions[0]);
         		} 
         	});
@@ -208,7 +208,7 @@ public class SubjectCellEditor extends JComponent
             a_edit.getDocument().addDocumentListener(listener);
             a_searchScope.addActionListener(new ActionListener() {
         		// ceci est un copier/coller de ci-dessous
-        		public void actionPerformed(@SuppressWarnings("unused") ActionEvent event) {
+        		public void actionPerformed(ActionEvent event) {
         			listener.update();
         		} 
         	});
@@ -229,7 +229,7 @@ public class SubjectCellEditor extends JComponent
             a_subjects.getSelectionModel().setSelectionPaths(paths);
             a_subjects.getSelectionModel().addTreeSelectionListener(
             		new TreeSelectionListener() {
-            			public void valueChanged(@SuppressWarnings("unused") final TreeSelectionEvent e) {
+            			public void valueChanged(final TreeSelectionEvent e) {
             				final TreePath selections[] = a_subjects.getSelectionModel().getSelectionPaths();
             				String s ="";
             				for (int i=0; i<selections.length; i++) {
@@ -247,12 +247,12 @@ public class SubjectCellEditor extends JComponent
     		buttonsPane.add(bCancel);
     		getRootPane().setDefaultButton(bOk);
     		bOk.addActionListener(new ActionListener() {
-    				public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+    				public void actionPerformed(final ActionEvent e) {
     					close();
     				}
     		});
     		bCancel.addActionListener(new ActionListener() {
-    					public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+    					public void actionPerformed(final ActionEvent e) {
     						a_text.setText(keptValue);
     						close();
     					}
@@ -340,7 +340,7 @@ public class SubjectCellEditor extends JComponent
         add(a_button);
         a_button.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) { a_internal.open();}});
+                    public void actionPerformed(final ActionEvent e) { a_internal.open();}});
         a_listenerList = new Vector<CellEditorListener>();
     }
     
@@ -367,7 +367,7 @@ public class SubjectCellEditor extends JComponent
                                                  final Object value,
                                                  final boolean isSelected,
                                                  final int row,
-                                                 @SuppressWarnings("unused") final int column) {
+                                                 final int column) {
         if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
@@ -396,7 +396,7 @@ public class SubjectCellEditor extends JComponent
     /**
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
-    public boolean shouldSelectCell(@SuppressWarnings("unused") final EventObject anEvent) {
+    public boolean shouldSelectCell(final EventObject anEvent) {
         return true;
     }
 

@@ -41,9 +41,8 @@ public class PhotoOriginality extends PhotoTrait {
     	final PhotoOriginality p = g_pool.get(str);
     	if ( p == null ) {
     		return g_undefined;
-    	} else {
-    		return p;
     	}
+    	return p;
     }
     
     
@@ -54,6 +53,11 @@ public class PhotoOriginality extends PhotoTrait {
 	public String toString() {
         return toString(g_encoding);
     }
+
+    @Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 
     /**
      * @return traits

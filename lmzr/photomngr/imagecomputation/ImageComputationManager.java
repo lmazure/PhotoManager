@@ -189,7 +189,7 @@ public class ImageComputationManager {
             return null;
         }
 		// the image to compute is not in the cache
-		return a_scheduler.submit("compute image \""+photo.getFilename()+"\" for display",
+		return a_scheduler.submitCPU("compute image \""+photo.getFilename()+"\" for display",
 				                  Scheduler.Category.CATEGORY_NOW,
                                   Scheduler.Priority.PRIORITY_VERY_HIGH,
 				                  1.0,

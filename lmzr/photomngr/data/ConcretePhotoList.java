@@ -342,7 +342,7 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
-    public boolean isCellEditable(@SuppressWarnings("unused") final int rowIndex,
+    public boolean isCellEditable(final int rowIndex,
     		                      final int columnIndex) {
         switch (columnIndex) {
         case PARAM_PRIVACY:
@@ -801,16 +801,8 @@ public class ConcretePhotoList extends Object
             data[i+1][14] = Float.toString(indexData.getRotation());
         }
         
-        a_scheduler.submit("save index file",
-                Scheduler.Category.CATEGORY_NOW,
-                Scheduler.Priority.PRIORITY_LOW,
-                0.0,
-                new Runnable() {
-                    @Override public void run() {
-                        save(data);
-                    }
-                });
-        
+        a_scheduler.submitIO("save index file",
+                             new Runnable() { @Override public void run() { save(data); } });
         
         // notify the SaveListerners
         setAsSaved(); //TODO this is not correct if the saving fails
