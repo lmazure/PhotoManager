@@ -114,7 +114,7 @@ public class PhotoEditorComponent extends JPanel
         a_folderIsDisabled = false;
         a_folder.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                         if (a_folderIsDisabled) return;
                         for (int i=0; i<a_photoList.getRowCount(); i++) {
                             final String f = a_photoList.getPhoto(i).getFolder();
@@ -130,11 +130,11 @@ public class PhotoEditorComponent extends JPanel
         a_nextPhoto = new JButton("next");
         a_nextPhoto.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) { a_selection.next(1);}});
+                    public void actionPerformed(final ActionEvent e) { a_selection.next(1);}});
         a_previousPhoto = new JButton("prev.");
         a_previousPhoto.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) { a_selection.previous(1);}});
+                    public void actionPerformed( final ActionEvent e) { a_selection.previous(1);}});
         navigator.add(a_file);
         navigator.add(a_previousPhoto);
         navigator.add(a_nextPhoto);
@@ -177,7 +177,7 @@ public class PhotoEditorComponent extends JPanel
         display.add(a_rotateLeft);
         a_rotateLeft.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	for (int i=0; i<a_selection.getSelection().length; i++) {
                     	    float r = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ROTATION))).floatValue();
                     	    a_photoList.setValueAt(new Float(r-90.),
@@ -186,7 +186,7 @@ public class PhotoEditorComponent extends JPanel
         display.add(a_rotateRight);
         a_rotateRight.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	for (int i=0; i<a_selection.getSelection().length; i++) {
                     	    float r = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ROTATION))).floatValue();
                     	    a_photoList.setValueAt(new Float(r+90.),
@@ -207,7 +207,7 @@ public class PhotoEditorComponent extends JPanel
         a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_location.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_location.getText(),
                     			               a_selection.getSelection()[0],
@@ -235,7 +235,7 @@ public class PhotoEditorComponent extends JPanel
         a_quality = new PhotoTraitCellEditor(PhotoQuality.getTraits());
         a_quality.addActionListener(
             new ActionListener() {
-                public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                public void actionPerformed(final ActionEvent e) {
                 	if (a_isAdjusting) return;
                     a_photoList.setValueAt(a_quality.getSelectedItem(),
                                            a_selection.getSelection()[0],
@@ -249,7 +249,7 @@ public class PhotoEditorComponent extends JPanel
         a_originality = new PhotoTraitCellEditor(PhotoOriginality.getTraits());
         a_originality.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                         a_photoList.setValueAt(a_originality.getSelectedItem(),
                         		               a_selection.getSelection()[0],
@@ -263,7 +263,7 @@ public class PhotoEditorComponent extends JPanel
         a_privacy = new PhotoTraitCellEditor(PhotoPrivacy.getTraits());
         a_privacy.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                         a_photoList.setValueAt(a_privacy.getSelectedItem(),
                         		               a_selection.getSelection()[0],
@@ -279,7 +279,7 @@ public class PhotoEditorComponent extends JPanel
         a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_author.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_author.getSelectedItem(),
                     			               a_selection.getSelection()[0],
@@ -293,7 +293,7 @@ public class PhotoEditorComponent extends JPanel
         a_panorama.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_panorama.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_panorama.getText(),
                     			               a_selection.getSelection()[0],
@@ -307,7 +307,7 @@ public class PhotoEditorComponent extends JPanel
         a_panoramaFirst.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_panoramaFirst.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_panoramaFirst.getText(),
                     			               a_selection.getSelection()[0],
@@ -321,7 +321,7 @@ public class PhotoEditorComponent extends JPanel
         a_copies.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_copies.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                         a_photoList.setValueAt(a_copies.getSelectedItem(),
                         		               a_selection.getSelection()[0],
@@ -401,14 +401,16 @@ public class PhotoEditorComponent extends JPanel
             // zero or more than one image is selected
             // -> empty the text fields and disable all the fields (except previous and next if at least one 
             setEnabledAll(false);
+        	a_map.setEnabled(false);
+        	a_map.setText("map");
             a_date.setText(" ");
             a_time.setText(" ");            
             a_location.setText(" ");
             a_subject.setText(" ");
-            //a_copy aussi
-            //a_author.setText(" ");
             a_panorama.setText(" ");
             a_panoramaFirst.setText(" ");
+            a_copies.setSelectedItem(new Integer(0));
+            a_author.setSelectedItem("");
             a_parameters.setText(" ");
         	a_isAdjusting = false;
             return;
@@ -427,7 +429,7 @@ public class PhotoEditorComponent extends JPanel
             a_date.setText(" ");
             a_time.setText(" ");            
         }
-        String location = photo.getIndexData().getLocation().toLongString();
+        final String location = photo.getIndexData().getLocation().toLongString();
         a_location.setText(location);
     	final GPSRecord gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
     	if (location!=null) {
