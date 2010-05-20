@@ -37,7 +37,7 @@ public class ActionDisplayGPSDatabase extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 
         final GPSDataDisplay a_GPSDisplay = new GPSDataDisplay(a_GPSDatabase);
         a_GPSDisplay.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -18,7 +18,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -78,7 +77,6 @@ public class PhotoEditorComponent extends JPanel
     final private JTextField a_panorama;
     final private JTextField a_panoramaFirst;
     final private CopiesCellEditor a_copies;
-    final private JTextArea a_parameters;
     final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
     private JButton a_play[];
     private boolean a_isAdjusting;
@@ -326,14 +324,6 @@ public class PhotoEditorComponent extends JPanel
                         a_photoList.setValueAt(a_copies.getSelectedItem(),
                         		               a_selection.getSelection()[0],
                                                PhotoList.PARAM_COPIES);}});
-        final JLabel parametersLabel = new JLabel("shot parameters");
-        parametersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(parametersLabel);
-        parametersLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_parameters = new JTextArea();      
-        a_parameters.setEditable(false);
-        panel.add(a_parameters);
-        a_parameters.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
     /**
@@ -411,7 +401,6 @@ public class PhotoEditorComponent extends JPanel
             a_panoramaFirst.setText(" ");
             a_copies.setSelectedItem(new Integer(0));
             a_author.setSelectedItem("");
-            a_parameters.setText(" ");
         	a_isAdjusting = false;
             return;
         }
@@ -459,26 +448,7 @@ public class PhotoEditorComponent extends JPanel
         a_panoramaFirst.setText(panoramaFirst);
         final int copies = photo.getIndexData().getCopies();
         a_copies.setSelectedItem(new Integer(copies));
-        String parameters = "";
-        if ( photo.getHeaderData().getWidth()!=0) parameters = parameters + "Width: " + photo.getHeaderData().getWidth() + "\n";
-        if ( photo.getHeaderData().getHeight()!=0) parameters = parameters + "Height: " + photo.getHeaderData().getHeight() + "\n";
-        if ( photo.getHeaderData().getManufacturer()!=null) parameters = parameters + "Manufacturer: " + photo.getHeaderData().getManufacturer() + "\n";
-        if ( photo.getHeaderData().getModel()!=null) parameters = parameters + "Model: " + photo.getHeaderData().getModel() + "\n";
-        if ( photo.getHeaderData().getExposureTime()!=null) parameters = parameters + "Exposure Time: " + photo.getHeaderData().getExposureTime() + "\n";
-        if ( photo.getHeaderData().getApertureValue()!=null) parameters = parameters + "Aperture Value: " + photo.getHeaderData().getApertureValue() + "\n";
-        if ( photo.getHeaderData().getShutterSpeed()!=null) parameters = parameters + "Shutter Speed: " + photo.getHeaderData().getShutterSpeed() + "\n";
-        if ( photo.getHeaderData().getFlash()!=null) parameters = parameters + "Flash: " + photo.getHeaderData().getFlash() + "\n";
-        if ( photo.getHeaderData().getFocalLength()>=0.0) parameters = parameters + "Focal Length: " + photo.getHeaderData().getFocalLength() + "\n";
-        if ( photo.getHeaderData().getSelfTimerMode()!=null) parameters = parameters + "Self Timer Mode: " + photo.getHeaderData().getCanonSelfTimerDelay() + "\n";
-        if ( photo.getHeaderData().getCanonSelfTimerDelay()!=null) parameters = parameters + "Canon Self Timer Delay: " + photo.getHeaderData().getCanonSelfTimerDelay() + "\n";
-        if ( photo.getHeaderData().getCanonFlashMode()!=null) parameters = parameters + "Canon Flash Mode: " + photo.getHeaderData().getCanonFlashMode() + "\n";
-        if ( photo.getHeaderData().getCanonContinuousDriveMode()!=null) parameters = parameters + "Canon Continuous Drive Mode: " + photo.getHeaderData().getCanonContinuousDriveMode() + "\n";
-        if ( photo.getHeaderData().getCanonFocusMode()!=null) parameters = parameters + "Canon Focus Mode: " + photo.getHeaderData().getCanonFocusMode() + "\n";
-        if ( photo.getHeaderData().getCanonISO()!=null) parameters = parameters + "Canon ISO: " + photo.getHeaderData().getCanonISO() + "\n";
-        if ( photo.getHeaderData().getCanonSubjectDistance()>=0) parameters = parameters + "Canon Subject Distance: " + photo.getHeaderData().getCanonSubjectDistance() + "\n";
-        if (parameters.length()>0) parameters = parameters.substring(0,parameters.length()-1);
-        a_parameters.setText(parameters);
-        
+       
     	a_isAdjusting = false;
     }
 
@@ -520,7 +490,6 @@ public class PhotoEditorComponent extends JPanel
         a_panorama.setEnabled(b);
         a_panoramaFirst.setEnabled(b);
         a_copies.setEnabled(b);
-        a_parameters.setEnabled(b);
     }
 
     /**
