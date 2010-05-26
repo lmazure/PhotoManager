@@ -32,6 +32,7 @@ import lmzr.photomngr.ui.action.ActionChangeQuality;
 import lmzr.photomngr.ui.action.ActionCreateCopiesForPrinting;
 import lmzr.photomngr.ui.action.ActionDisplayEditor;
 import lmzr.photomngr.ui.action.ActionDisplayGPSDatabase;
+import lmzr.photomngr.ui.action.ActionDisplayPhotoEditor;
 import lmzr.photomngr.ui.action.ActionDisplayPhotoParameters;
 import lmzr.photomngr.ui.action.ActionEditLocations;
 import lmzr.photomngr.ui.action.ActionEditSubjects;
@@ -107,6 +108,9 @@ public class PhotoDisplayer extends JFrame
 		final ActionDisplayPhotoParameters actionDisplayPhotoParameters = new ActionDisplayPhotoParameters("Display photo parameters", KeyEvent.VK_UNDEFINED, null,"Display photo parameters",a_photoList,selection);
 		final JMenuItem itemDisplayPhotoParameters = new JMenuItem(actionDisplayPhotoParameters);
 		menuFile.add(itemDisplayPhotoParameters);
+		final ActionDisplayPhotoEditor actionDisplayPhotoEditor = new ActionDisplayPhotoEditor("Display photo editor", KeyEvent.VK_UNDEFINED, null,"Display photo editor",a_photoList,selection);
+		final JMenuItem itemDisplayPhotoEditor = new JMenuItem(actionDisplayPhotoEditor);
+		menuFile.add(itemDisplayPhotoEditor);
 		final ActionExportSubjects actionExportSubjects = new ActionExportSubjects("Export subjects", KeyEvent.CHAR_UNDEFINED, null,"Export the list of subjects",this,a_photoList);
 		final JMenuItem itemExportSubjects = new JMenuItem(actionExportSubjects);
 		menuFile.add(itemExportSubjects);

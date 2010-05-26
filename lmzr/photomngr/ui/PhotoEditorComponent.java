@@ -18,7 +18,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -31,16 +30,8 @@ import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
-import lmzr.photomngr.data.phototrait.PhotoOriginality;
-import lmzr.photomngr.data.phototrait.PhotoPrivacy;
-import lmzr.photomngr.data.phototrait.PhotoQuality;
 import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
 import lmzr.photomngr.ui.action.ActionStartPlayer;
-import lmzr.photomngr.ui.celleditor.AuthorCellEditor;
-import lmzr.photomngr.ui.celleditor.CopiesCellEditor;
-import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
-import lmzr.photomngr.ui.cellrenderer.LocationCellRenderer;
-import lmzr.photomngr.ui.cellrenderer.SubjectCellRenderer;
 import lmzr.photomngr.ui.player.Player;
 import lmzr.photomngr.ui.player.Player_QuickTime;
 import lmzr.photomngr.ui.player.Player_VideoLAN;
@@ -68,18 +59,8 @@ public class PhotoEditorComponent extends JPanel
     final private JButton a_map;
     final private JButton a_rotateLeft;
     final private JButton a_rotateRight;
-    final private JTextField a_location;
-    final private SubjectCellRenderer a_subject;
-    final private PhotoTraitCellEditor a_quality;
-    final private PhotoTraitCellEditor a_originality;
-    final private PhotoTraitCellEditor a_privacy;
-    final private AuthorCellEditor a_author;
-    final private JTextField a_panorama;
-    final private JTextField a_panoramaFirst;
-    final private CopiesCellEditor a_copies;
     final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
     private JButton a_play[];
-    private boolean a_isAdjusting;
     private int a_previousSelection[];
 
 	
@@ -92,14 +73,13 @@ public class PhotoEditorComponent extends JPanel
     		                    final GPSDatabase GPSDatabase,
                                 final ListSelectionManager selection) {
         super();
-        a_isAdjusting = false;
         a_photoList = photoList;
         a_GPSDatabase = GPSDatabase;
-        a_photoList.addMetaListener(this);
         a_selection = selection;
         a_previousSelection = null;
-        photoList.addTableModelListener(this);
+        a_photoList.addTableModelListener(this);
         a_selection.addListener(this);
+        a_photoList.addMetaListener(this);
         
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -139,7 +119,7 @@ public class PhotoEditorComponent extends JPanel
         panel.add(navigator);
         navigator.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        final JPanel datetime =new JPanel();
+        final JPanel datetime = new JPanel();
         datetime.setLayout(new BoxLayout(datetime, BoxLayout.Y_AXIS));
         a_date = new JLabel();
         datetime.add(a_date);
@@ -193,137 +173,6 @@ public class PhotoEditorComponent extends JPanel
         panel.add(display);
         display.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        panel.add(new JSeparator());
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
-        
-        final JLabel locationLabel = new JLabel("location");
-        locationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(locationLabel);
-        locationLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_location = new LocationCellRenderer();
-        panel.add(a_location);
-        a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_location.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                    	a_photoList.setValueAt(a_location.getText(),
-                    			               a_selection.getSelection()[0],
-                    			               PhotoList.PARAM_LOCATION);}});
-        final JLabel subjectLabel = new JLabel("subject");
-        subjectLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(subjectLabel);
-        subjectLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_subject = new SubjectCellRenderer();
-        /*
-        a_subject.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                    	a_photoList.setValueAt(a_location.getText(),
-                    			               a_selection.getSelection()[0],
-                    			               PhotoList.PARAM_SUBJECT);}});
-        */
-        panel.add(a_subject);
-        a_subject.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel qualityLabel = new JLabel("quality");
-        qualityLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(qualityLabel);
-        qualityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_quality = new PhotoTraitCellEditor(PhotoQuality.getTraits());
-        a_quality.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(final ActionEvent e) {
-                	if (a_isAdjusting) return;
-                    a_photoList.setValueAt(a_quality.getSelectedItem(),
-                                           a_selection.getSelection()[0],
-                                           PhotoList.PARAM_QUALITY);}});
-        panel.add(a_quality);
-        a_quality.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel originalityLabel = new JLabel("originality");
-        originalityLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(originalityLabel);
-        originalityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_originality = new PhotoTraitCellEditor(PhotoOriginality.getTraits());
-        a_originality.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                        a_photoList.setValueAt(a_originality.getSelectedItem(),
-                        		               a_selection.getSelection()[0],
-                                               PhotoList.PARAM_ORIGINALITY);}});
-        panel.add(a_originality);
-        a_originality.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel privacyLabel = new JLabel("privacy");
-        privacyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(privacyLabel);
-        privacyLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_privacy = new PhotoTraitCellEditor(PhotoPrivacy.getTraits());
-        a_privacy.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                        a_photoList.setValueAt(a_privacy.getSelectedItem(),
-                        		               a_selection.getSelection()[0],
-                                               PhotoList.PARAM_PRIVACY);}});
-        panel.add(a_privacy);
-        a_privacy.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel authorLabel = new JLabel("author");
-        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(authorLabel);
-        authorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_author = new AuthorCellEditor(photoList.getAuthorFactory());
-        panel.add(a_author);
-        a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_author.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                    	a_photoList.setValueAt(a_author.getSelectedItem(),
-                    			               a_selection.getSelection()[0],
-                    			               PhotoList.PARAM_AUTHOR);}});
-        final JLabel panoramaLabel = new JLabel("panorama");
-        panoramaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(panoramaLabel);
-        panoramaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_panorama = new JTextField();
-        panel.add(a_panorama);
-        a_panorama.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_panorama.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                    	a_photoList.setValueAt(a_panorama.getText(),
-                    			               a_selection.getSelection()[0],
-                    			               PhotoList.PARAM_PANORAMA);}});
-        final JLabel panoramaFirstLabel = new JLabel("panorama first");
-        panoramaFirstLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(panoramaFirstLabel);
-        panoramaFirstLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_panoramaFirst = new JTextField();
-        panel.add(a_panoramaFirst);
-        a_panoramaFirst.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_panoramaFirst.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                    	a_photoList.setValueAt(a_panoramaFirst.getText(),
-                    			               a_selection.getSelection()[0],
-                    			               PhotoList.PARAM_PANORAMA_FIRST);}});
-        final JLabel copiesLabel = new JLabel("copies");
-        copiesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(copiesLabel);
-        copiesLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_copies = new CopiesCellEditor();
-        panel.add(a_copies);
-        a_copies.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_copies.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(final ActionEvent e) {
-                    	if (a_isAdjusting) return;
-                        a_photoList.setValueAt(a_copies.getSelectedItem(),
-                        		               a_selection.getSelection()[0],
-                                               PhotoList.PARAM_COPIES);}});
     }
 
     /**
@@ -335,8 +184,6 @@ public class PhotoEditorComponent extends JPanel
     	if (Arrays.equals(a_previousSelection,selection)) return;
         a_previousSelection = selection;        
         
-    	a_isAdjusting = true;
-    	
     	// buttons to start external player
     	for (int i=0; i<a_play.length; i++) {
     		final ActionStartPlayer action = (ActionStartPlayer)a_play[i].getAction();
@@ -395,13 +242,6 @@ public class PhotoEditorComponent extends JPanel
         	a_map.setText("map");
             a_date.setText(" ");
             a_time.setText(" ");            
-            a_location.setText(" ");
-            a_subject.setText(" ");
-            a_panorama.setText(" ");
-            a_panoramaFirst.setText(" ");
-            a_copies.setSelectedItem(new Integer(0));
-            a_author.setSelectedItem("");
-        	a_isAdjusting = false;
             return;
         }
         
@@ -419,7 +259,6 @@ public class PhotoEditorComponent extends JPanel
             a_time.setText(" ");            
         }
         final String location = photo.getIndexData().getLocation().toLongString();
-        a_location.setText(location);
     	final GPSRecord gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
     	if (location!=null) {
 	    	if ( gps != null && gps.getGPSData().isComplete() ) {
@@ -433,23 +272,6 @@ public class PhotoEditorComponent extends JPanel
         	a_map.setEnabled(false);    		
         	a_map.setText("map");
     	}
-        String subject = photo.getIndexData().getSubject().toString();
-        a_subject.setText(subject);
-        final PhotoQuality quality = photo.getIndexData().getQuality();
-        a_quality.setSelectedItem(quality);
-        final PhotoOriginality originality = photo.getIndexData().getOriginality();
-        a_originality.setSelectedItem(originality);
-        final PhotoPrivacy privacy = photo.getIndexData().getPrivacy();
-        a_privacy.setSelectedItem(privacy);
-        a_author.setSelectedItem(photo.getIndexData().getAuthor());
-        final String panorama = photo.getIndexData().getPanorama();
-        a_panorama.setText(panorama);
-        final String panoramaFirst = photo.getIndexData().getPanoramaFirst();
-        a_panoramaFirst.setText(panoramaFirst);
-        final int copies = photo.getIndexData().getCopies();
-        a_copies.setSelectedItem(new Integer(copies));
-       
-    	a_isAdjusting = false;
     }
 
     /**
@@ -482,14 +304,6 @@ public class PhotoEditorComponent extends JPanel
     private void setEnabledAll(final boolean b) {
         a_date.setEnabled(b);
         a_time.setEnabled(b);            
-        a_location.setEnabled(b);
-        a_quality.setEnabled(b);
-        a_originality.setEnabled(b);
-        a_privacy.setEnabled(b);
-        a_author.setEnabled(b);
-        a_panorama.setEnabled(b);
-        a_panoramaFirst.setEnabled(b);
-        a_copies.setEnabled(b);
     }
 
     /**
