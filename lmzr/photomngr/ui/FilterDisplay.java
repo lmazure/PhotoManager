@@ -123,7 +123,7 @@ public class FilterDisplay extends JDialog {
 		buttonsPane.add(bCancel);
 		getRootPane().setDefaultButton(bOk);
 		bOk.addActionListener(new ActionListener() {
-				public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+				public void actionPerformed(final ActionEvent e) {
 				    final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(PhotoOriginality.getTraits(),a_originality.getValues(),PhotoList.PARAM_ORIGINALITY);
 				    final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(PhotoPrivacy.getTraits(),a_privacy.getValues(),PhotoList.PARAM_PRIVACY);
 				    final FilterOnPhotoTrait filterOnQuality = new FilterOnPhotoTrait(PhotoQuality.getTraits(),a_quality.getValues(),PhotoList.PARAM_QUALITY);
@@ -151,7 +151,7 @@ public class FilterDisplay extends JDialog {
 				}
 		});
 		bCancel.addActionListener(new ActionListener() {
-					public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
 						close();
 					}
 		});

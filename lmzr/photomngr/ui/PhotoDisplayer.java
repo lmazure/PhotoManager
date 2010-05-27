@@ -1,6 +1,5 @@
 package lmzr.photomngr.ui;
 
-import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -30,9 +29,10 @@ import lmzr.photomngr.ui.action.ActionChangeOriginality;
 import lmzr.photomngr.ui.action.ActionChangePrivacy;
 import lmzr.photomngr.ui.action.ActionChangeQuality;
 import lmzr.photomngr.ui.action.ActionCreateCopiesForPrinting;
-import lmzr.photomngr.ui.action.ActionDisplayEditor;
 import lmzr.photomngr.ui.action.ActionDisplayGPSDatabase;
 import lmzr.photomngr.ui.action.ActionDisplayPhotoEditor;
+import lmzr.photomngr.ui.action.ActionDisplayPhotoGeometryEditor;
+import lmzr.photomngr.ui.action.ActionDisplayPhotoNavigator;
 import lmzr.photomngr.ui.action.ActionDisplayPhotoParameters;
 import lmzr.photomngr.ui.action.ActionEditLocations;
 import lmzr.photomngr.ui.action.ActionEditSubjects;
@@ -82,9 +82,7 @@ public class PhotoDisplayer extends JFrame
         saveChanged(new SaveEvent(photoList,photoList.isSaved()));
         
     	final PhotoDisplayerComponent displayer = new PhotoDisplayerComponent(scheduler, photoList, subsampler, selection);
-        getContentPane().add(displayer,BorderLayout.CENTER);
-    	final PhotoEditorComponent editor = new PhotoEditorComponent(photoList, a_GPSDatabase, selection);
-        getContentPane().add(editor,BorderLayout.EAST);
+        getContentPane().add(displayer);
         
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -102,15 +100,21 @@ public class PhotoDisplayer extends JFrame
 		final ActionSave actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_photoList);
 		final JMenuItem itemSave = new JMenuItem(actionSave);
 		menuFile.add(itemSave);
-		final ActionDisplayGPSDatabase actionDisplayGPSDatabase = new ActionDisplayGPSDatabase("Display GPS database", KeyEvent.VK_UNDEFINED, null,"Display GPS database",a_GPSDatabase);
-		final JMenuItem itemDisplayGPSDatabase = new JMenuItem(actionDisplayGPSDatabase);
-		menuFile.add(itemDisplayGPSDatabase);
-		final ActionDisplayPhotoParameters actionDisplayPhotoParameters = new ActionDisplayPhotoParameters("Display photo parameters", KeyEvent.VK_UNDEFINED, null,"Display photo parameters",a_photoList,selection);
-		final JMenuItem itemDisplayPhotoParameters = new JMenuItem(actionDisplayPhotoParameters);
-		menuFile.add(itemDisplayPhotoParameters);
+		final ActionDisplayPhotoNavigator actionDisplayPhotoNavigator = new ActionDisplayPhotoNavigator("Display photo navigator", KeyEvent.VK_UNDEFINED, null,"Display photo navigator",a_photoList,a_GPSDatabase,selection);
+		final JMenuItem itemDisplayPhotoNavigator = new JMenuItem(actionDisplayPhotoNavigator);
+		menuFile.add(itemDisplayPhotoNavigator);
+		final ActionDisplayPhotoGeometryEditor actionDisplayPhotoGeometryEditor = new ActionDisplayPhotoGeometryEditor("Display photo geometry editor", KeyEvent.VK_UNDEFINED, null,"Display photo geometry editor",a_photoList,selection);
+		final JMenuItem itemDisplayPhotoGeometryEditor = new JMenuItem(actionDisplayPhotoGeometryEditor);
+		menuFile.add(itemDisplayPhotoGeometryEditor);
 		final ActionDisplayPhotoEditor actionDisplayPhotoEditor = new ActionDisplayPhotoEditor("Display photo editor", KeyEvent.VK_UNDEFINED, null,"Display photo editor",a_photoList,selection);
 		final JMenuItem itemDisplayPhotoEditor = new JMenuItem(actionDisplayPhotoEditor);
 		menuFile.add(itemDisplayPhotoEditor);
+		final ActionDisplayPhotoParameters actionDisplayPhotoParameters = new ActionDisplayPhotoParameters("Display photo parameters", KeyEvent.VK_UNDEFINED, null,"Display photo parameters",a_photoList,selection);
+		final JMenuItem itemDisplayPhotoParameters = new JMenuItem(actionDisplayPhotoParameters);
+		menuFile.add(itemDisplayPhotoParameters);
+		final ActionDisplayGPSDatabase actionDisplayGPSDatabase = new ActionDisplayGPSDatabase("Display GPS database", KeyEvent.VK_UNDEFINED, null,"Display GPS database",a_GPSDatabase);
+		final JMenuItem itemDisplayGPSDatabase = new JMenuItem(actionDisplayGPSDatabase);
+		menuFile.add(itemDisplayGPSDatabase);
 		final ActionExportSubjects actionExportSubjects = new ActionExportSubjects("Export subjects", KeyEvent.CHAR_UNDEFINED, null,"Export the list of subjects",this,a_photoList);
 		final JMenuItem itemExportSubjects = new JMenuItem(actionExportSubjects);
 		menuFile.add(itemExportSubjects);
@@ -140,9 +144,6 @@ public class PhotoDisplayer extends JFrame
 		final JMenu menuEdit = new JMenu("Edit");
 		menuEdit.setMnemonic(KeyEvent.VK_E);
 		a_menubar.add(menuEdit);
-		final ActionDisplayEditor actionEdit = new ActionDisplayEditor("Edit photo parameters", KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK),"Edit the photo parameters",editor);
-		final JMenuItem itemEdit = new JMenuItem(actionEdit);
-		menuEdit.add(itemEdit);
 		final JMenu submenuEditQuality = new JMenu("Set Quality");
 		for (int i=0; i<PhotoQuality.getTraits().length; i++) {
 		    final PhotoQuality v = (PhotoQuality)(PhotoQuality.getTraits()[i]);

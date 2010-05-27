@@ -1,7 +1,6 @@
 package lmzr.photomngr.ui;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,13 +10,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -30,6 +31,7 @@ import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
+import lmzr.photomngr.ui.action.ActionClose;
 import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
 import lmzr.photomngr.ui.action.ActionStartPlayer;
 import lmzr.photomngr.ui.player.Player;
@@ -37,12 +39,9 @@ import lmzr.photomngr.ui.player.Player_QuickTime;
 import lmzr.photomngr.ui.player.Player_VideoLAN;
 import lmzr.photomngr.ui.player.Player_WindowsMediaPlayer;
 
-/**
- * @author Laurent Mazuré
- */
-public class PhotoEditorComponent extends JPanel
-                                  implements ListSelectionListener, TableModelListener, PhotoListMetaDataListener {
-    
+public class PhotoNavigator extends JFrame 
+                            implements ListSelectionListener, TableModelListener, PhotoListMetaDataListener {
+	
     final private static DateFormat s_dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
     final private static DateFormat s_timeFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
 
@@ -57,8 +56,6 @@ public class PhotoEditorComponent extends JPanel
     final private JLabel a_date;
     final private JLabel a_time;
     final private JButton a_map;
-    final private JButton a_rotateLeft;
-    final private JButton a_rotateRight;
     final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
     private JButton a_play[];
     private int a_previousSelection[];
@@ -69,9 +66,9 @@ public class PhotoEditorComponent extends JPanel
      * @param GPSDatabase
      * @param selection
      */
-    public PhotoEditorComponent(final PhotoList photoList,
-    		                    final GPSDatabase GPSDatabase,
-                                final ListSelectionManager selection) {
+    public PhotoNavigator(final PhotoList photoList,
+    		              final GPSDatabase GPSDatabase,
+    		              final ListSelectionManager selection) {
         super();
         a_photoList = photoList;
         a_GPSDatabase = GPSDatabase;
@@ -81,11 +78,21 @@ public class PhotoEditorComponent extends JPanel
         a_selection.addListener(this);
         a_photoList.addMetaListener(this);
         
+	    final JMenuBar menubar = new JMenuBar();
+		setJMenuBar(menubar);
+		
+		final JMenu menuFile = new JMenu("File");
+		menuFile.setMnemonic(KeyEvent.VK_F);
+		menubar.add(menuFile);
+		final ActionClose a_actionClose = new ActionClose("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
+		final JMenuItem itemClose = new JMenuItem(a_actionClose);
+		menuFile.add(itemClose);
+
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
 		add(panel);
-        a_folder = new JComboBox();
+
+		a_folder = new JComboBox();
         updateFolderList();
         panel.add(a_folder);
         a_folder.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -146,33 +153,7 @@ public class PhotoEditorComponent extends JPanel
         panel.add(a_map);
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
-        panel.add(new JSeparator());
-        
-        final JPanel display = new JPanel();
-        a_rotateLeft = new JButton("rotate left");
-        a_rotateRight = new JButton("rotate right");
-        display.add(a_rotateLeft);
-        a_rotateLeft.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
-                    	for (int i=0; i<a_selection.getSelection().length; i++) {
-                    	    float r = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ROTATION))).floatValue();
-                    	    a_photoList.setValueAt(new Float(r-90.),
- 			                                       a_selection.getSelection()[i],
-			                                       PhotoList.PARAM_ROTATION);};}});
-        display.add(a_rotateRight);
-        a_rotateRight.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
-                    	for (int i=0; i<a_selection.getSelection().length; i++) {
-                    	    float r = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ROTATION))).floatValue();
-                    	    a_photoList.setValueAt(new Float(r+90.),
- 			                                       a_selection.getSelection()[i],
-			                                       PhotoList.PARAM_ROTATION);};}});
-        panel.add(display);
-        display.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+        update();
     }
 
     /**
@@ -330,4 +311,5 @@ public class PhotoEditorComponent extends JPanel
 	public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
 		if (e.getChange()==PhotoListMetaDataEvent.FILTER_HAS_CHANGED) updateFolderList();
 	}
+
 }

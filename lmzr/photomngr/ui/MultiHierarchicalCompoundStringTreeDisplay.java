@@ -23,11 +23,11 @@ public class MultiHierarchicalCompoundStringTreeDisplay extends JTree {
      */
     @Override
 	public String convertValueToText(final Object value,
-    		                         @SuppressWarnings("unused") final boolean selected,
-    		                         @SuppressWarnings("unused") final boolean expanded,
-    		                         @SuppressWarnings("unused") final boolean leaf,
-                                     @SuppressWarnings("unused") final int row,
-                                     @SuppressWarnings("unused") final boolean hasFocus) {
+    		                         final boolean selected,
+    		                         final boolean expanded,
+    		                         final boolean leaf,
+                                     final int row,
+                                     final boolean hasFocus) {
         final HierarchicalCompoundString string = (HierarchicalCompoundString)value; 
         return string.toShortString();
     }

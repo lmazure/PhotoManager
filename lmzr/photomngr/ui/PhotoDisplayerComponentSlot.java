@@ -289,7 +289,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
     /**
      * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
      */
-    public void componentResized(@SuppressWarnings("unused") final ComponentEvent e) {
+    public void componentResized(final ComponentEvent e) {
     	//System.out.println("componentResized");
     	callImageComputation();
     }
@@ -297,7 +297,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
     /**
      * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
      */
-    public void componentMoved(@SuppressWarnings("unused") final ComponentEvent e) {
+    public void componentMoved(final ComponentEvent e) {
     	//System.out.println("componentMoved");
         return;
     }
@@ -305,7 +305,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
     /**
      * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
      */
-    public void componentShown(@SuppressWarnings("unused") final ComponentEvent e) {
+    public void componentShown(final ComponentEvent e) {
     	//System.out.println("componentShown");
         return;
     }
@@ -313,7 +313,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
     /**
      * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
      */
-    public void componentHidden(@SuppressWarnings("unused") final ComponentEvent e) {
+    public void componentHidden(final ComponentEvent e) {
     	//System.out.println("componentHidden");
         return;
     }

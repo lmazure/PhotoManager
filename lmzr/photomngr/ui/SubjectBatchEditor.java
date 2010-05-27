@@ -47,7 +47,7 @@ public class SubjectBatchEditor extends JDialog {
 			a_edit = edit;
 			a_edit.addActionListener(
 	                new ActionListener() {
-	                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	                    public void actionPerformed(final ActionEvent e) {
 	                    	if ( edit.isSelected()) {
 	                    		edited.setEditable(true);
 	                    		setEditedText(initial.getText());
@@ -62,7 +62,7 @@ public class SubjectBatchEditor extends JDialog {
 			a_propagate = propagate;
 			a_propagate.addActionListener(
 	                new ActionListener() {
-	                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	                    public void actionPerformed(final ActionEvent e) {
 	                    	int i = a_position; 
 	                    	while ( i<a_rows.size() && a_rows.get(i).getInitialText().startsWith(a_initial.getText()) ) {
 	                    		final String initialText = a_rows.get(i).getInitialText();
@@ -133,13 +133,13 @@ public class SubjectBatchEditor extends JDialog {
 		buttonsPane.add(bCancel);
 		getRootPane().setDefaultButton(bCancel);
 		bOk.addActionListener(new ActionListener() {
-				public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+				public void actionPerformed(final ActionEvent e) {
 					performer.performMapTranslation(getTranslationMap());
 				    close();
 				}
 		});
 		bCancel.addActionListener(new ActionListener() {
-					public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
 						close();
 					}
 		});
