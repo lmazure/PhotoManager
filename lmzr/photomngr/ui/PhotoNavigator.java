@@ -15,10 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -31,7 +29,6 @@ import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
-import lmzr.photomngr.ui.action.ActionClose;
 import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
 import lmzr.photomngr.ui.action.ActionStartPlayer;
 import lmzr.photomngr.ui.player.Player;
@@ -77,16 +74,6 @@ public class PhotoNavigator extends JFrame
         a_photoList.addTableModelListener(this);
         a_selection.addListener(this);
         a_photoList.addMetaListener(this);
-        
-	    final JMenuBar menubar = new JMenuBar();
-		setJMenuBar(menubar);
-		
-		final JMenu menuFile = new JMenu("File");
-		menuFile.setMnemonic(KeyEvent.VK_F);
-		menubar.add(menuFile);
-		final ActionClose a_actionClose = new ActionClose("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
-		final JMenuItem itemClose = new JMenuItem(a_actionClose);
-		menuFile.add(itemClose);
 
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -153,6 +140,8 @@ public class PhotoNavigator extends JFrame
         panel.add(a_map);
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
         update();
     }
 
@@ -311,5 +300,18 @@ public class PhotoNavigator extends JFrame
 	public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
 		if (e.getChange()==PhotoListMetaDataEvent.FILTER_HAS_CHANGED) updateFolderList();
 	}
+
+    /**
+     * @see java.awt.Window#dispose()
+     */
+    @Override
+	public void dispose() {
+    	
+    	super.dispose();
+    	
+        a_photoList.removeTableModelListener(this);
+        a_selection.removeListener(this);
+        a_photoList.removeMetaListener(this);
+    }
 
 }

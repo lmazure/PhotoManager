@@ -39,7 +39,7 @@ public class ActionChangeTrait extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final int select[] = a_selection.getSelection();
 		for (int i=0; i<select.length; i++) {
 			a_photoList.setValueAt(a_value,select[i],a_indexInPhotoList);

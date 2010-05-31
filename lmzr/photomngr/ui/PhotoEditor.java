@@ -3,16 +3,13 @@ package lmzr.photomngr.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -24,7 +21,6 @@ import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
-import lmzr.photomngr.ui.action.ActionClose;
 import lmzr.photomngr.ui.celleditor.AuthorCellEditor;
 import lmzr.photomngr.ui.celleditor.CopiesCellEditor;
 import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
@@ -63,16 +59,6 @@ public class PhotoEditor extends JFrame
         
         a_photoList.addTableModelListener(this);
         a_selection.addListener(this);
-
-	    final JMenuBar menubar = new JMenuBar();
-		setJMenuBar(menubar);
-		
-		final JMenu menuFile = new JMenu("File");
-		menuFile.setMnemonic(KeyEvent.VK_F);
-		menubar.add(menuFile);
-		final ActionClose a_actionClose = new ActionClose("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
-		final JMenuItem itemClose = new JMenuItem(a_actionClose);
-		menuFile.add(itemClose);
 
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -207,6 +193,8 @@ public class PhotoEditor extends JFrame
                         		               a_selection.getSelection()[0],
                                                PhotoList.PARAM_COPIES);}});
         
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        
         update();
 
     }
@@ -295,4 +283,15 @@ public class PhotoEditor extends JFrame
         a_copies.setEnabled(b);
     }
 
+    /**
+     * @see java.awt.Window#dispose()
+     */
+    @Override
+	public void dispose() {
+    	
+    	super.dispose();
+    	
+        a_photoList.removeTableModelListener(this);
+        a_selection.removeListener(this);    	
+    }
 }

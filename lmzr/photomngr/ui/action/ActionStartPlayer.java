@@ -46,7 +46,7 @@ public class ActionStartPlayer extends PhotoManagerAction {
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
 
         try {
             final String[] commandLine = { a_player.getExecutable().getAbsolutePath(),

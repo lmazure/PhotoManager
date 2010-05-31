@@ -12,6 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.SaveEvent;
 import lmzr.photomngr.data.SaveListener;
@@ -88,6 +89,8 @@ public class GPSDataDisplay extends JFrame
 		a_GPSdatabase.addSaveListener(this);
 		
 		saveChanged(new SaveEvent(a_GPSdatabase, a_GPSdatabase.isSaved()));
+		
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	/**
@@ -95,8 +98,10 @@ public class GPSDataDisplay extends JFrame
 	 */
 	@Override
 	public void dispose() {
-		a_GPSdatabase.removeSaveListener(this);
+
 		super.dispose();
+
+		a_GPSdatabase.removeSaveListener(this);
 	}
 	
 	/**

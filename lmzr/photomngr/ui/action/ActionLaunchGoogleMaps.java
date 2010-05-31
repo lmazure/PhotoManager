@@ -47,7 +47,7 @@ public class ActionLaunchGoogleMaps extends PhotoManagerAction {
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 
 		final HierarchicalCompoundString location = (HierarchicalCompoundString)(a_photoList.getValueAt(a_selection.getSelection()[0],PhotoList.PARAM_LOCATION));
 		final GPSRecord gpsRecord = a_GPSDatabase.getGPSData(location);

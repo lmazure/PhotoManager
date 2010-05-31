@@ -35,7 +35,7 @@ public class ActionResetNumberOfCopies extends PhotoManagerAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
-		public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			for (int i=0; i<a_photoList.getRowCount(); i++) {
 				if ( ((Integer)a_photoList.getValueAt(i, PhotoList.PARAM_COPIES)).intValue() > 0 ) {
 					a_photoList.setValueAt(new Integer(0),i, PhotoList.PARAM_COPIES);

@@ -39,7 +39,7 @@ public class ActionCopy extends PhotoManagerAction implements ClipboardOwner {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 
 		final ListSelectionModel selection = a_table.getSelectionModel();
 		if ( selection.getMinSelectionIndex() == -1 ) return;
@@ -54,7 +54,7 @@ public class ActionCopy extends PhotoManagerAction implements ClipboardOwner {
 	/**
 	 * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
 	 */
-	public void lostOwnership(@SuppressWarnings("unused") Clipboard clipboard,
-			                  @SuppressWarnings("unused") Transferable contents) {
+	public void lostOwnership(final Clipboard clipboard,
+			                  final Transferable contents) {
 	}
 }

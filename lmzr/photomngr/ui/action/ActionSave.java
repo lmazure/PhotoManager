@@ -35,7 +35,7 @@ public class ActionSave extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 	    try {
 	        a_model.save();
 	    } catch (final IOException e1) {

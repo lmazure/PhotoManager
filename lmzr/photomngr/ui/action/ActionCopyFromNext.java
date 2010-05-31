@@ -34,7 +34,7 @@ public class ActionCopyFromNext extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		
 		final ListSelectionModel selection = a_table.getSelectionModel();
 		if ( selection.getMinSelectionIndex() == -1 ) return;

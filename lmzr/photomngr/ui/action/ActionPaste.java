@@ -40,7 +40,7 @@ public class ActionPaste extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		
 		final Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);			
 		String text = null;

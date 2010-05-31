@@ -3,18 +3,14 @@ package lmzr.photomngr.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.ui.action.ActionClose;
 
 public class PhotoGeometryEditor extends JFrame {
 
@@ -34,16 +30,6 @@ public class PhotoGeometryEditor extends JFrame {
 
         a_photoList = photoList;
         a_selection = selection;
-
-	    final JMenuBar menubar = new JMenuBar();
-		setJMenuBar(menubar);
-		
-		final JMenu menuFile = new JMenu("File");
-		menuFile.setMnemonic(KeyEvent.VK_F);
-		menubar.add(menuFile);
-		final ActionClose a_actionClose = new ActionClose("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
-		final JMenuItem itemClose = new JMenuItem(a_actionClose);
-		menuFile.add(itemClose);
 
         final JPanel display = new JPanel();
         display.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -69,5 +55,7 @@ public class PhotoGeometryEditor extends JFrame {
  			                                       a_selection.getSelection()[i],
 			                                       PhotoList.PARAM_ROTATION);};}});
         display.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 }

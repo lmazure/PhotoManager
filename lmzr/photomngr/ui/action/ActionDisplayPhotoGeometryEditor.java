@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import javax.swing.KeyStroke;
-import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
@@ -41,7 +40,6 @@ public class ActionDisplayPhotoGeometryEditor extends PhotoManagerAction {
 		public void actionPerformed(final ActionEvent e) {
 
 	        final PhotoGeometryEditor a_PhotoGeometryEditor = new PhotoGeometryEditor(a_photoList, a_selection);
-	        a_PhotoGeometryEditor.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	        a_PhotoGeometryEditor.setBounds(new Rectangle(0,0,250,100));
 	        a_PhotoGeometryEditor.setVisible(true);
 		}

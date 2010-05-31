@@ -44,7 +44,7 @@ public class ActionDisplayFilter extends PhotoManagerAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
-		public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 		    final FilterDisplay filter = new FilterDisplay(a_photoDisplayer,a_photoList,a_selection);
 		    filter.setVisible(true);
 		}
