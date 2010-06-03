@@ -40,7 +40,7 @@ public class ActionDisplayPhotoEditor extends PhotoManagerAction {
 		public void actionPerformed(final ActionEvent e) {
 
 	        final PhotoEditor a_PhotoEditor = new PhotoEditor(a_photoList, a_selection);
-	        a_PhotoEditor.setBounds(new Rectangle(0,0,300,700));
+	        a_PhotoEditor.setBounds(new Rectangle(0,0,300,550));
 	        a_PhotoEditor.setVisible(true);
 		}
 }

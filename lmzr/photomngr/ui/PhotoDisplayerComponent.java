@@ -180,6 +180,8 @@ public class PhotoDisplayerComponent extends JComponent
             a_slots[i].setName("slot_"+Integer.toString(i%dim.width)+"_"+Integer.toString(i/dim.width));
             add(a_slots[i]);
         }
+        
+        validate();
     }
 
 	/**

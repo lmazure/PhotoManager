@@ -1,12 +1,13 @@
 package lmzr.photomngr.ui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
@@ -64,11 +65,9 @@ public class PhotoEditor extends JFrame
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		add(panel);
 
-        final JLabel locationLabel = new JLabel("location");
-        locationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(locationLabel);
-        locationLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_location = new LocationCellRenderer();
+        a_location.setBorder(BorderFactory.createTitledBorder("location"));
+        a_location.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_location.getPreferredSize().height));
         panel.add(a_location);
         a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_location.addActionListener(
@@ -78,11 +77,10 @@ public class PhotoEditor extends JFrame
                     	a_photoList.setValueAt(a_location.getText(),
                     			               a_selection.getSelection()[0],
                     			               PhotoList.PARAM_LOCATION);}});
-        final JLabel subjectLabel = new JLabel("subject");
-        subjectLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(subjectLabel);
-        subjectLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
         a_subject = new SubjectCellRenderer();
+        a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
+        a_subject.setBorder(BorderFactory.createTitledBorder("subject"));
         /*
         a_subject.addActionListener(
                 new ActionListener() { 
@@ -94,11 +92,10 @@ public class PhotoEditor extends JFrame
         */
         panel.add(a_subject);
         a_subject.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel qualityLabel = new JLabel("quality");
-        qualityLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(qualityLabel);
-        qualityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
         a_quality = new PhotoTraitCellEditor(PhotoQuality.getTraits());
+        a_quality.setBorder(BorderFactory.createTitledBorder("quality"));
+        a_quality.setMaximumSize(a_quality.getPreferredSize());
         a_quality.addActionListener(
             new ActionListener() {
                 public void actionPerformed(final ActionEvent e) {
@@ -108,11 +105,10 @@ public class PhotoEditor extends JFrame
                                            PhotoList.PARAM_QUALITY);}});
         panel.add(a_quality);
         a_quality.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel originalityLabel = new JLabel("originality");
-        originalityLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(originalityLabel);
-        originalityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         a_originality = new PhotoTraitCellEditor(PhotoOriginality.getTraits());
+        a_originality.setBorder(BorderFactory.createTitledBorder("originality"));
+        a_originality.setMaximumSize(a_originality.getPreferredSize());
         a_originality.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(final ActionEvent e) {
@@ -122,11 +118,10 @@ public class PhotoEditor extends JFrame
                                                PhotoList.PARAM_ORIGINALITY);}});
         panel.add(a_originality);
         a_originality.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel privacyLabel = new JLabel("privacy");
-        privacyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(privacyLabel);
-        privacyLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         a_privacy = new PhotoTraitCellEditor(PhotoPrivacy.getTraits());
+        a_privacy.setBorder(BorderFactory.createTitledBorder("privacy"));
+        a_privacy.setMaximumSize(a_privacy.getPreferredSize());
         a_privacy.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(final ActionEvent e) {
@@ -136,11 +131,10 @@ public class PhotoEditor extends JFrame
                                                PhotoList.PARAM_PRIVACY);}});
         panel.add(a_privacy);
         a_privacy.setAlignmentX(Component.LEFT_ALIGNMENT);
-        final JLabel authorLabel = new JLabel("author");
-        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(authorLabel);
-        authorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         a_author = new AuthorCellEditor(photoList.getAuthorFactory());
+        a_author.setBorder(BorderFactory.createTitledBorder("author"));
+        a_author.setMaximumSize(a_author.getPreferredSize());
         panel.add(a_author);
         a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_author.addActionListener(
@@ -150,11 +144,10 @@ public class PhotoEditor extends JFrame
                     	a_photoList.setValueAt(a_author.getSelectedItem(),
                     			               a_selection.getSelection()[0],
                     			               PhotoList.PARAM_AUTHOR);}});
-        final JLabel panoramaLabel = new JLabel("panorama");
-        panoramaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(panoramaLabel);
-        panoramaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         a_panorama = new JTextField();
+        a_panorama.setBorder(BorderFactory.createTitledBorder("panorama"));
+        a_panorama.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_panorama.getPreferredSize().height));
         panel.add(a_panorama);
         a_panorama.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_panorama.addActionListener(
@@ -164,11 +157,9 @@ public class PhotoEditor extends JFrame
                     	a_photoList.setValueAt(a_panorama.getText(),
                     			               a_selection.getSelection()[0],
                     			               PhotoList.PARAM_PANORAMA);}});
-        final JLabel panoramaFirstLabel = new JLabel("panorama first");
-        panoramaFirstLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(panoramaFirstLabel);
-        panoramaFirstLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_panoramaFirst = new JTextField();
+        a_panoramaFirst.setBorder(BorderFactory.createTitledBorder("panorama first"));
+        a_panoramaFirst.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_panoramaFirst.getPreferredSize().height));
         panel.add(a_panoramaFirst);
         a_panoramaFirst.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_panoramaFirst.addActionListener(
@@ -178,11 +169,10 @@ public class PhotoEditor extends JFrame
                     	a_photoList.setValueAt(a_panoramaFirst.getText(),
                     			               a_selection.getSelection()[0],
                     			               PhotoList.PARAM_PANORAMA_FIRST);}});
-        final JLabel copiesLabel = new JLabel("copies");
-        copiesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(copiesLabel);
-        copiesLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         a_copies = new CopiesCellEditor();
+        a_copies.setBorder(BorderFactory.createTitledBorder("copies"));
+        a_copies.setMaximumSize(a_copies.getPreferredSize());
         panel.add(a_copies);
         a_copies.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_copies.addActionListener(
@@ -196,7 +186,6 @@ public class PhotoEditor extends JFrame
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
         update();
-
     }
  
     /**
@@ -216,6 +205,7 @@ public class PhotoEditor extends JFrame
             setEnabledAll(false);
             a_location.setText(" ");
             a_subject.setText(" ");
+            a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
             a_panorama.setText(" ");
             a_panoramaFirst.setText(" ");
             a_copies.setSelectedItem(new Integer(0));
@@ -231,6 +221,7 @@ public class PhotoEditor extends JFrame
         a_location.setText(location);
         final String subject = photo.getIndexData().getSubject().toString();
         a_subject.setText(subject);
+        a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
         final PhotoQuality quality = photo.getIndexData().getQuality();
         a_quality.setSelectedItem(quality);
         final PhotoOriginality originality = photo.getIndexData().getOriginality();
