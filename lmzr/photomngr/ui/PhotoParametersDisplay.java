@@ -29,6 +29,8 @@ public class PhotoParametersDisplay extends JFrame {
 		pane.add(scrollPane, BorderLayout.CENTER);
 		
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        
+        pack();
 	}
 	
 	/**

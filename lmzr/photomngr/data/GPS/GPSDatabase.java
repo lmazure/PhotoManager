@@ -115,16 +115,17 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     	
     	a_excelFilename = excelFilename;
     	a_locationFactory = locationFactory;
+        a_data = new HashMap<HierarchicalCompoundString,GPSData>();        
+        a_listOfSaveListeners = new Vector<SaveListener>();
+        setAsSaved();
     	
         String data[][] = null;
         try {
             data = StringTableFromToExcel.read(excelFilename);
         } catch (final IOException e) {
             e.printStackTrace();
-            System.exit(1);
+            return;
         }
-        
-        a_data = new HashMap<HierarchicalCompoundString,GPSData>();
         
         for (int i=1; i<data.length; i++) {
         	final HierarchicalCompoundString l = locationFactory.create(data[i][0]);
@@ -133,11 +134,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                                            (data[i][3].length()==0) ? null : data[i][3],
                                            (data[i][4].length()==0) ? null : data[i][4] );        	        
         	a_data.put(l,d);
-        }
-        
-        a_listOfSaveListeners = new Vector<SaveListener>();
-
-        setAsSaved();
+        }        
     }
     
     /**
@@ -257,7 +254,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 * @see org.jdesktop.swingx.treetable.TreeTableModel#isCellEditable(java.lang.Object, int)
 	 */
 	@Override
-	public boolean isCellEditable(@SuppressWarnings("unused") final Object node,
+	public boolean isCellEditable(final Object node,
 			                      final int columnIndex) {
 		switch (columnIndex) {
 		case PARAM_LOCATION:
@@ -419,8 +416,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
 	 */
 	@Override
-	public void valueForPathChanged(@SuppressWarnings("unused") final TreePath arg0,
-			                        @SuppressWarnings("unused") final Object arg1) {
+	public void valueForPathChanged(final TreePath arg0,
+			                        final Object arg1) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -471,7 +468,9 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
         final File file = new File(a_excelFilename);
         final File file2 = new File(name);
-        if (!file.renameTo(file2)) throw new IOException("Failed to rename "+a_excelFilename+" into "+name);
+        if (!file.renameTo(file2)) {
+        	System.err.println("Failed to rename "+a_excelFilename+" into "+name);
+        }
         
         // create the new file
         StringTableFromToExcel.save(a_excelFilename,data);

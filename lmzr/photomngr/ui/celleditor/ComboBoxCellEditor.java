@@ -31,7 +31,7 @@ public class ComboBoxCellEditor extends JComboBox
         a_listenerList = new Vector<CellEditorListener>();
 
         addActionListener(new ActionListener() {
-            public void actionPerformed(@SuppressWarnings("unused") final ActionEvent event) { fireEditingStopped(); } 
+            public void actionPerformed(final ActionEvent event) { fireEditingStopped(); } 
         });
     }
     

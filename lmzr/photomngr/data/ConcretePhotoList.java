@@ -9,6 +9,8 @@ import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 import java.util.Vector;
@@ -62,14 +64,17 @@ public class ConcretePhotoList extends Object
         a_excelFilename = excelFilename;
         a_scheduler = scheduler;
         a_isSaved = true;
+        a_listOfPhotos = new Vector<Photo>();
+        Photo.setRootDirectory(rootDirPhoto);
         
         // load the data
         String data[][] = null;
         try {
             data = StringTableFromToExcel.read(excelFilename);
         } catch (final IOException e) {
+			System.err.println("Cannot open file "+excelFilename);
             e.printStackTrace();
-            System.exit(1);
+            data = new String[0][0];
         }
         
         // quick check that the data is not corrupted
@@ -85,9 +90,6 @@ public class ConcretePhotoList extends Object
         }
         
         // update the list of files relatively to the content of the file system
-        Photo.setRootDirectory(rootDirPhoto);
-        a_listOfPhotos = new Vector<Photo>();
-
         String previousFolderName = "";
         Vector<String> currentFolderContent = new Vector<String>();
         final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto); 
@@ -828,7 +830,9 @@ public class ConcretePhotoList extends Object
             final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
             final File file = new File(a_excelFilename);
             final File file2 = new File(name);
-            if (!file.renameTo(file2)) throw new IOException("Failed to rename "+a_excelFilename+" into "+name);
+            if (!file.renameTo(file2)) {
+            	System.err.println("Failed to rename "+a_excelFilename+" into "+name);
+            }
             
             // create the new file
             StringTableFromToExcel.save(a_excelFilename,data);
@@ -874,6 +878,22 @@ public class ConcretePhotoList extends Object
         for ( String str: list)
         	if ( s_formatFactory.createFormat(folder.getAbsolutePath()+ File.separator + str) != null )
                 content.add(str);
+        
+        Collections.sort(content,new Comparator<String>() {
+        	public int compare(final String s1, final String s2) {
+        		final File f1 = new File(folder + File.separator + s1);
+        		final File f2 = new File(folder + File.separator + s2);
+        		if (f1.lastModified() < f2.lastModified()) {
+        			return -1;
+        		} else if (f1.lastModified() > f2.lastModified()) {
+        			return +1;
+        		} else {
+        			return 0;
+        		}
+        	}
+
+        }); 
+
         
         return content;
     }

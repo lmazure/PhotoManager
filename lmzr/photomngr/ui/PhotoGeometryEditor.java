@@ -57,5 +57,7 @@ public class PhotoGeometryEditor extends JFrame {
         display.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        
+        pack();
     }
 }

@@ -21,12 +21,12 @@ public class GPSDataDisplayMapCellRenderer extends JButton
      * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
      */
     @Override
-    public Component getTableCellRendererComponent(@SuppressWarnings("unused") final JTable table,
+    public Component getTableCellRendererComponent(final JTable table,
                                                    final Object value,
-                                                   @SuppressWarnings("unused") final boolean isSelected,
-                                                   @SuppressWarnings("unused") final boolean hasFocus,
-                                                   @SuppressWarnings("unused") final int row,
-                                                   @SuppressWarnings("unused") final int column) {
+                                                   final boolean isSelected,
+                                                   final boolean hasFocus,
+                                                   final int row,
+                                                   final int column) {
 
         final GPSRecord record = (GPSRecord) value;
         setText("map " + record.getLocation().toShortString());

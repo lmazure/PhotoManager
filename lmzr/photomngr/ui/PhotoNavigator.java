@@ -143,6 +143,8 @@ public class PhotoNavigator extends JFrame
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         update();
+        
+        pack();
     }
 
     /**
@@ -212,7 +214,7 @@ public class PhotoNavigator extends JFrame
         	a_map.setText("map");
             a_date.setText(" ");
             a_time.setText(" ");            
-            return;
+            pack();
         }
         
         setEnabledAll(true);
@@ -242,6 +244,8 @@ public class PhotoNavigator extends JFrame
         	a_map.setEnabled(false);    		
         	a_map.setText("map");
     	}
+    	
+    	pack();
     }
 
     /**

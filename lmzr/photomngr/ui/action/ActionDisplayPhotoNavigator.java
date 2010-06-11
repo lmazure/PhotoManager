@@ -1,6 +1,5 @@
 package lmzr.photomngr.ui.action;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import javax.swing.KeyStroke;
@@ -44,7 +43,6 @@ public class ActionDisplayPhotoNavigator extends PhotoManagerAction {
 		public void actionPerformed(final ActionEvent e) {
 
 	        final PhotoNavigator a_PhotoNavigator = new PhotoNavigator(a_photoList, a_GPSDatabase, a_selection);
-	        a_PhotoNavigator.setBounds(new Rectangle(0,0,300,250));
 	        a_PhotoNavigator.setVisible(true);
 		}
 }

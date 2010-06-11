@@ -88,12 +88,12 @@ public class LocationCellEditor extends JComponent
     		buttonsPane.add(bCancel);
     		getRootPane().setDefaultButton(bOk);
     		bOk.addActionListener(new ActionListener() {
-    				public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+    				public void actionPerformed(final ActionEvent e) {
     					close();
     				}
     		});
     		bCancel.addActionListener(new ActionListener() {
-    					public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) {
+    					public void actionPerformed(final ActionEvent e) {
     						a_text.setText(keptValue);
     						close();
     					}
@@ -136,7 +136,7 @@ public class LocationCellEditor extends JComponent
         add(a_button);
         a_button.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) { a_internal.setVisible(true);}});
+                    public void actionPerformed(final ActionEvent e) { a_internal.setVisible(true);}});
         a_listenerList = new Vector<CellEditorListener>();
     }
     
@@ -163,7 +163,7 @@ public class LocationCellEditor extends JComponent
                                                  final Object value,
                                                  final boolean isSelected,
                                                  final int row,
-                                                 @SuppressWarnings("unused") final int column) {
+                                                 final int column) {
         if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
@@ -192,7 +192,7 @@ public class LocationCellEditor extends JComponent
     /**
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
-    public boolean shouldSelectCell(@SuppressWarnings("unused") final EventObject e) {
+    public boolean shouldSelectCell(final EventObject e) {
         return true;
     }
 

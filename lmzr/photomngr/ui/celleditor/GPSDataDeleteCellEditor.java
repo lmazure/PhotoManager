@@ -6,7 +6,6 @@ import java.util.EventObject;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -34,9 +33,9 @@ public class GPSDataDeleteCellEditor extends JButton
      */
     public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value,
-                                                 @SuppressWarnings("unused") final boolean isSelected, 
-                                                 @SuppressWarnings("unused") final int row,
-                                                 @SuppressWarnings("unused") final int column) {
+                                                 final boolean isSelected, 
+                                                 final int row,
+                                                 final int column) {
         
         final JXTreeTable treeTable = (JXTreeTable) table;
         final GPSDatabase database = (GPSDatabase) treeTable.getTreeTableModel();
@@ -77,34 +76,26 @@ public class GPSDataDeleteCellEditor extends JButton
     /**
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
-    public boolean isCellEditable(@SuppressWarnings("unused") final EventObject anEvent) {
+    public boolean isCellEditable(final EventObject anEvent) {
         return true;
     }
 
     /**
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
-    public boolean shouldSelectCell(@SuppressWarnings("unused") final EventObject anEvent) {
+    public boolean shouldSelectCell(final EventObject anEvent) {
         return true;
     }
 
     /**
      * @see javax.swing.CellEditor#addCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void addCellEditorListener(@SuppressWarnings("unused") final CellEditorListener l) {
+    public void addCellEditorListener(final CellEditorListener l) {
     }
 
     /**
      * @see javax.swing.CellEditor#removeCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void removeCellEditorListener(@SuppressWarnings("unused") final CellEditorListener l) {
+    public void removeCellEditorListener(final CellEditorListener l) {
     }
-    
-    /**
-     * @param e
-     */
-    protected void fireCellEditing(final ChangeEvent e){
-        
-    }
-
 }
