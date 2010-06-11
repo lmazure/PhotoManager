@@ -21,6 +21,7 @@ import lmzr.photomngr.ui.celleditor.AuthorCellEditor;
 import lmzr.photomngr.ui.celleditor.CopiesCellEditor;
 import lmzr.photomngr.ui.celleditor.FocusCellEditor;
 import lmzr.photomngr.ui.celleditor.LocationCellEditor;
+import lmzr.photomngr.ui.celleditor.RotationCellEditor;
 import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
 import lmzr.photomngr.ui.celleditor.SubjectCellEditor;
 import lmzr.photomngr.ui.celleditor.ZoomCellEditor;
@@ -62,6 +63,7 @@ public class PhotoListTable extends JTable {
 		getColumnModel().getColumn(PhotoList.PARAM_ZOOM).setCellEditor(new ZoomCellEditor());
 		getColumnModel().getColumn(PhotoList.PARAM_FOCUS_X).setCellEditor(new FocusCellEditor());
 		getColumnModel().getColumn(PhotoList.PARAM_FOCUS_Y).setCellEditor(new FocusCellEditor());
+		getColumnModel().getColumn(PhotoList.PARAM_ROTATION).setCellEditor(new RotationCellEditor());
 		getColumnModel().getColumn(PhotoList.PARAM_AUTHOR).setCellEditor(new AuthorCellEditor(filteredList.getAuthorFactory()));
 
 		a_setVisibility = true;

@@ -36,7 +36,7 @@ public class ImageComputationManager {
         final PhotoHeaderData header = photo.getHeaderData();
         final int orientation = photo.getHeaderData().getOrientation();
         final double z = params.getZoom();
-        final double r = params.getRotation()*Math.PI/180;
+        final double r = params.getRotation()* Math.PI/180;
         final double fx = params.getFocusX(); 
         final double fy = params.getFocusY();
         final double headerHeight = header.getHeight() / subsampling;
@@ -45,55 +45,6 @@ public class ImageComputationManager {
 		final double paramWidth = params.getWidth();
 		
 		switch (orientation) {
-	        case 2: {
-	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
-	            zoom = new AffineTransform(-f,0,
-	                                       0,f,
-	                                       (paramWidth+f*headerWidth)/2,(paramHeight-f*headerHeight)/2);
-	            break;        	    
-	        }
-	        case 3: {
-	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
-	            zoom = new AffineTransform(-f,0,
-	                                       0,-f,
-	                                       (paramWidth+f*headerWidth)/2,(paramHeight+f*headerHeight)/2);
-	            break;        	    
-	        }
-	        case 4: {
-	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
-	            zoom = new AffineTransform(f,0,
-	                                       0,-f,
-	                                       (paramWidth-f*headerWidth)/2,(paramHeight+f*headerHeight)/2);
-	            break;        	    
-	        }
-	        case 5: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
-	            zoom = new AffineTransform(0,f,
-	                                       f,0,
-	                                       (paramWidth-f*headerHeight)/2,(paramHeight-f*headerWidth)/2);
-	            break;
-	        }
-	        case 6: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
-	            zoom = new AffineTransform(0,f,
-	                                       -f,0,
-	                                       (paramWidth+f*headerHeight)/2,(paramHeight-f*headerWidth)/2);
-	            break;
-	        }
-	        case 7: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
-	            zoom = new AffineTransform(0,f,
-	                                       -f,0,
-	                                       (paramWidth+f*headerHeight)/2,(paramHeight-f*headerWidth)/2);
-	            break;
-	        }
-	        case 8: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
-	            zoom = new AffineTransform(0,-f,
-	                                       f,0,
-	                                       (paramWidth-f*headerHeight)/2,(paramHeight+f*headerWidth)/2);
-	            break;
-	        }
 	        case 1:
 	        default: {
 	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
@@ -101,6 +52,55 @@ public class ImageComputationManager {
 	                                       0,f,
 	                                       (paramWidth-f*headerWidth*(1+fx))/2,(paramHeight-f*headerHeight*(1+fy))/2);
 	            break;        	    
+	        }
+	        case 2: {
+	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
+	            zoom = new AffineTransform(-f,0,
+	                                       0,f,
+	                                       (paramWidth+f*headerWidth*(1+fx))/2,(paramHeight-f*headerHeight*(1+fy))/2);
+	            break;        	    
+	        }
+	        case 3: {
+	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
+	            zoom = new AffineTransform(-f,0,
+	                                       0,-f,
+	                                       (paramWidth+f*headerWidth*(1+fx))/2,(paramHeight+f*headerHeight*(1+fy))/2);
+	            break;        	    
+	        }
+	        case 4: {
+	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
+	            zoom = new AffineTransform(f,0,
+	                                       0,-f,
+	                                       (paramWidth-f*headerWidth*(1+fx))/2,(paramHeight+f*headerHeight*(1+fy))/2);
+	            break;        	    
+	        }
+	        case 5: {
+	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            zoom = new AffineTransform(0,f,
+	                                       f,0,
+	                                       (paramWidth-f*headerHeight*(1+fy))/2,(paramHeight-f*headerWidth*(1+fx))/2);
+	            break;
+	        }
+	        case 6: {
+	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            zoom = new AffineTransform(0,f,
+	                                       -f,0,
+	                                       (paramWidth+f*headerHeight*(1+fy))/2,(paramHeight-f*headerWidth*(1+fx))/2);
+	            break;
+	        }
+	        case 7: {
+	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            zoom = new AffineTransform(0,f,
+	                                       -f,0,
+	                                       (paramWidth+f*headerHeight*(1+fy))/2,(paramHeight-f*headerWidth*(1+fx))/2);
+	            break;
+	        }
+	        case 8: {
+	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            zoom = new AffineTransform(0,-f,
+	                                       f,0,
+	                                       (paramWidth-f*headerHeight*(1+fy))/2,(paramHeight+f*headerWidth*(1+fx))/2);
+	            break;
 	        }
         }
         zoom.preConcatenate(AffineTransform.getRotateInstance(r,paramWidth/2,paramHeight/2));

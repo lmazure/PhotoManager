@@ -52,6 +52,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 import lmzr.photomngr.scheduler.Scheduler;
+import lmzr.util.chrono.Chrono;
 
 /**
  * @author Laurent Mazuré
@@ -64,6 +65,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
+    	Chrono.setStartOfTime();
         new Main(args[0],args[1]);
     }
     
@@ -107,6 +109,8 @@ public class Main {
         a_listDisplay.setVisible(true);
         
         a_displayer.setBounds(new Rectangle(100,300,1000,720));
-        a_displayer.setVisible(true);        
+        a_displayer.setVisible(true);
+        
+        Chrono.getTime(Chrono.EVENT, "end of start");
     }
 }

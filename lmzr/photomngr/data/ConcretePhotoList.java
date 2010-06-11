@@ -656,7 +656,12 @@ public class ConcretePhotoList extends Object
         	if ( value instanceof Float ) {
         		rotation = (Float)value;
         	} else {
-        		rotation = Float.parseFloat((String)value);
+        		try {
+        			rotation = format.parse((String)value).floatValue();
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+					return;
+				}
         	}
             float vnorm = rotation.floatValue();
             vnorm = vnorm % 360;

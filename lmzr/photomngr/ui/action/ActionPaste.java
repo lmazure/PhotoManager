@@ -48,6 +48,8 @@ public class ActionPaste extends PhotoManagerAction {
 		try {
 			if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				text = (String)t.getTransferData(DataFlavor.stringFlavor);
+			} else {
+				return;
 			}
 		} catch (final UnsupportedFlavorException e1) {
 			e1.printStackTrace();
