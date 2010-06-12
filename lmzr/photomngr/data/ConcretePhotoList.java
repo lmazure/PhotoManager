@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -43,7 +44,9 @@ public class ConcretePhotoList extends Object
     final private MultiHierarchicalCompoundStringFactory a_subjectFactory;
     final private AuthorFactory a_authorFactory;
     final private Scheduler a_scheduler;
-    private boolean a_isSaved; 
+    private boolean a_isSaved;
+	static final DataFormatFactory s_formatFactory = new DataFormatFactory();
+
     
     
     /**
@@ -101,6 +104,7 @@ public class ConcretePhotoList extends Object
                 } else { 
                     System.err.println("folder \""+folderName+"\" does not exists on the disk");
                 }
+                sortFolderContentByDateTime(rootDirPhoto,previousFolderName,currentFolderContent);
                 for (int j=0; j<currentFolderContent.size(); j++) {
                     final String fileName = currentFolderContent.get(j);                    
                     final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
@@ -120,6 +124,7 @@ public class ConcretePhotoList extends Object
                 System.err.println(photo.getFullPath()+" does not exist on the disk");
             }
         }
+        sortFolderContentByDateTime(rootDirPhoto,previousFolderName,currentFolderContent);
         for (int j=0; j<currentFolderContent.size(); j++) {
             final String fileName = currentFolderContent.get(j);                    
             final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
@@ -131,6 +136,7 @@ public class ConcretePhotoList extends Object
             final String folderName = folderListOnDisk.get(i);                    
             System.err.println("folder \""+folderName+"\" is missing from the index");                    
             currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
+            sortFolderContentByDateTime(rootDirPhoto,folderName,currentFolderContent);
             for (int j=0; j<currentFolderContent.size(); j++) {
                 final String fileName = currentFolderContent.get(j);                    
                 final Photo photo = new Photo(folderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
@@ -867,13 +873,15 @@ public class ConcretePhotoList extends Object
     }
     
     /**
+     * get the list of media files contained in the folder <i>folderName</i>
+     * the order of the files is unspecified
+     * 
      * @param rootDir
      * @param folderName
      * @return content of the folder on the disk
      */
     private static Vector<String> getFolderContentOnDisk(final String rootDir,
                                                          final String folderName) {
-    	final DataFormatFactory s_formatFactory = new DataFormatFactory();
         final File folder = new File(rootDir + File.separator + folderName);
         final Vector<String> content = new Vector<String>();
         final String list[] = folder.list();
@@ -884,25 +892,39 @@ public class ConcretePhotoList extends Object
         	if ( s_formatFactory.createFormat(folder.getAbsolutePath()+ File.separator + str) != null )
                 content.add(str);
         
-        Collections.sort(content,new Comparator<String>() {
-        	public int compare(final String s1, final String s2) {
-        		final File f1 = new File(folder + File.separator + s1);
-        		final File f2 = new File(folder + File.separator + s2);
-        		if (f1.lastModified() < f2.lastModified()) {
-        			return -1;
-        		} else if (f1.lastModified() > f2.lastModified()) {
-        			return +1;
-        		} else {
-        			return 0;
-        		}
-        	}
-
-        }); 
-
-        
         return content;
     }
 
+    /**
+     * sort the files listed in <i>content</i> (which must be in folder <i>folderName</i>) by increasing date/time
+     * 
+     * @param rootDir
+     * @param folderName
+     * @param content
+     */
+    private static void sortFolderContentByDateTime(final String rootDir,
+    		                                        final String folderName,
+    		                                        final Vector<String> content) {
+
+        final File folder = new File(rootDir + File.separator + folderName);
+        final HashMap<String, Long> modificationDateTimes = new HashMap<String, Long>();
+        
+        for (String s : content) {
+    		final File f = new File(folder + File.separator + s);
+    		final long modificationDateTime = f.lastModified();
+        	modificationDateTimes.put(s,new Long(modificationDateTime));
+        }
+
+        Collections.sort(content,new Comparator<String>() {
+        	public int compare(final String s1, final String s2) {
+        		final Long lastModified1 = modificationDateTimes.get(s1);
+        		final Long lastModified2 = modificationDateTimes.get(s2);
+        		return lastModified1.compareTo(lastModified2);
+        	}
+        }); 
+
+    }
+    
 	/**
 	 * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
 	 */
