@@ -3,7 +3,6 @@ package lmzr.photomngr.data;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -16,6 +15,7 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 public class Photo {
     
     static private String a_rootDir;
+    static private PhotoHeaderDataCache a_photoHeaderDataCache;
     private String a_folder;
     private String a_filename;
     final private PhotoIndexData a_indexData;
@@ -28,9 +28,13 @@ public class Photo {
 
     /**
      * @param rootDir
+     * @param cacheDir
      */
-    static public void setRootDirectory(final String rootDir) {
+    static public void initializeByDirtyHack(final String rootDir,
+    		                                 final PhotoHeaderDataCache photoHeaderDataCache) {
+    	
         a_rootDir = rootDir;
+        a_photoHeaderDataCache = photoHeaderDataCache;
     }
     
     /**
@@ -43,6 +47,7 @@ public class Photo {
                  final HierarchicalCompoundStringFactory locationFactory,
                  final MultiHierarchicalCompoundStringFactory subjectFactory,
                  final AuthorFactory authorFactory) {
+    	
         a_folder = s_pool.replace(data[0]);
         a_filename = data[1];
         a_format = s_formatFactory.createFormat(getFullPath());
@@ -140,7 +145,7 @@ public class Photo {
      */
     public PhotoHeaderData getHeaderData() {
     	if ( a_headerData == null ) {
-            a_headerData = new PhotoHeaderData(getFullPath(),a_format);
+            a_headerData = a_photoHeaderDataCache.getHeaderData(a_folder, a_filename, a_format); 
     	}
     	
         return a_headerData;

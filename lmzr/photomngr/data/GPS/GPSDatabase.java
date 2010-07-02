@@ -260,11 +260,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		case PARAM_LOCATION:
 			return false;
 		case PARAM_LATITUDE_MIN:
-			return true;
 		case PARAM_LATITUDE_MAX:
-			return true;
 		case PARAM_LONGITUDE_MIN:
-			return true;
 		case PARAM_LONGITUDE_MAX:
 			return true;
 		case PARAM_GPS_DATA_FOR_MAPPING:

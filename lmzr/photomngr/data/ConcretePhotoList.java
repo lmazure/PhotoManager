@@ -46,16 +46,19 @@ public class ConcretePhotoList extends Object
     final private Scheduler a_scheduler;
     private boolean a_isSaved;
 	static final DataFormatFactory s_formatFactory = new DataFormatFactory();
+    static private PhotoHeaderDataCache a_photoHeaderDataCache;
 
     
     
     /**
      * @param excelFilename
      * @param rootDirPhoto
+     * @param cacheDir
      * @param scheduler 
      */
     public ConcretePhotoList(final String excelFilename,
                              final String rootDirPhoto,
+                             final String cacheDir,
                              final Scheduler scheduler) {
         
         a_listOfListeners = new Vector<TableModelListener>();
@@ -68,7 +71,8 @@ public class ConcretePhotoList extends Object
         a_scheduler = scheduler;
         a_isSaved = true;
         a_listOfPhotos = new Vector<Photo>();
-        Photo.setRootDirectory(rootDirPhoto);
+        a_photoHeaderDataCache = new PhotoHeaderDataCache(rootDirPhoto, cacheDir, scheduler);
+        Photo.initializeByDirtyHack(rootDirPhoto, a_photoHeaderDataCache);
         
         // load the data
         String data[][] = null;
@@ -637,7 +641,6 @@ public class ConcretePhotoList extends Object
         	}
             if ( focusX.floatValue() != getPhoto(rowIndex).getIndexData().getFocusX() ) {
                 getPhoto(rowIndex).getIndexData().setFocusX(focusX.floatValue());
-                
             }
             break; }
         case PARAM_FOCUS_Y: {
@@ -768,6 +771,8 @@ public class ConcretePhotoList extends Object
      * @throws IOException
      */
     public void save() throws IOException {
+    	
+    	a_photoHeaderDataCache.save(); // this is not the right place to do this!!!
     	
         // check that the data is not already saved
     	if (a_isSaved) {

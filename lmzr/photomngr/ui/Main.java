@@ -92,7 +92,7 @@ public class Main {
         
         final Scheduler scheduler = new Scheduler();
 
-        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root,scheduler);
+        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root, cache, scheduler);
         final FilteredPhotoList a_filteredList = new FilteredPhotoList(a_list);
 
         final GPSDatabase a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt", a_list.getLocationFactory());
