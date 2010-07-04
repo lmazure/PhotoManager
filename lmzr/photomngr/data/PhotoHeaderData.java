@@ -18,6 +18,8 @@ import com.drew.metadata.exif.CanonMakernoteDirectory;
 import com.drew.metadata.exif.ExifDirectory;
 
 /**
+ * Header data of an image/video.
+ * 
  * @author Laurent Mazuré
  */
 public class PhotoHeaderData {
@@ -62,22 +64,48 @@ public class PhotoHeaderData {
     static final StringPool s_pool = new StringPool(); 
 
     /**
-     * @param foldername
-     * @param filename
-     * @param format 
+     * @param photoDirectory
+     * @param folderName
+     * @param fileName
+     * @param format
      */
-    public PhotoHeaderData(final String filename,
+    public PhotoHeaderData(final String photoDirectory,
+    		               final String folderName,
+    		               final String fileName,
     		               final DataFormat format) {
     	
-    	a_filename = new File(filename).getName();
+    	a_filename = fileName;
     	
-    	String overridenfilename;
+    	if ( ( format != DataFormat.JPEG ) && ( format != DataFormat.AVI ) ) {
+    		// the other formats are not supported for the time being
+	    	a_width = 0;
+	    	a_height= 0;
+	    	a_orientation = DEFAULT_ORIENTATION;
+	    	a_date = DEFAULT_DATE;
+	    	a_manufacturer = DEFAULT_MANUFACTURER;
+	    	a_model = DEFAULT_MODEL;
+	    	a_exposure_time = DEFAULT_EXPOSURE_TIME;
+	    	a_shutter_speed = DEFAULT_SHUTTER_SPEED;
+	    	a_aperture_value = DEFAULT_APERTURE_VALUE;
+	    	a_flash = DEFAULT_FLASH;
+	    	a_focal_length = DEFAULT_FOCAL_LENGTH;
+	    	a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
+	    	a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
+	    	a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
+	    	a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
+	    	a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
+	    	a_canon_iso = DEFAULT_CANON_ISO;
+	    	a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+	    	return;    		
+    	}
     	
-    	// if this is an AVI file, try to read the corresponding THM file
+    	String overridenfilename = photoDirectory + File.separator + folderName + File.separator + fileName;
+    	
+    	// if this is an AVI file, try to read the corresponding THM file (for Canon videos)
     	if ( format == DataFormat.AVI ) {
     		String f = "";
-    		if ( filename.endsWith(".AVI") ) f = filename.substring(0,filename.length()-3) + "THM";
-    		if ( filename.endsWith(".avi") ) f = filename.substring(0,filename.length()-3) + "thm";
+    		if ( overridenfilename.endsWith(".AVI") ) f = overridenfilename.substring(0,overridenfilename.length()-3) + "THM";
+    		if ( overridenfilename.endsWith(".avi") ) f = overridenfilename.substring(0,overridenfilename.length()-3) + "thm";
     		final File ff = new File(f);
     		if ( !ff.exists()) {
     	    	a_width = 0;
@@ -101,8 +129,6 @@ public class PhotoHeaderData {
     	    	return;
     		}
     		overridenfilename = f;
-    	} else {
-    		overridenfilename = filename;
     	}
     	
     	int width = 0;
@@ -133,46 +159,51 @@ public class PhotoHeaderData {
                 final Iterator<?> tags = directory.getTagIterator();
                 while (tags.hasNext()) {
                     final Tag tag = (Tag)tags.next();
-//                    try {
+                    try {
 //                        System.out.println("tag="+tag.getTagTypeHex());
-//                        System.out.println("name="+tag.getTagName());
+//                        System.out.println("tag name="+tag.getTagName());
+//                        System.out.println("directory name="+tag.getDirectoryName());
 //                        System.out.println("value="+tag.getDescription());
 //                        System.out.println("--------------------------------");
-//                    } catch (Exception e) {
-//                        //
-//                    }
+                    } catch (Exception e) {
+                        //
+                    }
                     try {
-                    	if (tag.getTagType() == 0x0001) {
-                    		height = directory.getInt(tag.getTagType());
-                    	} else if (tag.getTagType() == 0x0003) {
-                    		width = directory.getInt(tag.getTagType());
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_ORIENTATION) {
-                    		orientation = directory.getInt(tag.getTagType());
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_DATETIME) {
-                    		date = directory.getDate(tag.getTagType());
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_MAKE) {
-                    		manufacturer = s_pool.replace(directory.getDescription(tag.getTagType()));
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_MODEL) {
-                    		model = s_pool.replace(directory.getDescription(tag.getTagType()));
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_EXPOSURE_TIME) {
-                    		exposure_time = s_pool.replace(directory.getDescription(tag.getTagType()));
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_SHUTTER_SPEED) {
-                    		shutter_speed = s_pool.replace(directory.getDescription(tag.getTagType()));
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_APERTURE) {
-                    		aperture_value = s_pool.replace(directory.getDescription(tag.getTagType()));
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_FLASH) {
-                    		flash = s_pool.replace(directory.getDescription(tag.getTagType()));
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_FOCAL_LENGTH) {
-                			try {
-                    			final String value = directory.getDescription(tag.getTagType()).replace(" mm","").replace(",",".");
-                    			focal_length = Double.parseDouble(value);
-                			} catch (final NumberFormatException e) {
-                    			System.err.println("unexpected value for TAG_FOCAL_LENGTH");
-                    			e.printStackTrace();
+                    	if (tag.getDirectoryName().equals("Jpeg")) {
+                    		if (tag.getTagType() == 0x0001) {
+                    			height = directory.getInt(tag.getTagType());
+                    		} else if (tag.getTagType() == 0x0003) {
+                    			width = directory.getInt(tag.getTagType());
+                    		}                    		
+                    	} else if (tag.getDirectoryName().equals("Exif")) {
+                    		if (tag.getTagType() == ExifDirectory.TAG_ORIENTATION) {
+                    			orientation = directory.getInt(tag.getTagType());
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_DATETIME) {
+                    			date = directory.getDate(tag.getTagType());
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_MAKE) {
+                    			manufacturer = s_pool.replace(directory.getDescription(tag.getTagType()));
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_MODEL) {
+                    			model = s_pool.replace(directory.getDescription(tag.getTagType()));
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_EXPOSURE_TIME) {
+                    			exposure_time = s_pool.replace(directory.getDescription(tag.getTagType()));
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_SHUTTER_SPEED) {
+                    			shutter_speed = s_pool.replace(directory.getDescription(tag.getTagType()));
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_APERTURE) {
+                    			aperture_value = s_pool.replace(directory.getDescription(tag.getTagType()));
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_FLASH) {
+                    			flash = s_pool.replace(directory.getDescription(tag.getTagType()));
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_FOCAL_LENGTH) {
+                    			try {
+                    				final String value = directory.getDescription(tag.getTagType()).replace(" mm","").replace(",",".");
+                    				focal_length = Double.parseDouble(value);
+                    			} catch (final NumberFormatException e) {
+                    				System.err.println("unexpected value for TAG_FOCAL_LENGTH");
+                    				e.printStackTrace();
+                    			}
+                    		} else if (tag.getTagType() == ExifDirectory.TAG_SELF_TIMER_MODE) {
+                    			self_timer_mode = s_pool.replace(directory.getDescription(tag.getTagType()));
                     		}
-                    	} else if (tag.getTagType() == ExifDirectory.TAG_SELF_TIMER_MODE) {
-                    		self_timer_mode = s_pool.replace(directory.getDescription(tag.getTagType()));
-                    	} else if (getManufacturer()!=null && getManufacturer().equalsIgnoreCase("canon")) { 
+                    	}	 else if (tag.getDirectoryName().equals("Canon Makernote")) {
                     		if (tag.getTagType() == CanonMakernoteDirectory.TAG_CANON_STATE1_SELF_TIMER_DELAY) {
                     			canon_self_timer_delay = s_pool.replace(directory.getDescription(tag.getTagType()));
                     		} else if (tag.getTagType() == CanonMakernoteDirectory.TAG_CANON_STATE1_FLASH_MODE) {
@@ -185,21 +216,24 @@ public class PhotoHeaderData {
                     			canon_iso = s_pool.replace(directory.getDescription(tag.getTagType()));
                     		} else if (tag.getTagType() == CanonMakernoteDirectory.TAG_CANON_STATE2_SUBJECT_DISTANCE) {
                     			try {
-	                    			final String value = directory.getDescription(tag.getTagType());
-	                    			canon_subject_distance = Integer.parseInt(value);
+                    				final String value = directory.getDescription(tag.getTagType());
+                    				canon_subject_distance = Integer.parseInt(value);
                     			} catch (final NumberFormatException e) {
-	                    			System.err.println("unexpected value for TAG_CANON_STATE2_SUBJECT_DISTANCE");
-	                    			e.printStackTrace();
-	                    		}
+                    				System.err.println("unexpected value for TAG_CANON_STATE2_SUBJECT_DISTANCE");
+                    				e.printStackTrace();
+                    			}
                     		}
                     	}
                     } catch (final MetadataException e) {
-                    	// do nothing
+                    	// should never occur, the data is corrupted
+                    	System.err.println("failed to parse "+overridenfilename);
+                    	e.printStackTrace();
                     }
                 }
             }
         } catch (final JpegProcessingException e) {
 			// should never occur, the data is corrupted
+        	System.err.println("failed to parse "+overridenfilename);
 			e.printStackTrace();
         }
         

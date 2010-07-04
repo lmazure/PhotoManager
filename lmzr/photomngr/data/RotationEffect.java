@@ -210,7 +210,7 @@ public class RotationEffect implements Effect {
     /**
      * @see javax.media.Controls#getControl(java.lang.String)
      */
-    public Object getControl(@SuppressWarnings("unused") final String controlType) {
+    public Object getControl(final String controlType) {
     	return null;
     }
 

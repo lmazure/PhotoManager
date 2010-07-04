@@ -772,8 +772,6 @@ public class ConcretePhotoList extends Object
      */
     public void save() throws IOException {
     	
-    	a_photoHeaderDataCache.save(); // this is not the right place to do this!!!
-    	
         // check that the data is not already saved
     	if (a_isSaved) {
     	    return;

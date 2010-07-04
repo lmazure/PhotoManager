@@ -34,7 +34,7 @@ public class FilterComponent extends JPanel {
                 
         add(a_pane);
         
-        a_title.addActionListener(new ActionListener() { public void actionPerformed(@SuppressWarnings("unused") final ActionEvent e) { a_pane.setVisible(isFilterEnabled());}});
+        a_title.addActionListener(new ActionListener() { public void actionPerformed(final ActionEvent e) { a_pane.setVisible(isFilterEnabled());}});
     }
 
     /**

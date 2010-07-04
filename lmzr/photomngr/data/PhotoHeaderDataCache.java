@@ -2,28 +2,46 @@ package lmzr.photomngr.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.util.io.StringTableFromToExcel;
 
+/**
+ * Cache the header data.
+ * This class is designed to be be simply dropped in between Photo and PhotoHeaderData.
+ * I should surely break this "simple drop in" rule to have a better implementation saving CPU and memory.
+ * 
+ * @author Laurent
+ *
+ */
 public class PhotoHeaderDataCache {
 
+	/**
+	 * Cache for one image folder.
+	 * 
+	 * @author Laurent
+	 *
+	 */
 	private class FolderCache {
 		
-		private final HashMap<String,PhotoHeaderData> a_fileCache;
+		private final Map<String,PhotoHeaderData> a_fileCache;
 		private final String a_folderName;
 		private boolean isDirty;
 		
 		public FolderCache(final String folderName) {
 			a_folderName = folderName;
-			a_fileCache = new HashMap<String,PhotoHeaderData>();
+			a_fileCache = Collections.synchronizedMap(new HashMap<String,PhotoHeaderData>());
 			isDirty = false;
 			loadFromDisk();
 		}
 		
-		synchronized public PhotoHeaderData getHeaderData(final String filename,
-                                                          final DataFormat format) {
+		public PhotoHeaderData getHeaderData(final String filename,
+                                             final DataFormat format) {
 			
 			final PhotoHeaderData headerData = a_fileCache.get(filename);
 			
@@ -31,13 +49,10 @@ public class PhotoHeaderDataCache {
 				return headerData;
 			}
 			
-				final String fullPath = a_photoDirectory + File.separator + a_folderName + File.separator + filename;
-				final PhotoHeaderData newHeaderData = new PhotoHeaderData(fullPath,format);
+			final PhotoHeaderData newHeaderData = new PhotoHeaderData(a_photoDirectory,a_folderName,filename,format);
 				
-			synchronized (this) {
-				a_fileCache.put(filename, newHeaderData);
-				isDirty = true;
-			}
+			a_fileCache.put(filename, newHeaderData);
+			isDirty = true;
 			
 			return newHeaderData;
 		}
@@ -57,7 +72,7 @@ public class PhotoHeaderDataCache {
             }
 		}
 		
-		synchronized private void saveToDisk() {
+		private void saveToDisk() {
 			
 			if ( !isDirty ) return;
 			
@@ -96,9 +111,16 @@ public class PhotoHeaderDataCache {
 	
 	private final String a_photoDirectory;
 	private final String a_cacheDirectory;
-    final private Scheduler a_scheduler;
-	private final HashMap<String,FolderCache> a_folderCache;
+	private final Scheduler a_scheduler;
+	private final Map<String,FolderCache> a_folderCache;
+	private final Timer a_timerForPeriodicSaves;
+	static private final long SAVE_PERIODICITY = 10000;
 
+	/**
+	 * @param photoDirectory
+	 * @param cacheDirectory
+	 * @param scheduler
+	 */
 	public PhotoHeaderDataCache(final String photoDirectory,
 			                    final String cacheDirectory,
 	                            final Scheduler scheduler) {
@@ -106,9 +128,22 @@ public class PhotoHeaderDataCache {
 		a_photoDirectory = photoDirectory;
 		a_cacheDirectory = cacheDirectory;
         a_scheduler = scheduler;
-		a_folderCache = new HashMap<String,FolderCache>();
+		a_folderCache = Collections.synchronizedMap(new HashMap<String,FolderCache>());
+		a_timerForPeriodicSaves = new Timer();
+		a_timerForPeriodicSaves.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				save();
+			}
+		}, SAVE_PERIODICITY, SAVE_PERIODICITY);
 	}
 
+	/**
+	 * @param folderName
+	 * @param filename
+	 * @param format
+	 * @return
+	 */
 	public PhotoHeaderData getHeaderData(final String folderName,
                                          final String filename,
                                          final DataFormat format) {
@@ -123,7 +158,10 @@ public class PhotoHeaderDataCache {
 		return folderCache.getHeaderData(filename,format);
 	}
 	
-	public void save() {
+	/**
+	 * Save all the cache on disk.
+	 */
+	private void save() {
 		
 		for ( FolderCache folderCache : a_folderCache.values() ) {
 			folderCache.saveToDisk();

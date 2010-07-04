@@ -17,6 +17,10 @@ import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
 
 /**
+ * Trivial export for putting the images on my web site (I know, this is not a good idea to write HTML by end
+ * but this is so simple, I don't want to use DOM).
+ * A random token is added to avoid strange to guess the directory name.
+ * 
  * @author Laurent
  *
  */
