@@ -54,7 +54,7 @@ public class PhotoNavigator extends JFrame
     final private JLabel a_time;
     final private JButton a_map;
     final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
-    private JButton a_play[];
+    final private JButton a_play[];
     private int a_previousSelection[];
 
 	
@@ -126,6 +126,7 @@ public class PhotoNavigator extends JFrame
         
         a_play = new JButton[a_players.length];
         for (int i=0; i<a_players.length; i++) {
+        	//TODO this should be a split button
 	        a_play[i] = new JButton(new ActionStartPlayer( a_players[i].getName(),
 	        		                                       KeyEvent.CHAR_UNDEFINED,
 	        		                                       null,
@@ -136,6 +137,8 @@ public class PhotoNavigator extends JFrame
 	        panel.add(a_play[i]);
 	        a_play[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }
+        
+        //TODO this should also be a split button (once the access to geoportail.fr maps will be implemented)
         a_map = new JButton(new ActionLaunchGoogleMaps("Map", KeyEvent.CHAR_UNDEFINED, null,"display Google Maps",a_GPSDatabase, a_photoList, a_selection));
         panel.add(a_map);
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);

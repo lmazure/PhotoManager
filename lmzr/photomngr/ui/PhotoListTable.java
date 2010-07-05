@@ -171,7 +171,7 @@ public class PhotoListTable extends JTable {
     @Override
 	public String getToolTipText(final MouseEvent event)
     {
-        // TODO 5 le tooltip devrait aussi s'afficher quand la dernière colonne est partiellement cachée
+        // TODO le tooltip devrait aussi s'afficher quand la dernière colonne est partiellement cachée
         final int row = rowAtPoint(event.getPoint());
         final int col = columnAtPoint(event.getPoint());
         if ( (row == -1) || (col == -1) ) return null;

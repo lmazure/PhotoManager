@@ -342,9 +342,9 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 					                   location);
 		} catch (final IllegalArgumentException e) {
 	          JOptionPane.showMessageDialog(null,
-                      "Incorrect coordinate\n"+e.toString(),
-                      "Edit error",
-                      JOptionPane.ERROR_MESSAGE);
+                                            "Incorrect coordinate\n"+e.toString(),
+                                            "Edit error",
+                                            JOptionPane.ERROR_MESSAGE);
 
 		}
 	}

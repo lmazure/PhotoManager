@@ -44,9 +44,9 @@ public class ConcretePhotoList extends Object
     final private MultiHierarchicalCompoundStringFactory a_subjectFactory;
     final private AuthorFactory a_authorFactory;
     final private Scheduler a_scheduler;
+    final private PhotoHeaderDataCache a_photoHeaderDataCache;
     private boolean a_isSaved;
-	static final DataFormatFactory s_formatFactory = new DataFormatFactory();
-    static private PhotoHeaderDataCache a_photoHeaderDataCache;
+	static private final DataFormatFactory s_formatFactory = new DataFormatFactory();
 
     
     

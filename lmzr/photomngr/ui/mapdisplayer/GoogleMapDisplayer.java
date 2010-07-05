@@ -30,6 +30,7 @@ public class GoogleMapDisplayer implements MapDisplayer {
 		if (!GPSData.isComplete()) return;
 
 		try {
+			//TODO of course, the path to the Borwser should not be hard coded
 			//final String dirtyPath = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
 			final String dirtyPath = "C:\\Documents and Settings\\All Users\\Application Data\\Mozilla Firefox\\firefox.exe";
 			final String[] commandLine = { dirtyPath, 
@@ -50,7 +51,7 @@ public class GoogleMapDisplayer implements MapDisplayer {
 					+ "&t=h&hl=fr" };
 			Runtime.getRuntime().exec(commandLine);
 		} catch (final IOException e1) {
-			// TODO Auto-generated catch block
+			System.err.println("failed to start Web Browser");
 			e1.printStackTrace();	}
 	}
 

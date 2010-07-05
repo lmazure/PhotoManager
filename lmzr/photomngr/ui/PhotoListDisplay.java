@@ -42,13 +42,12 @@ public class PhotoListDisplay extends JFrame
 	final private PhotoListTable a_table;
 	final private PhotoList a_list;
 	final private ListSelectionManager a_selection;
-	final public ActionSave a_actionSave;
+	final public ActionSave a_actionSave; //TODO méchant hack dans ActionRenameFolder, à nettoyer asap
 	final private ActionRenameFolder a_actionRenameFolder;
 	final private ActionCopy a_actionCopy;
 	final private ActionPaste a_actionPaste;
 	final private ActionCopyFromNext a_actionCopyFromNext;
 	final private ActionCopyFromPrevious a_actionCopyFromPrevious;
-	
 
 
     /**

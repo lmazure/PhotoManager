@@ -28,6 +28,10 @@ import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
 import lmzr.photomngr.ui.cellrenderer.LocationCellRenderer;
 import lmzr.photomngr.ui.cellrenderer.SubjectCellRenderer;
 
+/**
+ * @author lmazure
+ *
+ */
 public class PhotoEditor extends JFrame
                          implements ListSelectionListener, TableModelListener {
 
@@ -65,6 +69,8 @@ public class PhotoEditor extends JFrame
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		add(panel);
 
+		//TODO half of this class simply does not work... to be finished
+		
         a_location = new LocationCellRenderer();
         a_location.setBorder(BorderFactory.createTitledBorder("location"));
         a_location.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_location.getPreferredSize().height));
