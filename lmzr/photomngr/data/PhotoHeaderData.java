@@ -274,8 +274,8 @@ public class PhotoHeaderData {
 
     /**
      * create from a String Array
-     * @see getStringArray()
-     * @param data
+     * @see #getStringArray()
+     * @param data string array encoding this object
      */
     public PhotoHeaderData(final String data[]) {
 
@@ -360,7 +360,9 @@ public class PhotoHeaderData {
     
     /**
      * return as a String array
-     * @return
+     * very dirty kludge: the first element is the filename and PhotoHeaderDataCache knows about it
+     * 
+     * @return string array encoding this object
      */
     public String[] getStringArray() {
     	
@@ -404,14 +406,15 @@ public class PhotoHeaderData {
     }
     
     /**
-     * 1 = The 0th row represents the visual top of the image, and the 0th column represents the visual left-hand side.
-  	 * 2 = The 0th row represents the visual top of the image, and the 0th column represents the visual right-hand side.
-	 * 3 = The 0th row represents the visual bottom of the image, and the 0th column represents the visual right-hand side.
-	 * 4 = The 0th row represents the visual bottom of the image, and the 0th column represents the visual left-hand side.
-	 * 5 = The 0th row represents the visual left-hand side of the image, and the 0th column represents the visual top.
-	 * 6 = The 0th row represents the visual right-hand side of the image, and the 0th column represents the visual top.
-	 * 7 = The 0th row represents the visual right-hand side of the image, and the 0th column represents the visual bottom.
-	 * 8 = The 0th row represents the visual left-hand side of the image, and the 0th column represents the visual bottom.
+     * 1 = The 0th row represents the visual top of the image, and the 0th column represents the visual left-hand side.<br/>
+  	 * 2 = The 0th row represents the visual top of the image, and the 0th column represents the visual right-hand side.<br/>
+	 * 3 = The 0th row represents the visual bottom of the image, and the 0th column represents the visual right-hand side.<br/>
+	 * 4 = The 0th row represents the visual bottom of the image, and the 0th column represents the visual left-hand side.<br/>
+	 * 5 = The 0th row represents the visual left-hand side of the image, and the 0th column represents the visual top.<br/>
+	 * 6 = The 0th row represents the visual right-hand side of the image, and the 0th column represents the visual top.<br/>
+	 * 7 = The 0th row represents the visual right-hand side of the image, and the 0th column represents the visual bottom.<br/>
+	 * 8 = The 0th row represents the visual left-hand side of the image, and the 0th column represents the visual bottom.<br/>
+	 * 
      * @return orientation of the photo (tag 0x0112)
      */
     public int getOrientation() {
@@ -419,7 +422,6 @@ public class PhotoHeaderData {
     }
     
     /**
-     * may be null if undefined in the photo file
      * @return date when the photo has been taken (tag 0x0132)
      */
     public Date getDate() {

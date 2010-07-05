@@ -24,7 +24,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-    	Chrono.setStartOfTime();
+    	Chrono.setBeginningOfTime();
         new Main(args[0],args[1]);
     }
     

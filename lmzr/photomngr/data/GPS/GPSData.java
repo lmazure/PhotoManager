@@ -234,8 +234,8 @@ public class GPSData implements Cloneable {
 	/**
 	 * parse a string into a longitude
 	 * 
-	 * @param str
-	 * @return
+	 * @param str longitude as a string
+	 * @return longitude as a double
 	 */
 	private double parseLongitude(final String str) {
 		return parseXxitude(str,'E','O');
@@ -244,8 +244,8 @@ public class GPSData implements Cloneable {
 	/**
 	 * parse a string into a latitude
 	 * 
-	 * @param str
-	 * @return
+	 * @param str latitude as a string
+	 * @return latitude as a double
 	 */
 	private double parseLatitude(final String str) {
 		return parseXxitude(str,'N','S');
@@ -278,8 +278,9 @@ public class GPSData implements Cloneable {
 	
 	/**
 	 * format a longitude expressed as a double into a string
-	 * @param latitude
-	 * @return
+	 * 
+	 * @param latitude as a double
+	 * @return latitude as a string
 	 */
 	private String formatLongitude(final double latitude) {
 		return formatXxitude(latitude,'E','O');
@@ -287,8 +288,9 @@ public class GPSData implements Cloneable {
 
 	/**
 	 * format a latitude expressed as a double into a string
-	 * @param longitude
-	 * @return
+	 * 
+	 * @param longitude as a double
+	 * @return longitude as a string
 	 */
 	private String formatLatitude(final double longitude) {
 		return formatXxitude(longitude,'N','S');

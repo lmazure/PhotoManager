@@ -73,7 +73,7 @@ public class PriorityExecutor extends ThreadPoolExecutor {
          * @param category
          * @param priority
          * @param subpriority
-         * @return
+         * @return priority as a single double value
          */
         private static double computePriority(final Category category,
                                               final Priority priority,

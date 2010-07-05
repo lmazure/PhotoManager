@@ -12,7 +12,7 @@ public class StringPool {
 	
     /**
      * @param str
-     * @return
+     * @return interned string
      */
     public String replace(final String str) {
     	

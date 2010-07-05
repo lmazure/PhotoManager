@@ -105,7 +105,6 @@ public class SubjectCellEditor extends JComponent
 		}
     
 		/**
-		 * @param e
 		 */
 		private void update() {
 			if ( a_edit.getText().length()<2 ) {

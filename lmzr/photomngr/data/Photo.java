@@ -27,8 +27,10 @@ public class Photo {
     static final StringPool s_pool = new StringPool(); 
 
     /**
+     * awful static initialization, to be clean up
+     * 
      * @param rootDir
-     * @param cacheDir
+     * @param photoHeaderDataCache
      */
     static public void initializeByDirtyHack(final String rootDir,
     		                                 final PhotoHeaderDataCache photoHeaderDataCache) {

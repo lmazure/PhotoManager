@@ -180,9 +180,11 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 	}
 
 	/**
+	 * return the value of a cell which is not in the header row
+	 * 
 	 * @param rowIndex
 	 * @param columnIndex
-	 * @return
+	 * @return value of the cell
 	 */
 	private String getCellValueCell(final int rowIndex,
                                     final int columnIndex) {
@@ -229,8 +231,10 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 	}
 
 	/**
+	 * return the value of a cell which is in the header row
+	 * 
 	 * @param rowIndex
-	 * @return
+	 * @return value of the cell
 	 */
 	private String getRowHeader(final int rowIndex) {
 		

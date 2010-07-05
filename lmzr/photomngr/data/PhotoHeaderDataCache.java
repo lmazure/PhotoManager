@@ -142,7 +142,7 @@ public class PhotoHeaderDataCache {
 	 * @param folderName
 	 * @param filename
 	 * @param format
-	 * @return
+	 * @return header data
 	 */
 	public PhotoHeaderData getHeaderData(final String folderName,
                                          final String filename,
