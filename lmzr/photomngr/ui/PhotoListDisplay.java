@@ -42,7 +42,7 @@ public class PhotoListDisplay extends JFrame
 	final private PhotoListTable a_table;
 	final private PhotoList a_list;
 	final private ListSelectionManager a_selection;
-	final public ActionSave a_actionSave; //TODO méchant hack dans ActionRenameFolder, à nettoyer asap
+	final private ActionSave a_actionSave;
 	final private ActionRenameFolder a_actionRenameFolder;
 	final private ActionCopy a_actionCopy;
 	final private ActionPaste a_actionPaste;
@@ -82,7 +82,7 @@ public class PhotoListDisplay extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		a_actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",filteredList);
+		a_actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_list);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
 		final ActionQuit a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",filteredList,GPSDatabase,scheduler);

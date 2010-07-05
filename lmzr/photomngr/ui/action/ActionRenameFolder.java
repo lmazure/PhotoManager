@@ -2,6 +2,7 @@ package lmzr.photomngr.ui.action;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -83,7 +84,16 @@ public class ActionRenameFolder extends PhotoManagerAction {
 		    }
 
 		    // save
-			a_photoListDisplay.a_actionSave.actionPerformed(e); //TODO ce hack est vraiment très sale!!!
+		    try {
+		        a_photoList.save();
+		    } catch (final IOException e1) {
+		        System.err.println("failed to save data");
+		        e1.printStackTrace();
+		        JOptionPane.showMessageDialog(null,
+		        		                      "Failed to save data\n"+e1.toString(),
+		        		                      "Save error",
+		        		                      JOptionPane.ERROR_MESSAGE);
+		    }
 		}
 	}
 	
