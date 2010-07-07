@@ -51,26 +51,24 @@ public class PhotoListDisplay extends JFrame
 
 
     /**
-     * @param unfilteredList
-     * @param filteredList
+     * @param photoList
      * @param GPSDatabase
      * @param scheduler
      */
-    public PhotoListDisplay(final PhotoList unfilteredList,
-    		                final PhotoList filteredList,
+    public PhotoListDisplay(final PhotoList photoList,
       		                final GPSDatabase GPSDatabase,
       		                final Scheduler scheduler) {
 	    super();
 	    
-	    a_list = filteredList;
+	    a_list = photoList;
 
-		a_table = new PhotoListTable(unfilteredList,filteredList);
+		a_table = new PhotoListTable(photoList,this);
 
-	    saveChanged(new SaveEvent(filteredList,a_list.isSaved()));
-        filteredList.addSaveListener(this);
+	    saveChanged(new SaveEvent(photoList,a_list.isSaved()));
+        photoList.addSaveListener(this);
 
 		// listen to change of the selection column(s)
-		a_selection = new ListSelectionManager(filteredList,getLineSelectionListModel());
+		a_selection = new ListSelectionManager(photoList,getLineSelectionListModel());
 		a_selection.addListener(this);
 		
 		// listen to change of the selection row(s)
@@ -85,7 +83,7 @@ public class PhotoListDisplay extends JFrame
 		a_actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_list);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
-		final ActionQuit a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",filteredList,GPSDatabase,scheduler);
+		final ActionQuit a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",photoList,GPSDatabase,scheduler);
 		final JMenuItem itemQuit = new JMenuItem(a_actionQuit);
 		menuFile.add(itemQuit);
 

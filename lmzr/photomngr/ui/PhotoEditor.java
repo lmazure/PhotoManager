@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -24,9 +26,9 @@ import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
 import lmzr.photomngr.ui.celleditor.AuthorCellEditor;
 import lmzr.photomngr.ui.celleditor.CopiesCellEditor;
+import lmzr.photomngr.ui.celleditor.LocationCellEditor;
 import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
-import lmzr.photomngr.ui.cellrenderer.LocationCellRenderer;
-import lmzr.photomngr.ui.cellrenderer.SubjectCellRenderer;
+import lmzr.photomngr.ui.celleditor.SubjectCellEditor;
 
 /**
  * @author lmazure
@@ -37,8 +39,8 @@ public class PhotoEditor extends JFrame
 
     final private ListSelectionManager a_selection;
     final private PhotoList a_photoList;
-    final private JTextField a_location;
-    final private SubjectCellRenderer a_subject;
+    final private LocationCellEditor a_location;
+    final private SubjectCellEditor a_subject;
     final private PhotoTraitCellEditor a_quality;
     final private PhotoTraitCellEditor a_originality;
     final private PhotoTraitCellEditor a_privacy;
@@ -71,31 +73,34 @@ public class PhotoEditor extends JFrame
 
 		//TODO half of this class simply does not work... to be finished
 		
-        a_location = new LocationCellRenderer();
+        a_location = new LocationCellEditor(photoList.getLocationFactory(),this);
         a_location.setBorder(BorderFactory.createTitledBorder("location"));
         a_location.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_location.getPreferredSize().height));
         panel.add(a_location);
         a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_location.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
+        a_location.addTextFocusListener (
+                new FocusListener() {
+                    public void focusLost(final FocusEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_location.getText(),
                     			               a_selection.getSelection()[0],
-                    			               PhotoList.PARAM_LOCATION);}});
-        
-        a_subject = new SubjectCellRenderer();
+                    			               PhotoList.PARAM_LOCATION);}
+                    public void focusGained(final FocusEvent e) {
+                    }
+                });        
+        a_subject = new SubjectCellEditor(photoList, this);
         a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
         a_subject.setBorder(BorderFactory.createTitledBorder("subject"));
-        /*
-        a_subject.addActionListener(
-                new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
+        a_subject.addTextFocusListener (
+                new FocusListener() { 
+                    public void focusLost(final FocusEvent e) {
                     	if (a_isAdjusting) return;
-                    	a_photoList.setValueAt(a_location.getText(),
+                    	a_photoList.setValueAt(a_subject.getText(),
                     			               a_selection.getSelection()[0],
-                    			               PhotoList.PARAM_SUBJECT);}});
-        */
+                    			               PhotoList.PARAM_SUBJECT);}
+                    public void focusGained(final FocusEvent e) {
+                    }
+                });
         panel.add(a_subject);
         a_subject.setAlignmentX(Component.LEFT_ALIGNMENT);
         

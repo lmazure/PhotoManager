@@ -7,6 +7,7 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -45,17 +46,17 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
+ * @author lmazure
  *
  */
 public class SubjectCellEditor extends JComponent
                                implements TableCellEditor {
 
     final private Vector<CellEditorListener> a_listenerList;
-    final private JTextArea a_textfield;
+    final public JTextArea a_textfield;
     final private JButton a_button;
     private InternalSubjectCellEditor a_internal;
-    final private PhotoList a_unfilteredList;
-    final private PhotoList a_filteredList;
+    final private PhotoList a_photoList;
     
     /**
      * @author Laurent
@@ -64,20 +65,16 @@ public class SubjectCellEditor extends JComponent
     private class SubjectEditListener implements DocumentListener {
 
     	final private JTextField a_edit;
-    	final private JComboBox a_searchScope;
     	final private JButton a_propositions[];
 
     	/**
     	 * @param edit 
-    	 * @param searchScope 
     	 * @param propositions
     	 */
     	public SubjectEditListener(final JTextField edit,
-    					           final JComboBox searchScope,
     			                   final JButton propositions[]) {
         	a_edit = edit;
-        	a_searchScope = searchScope;
-			a_propositions = propositions;
+        	a_propositions = propositions;
 		}
     	
 		/**
@@ -115,16 +112,8 @@ public class SubjectCellEditor extends JComponent
 
 			final String str = a_edit.getText();
 			final HashMap<String,Integer> record = new HashMap<String,Integer>();
-			final String scope = (String)a_searchScope.getSelectedItem();
-			//final PhotoList photoList = scope.equals("all") ? a_unfilteredList : a_filteredList;
-			PhotoList photoList;
-			if ( scope.equals("all") ) {
-				photoList = a_unfilteredList;
-			} else {
-				photoList = a_filteredList;
-			}
-			for (int i=0; i<photoList.getRowCount(); i++) {
-				final MultiHierarchicalCompoundString subjets = (MultiHierarchicalCompoundString)photoList.getValueAt(i, PhotoList.PARAM_SUBJECT);
+			for (int i=0; i<a_photoList.getRowCount(); i++) {
+				final MultiHierarchicalCompoundString subjets = (MultiHierarchicalCompoundString)a_photoList.getValueAt(i, PhotoList.PARAM_SUBJECT);
 				final HierarchicalCompoundString s[] = subjets.getParts();
 				for ( int j=0; j<s.length;  j++) {
 					final String ss = s[j].toLongString(); 
@@ -159,26 +148,19 @@ public class SubjectCellEditor extends JComponent
     
     private class InternalSubjectCellEditor extends JDialog {
 
-    	final private JComboBox a_searchScope;
     	final private JTextArea a_text;
     	final private JTextField a_edit;
     	final private JButton a_propositions[];
         final private CheckTreeManager a_subjects;
     	
     	InternalSubjectCellEditor(final MultiHierarchicalCompoundStringFactory factory,
-    			                  final Frame parent,
-    			                  final String value){
+    			                  final Frame parent){
     		
             super(parent,"Subject",true);
             
             final Container c = getContentPane();
             c.setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
             c.setMinimumSize(new Dimension(600,600));
-            
-            final String[] scopes = { "all", "filtered photos" };
-            a_searchScope = new JComboBox(scopes);
-            c.add(a_searchScope);
-        	a_searchScope.setAlignmentX(0.f);
             
             a_edit = new JTextField(80);
             c.add(a_edit);
@@ -203,16 +185,10 @@ public class SubjectCellEditor extends JComponent
 
             }
 
-            final SubjectEditListener listener = new SubjectEditListener(a_edit,a_searchScope,a_propositions);
+            final SubjectEditListener listener = new SubjectEditListener(a_edit,a_propositions);
             a_edit.getDocument().addDocumentListener(listener);
-            a_searchScope.addActionListener(new ActionListener() {
-        		// ceci est un copier/coller de ci-dessous
-        		public void actionPerformed(ActionEvent event) {
-        			listener.update();
-        		} 
-        	});
 
-            a_text = new JTextArea(value);
+            a_text = new JTextArea();
             a_text.setDocument(SubjectCellEditor.this.a_textfield.getDocument());
             c.add(a_text);
         	a_text.setAlignmentX(0.f);
@@ -223,9 +199,6 @@ public class SubjectCellEditor extends JComponent
             final JScrollPane j = new JScrollPane(a_subjects.getTree()); 
             c.add(j);
         	j.setAlignmentX(0.f);
-            final MultiHierarchicalCompoundString v = a_filteredList.getSubjectFactory().create(value);
-            final TreePath paths[] = buildPath(v);
-            a_subjects.getSelectionModel().setSelectionPaths(paths);
             a_subjects.getSelectionModel().addTreeSelectionListener(
             		new TreeSelectionListener() {
             			public void valueChanged(final TreeSelectionEvent e) {
@@ -264,8 +237,16 @@ public class SubjectCellEditor extends JComponent
     	/**
     	 * 
     	 */
-    	private void open() {
-	        a_edit.requestFocusInWindow();        	
+    	private void open(final String value) {
+    		
+    		a_text.setText(value);
+
+            final MultiHierarchicalCompoundString v = a_photoList.getSubjectFactory().create(value);
+            final TreePath paths[] = buildPath(v);
+            a_subjects.getSelectionModel().setSelectionPaths(paths);
+
+	        a_edit.requestFocusInWindow();
+    		
     		setVisible(true);
     	}
 
@@ -323,23 +304,31 @@ public class SubjectCellEditor extends JComponent
         }
     }
     
+
     /**
-     * @param unfilteredList 
-     * @param filteredList 
+     * @param filteredList
+     * @param parent
      */
-    public SubjectCellEditor(final PhotoList unfilteredList,
-    		                 final PhotoList filteredList) {
-        super();
-        a_unfilteredList = unfilteredList;
-        a_filteredList = filteredList;
+    public SubjectCellEditor(final PhotoList filteredList,
+    		                 final Frame parent) {
+
+    	super();
+
+    	a_photoList = filteredList;
         setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+
         a_textfield = new JTextArea();
         add(a_textfield);
+
         a_button= new JButton("\u2193");
         add(a_button);
         a_button.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) { a_internal.open();}});
+                    public void actionPerformed(final ActionEvent e) {
+                    	a_internal.open(a_textfield.getText());}});
+
+        a_internal = new InternalSubjectCellEditor(a_photoList.getSubjectFactory(), parent);
+        
         a_listenerList = new Vector<CellEditorListener>();
     }
     
@@ -374,14 +363,12 @@ public class SubjectCellEditor extends JComponent
             setForeground(table.getForeground());
             setBackground(table.getBackground());
           }
-        a_textfield.setText(value.toString());
+        setText(value.toString());
         final int preferredheight = getPreferredSize().height;
         if ( table.getRowHeight(row) < preferredheight ) {
             table.setRowHeight(row,preferredheight);
         }
-        Component component=table;
-        do {component=component.getParent();} while(!(component instanceof Frame));
-        a_internal = new InternalSubjectCellEditor(a_filteredList.getSubjectFactory(),(Frame)component,a_textfield.getText());
+        
         return this;
     }
 
@@ -447,5 +434,33 @@ public class SubjectCellEditor extends JComponent
         } else {
             return false;
         }
+    }
+    
+    /**
+     * @param value
+     */
+    public void setText(final String value) {
+    	a_textfield.setText(value);
+    }
+    
+    /**
+     * @return current value of the cell
+     */
+    public String getText() {
+    	return a_textfield.getText();
+    }
+    
+    /**
+     * @param l
+     */
+    public void addTextFocusListener(final FocusListener l) {
+    	a_textfield.addFocusListener(l);
+    }
+
+    /**
+     * @param l
+     */
+    public void removeTextFocusListener(final FocusListener l) {
+    	a_textfield.removeFocusListener(l);
     }
 }

@@ -13,6 +13,7 @@ import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.util.chrono.Chrono;
 
+
 /**
  * @author Laurent Mazuré
  */
@@ -48,18 +49,28 @@ public class Main {
                        final String cache) {
 
         final String s_root = root;
-        
         final Scheduler scheduler = new Scheduler();
-
-        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt", s_root, cache, scheduler);
+        
+        final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt",
+        		                                               s_root,
+        		                                               cache,
+        		                                               scheduler);
         final FilteredPhotoList a_filteredList = new FilteredPhotoList(a_list);
 
-        final GPSDatabase a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt", a_list.getLocationFactory());
+        final GPSDatabase a_GPSDatabase = new GPSDatabase(s_root+File.separator+"gps.txt",
+        		                                          a_list.getLocationFactory());
         
-        final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,a_filteredList,a_GPSDatabase,scheduler);
-        final ListSelectionManager selection = new ListSelectionManager(a_filteredList,a_listDisplay.getLineSelectionListModel());
+        final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,
+        		                                                    a_GPSDatabase,
+        		                                                    scheduler);
+        final ListSelectionManager selection = new ListSelectionManager(a_filteredList,
+        		                                                        a_listDisplay.getLineSelectionListModel());
         
-        a_displayer = new PhotoDisplayer(scheduler, a_filteredList, a_GPSDatabase, new SubsampledImageCachedManager(cache), selection);
+        a_displayer = new PhotoDisplayer(scheduler,
+        		                         a_filteredList,
+        		                         a_GPSDatabase,
+        		                         new SubsampledImageCachedManager(cache),
+        		                         selection);
         
         final int i = a_list.getRowCount()-1;
         a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);

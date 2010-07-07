@@ -8,19 +8,19 @@ import java.awt.Font;
  */
 public class PhotoDisplayerComponentFontManager {
 
-    private Font s_theFont1;
-    private int s_fontSize1;
-    private Font s_theFont2;
-    private int s_fontSize2;
+    private Font a_annotationFont;
+    private int a_annotationFontSize;
+    private Font a_messageFont;
+    private int a_messageFontSize;
     
     /**
      * 
      */
      public PhotoDisplayerComponentFontManager() {
-        s_theFont1 = null;
-        s_fontSize1 = -1;
-        s_theFont2 = null;
-        s_fontSize2 = -1;
+        a_annotationFont = null;
+        a_annotationFontSize = -1;
+        a_messageFont = null;
+        a_messageFontSize = -1;
     }
     
     /**
@@ -33,12 +33,12 @@ public class PhotoDisplayerComponentFontManager {
         if (fontSize>10) fontSize=10;
         if (fontSize<5) return null;
         
-        if (fontSize==s_fontSize1) return s_theFont1;
+        if (fontSize==a_annotationFontSize) return a_annotationFont;
         
-        s_fontSize1 = fontSize;
-        s_theFont1 = new Font("Arial", Font.PLAIN, s_fontSize1);
+        a_annotationFontSize = fontSize;
+        a_annotationFont = new Font("Arial", Font.PLAIN, a_annotationFontSize);
         
-        return s_theFont1;        
+        return a_annotationFont;        
     }
 
     /**
@@ -49,12 +49,12 @@ public class PhotoDisplayerComponentFontManager {
         
         final int fontSize = slotSize.width/15;
         
-        if (fontSize==s_fontSize2) return s_theFont2;
+        if (fontSize==a_messageFontSize) return a_messageFont;
         
-        s_fontSize2 = fontSize;
-        s_theFont2 = new Font("Arial", Font.PLAIN, s_fontSize2);
+        a_messageFontSize = fontSize;
+        a_messageFont = new Font("Arial", Font.PLAIN, a_messageFontSize);
 
-        return s_theFont2;        
+        return a_messageFont;        
     }
 
 }

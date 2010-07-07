@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -51,15 +52,14 @@ public class LocationCellEditor extends JComponent
         final private CheckTreeManager a_location;
     	
     	InternalLocationCellEditor(final HierarchicalCompoundStringFactory factory,
-    			                   final Frame parent,
-    			                   final String value){
+    			                   final Frame parent){
     		
             super(parent,"Location",true);
             
             final Container c = getContentPane();
             setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
             
-            a_text = new JTextField(value,60);
+            a_text = new JTextField(60);
             a_text.setDocument(LocationCellEditor.this.a_textfield.getDocument());
             c.add(a_text);
             final String keptValue = a_text.getText();
@@ -67,13 +67,6 @@ public class LocationCellEditor extends JComponent
             a_location = new CheckTreeManager(new HierarchicalCompoundStringTreeDisplay(factory));
             a_location.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); 
             c.add(new JScrollPane(a_location.getTree()));
-            if ( !value.equals("") ) {
-            	// set the selection in the CheckTree 
-            	final HierarchicalCompoundString v = LocationCellEditor.this.a_factory.create(value);
-            	final TreePath paths[] = new TreePath[1];
-            	paths[0]=buildPath(v);
-            	a_location.getSelectionModel().setSelectionPaths(paths);
-            }
             a_location.getSelectionModel().addTreeSelectionListener(
             		new TreeSelectionListener() {
             			public void valueChanged(final TreeSelectionEvent e) {
@@ -102,6 +95,21 @@ public class LocationCellEditor extends JComponent
     		setVisible(false);
     	}
     	
+    	private void open(final String value) {
+    		
+    		a_text.setText(value);
+    		
+            if ( !value.equals("") ) {
+            	// set the selection in the CheckTree 
+            	final HierarchicalCompoundString v = LocationCellEditor.this.a_factory.create(value);
+            	final TreePath paths[] = new TreePath[1];
+            	paths[0]=buildPath(v);
+            	a_location.getSelectionModel().setSelectionPaths(paths);
+            }
+
+            setVisible(true);
+    	}
+    	
     	/**
     	 * 
     	 */
@@ -124,19 +132,29 @@ public class LocationCellEditor extends JComponent
     
     /**
      * @param factory 
-     * 
+     * @param parent
+    * 
      */
-    public LocationCellEditor(final HierarchicalCompoundStringFactory factory) {
-        super();
-        a_factory = factory;
+    public LocationCellEditor(final HierarchicalCompoundStringFactory factory,
+                              final Frame parent) {
+
+    	super();
+
+    	a_factory = factory;
         setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+
         a_textfield = new JTextField();
         add(a_textfield);
+        
         a_button= new JButton("\u2193");
         add(a_button);
         a_button.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) { a_internal.setVisible(true);}});
+                    public void actionPerformed(final ActionEvent e) {
+                    	a_internal.open(a_textfield.getText());}});
+        
+        a_internal = new InternalLocationCellEditor(a_factory, parent);
+
         a_listenerList = new Vector<CellEditorListener>();
     }
     
@@ -167,18 +185,16 @@ public class LocationCellEditor extends JComponent
         if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
-          } else {
+        } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
-          }
-        a_textfield.setText(value.toString());
+        }
+        setText(value.toString());
         final int preferredheight = getPreferredSize().height;
         if ( table.getRowHeight(row) < preferredheight ) {
             table.setRowHeight(row,preferredheight);
         }
-        Component component=table;
-        do{component=component.getParent();} while(!(component instanceof Frame));
-        a_internal = new InternalLocationCellEditor(a_factory,(Frame)component,a_textfield.getText());
+
         return this;
     }
 
@@ -244,5 +260,33 @@ public class LocationCellEditor extends JComponent
         } else {
             return false;
         }
+    }
+    
+    /**
+     * @param value
+     */
+    public void setText(final String value) {
+    	a_textfield.setText(value);
+    }
+    
+    /**
+     * @return current value of the cell
+     */
+    public String getText() {
+    	return a_textfield.getText();
+    }
+    
+    /**
+     * @param l
+     */
+    public void addTextFocusListener(final FocusListener l) {
+    	a_textfield.addFocusListener(l);
+    }
+
+    /**
+     * @param l
+     */
+    public void removeTextFocusListener(final FocusListener l) {
+    	a_textfield.removeFocusListener(l);
     }
 }
