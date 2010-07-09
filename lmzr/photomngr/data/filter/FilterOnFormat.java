@@ -30,7 +30,7 @@ public class FilterOnFormat {
      */
     public FilterOnFormat(final DataFormat formats[],
                           final boolean values[]) {
-        if (formats.length!=values.length) throw new AssertionError();
+        if (formats.length!=values.length) throw new AssertionError("filter on format is corrupted");
         a_formats = formats;
         a_values = values;
     }

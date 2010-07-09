@@ -53,7 +53,7 @@ public class FilterOnHierarchicalCompoundString {
             	}
             }
     	} else {
-    		throw new ClassCastException();
+    		throw new ClassCastException("filter on HierarchicalCompoundString is corrupted");
     	}
 
     	return false;

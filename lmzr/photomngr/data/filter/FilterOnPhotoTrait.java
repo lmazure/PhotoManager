@@ -34,7 +34,7 @@ public class FilterOnPhotoTrait {
     public FilterOnPhotoTrait(final PhotoTrait traits[],
                               final boolean values[],
                               final int parameter) {
-        if (traits.length!=values.length) throw new AssertionError();
+        if (traits.length!=values.length) throw new AssertionError("filter on trait is corrupted");
         a_traits = traits;
         a_values = values;
         a_parameter = parameter;
@@ -52,7 +52,7 @@ public class FilterOnPhotoTrait {
         for (int i =0; i<a_traits.length; i++) {
             if ( trait.equals(a_traits[i]) ) return a_values[i];
         }
-        throw new AssertionError();
+        throw new AssertionError("filter on trait is corrupted");
     }
     
     /**

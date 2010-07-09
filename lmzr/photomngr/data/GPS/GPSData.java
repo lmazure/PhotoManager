@@ -267,7 +267,7 @@ public class GPSData implements Cloneable {
 				                                 negativeLetter +
 				                                 "]) (\\d{1,2})° (\\d{1,2})' (\\d{1,2})''");
 		final Matcher matcher = pattern.matcher(str);
-		if ( !matcher.matches() ) throw new IllegalArgumentException();
+		if ( !matcher.matches() ) throw new IllegalArgumentException("\""+str+"\" cannot be parsed into a longitude/latitude");
 		final String s1 = matcher.group(1);
 		double value = Integer.parseInt(matcher.group(2)) + Integer.parseInt(matcher.group(3))/60.0 + Integer.parseInt(matcher.group(4))/3600.0;
 		if ( s1.charAt(0) == negativeLetter ) {
