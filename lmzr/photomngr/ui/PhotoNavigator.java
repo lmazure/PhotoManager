@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -31,6 +32,9 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
 import lmzr.photomngr.ui.action.ActionStartPlayer;
+import lmzr.photomngr.ui.mapdisplayer.GeoportailMapURICreator;
+import lmzr.photomngr.ui.mapdisplayer.GoogleMapURICreator;
+import lmzr.photomngr.ui.mapdisplayer.MapURICreator;
 import lmzr.photomngr.ui.player.Player;
 import lmzr.photomngr.ui.player.Player_QuickTime;
 import lmzr.photomngr.ui.player.Player_VideoLAN;
@@ -41,6 +45,10 @@ public class PhotoNavigator extends JFrame
 	
     final private static DateFormat s_dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
     final private static DateFormat s_timeFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
+    
+	final static MapURICreator s_geoportailMapURICreator = new GeoportailMapURICreator();
+	final static MapURICreator s_googleMapURICreator = new GoogleMapURICreator();
+
 
     final private ListSelectionManager a_selection;
     final private PhotoList a_photoList;
@@ -50,9 +58,10 @@ public class PhotoNavigator extends JFrame
     final private JButton a_previousPhoto;
     private boolean a_folderIsDisabled;
     final private JLabel a_file;
-    final private JLabel a_date;
-    final private JLabel a_time;
-    final private JButton a_map;
+    final private JLabel a_dateTime;
+    final private JLabel a_map;
+    final private JButton a_googleMap;
+    final private JButton a_geoportailMap;
     final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
     final private JButton a_play[];
     private int a_previousSelection[];
@@ -113,20 +122,15 @@ public class PhotoNavigator extends JFrame
         panel.add(navigator);
         navigator.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        final JPanel datetime = new JPanel();
-        datetime.setLayout(new BoxLayout(datetime, BoxLayout.Y_AXIS));
-        a_date = new JLabel();
-        datetime.add(a_date);
-        a_date.setAlignmentX(Component.CENTER_ALIGNMENT);
-        a_time = new JLabel();
-        datetime.add(a_time);
-        a_time.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(datetime);
-        datetime.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_dateTime = new JLabel();
+        a_dateTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(a_dateTime);
+        a_dateTime.setAlignmentX(Component.LEFT_ALIGNMENT);
         
+        final JPanel viewerButtons = new JPanel();
+
         a_play = new JButton[a_players.length];
         for (int i=0; i<a_players.length; i++) {
-        	//TODO this should be a split button
 	        a_play[i] = new JButton(new ActionStartPlayer( a_players[i].getName(),
 	        		                                       KeyEvent.CHAR_UNDEFINED,
 	        		                                       null,
@@ -134,13 +138,46 @@ public class PhotoNavigator extends JFrame
 	        		                                       a_photoList,
 	        		                                       a_selection,
 	        		                                       a_players[i]));
-	        panel.add(a_play[i]);
+	        viewerButtons.add(a_play[i]);
 	        a_play[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }
+        viewerButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
+        viewerButtons.setBorder(BorderFactory.createTitledBorder("external viewers"));
+
+        panel.add(viewerButtons);
         
-        //TODO this should also be a split button (once the access to geoportail.fr maps will be implemented)
-        a_map = new JButton(new ActionLaunchGoogleMaps("Map", KeyEvent.CHAR_UNDEFINED, null,"display Google Maps",a_GPSDatabase, a_photoList, a_selection));
-        panel.add(a_map);
+        final JPanel mapFull = new JPanel();
+        mapFull.setLayout(new BoxLayout(mapFull, BoxLayout.Y_AXIS));
+
+        a_map = new JLabel();
+        mapFull.add(a_map);
+        
+        final JPanel mapButtons = new JPanel();
+        a_googleMap = new JButton(new ActionLaunchGoogleMaps("Google",
+        		                                             KeyEvent.CHAR_UNDEFINED,
+        		                                             null,
+        		                                             "display Google Maps",
+        		                                             a_GPSDatabase,
+        		                                             a_photoList,
+        		                                             a_selection,
+        		                                             s_googleMapURICreator));
+        mapButtons.add(a_googleMap);
+        a_geoportailMap = new JButton(new ActionLaunchGoogleMaps("Geoportail",
+        		                                                 KeyEvent.CHAR_UNDEFINED,
+        		                                                 null,
+        		                                                 "display Geoportail Maps",
+        		                                                 a_GPSDatabase,
+        		                                                 a_photoList,
+        		                                                 a_selection,
+        		                                                 s_geoportailMapURICreator));
+        mapButtons.add(a_geoportailMap);
+        mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        mapFull.add(mapButtons);
+        mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mapFull.setBorder(BorderFactory.createTitledBorder("map"));
+        panel.add(mapFull);
+        
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -212,40 +249,40 @@ public class PhotoNavigator extends JFrame
         if ( selection.length!=1 ) {
             // zero or more than one image is selected
             // -> empty the text fields and disable all the fields (except previous and next if at least one 
-            setEnabledAll(false);
-        	a_map.setEnabled(false);
-        	a_map.setText("map");
-            a_date.setText(" ");
-            a_time.setText(" ");            
+            a_map.setText("");
+        	a_googleMap.setEnabled(false);
+        	a_geoportailMap.setEnabled(false);
+            a_dateTime.setText("");
             pack();
+            return;
         }
         
-        setEnabledAll(true);
             
         final Photo photo = a_photoList.getPhoto(selection[0]);
         final Date date = photo.getHeaderData().getDate();
         if (date != null ) {
             final String d = s_dateFormat.format(date); 
-            a_date.setText(d);
-            final String t = s_timeFormat.format(date); 
-            a_time.setText(t);
+            final String t = s_timeFormat.format(date);
+            a_dateTime.setText(d+" - "+t);
         } else {
-            a_date.setText(" ");
-            a_time.setText(" ");            
+            a_dateTime.setText(" ");
         }
         final String location = photo.getIndexData().getLocation().toLongString();
     	final GPSRecord gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
     	if (location!=null) {
 	    	if ( gps != null && gps.getGPSData().isComplete() ) {
-	        	a_map.setEnabled(true);
-	        	a_map.setText("map "+gps.getLocation().toString());
+	    		a_map.setText("map "+gps.getLocation().toString());
+	        	a_googleMap.setEnabled(true);
+	        	a_geoportailMap.setEnabled(true);
 	    	} else {
-	        	a_map.setEnabled(false);    		
-	        	a_map.setText("map "+location);
+	    		a_map.setText("no map for "+location);
+	        	a_googleMap.setEnabled(false);    		
+	        	a_geoportailMap.setEnabled(false);    		
 	    	}
     	} else {
-        	a_map.setEnabled(false);    		
-        	a_map.setText("map");
+    		a_map.setText("map");
+        	a_googleMap.setEnabled(false);    		
+        	a_geoportailMap.setEnabled(false);    		
     	}
     	
     	pack();
@@ -272,15 +309,6 @@ public class PhotoNavigator extends JFrame
     		updateFolderList();
     	}
         update();
-    }
-    
-    /**
-     * enable or disable all the fields
-     * @param b
-     */
-    private void setEnabledAll(final boolean b) {
-        a_date.setEnabled(b);
-        a_time.setEnabled(b);            
     }
 
     /**

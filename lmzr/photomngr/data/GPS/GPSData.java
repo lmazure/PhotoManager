@@ -120,7 +120,7 @@ public class GPSData implements Cloneable {
 	}
 	
    /**
-	 * @return central latitude
+	 * @return central latitude (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLatitudeAsDouble() {
@@ -130,7 +130,7 @@ public class GPSData implements Cloneable {
 	}
 
    /**
-	 * @return minimum latitude
+	 * @return minimum latitude (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLatitudeMinAsDouble() {
@@ -148,7 +148,7 @@ public class GPSData implements Cloneable {
 	}
 
    /**
-	 * @return maximum latitude
+	 * @return maximum latitude (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLatitudeMaxAsDouble() {
@@ -166,7 +166,7 @@ public class GPSData implements Cloneable {
 	}
 
 	/**
-	 * @return latitude range
+	 * @return latitude range (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLatitudeRangeAsDouble() {
@@ -176,7 +176,7 @@ public class GPSData implements Cloneable {
 	}
 
 	/**
-	 * @return central longitude
+	 * @return central longitude (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLongitudeAsDouble() {
@@ -186,7 +186,7 @@ public class GPSData implements Cloneable {
 	}
 
    /**
-	 * @return minimum longitude
+	 * @return minimum longitude (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLongitudeMinAsDouble() {
@@ -213,7 +213,7 @@ public class GPSData implements Cloneable {
 	}
 
 	/**
-	 * @return maximum longitude
+	 * @return maximum longitude (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLongitudeMaxAsDouble() {
@@ -222,7 +222,7 @@ public class GPSData implements Cloneable {
 	}
 	
 	/**
-	 * @return longitude range
+	 * @return longitude range (in degrees)
 	 *         null if undefined
 	 */
 	public Double getLongitudeRangeAsDouble() {
@@ -235,7 +235,7 @@ public class GPSData implements Cloneable {
 	 * parse a string into a longitude
 	 * 
 	 * @param str longitude as a string
-	 * @return longitude as a double
+	 * @return longitude as a double (in degrees)
 	 */
 	private double parseLongitude(final String str) {
 		return parseXxitude(str,'E','O');
@@ -245,7 +245,7 @@ public class GPSData implements Cloneable {
 	 * parse a string into a latitude
 	 * 
 	 * @param str latitude as a string
-	 * @return latitude as a double
+	 * @return latitude as a double (in degrees)
 	 */
 	private double parseLatitude(final String str) {
 		return parseXxitude(str,'N','S');
@@ -257,7 +257,7 @@ public class GPSData implements Cloneable {
 	 * @param str string to parse
 	 * @param positiveLetter letter for positive value
 	 * @param negativeLetter letter for negative value
-	 * @return coordinate as a double
+	 * @return coordinate as a double (in degrees)
 	 */
 	private double parseXxitude(final String str,
 			                    final char positiveLetter,
@@ -277,7 +277,7 @@ public class GPSData implements Cloneable {
 	}
 	
 	/**
-	 * format a longitude expressed as a double into a string
+	 * format a longitude expressed as a double (in degrees) into a string
 	 * 
 	 * @param latitude as a double
 	 * @return latitude as a string
@@ -287,7 +287,7 @@ public class GPSData implements Cloneable {
 	}
 
 	/**
-	 * format a latitude expressed as a double into a string
+	 * format a latitude expressed as a double (in degrees) into a string
 	 * 
 	 * @param longitude as a double
 	 * @return longitude as a string

@@ -1,6 +1,9 @@
 package lmzr.photomngr.ui.celleditor;
 
 import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.HeadlessException;
+import java.io.IOException;
 import java.util.EventObject;
 
 import javax.swing.JButton;
@@ -10,7 +13,8 @@ import javax.swing.table.TableCellEditor;
 
 import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
-import lmzr.photomngr.ui.mapdisplayer.GoogleMapDisplayer;
+import lmzr.photomngr.ui.mapdisplayer.GeoportailMapURICreator;
+import lmzr.photomngr.ui.mapdisplayer.MapURICreator;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
@@ -20,7 +24,9 @@ import lmzr.util.string.HierarchicalCompoundString;
 public class GPSDataDisplayMapCellEditor extends JButton
                                          implements TableCellEditor {
 	
-    /**
+	final static MapURICreator s_geoportailMapURICreator = new GeoportailMapURICreator();
+
+	/**
      * 
      */
     public GPSDataDisplayMapCellEditor() {
@@ -41,7 +47,18 @@ public class GPSDataDisplayMapCellEditor extends JButton
 	    final GPSData GPSData = record.getGPSData();
 
 	    if ( GPSData != null) {
-			(new GoogleMapDisplayer()).displayMap(location, GPSData);	    	
+			try {
+				Desktop.getDesktop().browse(s_geoportailMapURICreator.createMapURIFromGPSData(record));
+			} catch (final HeadlessException ex) {
+				System.err.println("failed to start a browser to display the map of "+location.toString());
+				ex.printStackTrace();
+			} catch (final UnsupportedOperationException ex) {
+				System.err.println("failed to start a browser to display the map of "+location.toString());
+				ex.printStackTrace();
+			} catch (final IOException ex) {
+				System.err.println("failed to start a browser to display the map of "+location.toString());
+				ex.printStackTrace();
+			}
 	    }
 	    
 	    setText("map " + record.getLocation().toShortString());
