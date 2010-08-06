@@ -13,6 +13,7 @@ public class GPSData implements Cloneable {
 	private double a_longitudeMin;
     private double a_latitudeMax;
     private double a_longitudeMax;
+    static private double MAX_COORDINATE_DIFF = 0.1 / ( 360*60*60*1000 );
     
 	/**
 	 * Create a new GPS point
@@ -41,6 +42,64 @@ public class GPSData implements Cloneable {
 		return new GPSData(getLatitudeMin(),getLongitudeMin(),getLatitudeMax(),getLongitudeMax());
 	}
 	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "["
+		       + getLatitudeMin()
+		       + ","
+		       + getLatitudeMax()
+		       + ","
+		       + getLongitudeMin()
+		       + ","
+		       + getLongitudeMax()
+		       + "]";
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if ( ! (other instanceof GPSData) ) return false;
+		final GPSData o = (GPSData)other;
+		return ( areCoordinatesEqual(a_latitudeMin, o.a_latitudeMin) &&
+				 areCoordinatesEqual(a_latitudeMax, o.a_latitudeMax) &&
+		         areCoordinatesEqual(a_longitudeMin, o.a_longitudeMin) &&
+				 areCoordinatesEqual(a_longitudeMax, o.a_longitudeMax) );
+	}
+
+	/**
+	 * @param c1
+	 * @param c2
+	 * @return true is the two coordinates are equal, false otherwise
+	 */
+	private static boolean areCoordinatesEqual(final double c1,
+			                                   final double c2) {
+		boolean c1IsNaN = Double.isNaN(c1);
+		boolean c2IsNaN = Double.isNaN(c2);
+		
+		if ( c1IsNaN && !c2IsNaN ) return false;
+		if ( !c1IsNaN && c2IsNaN ) return false;
+		
+		if (Math.abs(c1-c2)>MAX_COORDINATE_DIFF) return false;
+		
+		return true;
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return (new Double(a_latitudeMin)).hashCode()
+		        ^ (new Double(a_latitudeMax)).hashCode()
+		        ^ (new Double(a_longitudeMin)).hashCode()
+		        ^ (new Double(a_longitudeMax)).hashCode();
+	}
+		
 	/**
 	 * @return true if the GPS coordinates are fully defined, false otherwise
 	 */

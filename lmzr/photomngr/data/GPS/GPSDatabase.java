@@ -528,10 +528,25 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			final HierarchicalCompoundString oldLocation = a_locationFactory.create(oldLoc);
 			final HierarchicalCompoundString newLocation = a_locationFactory.create(newLoc);
 			
-			final GPSData data = a_data.get(oldLocation);
+			final GPSData oldData = a_data.get(oldLocation);
+			final GPSData newData = a_data.get(newLocation);
 
-			if ( data != null ) {
-				a_data.put(newLocation, data.clone());
+			if ( oldData != null ) {
+				if ( newData != null ){
+					if ( !oldData.equals(newData) ) {
+						System.err.println("Cannot transfer GPS coordinates from "
+								           + oldLocation.toLongString()
+								           + " ("
+								           + oldData.toString()
+								           + ") to "
+								           + newLocation.toLongString()
+								           + " ("
+								           + newData.toString()
+								           + ") because that one has already some different coordinates ");
+					}
+				} else {
+					a_data.put(newLocation, oldData.clone());					
+				}
 			}
 		}
 	}
