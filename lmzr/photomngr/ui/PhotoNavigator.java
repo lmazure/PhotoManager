@@ -32,6 +32,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
 import lmzr.photomngr.ui.action.ActionStartPlayer;
+import lmzr.photomngr.ui.mapdisplayer.BingMapURICreator;
 import lmzr.photomngr.ui.mapdisplayer.GeoportailMapURICreator;
 import lmzr.photomngr.ui.mapdisplayer.GoogleMapURICreator;
 import lmzr.photomngr.ui.mapdisplayer.MapURICreator;
@@ -48,6 +49,7 @@ public class PhotoNavigator extends JFrame
     
 	final static MapURICreator s_geoportailMapURICreator = new GeoportailMapURICreator();
 	final static MapURICreator s_googleMapURICreator = new GoogleMapURICreator();
+	final static MapURICreator s_bingMapURICreator = new BingMapURICreator();
 
 
     final private ListSelectionManager a_selection;
@@ -62,6 +64,7 @@ public class PhotoNavigator extends JFrame
     final private JLabel a_map;
     final private JButton a_googleMap;
     final private JButton a_geoportailMap;
+    final private JButton a_bingMap;
     final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
     final private JButton a_play[];
     private int a_previousSelection[];
@@ -172,6 +175,16 @@ public class PhotoNavigator extends JFrame
         		                                                 s_geoportailMapURICreator));
         mapButtons.add(a_geoportailMap);
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_bingMap = new JButton(new ActionLaunchGoogleMaps("Bing",
+                                                           KeyEvent.CHAR_UNDEFINED,
+                                                           null,
+                                                           "display Geoportail Maps",
+                                                           a_GPSDatabase,
+                                                           a_photoList,
+                                                           a_selection,
+                                                           s_bingMapURICreator));
+        mapButtons.add(a_bingMap);
+        mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         mapFull.add(mapButtons);
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -252,6 +265,7 @@ public class PhotoNavigator extends JFrame
             a_map.setText("");
         	a_googleMap.setEnabled(false);
         	a_geoportailMap.setEnabled(false);
+        	a_bingMap.setEnabled(false);
             a_dateTime.setText("");
             pack();
             return;
@@ -274,15 +288,18 @@ public class PhotoNavigator extends JFrame
 	    		a_map.setText("map "+gps.getLocation().toString());
 	        	a_googleMap.setEnabled(true);
 	        	a_geoportailMap.setEnabled(true);
+	        	a_bingMap.setEnabled(true);
 	    	} else {
 	    		a_map.setText("no map for "+location);
 	        	a_googleMap.setEnabled(false);    		
 	        	a_geoportailMap.setEnabled(false);    		
+	        	a_bingMap.setEnabled(false);    		
 	    	}
     	} else {
     		a_map.setText("map");
         	a_googleMap.setEnabled(false);    		
         	a_geoportailMap.setEnabled(false);    		
+        	a_bingMap.setEnabled(false);    		
     	}
     	
     	pack();

@@ -52,17 +52,19 @@ public class PhotoListDisplay extends JFrame
 
     /**
      * @param photoList
+     * @param filteredPhotoList
      * @param GPSDatabase
      * @param scheduler
      */
     public PhotoListDisplay(final PhotoList photoList,
+                            final PhotoList filteredPhotoList,
       		                final GPSDatabase GPSDatabase,
       		                final Scheduler scheduler) {
 	    super();
 	    
 	    a_list = photoList;
 
-		a_table = new PhotoListTable(photoList,this);
+		a_table = new PhotoListTable(photoList, filteredPhotoList,this);
 
 	    saveChanged(new SaveEvent(photoList,a_list.isSaved()));
         photoList.addSaveListener(this);

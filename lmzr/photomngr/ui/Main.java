@@ -61,6 +61,7 @@ public class Main {
         		                                          a_list.getLocationFactory());
         
         final PhotoListDisplay a_listDisplay = new PhotoListDisplay(a_list,
+        		                                                    a_filteredList,
         		                                                    a_GPSDatabase,
         		                                                    scheduler);
         final ListSelectionManager selection = new ListSelectionManager(a_filteredList,

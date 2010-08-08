@@ -39,12 +39,14 @@ public class PhotoListTable extends JTable {
     
     /**
      * @param photoList
+     * @param filteredPhotoList
      * @param parent
      */
     public PhotoListTable(final PhotoList photoList,
+    		              final PhotoList filteredPhotoList,
                           final Frame parent) {
         
-        super(photoList);
+        super(filteredPhotoList);
         
         getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -59,13 +61,13 @@ public class PhotoListTable extends JTable {
 		getColumnModel().getColumn(PhotoList.PARAM_PRIVACY).setCellEditor(new PhotoTraitCellEditor(PhotoPrivacy.getTraits()));
 		getColumnModel().getColumn(PhotoList.PARAM_ORIGINALITY).setCellEditor(new PhotoTraitCellEditor(PhotoOriginality.getTraits()));
 		getColumnModel().getColumn(PhotoList.PARAM_SUBJECT).setCellEditor(new SubjectCellEditor(photoList,parent));
-		getColumnModel().getColumn(PhotoList.PARAM_LOCATION).setCellEditor(new LocationCellEditor(photoList.getLocationFactory(),parent));
+		getColumnModel().getColumn(PhotoList.PARAM_LOCATION).setCellEditor(new LocationCellEditor(filteredPhotoList.getLocationFactory(),parent));
 		getColumnModel().getColumn(PhotoList.PARAM_COPIES).setCellEditor(new CopiesCellEditor());
 		getColumnModel().getColumn(PhotoList.PARAM_ZOOM).setCellEditor(new ZoomCellEditor());
 		getColumnModel().getColumn(PhotoList.PARAM_FOCUS_X).setCellEditor(new FocusCellEditor());
 		getColumnModel().getColumn(PhotoList.PARAM_FOCUS_Y).setCellEditor(new FocusCellEditor());
 		getColumnModel().getColumn(PhotoList.PARAM_ROTATION).setCellEditor(new RotationCellEditor());
-		getColumnModel().getColumn(PhotoList.PARAM_AUTHOR).setCellEditor(new AuthorCellEditor(photoList.getAuthorFactory()));
+		getColumnModel().getColumn(PhotoList.PARAM_AUTHOR).setCellEditor(new AuthorCellEditor(filteredPhotoList.getAuthorFactory()));
 
 		a_setVisibility = true;
     }

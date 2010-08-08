@@ -864,12 +864,16 @@ public class ConcretePhotoList extends Object
         final File folder = new File(rootDir);
         final Vector<String> content = new Vector<String>();
         final File list[] = folder.listFiles();
-        for (int i=0; i<list.length; i++) {
-            if (list[i].isDirectory()) {
-                // workaround the fact that MacOS returns filenames as decomposed Unicode strings
-                final String name = Normalizer.normalize(list[i].getName(),Normalizer.Form.NFC);
-                content.add(name);
-            }
+        if ( list == null ) {
+        	System.err.println("Cannot find the root directory \""+rootDir+"\"");
+        } else {
+	        for (int i=0; i<list.length; i++) {
+	            if (list[i].isDirectory()) {
+	                // workaround the fact that MacOS returns filenames as decomposed Unicode strings
+	                final String name = Normalizer.normalize(list[i].getName(),Normalizer.Form.NFC);
+	                content.add(name);
+	            }
+	        }
         }
         
         return content;
