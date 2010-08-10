@@ -11,11 +11,14 @@ import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -31,15 +34,12 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.table.TableCellEditor;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.ui.MultiHierarchicalCompoundStringTreeDisplay;
-import lmzr.util.checktree.CheckTreeManager;
+import lmzr.photomngr.ui.treeSelectioner.TreeSelectioner;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
@@ -150,7 +150,7 @@ public class SubjectCellEditor extends JComponent
     	final private JTextArea a_text;
     	final private JTextField a_edit;
     	final private JButton a_propositions[];
-        final private CheckTreeManager a_subjects;
+        final private TreeSelectioner a_tree;
     	
     	InternalSubjectCellEditor(final MultiHierarchicalCompoundStringFactory factory,
     			                  final Frame parent){
@@ -193,22 +193,38 @@ public class SubjectCellEditor extends JComponent
         	a_text.setAlignmentX(0.f);
             final String keptValue = a_text.getText();
             
-            a_subjects = new CheckTreeManager(new MultiHierarchicalCompoundStringTreeDisplay(factory));
-            a_subjects.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-            final JScrollPane j = new JScrollPane(a_subjects.getTree()); 
+            a_tree = new TreeSelectioner("subject", factory.getHierarchicalCompoundStringFactory(), TreeSelectioner.MODE_MULTI_SELECTION_WITHOUT_SELECT_ALL_COLUMN);
+            final JScrollPane j = new JScrollPane(a_tree); 
             c.add(j);
+            a_tree.getTreeTableModel().addTreeModelListener(
+            		new TreeModelListener() {
+						@Override
+						public void treeNodesChanged(final TreeModelEvent e) {
+							final StringBuilder s = new StringBuilder();
+							final Set<HierarchicalCompoundString> selection = a_tree.getSelection();
+							boolean b = false;
+							for (HierarchicalCompoundString h: selection ) {
+								if (b) {
+									s.append("\n");
+								}
+								s.append(h.toLongString());
+								b = true;
+							}
+							a_text.setText(s.toString());
+						}
+
+						@Override
+						public void treeNodesInserted(final TreeModelEvent e) {
+						}
+
+						@Override
+						public void treeNodesRemoved(final TreeModelEvent e) {
+						}
+
+						@Override
+						public void treeStructureChanged(final TreeModelEvent e) {
+						}});
         	j.setAlignmentX(0.f);
-            a_subjects.getSelectionModel().addTreeSelectionListener(
-            		new TreeSelectionListener() {
-            			public void valueChanged(final TreeSelectionEvent e) {
-            				final TreePath selections[] = a_subjects.getSelectionModel().getSelectionPaths();
-            				String s ="";
-            				for (int i=0; i<selections.length; i++) {
-            					if ( i>0 ) s = s + "\n";
-            					s += ((HierarchicalCompoundString)selections[i].getLastPathComponent()).toString();
-            				}
-            				final MultiHierarchicalCompoundString mcs = factory.create(s);
-            				a_text.setText(mcs.toString());}});
     		final JPanel buttonsPane = new JPanel(new GridLayout(1,2));
     		c.add(buttonsPane);
     		buttonsPane.setAlignmentX(0.f);
@@ -232,17 +248,25 @@ public class SubjectCellEditor extends JComponent
     		setVisible(false);
     	}
 
+    	/**
+    	 * @param value
+    	 */
+    	private void setText(final String value) {
+
+    		a_text.setText(value);
+
+            final MultiHierarchicalCompoundString v = a_photoList.getSubjectFactory().create(value);
+            final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>(Arrays.asList(v.getParts()));
+            a_tree.setSelection(selection);
+    		
+    	}
     	
     	/**
     	 * 
     	 */
     	private void open(final String value) {
-    		
-    		a_text.setText(value);
 
-            final MultiHierarchicalCompoundString v = a_photoList.getSubjectFactory().create(value);
-            final TreePath paths[] = buildPath(v);
-            a_subjects.getSelectionModel().setSelectionPaths(paths);
+    		setText(value);
 
 	        a_edit.requestFocusInWindow();
     		
@@ -258,30 +282,6 @@ public class SubjectCellEditor extends JComponent
     	}
     	
         /**
-         * @param string
-         * @return TreePath corresponding to a HierarchicalCompoundString
-         */
-        private TreePath buildPath(final HierarchicalCompoundString string) {
-        	if (string.getParent()==null) {
-        		return new TreePath(string);
-        	}
-			return buildPath(string.getParent()).pathByAddingChild(string);
-        }
-
-        /**
-         * @param string
-         * @return TreePath corresponding to a HierarchicalCompoundString
-         */
-        private TreePath[] buildPath(final MultiHierarchicalCompoundString string) {
-        	final HierarchicalCompoundString[] parts = string.getParts();
-        	final Vector<TreePath> vec = new Vector<TreePath>();
-        	for ( final HierarchicalCompoundString p : parts ) {
-        		vec.add(buildPath(p));
-        	}
-        	return vec.toArray(new TreePath[0]);
-        }
-        
-        /**
          * @param b button from which to retrieve the text to be transferred in the textfield
          */
         private void transferPropositionButtonTextToTextfield(final JButton b) {
@@ -296,7 +296,7 @@ public class SubjectCellEditor extends JComponent
             } else {
             	sNewValue = sOldValue + "\n" + sSource;
             }
-        	a_text.setText(sNewValue);
+        	setText(sNewValue);
         	a_edit.setText("");
 	        for (int j=0; j<a_propositions.length; j++) a_propositions[j].setText("");
 	        a_edit.requestFocusInWindow();        	

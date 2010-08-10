@@ -551,5 +551,4 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		}
 	}
 
-
 }

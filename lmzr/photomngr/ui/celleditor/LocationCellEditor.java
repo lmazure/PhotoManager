@@ -23,14 +23,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.table.TableCellEditor;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
-import lmzr.photomngr.ui.HierarchicalCompoundStringTreeDisplay;
-import lmzr.util.checktree.CheckTreeManager;
+import lmzr.photomngr.ui.treeSelectioner.DatabaseForTreeSelectioner;
+import lmzr.photomngr.ui.treeSelectioner.TreeSelectioner;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
 
@@ -49,12 +47,12 @@ public class LocationCellEditor extends JComponent
     private class InternalLocationCellEditor extends JDialog {
 
     	final private JTextField a_text;
-        final private CheckTreeManager a_location;
+        final private TreeSelectioner a_tree;
     	
     	InternalLocationCellEditor(final HierarchicalCompoundStringFactory factory,
     			                   final Frame parent){
     		
-            super(parent,"Location",true);
+            super(parent,"location",true);
             
             final Container c = getContentPane();
             setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
@@ -64,14 +62,31 @@ public class LocationCellEditor extends JComponent
             c.add(a_text);
             final String keptValue = a_text.getText();
             
-            a_location = new CheckTreeManager(new HierarchicalCompoundStringTreeDisplay(factory));
-            a_location.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); 
-            c.add(new JScrollPane(a_location.getTree()));
-            a_location.getSelectionModel().addTreeSelectionListener(
-            		new TreeSelectionListener() {
-            			public void valueChanged(final TreeSelectionEvent e) {
-            				final HierarchicalCompoundString cs = (HierarchicalCompoundString)(e.getPath().getLastPathComponent());
-            				a_text.setText(cs.toString());}});
+            a_tree = new TreeSelectioner("location", factory, TreeSelectioner.MODE_MONO_SELECTION);
+            c.add(new JScrollPane(a_tree));
+            a_tree.getTreeTableModel().addTreeModelListener(
+            		new TreeModelListener() {
+						@Override
+						public void treeNodesChanged(final TreeModelEvent e) {
+							System.out.println(e);
+							final HierarchicalCompoundString string = (HierarchicalCompoundString)e.getChildren()[0];
+							final Boolean value = (Boolean)a_tree.getTreeTableModel().getValueAt(string, DatabaseForTreeSelectioner.PARAM_SELECTED); 
+							if ( value.booleanValue() ) {
+								a_text.setText(string.toLongString());
+							}
+						}
+
+						@Override
+						public void treeNodesInserted(final TreeModelEvent e) {
+						}
+
+						@Override
+						public void treeNodesRemoved(final TreeModelEvent e) {
+						}
+
+						@Override
+						public void treeStructureChanged(final TreeModelEvent e) {
+						}});
 
     		final JPanel buttonsPane = new JPanel(new GridLayout(1,2));
     		c.add(buttonsPane);
@@ -100,11 +115,9 @@ public class LocationCellEditor extends JComponent
     		a_text.setText(value);
     		
             if ( !value.equals("") ) {
-            	// set the selection in the CheckTree 
+            	// set the selection in the selection tree 
             	final HierarchicalCompoundString v = LocationCellEditor.this.a_factory.create(value);
-            	final TreePath paths[] = new TreePath[1];
-            	paths[0]=buildPath(v);
-            	a_location.getSelectionModel().setSelectionPaths(paths);
+            	a_tree.getTreeTableModel().setValueAt(new Boolean(true), v, DatabaseForTreeSelectioner.PARAM_SELECTED);
             }
 
             setVisible(true);
@@ -117,17 +130,7 @@ public class LocationCellEditor extends JComponent
     		setVisible(false);
     		dispose();		
     	}
-    	
-        /**
-         * @param string
-         * @return TreePath corresponding to a HierarchicalCompoundString
-         */
-        private TreePath buildPath(final HierarchicalCompoundString string) {
-        	if (string.getParent()==null) {
-        		return new TreePath(string);
-        	}
-			return buildPath(string.getParent()).pathByAddingChild(string);
-        }
+
     }
     
     /**
