@@ -1,5 +1,6 @@
 package lmzr.photomngr.data.filter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import lmzr.photomngr.data.PhotoList;
@@ -9,17 +10,30 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
 /**
  *
  */
-public class FilterOnHierarchicalCompoundString {
+public class FilterOnHierarchicalCompoundString extends FilterBase {
 
 	private final Set<HierarchicalCompoundString> a_values;
     final private int a_parameter; 
 
+
 	/**
+	 * @param parameter
+	 */
+	public FilterOnHierarchicalCompoundString(final int parameter) {
+    	super(false);
+		a_values = new HashSet<HierarchicalCompoundString>();
+		a_parameter = parameter;
+	}
+
+	/**
+	 * @param isEnabled
 	 * @param values
      * @param parameter (i.e. column index in the PhotoList)
 	 */
-	public FilterOnHierarchicalCompoundString(final Set<HierarchicalCompoundString> values,
+	public FilterOnHierarchicalCompoundString(final boolean isEnabled,
+			                                  final Set<HierarchicalCompoundString> values,
 			                                  final int parameter) {
+    	super(isEnabled);
 		a_values = values;
 		a_parameter = parameter;
 	}
@@ -30,7 +44,8 @@ public class FilterOnHierarchicalCompoundString {
      * @param index
      * @return does the photo fulfill the filter?
      */
-    public boolean filter(final PhotoList list, final int index) {
+    public boolean filter(final PhotoList list,
+    		              final int index) {
         
     	final Object value = list.getValueAt(index,a_parameter);
     	if ( list.getColumnClass(a_parameter)==HierarchicalCompoundString.class ) {
@@ -47,25 +62,11 @@ public class FilterOnHierarchicalCompoundString {
 
     	return false;
     }
-
-    /**
-     * @return parameter (i.e. column index) in the PhotoList
-     */
-    public int getParameter() {
-        return a_parameter;
-    }
     
     /**
      * @return values of the filter
      */
     public Set<HierarchicalCompoundString> getValues() {
     	return a_values;
-    }
-    
-    /**
-     * @return indicate if the filter is enabled
-     */
-    public boolean isEnabled() {
-    	return ( a_values.size()>0 );
     }
 }

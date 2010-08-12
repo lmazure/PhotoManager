@@ -18,12 +18,10 @@ public class FormatComponentFilterUI extends ComponentFilterUI {
      */
     public FormatComponentFilterUI(final String label,
                                    final FilterOnFormat filter) {
-        super(label);
+        super(label, filter);
         
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
-		setFilterEnabled(filter.isEnabled());
-        
         a_check = new JCheckBox[filter.getFormats().length];
         for (int i=0; i<filter.getFormats().length; i++) {
             a_check[i] = new JCheckBox(filter.getFormats()[i].toString());
@@ -37,11 +35,7 @@ public class FormatComponentFilterUI extends ComponentFilterUI {
      */
     public boolean[] getValues() {
         final boolean[] values = new boolean[a_check.length];
-        if (isFilterEnabled()) {
-            for (int i=0; i<a_check.length; i++) values[i] = a_check[i].isSelected();        
-        } else {
-            for (int i=0; i<a_check.length; i++) values[i] = true;        
-        }
+        for (int i=0; i<a_check.length; i++) values[i] = a_check[i].isSelected();        
         return values;
     }
 }

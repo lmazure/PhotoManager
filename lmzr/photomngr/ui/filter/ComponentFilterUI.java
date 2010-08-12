@@ -9,6 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+import lmzr.photomngr.data.filter.FilterBase;
+
 /**
  *
  */
@@ -20,7 +22,8 @@ public class ComponentFilterUI extends JPanel {
     /**
      * @param label
      */
-    public ComponentFilterUI(final String label) {
+    public ComponentFilterUI(final String label,
+    		                 final FilterBase filter) {
         super();
         
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -34,7 +37,14 @@ public class ComponentFilterUI extends JPanel {
                 
         add(a_pane);
         
-        a_title.addActionListener(new ActionListener() { public void actionPerformed(final ActionEvent e) { a_pane.setVisible(isFilterEnabled());}});
+        final ActionListener listener = new ActionListener() {
+        	public void actionPerformed(final ActionEvent e) {
+        		final boolean b = a_title.isSelected();
+        		a_pane.setVisible(b);
+        		filter.setEnabled(b);}};
+        a_title.addActionListener(listener);
+        
+        setFilterEnabled(filter.isEnabled());
     }
 
     /**
@@ -43,20 +53,17 @@ public class ComponentFilterUI extends JPanel {
     JPanel getPane() {
     	return a_pane;
     }
-    
-    /**
-     * @return indicates if the filter is enabled
-     */
-    boolean isFilterEnabled() {
-    	return a_title.isSelected();
-    }
-    
+
     /**
      * @param isFilterEnabled
      */
     void setFilterEnabled(final boolean isFilterEnabled) {
 		a_title.setSelected(isFilterEnabled);
         a_pane.setVisible(isFilterEnabled);    	
+    }
+    
+    public boolean isActive() {
+    	return a_title.isSelected();
     }
 }
 

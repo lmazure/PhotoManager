@@ -19,12 +19,10 @@ public class TraitDisplayComponentFilterUI extends ComponentFilterUI {
      */
     public TraitDisplayComponentFilterUI(final String label,
                                          final FilterOnPhotoTrait filter) {
-        super(label);
+        super(label, filter);
         
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
-		setFilterEnabled(filter.isEnabled());
-		
 		final PhotoTrait[] traits = filter.getTraits();
 		final boolean[] values = filter.getValues();
         
@@ -41,11 +39,7 @@ public class TraitDisplayComponentFilterUI extends ComponentFilterUI {
      */
     public boolean[] getValues() {
         final boolean[] values = new boolean[a_check.length];
-        if (isFilterEnabled()) {
-            for (int i=0; i<a_check.length; i++) values[i] = a_check[i].isSelected();        
-        } else {
-            for (int i=0; i<a_check.length; i++) values[i] = true;        
-        }
+        for (int i=0; i<a_check.length; i++) values[i] = a_check[i].isSelected();        
         return values;
     }
 }

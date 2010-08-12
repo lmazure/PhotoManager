@@ -124,17 +124,17 @@ public class FilterDisplay extends JDialog {
 		getRootPane().setDefaultButton(bOk);
 		bOk.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
-				    final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(PhotoOriginality.getTraits(),a_originality.getValues(),PhotoList.PARAM_ORIGINALITY);
-				    final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(PhotoPrivacy.getTraits(),a_privacy.getValues(),PhotoList.PARAM_PRIVACY);
-				    final FilterOnPhotoTrait filterOnQuality = new FilterOnPhotoTrait(PhotoQuality.getTraits(),a_quality.getValues(),PhotoList.PARAM_QUALITY);
-				    final FilterOnHierarchicalCompoundString filterOnLocation = new FilterOnHierarchicalCompoundString(a_location.getValues(),PhotoList.PARAM_LOCATION);
-				    final FilterOnHierarchicalCompoundString filterOnSubject1 = new FilterOnHierarchicalCompoundString(a_subject1.getValues(),PhotoList.PARAM_SUBJECT);
-				    final FilterOnHierarchicalCompoundString filterOnSubject2 = new FilterOnHierarchicalCompoundString(a_subject2.getValues(),PhotoList.PARAM_SUBJECT);
-				    final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(a_subject3.getValues(),PhotoList.PARAM_SUBJECT);
-				    final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(a_subject4.getValues(),PhotoList.PARAM_SUBJECT);
-				    final FilterOnFormat filterOnFormat = new FilterOnFormat(DataFormat.getAllFormats(),a_format.getValues());  
-				    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor(a_author.getValues());  
-				    final FilterOnCopies filterOnCopies = new FilterOnCopies(a_copies.getMin(),a_copies.getMax());  
+				    final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(a_originality.isActive(),PhotoOriginality.getTraits(),a_originality.getValues(),PhotoList.PARAM_ORIGINALITY);
+				    final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(a_privacy.isActive(),PhotoPrivacy.getTraits(),a_privacy.getValues(),PhotoList.PARAM_PRIVACY);
+				    final FilterOnPhotoTrait filterOnQuality = new FilterOnPhotoTrait(a_quality.isActive(),PhotoQuality.getTraits(),a_quality.getValues(),PhotoList.PARAM_QUALITY);
+				    final FilterOnHierarchicalCompoundString filterOnLocation = new FilterOnHierarchicalCompoundString(a_location.isActive(),a_location.getValues(),PhotoList.PARAM_LOCATION);
+				    final FilterOnHierarchicalCompoundString filterOnSubject1 = new FilterOnHierarchicalCompoundString(a_subject1.isActive(),a_subject1.getValues(),PhotoList.PARAM_SUBJECT);
+				    final FilterOnHierarchicalCompoundString filterOnSubject2 = new FilterOnHierarchicalCompoundString(a_subject2.isActive(),a_subject2.getValues(),PhotoList.PARAM_SUBJECT);
+				    final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(a_subject3.isActive(),a_subject3.getValues(),PhotoList.PARAM_SUBJECT);
+				    final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(a_subject4.isActive(),a_subject4.getValues(),PhotoList.PARAM_SUBJECT);
+				    final FilterOnFormat filterOnFormat = new FilterOnFormat(a_format.isActive(),DataFormat.getAllFormats(),a_format.getValues());  
+				    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor(a_author.isActive(),a_author.getValues());  
+				    final FilterOnCopies filterOnCopies = new FilterOnCopies(a_copies.isActive(),a_copies.getMin(),a_copies.getMax());  
                     final PhotoListFilter f = new PhotoListFilter(filterOnOriginality,
                     		                                      filterOnPrivacy,
                     		                                      filterOnQuality,

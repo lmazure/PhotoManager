@@ -21,12 +21,8 @@ public class CopiesComponentFilterUI extends ComponentFilterUI {
      */
     public CopiesComponentFilterUI(final String label,
                                    final FilterOnCopies filter) {
-        super(label);
+        super(label, filter);
         
-		//setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        //setLayout(new GridLayout(2,2));
-        
-		setFilterEnabled(filter.isEnabled());
         
 		getPane().add(new JLabel("min"));
 		a_min = new JFormattedTextField(NumberFormat.getIntegerInstance());
@@ -43,19 +39,13 @@ public class CopiesComponentFilterUI extends ComponentFilterUI {
      * @return min value
      */
     public long getMin() {
-        if (isFilterEnabled()) {
-            return (Long)a_min.getValue();        
-        }
-        return 0;
+        return (Long)a_min.getValue();        
     }
 
     /**
      * @return max value
      */
     public long getMax() {
-        if (isFilterEnabled()) {
-            return (Long)a_max.getValue();        
-        }
-        return Long.MAX_VALUE;
+        return (Long)a_max.getValue();        
     }
 }

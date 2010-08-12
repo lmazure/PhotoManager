@@ -7,7 +7,7 @@ import lmzr.photomngr.data.PhotoList;
  * @author Laurent
  *
  */
-public class FilterOnFormat {
+public class FilterOnFormat extends FilterBase {
 
 
     final private DataFormat[] a_formats;
@@ -18,6 +18,7 @@ public class FilterOnFormat {
      * @param formats
      */
     public FilterOnFormat(final DataFormat formats[]) {
+    	super(false);
         a_formats = formats;
         a_values = new boolean[formats.length];
         for (int i=0; i<formats.length; i++) a_values[i]=true;
@@ -28,8 +29,10 @@ public class FilterOnFormat {
      * @param formats
      * @param values
      */
-    public FilterOnFormat(final DataFormat formats[],
+    public FilterOnFormat(final boolean isEnabled,
+    		              final DataFormat formats[],
                           final boolean values[]) {
+    	super(isEnabled);
         if (formats.length!=values.length) throw new AssertionError("filter on format is corrupted");
         a_formats = formats;
         a_values = values;
@@ -60,14 +63,5 @@ public class FilterOnFormat {
      */
     public boolean[] getValues() {
         return a_values;
-    }
-    
-    /**
-     * @return indicates if the filter is enabled
-     */
-    public boolean isEnabled() {
-        boolean isDisabled = true;
-        for (int i=0; i<a_formats.length; i++) isDisabled &= a_values[i];
-        return !isDisabled;
     }
 }

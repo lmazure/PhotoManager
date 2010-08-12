@@ -55,11 +55,11 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	    final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(PhotoOriginality.getTraits(),PhotoList.PARAM_ORIGINALITY);
 	    final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(PhotoPrivacy.getTraits(),PhotoList.PARAM_PRIVACY);
 	    final FilterOnPhotoTrait filterOnQuality = new FilterOnPhotoTrait(PhotoQuality.getTraits(),PhotoList.PARAM_QUALITY);
-	    final FilterOnHierarchicalCompoundString filterOnLocation = new FilterOnHierarchicalCompoundString(new HashSet<HierarchicalCompoundString>(),PhotoList.PARAM_LOCATION);
-	    final FilterOnHierarchicalCompoundString filterOnSubject1 = new FilterOnHierarchicalCompoundString(new HashSet<HierarchicalCompoundString>(),PhotoList.PARAM_SUBJECT);
-	    final FilterOnHierarchicalCompoundString filterOnSubject2 = new FilterOnHierarchicalCompoundString(new HashSet<HierarchicalCompoundString>(),PhotoList.PARAM_SUBJECT);
-	    final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(new HashSet<HierarchicalCompoundString>(),PhotoList.PARAM_SUBJECT);
-	    final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(new HashSet<HierarchicalCompoundString>(),PhotoList.PARAM_SUBJECT);
+	    final FilterOnHierarchicalCompoundString filterOnLocation = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_LOCATION);
+	    final FilterOnHierarchicalCompoundString filterOnSubject1 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
+	    final FilterOnHierarchicalCompoundString filterOnSubject2 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
+	    final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
+	    final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
 	    final FilterOnFormat filterOnFormat = new FilterOnFormat(DataFormat.getAllFormats());
 	    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor();
 	    final FilterOnCopies filterOnCopies = new FilterOnCopies();

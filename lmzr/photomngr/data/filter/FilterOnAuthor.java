@@ -8,7 +8,7 @@ import lmzr.photomngr.data.PhotoList;
  * @author Laurent
  *
  */
-public class FilterOnAuthor {
+public class FilterOnAuthor extends FilterBase {
 
     final private HashSet<String> a_filteredAuthors; 
     
@@ -16,6 +16,7 @@ public class FilterOnAuthor {
      * creates a filter accepting all authors
      */
     public FilterOnAuthor() {
+    	super(false);
         a_filteredAuthors = null;
     }
 
@@ -23,7 +24,9 @@ public class FilterOnAuthor {
      * creates a filter filtering the specified authors
      * @param filteredAuthors
      */
-    public FilterOnAuthor(final HashSet<String> filteredAuthors) {
+    public FilterOnAuthor(final boolean isEnabled,
+    		              final HashSet<String> filteredAuthors) {
+    	super(isEnabled);
         a_filteredAuthors = filteredAuthors;             
     }
 
@@ -45,12 +48,5 @@ public class FilterOnAuthor {
      */
     public HashSet<String> getFilteredAuthors() {
         return a_filteredAuthors;
-    }
-        
-    /**
-     * @return indicates if the filter is enabled
-     */
-    public boolean isEnabled() {
-        return (a_filteredAuthors != null );
     }
 }

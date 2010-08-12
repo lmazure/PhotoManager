@@ -23,12 +23,10 @@ public class AuthorComponentFilterUI extends ComponentFilterUI {
     public AuthorComponentFilterUI(final String label,
                                    final AuthorFactory authorFactory,
                                    final FilterOnAuthor filter) {
-        super(label);
+        super(label, filter);
         
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
-		setFilterEnabled(filter.isEnabled());
-        
 		final String[] authors = authorFactory.getAuthors();
 		final HashSet<String> filteredAuthors = filter.getFilteredAuthors();
 		
@@ -48,16 +46,11 @@ public class AuthorComponentFilterUI extends ComponentFilterUI {
      * @return null if the field is not enabled, the values of the filter otherwise
      */
     public HashSet<String> getValues() {
-        HashSet<String> filteredAuthors;
-        if (isFilterEnabled()) {
-            filteredAuthors = new HashSet<String>();
-            for (int i=0; i<a_check.length; i++) {
-                if ( a_check[i].isSelected() ) {
-                    filteredAuthors.add(a_check[i].getText());
-                }
+        final HashSet<String> filteredAuthors = new HashSet<String>();
+        for (int i=0; i<a_check.length; i++) {
+            if ( a_check[i].isSelected() ) {
+                filteredAuthors.add(a_check[i].getText());
             }
-        } else {
-            filteredAuthors = null;
         }
         return filteredAuthors;
     }

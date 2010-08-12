@@ -6,7 +6,7 @@ import lmzr.photomngr.data.phototrait.PhotoTrait;
 /**
  * 
  */
-public class FilterOnPhotoTrait {
+public class FilterOnPhotoTrait extends FilterBase {
 
     final private PhotoTrait[] a_traits;
     final private boolean[] a_values;
@@ -19,6 +19,7 @@ public class FilterOnPhotoTrait {
      */
     public FilterOnPhotoTrait(final PhotoTrait traits[],
                               final int parameter) {
+    	super(false);
         a_traits = traits;
         a_values = new boolean[traits.length];
         for (int i=0; i<traits.length; i++) a_values[i]=true;
@@ -31,9 +32,11 @@ public class FilterOnPhotoTrait {
      * @param values
      * @param parameter (i.e. column index in the PhotoList)
      */
-    public FilterOnPhotoTrait(final PhotoTrait traits[],
+    public FilterOnPhotoTrait(final boolean isEnabled,
+    		                  final PhotoTrait traits[],
                               final boolean values[],
                               final int parameter) {
+    	super(isEnabled);
         if (traits.length!=values.length) throw new AssertionError("filter on trait is corrupted");
         a_traits = traits;
         a_values = values;
@@ -74,14 +77,5 @@ public class FilterOnPhotoTrait {
      */
     public int getParameter() {
         return a_parameter;
-    }
-    
-    /**
-     * @return indicates if the filter is enabled
-     */
-    public boolean isEnabled() {
-        boolean isDisabled = true;
-        for (int i=0; i<a_traits.length; i++) isDisabled &= a_values[i];
-        return !isDisabled;
     }
 }

@@ -6,8 +6,7 @@ import lmzr.photomngr.data.PhotoList;
  * @author Laurent
  *
  */
-public class FilterOnCopies {
-
+public class FilterOnCopies extends FilterBase {
 
     final private long a_min;
     final private long a_max;
@@ -16,6 +15,7 @@ public class FilterOnCopies {
      * creates a filter accepting all number of copies
      */
     public FilterOnCopies() {
+    	super(false);
     	a_min = 0;
     	a_max = Long.MAX_VALUE;
     }
@@ -25,8 +25,10 @@ public class FilterOnCopies {
      * @param min
      * @param max
      */
-    public FilterOnCopies(final long min,
+    public FilterOnCopies(final boolean isEnabled,
+    		              final long min,
                           final long max) {
+    	super(isEnabled);
         a_min = min;
         a_max = max;
     }
@@ -54,14 +56,5 @@ public class FilterOnCopies {
      */
     public long getMax() {
         return a_max;
-    }
-        
-    /**
-     * @return indicates if the filter is enabled
-     */
-    public boolean isEnabled() {
-    	if (a_min>0) return true;
-    	if (a_max<Long.MAX_VALUE) return true;
-    	return false;
     }
 }
