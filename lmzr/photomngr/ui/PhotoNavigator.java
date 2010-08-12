@@ -30,8 +30,8 @@ import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
-import lmzr.photomngr.ui.action.ActionLaunchGoogleMaps;
-import lmzr.photomngr.ui.action.ActionStartPlayer;
+import lmzr.photomngr.ui.action.LaunchGoogleMapsAction;
+import lmzr.photomngr.ui.action.StartPlayerAction;
 import lmzr.photomngr.ui.mapdisplayer.BingMapURICreator;
 import lmzr.photomngr.ui.mapdisplayer.GeoportailMapURICreator;
 import lmzr.photomngr.ui.mapdisplayer.GoogleMapURICreator;
@@ -134,7 +134,7 @@ public class PhotoNavigator extends JFrame
 
         a_play = new JButton[a_players.length];
         for (int i=0; i<a_players.length; i++) {
-	        a_play[i] = new JButton(new ActionStartPlayer( a_players[i].getName(),
+	        a_play[i] = new JButton(new StartPlayerAction( a_players[i].getName(),
 	        		                                       KeyEvent.CHAR_UNDEFINED,
 	        		                                       null,
 	        		                                       "start "+a_players[i].getName(),
@@ -156,7 +156,7 @@ public class PhotoNavigator extends JFrame
         mapFull.add(a_map);
         
         final JPanel mapButtons = new JPanel();
-        a_googleMap = new JButton(new ActionLaunchGoogleMaps("Google",
+        a_googleMap = new JButton(new LaunchGoogleMapsAction("Google",
         		                                             KeyEvent.CHAR_UNDEFINED,
         		                                             null,
         		                                             "display Google Maps",
@@ -165,7 +165,7 @@ public class PhotoNavigator extends JFrame
         		                                             a_selection,
         		                                             s_googleMapURICreator));
         mapButtons.add(a_googleMap);
-        a_geoportailMap = new JButton(new ActionLaunchGoogleMaps("Geoportail",
+        a_geoportailMap = new JButton(new LaunchGoogleMapsAction("Geoportail",
         		                                                 KeyEvent.CHAR_UNDEFINED,
         		                                                 null,
         		                                                 "display Geoportail Maps",
@@ -175,7 +175,7 @@ public class PhotoNavigator extends JFrame
         		                                                 s_geoportailMapURICreator));
         mapButtons.add(a_geoportailMap);
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_bingMap = new JButton(new ActionLaunchGoogleMaps("Bing",
+        a_bingMap = new JButton(new LaunchGoogleMapsAction("Bing",
                                                            KeyEvent.CHAR_UNDEFINED,
                                                            null,
                                                            "display Geoportail Maps",
@@ -211,7 +211,7 @@ public class PhotoNavigator extends JFrame
         
     	// buttons to start external player
     	for (int i=0; i<a_play.length; i++) {
-    		final ActionStartPlayer action = (ActionStartPlayer)a_play[i].getAction();
+    		final StartPlayerAction action = (StartPlayerAction)a_play[i].getAction();
     		action.setEnabled( (selection.length==1) &&
     				           action.getPlayer().isFormatSupported(a_photoList.getPhoto(selection[0]).getFormat()) );
     	}

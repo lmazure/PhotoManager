@@ -25,26 +25,26 @@ import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 import lmzr.photomngr.scheduler.Scheduler;
-import lmzr.photomngr.ui.action.ActionChangeOriginality;
-import lmzr.photomngr.ui.action.ActionChangePrivacy;
-import lmzr.photomngr.ui.action.ActionChangeQuality;
-import lmzr.photomngr.ui.action.ActionCreateCopiesForPrinting;
-import lmzr.photomngr.ui.action.ActionDisplayGPSDatabase;
-import lmzr.photomngr.ui.action.ActionDisplayPhotoEditor;
-import lmzr.photomngr.ui.action.ActionDisplayPhotoGeometryEditor;
-import lmzr.photomngr.ui.action.ActionDisplayPhotoNavigator;
-import lmzr.photomngr.ui.action.ActionDisplayPhotoParameters;
-import lmzr.photomngr.ui.action.ActionEditLocations;
-import lmzr.photomngr.ui.action.ActionEditSubjects;
-import lmzr.photomngr.ui.action.ActionExportLocations;
-import lmzr.photomngr.ui.action.ActionExportSubjects;
-import lmzr.photomngr.ui.action.ActionDisplayFilter;
-import lmzr.photomngr.ui.action.ActionFullScreen;
-import lmzr.photomngr.ui.action.ActionNextPhoto;
-import lmzr.photomngr.ui.action.ActionPreviousPhoto;
-import lmzr.photomngr.ui.action.ActionQuit;
-import lmzr.photomngr.ui.action.ActionResetNumberOfCopies;
-import lmzr.photomngr.ui.action.ActionSave;
+import lmzr.photomngr.ui.action.ChangeOriginalityAction;
+import lmzr.photomngr.ui.action.ChangePrivacyAction;
+import lmzr.photomngr.ui.action.ChangeQualityAction;
+import lmzr.photomngr.ui.action.CreateCopiesForPrintingAction;
+import lmzr.photomngr.ui.action.DisplayGPSDatabaseAction;
+import lmzr.photomngr.ui.action.DisplayPhotoEditorAction;
+import lmzr.photomngr.ui.action.DisplayPhotoGeometryEditorAction;
+import lmzr.photomngr.ui.action.DisplayPhotoNavigatorAction;
+import lmzr.photomngr.ui.action.DisplayPhotoParametersAction;
+import lmzr.photomngr.ui.action.EditLocationsAction;
+import lmzr.photomngr.ui.action.EditSubjectsAction;
+import lmzr.photomngr.ui.action.ExportLocationsAction;
+import lmzr.photomngr.ui.action.ExportSubjectsAction;
+import lmzr.photomngr.ui.action.DisplayFilterAction;
+import lmzr.photomngr.ui.action.FullScreenAction;
+import lmzr.photomngr.ui.action.NextPhotoAction;
+import lmzr.photomngr.ui.action.PreviousPhotoAction;
+import lmzr.photomngr.ui.action.QuitAction;
+import lmzr.photomngr.ui.action.ResetNumberOfCopiesAction;
+import lmzr.photomngr.ui.action.SaveAction;
 
 /**
  * display a photo is an independent window
@@ -97,47 +97,50 @@ public class PhotoDisplayer extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		final ActionSave actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_photoList);
+		final SaveAction actionSave = new SaveAction("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_photoList);
 		final JMenuItem itemSave = new JMenuItem(actionSave);
 		menuFile.add(itemSave);
-		final ActionDisplayPhotoNavigator actionDisplayPhotoNavigator = new ActionDisplayPhotoNavigator("Display photo navigator", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F2,0), "Display photo navigator",a_photoList,a_GPSDatabase,selection);
+		final DisplayPhotoNavigatorAction actionDisplayPhotoNavigator = new DisplayPhotoNavigatorAction("Display photo navigator", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F2,0), "Display photo navigator",a_photoList,a_GPSDatabase,selection);
 		final JMenuItem itemDisplayPhotoNavigator = new JMenuItem(actionDisplayPhotoNavigator);
 		menuFile.add(itemDisplayPhotoNavigator);
-		final ActionDisplayPhotoGeometryEditor actionDisplayPhotoGeometryEditor = new ActionDisplayPhotoGeometryEditor("Display photo geometry editor", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F3,0),"Display photo geometry editor",a_photoList,selection);
+		final DisplayPhotoGeometryEditorAction actionDisplayPhotoGeometryEditor = new DisplayPhotoGeometryEditorAction("Display photo geometry editor", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F3,0),"Display photo geometry editor",a_photoList,selection);
 		final JMenuItem itemDisplayPhotoGeometryEditor = new JMenuItem(actionDisplayPhotoGeometryEditor);
 		menuFile.add(itemDisplayPhotoGeometryEditor);
-		final ActionDisplayPhotoEditor actionDisplayPhotoEditor = new ActionDisplayPhotoEditor("Display photo editor", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F4,0),"Display photo editor",a_photoList,selection);
+		final DisplayPhotoEditorAction actionDisplayPhotoEditor = new DisplayPhotoEditorAction("Display photo editor", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F4,0),"Display photo editor",a_photoList,selection);
 		final JMenuItem itemDisplayPhotoEditor = new JMenuItem(actionDisplayPhotoEditor);
 		menuFile.add(itemDisplayPhotoEditor);
-		final ActionDisplayPhotoParameters actionDisplayPhotoParameters = new ActionDisplayPhotoParameters("Display photo parameters", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F5,0),"Display photo parameters",a_photoList,selection);
+		final DisplayPhotoParametersAction actionDisplayPhotoParameters = new DisplayPhotoParametersAction("Display photo parameters", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F5,0),"Display photo parameters",a_photoList,selection);
 		final JMenuItem itemDisplayPhotoParameters = new JMenuItem(actionDisplayPhotoParameters);
 		menuFile.add(itemDisplayPhotoParameters);
-		final ActionDisplayGPSDatabase actionDisplayGPSDatabase = new ActionDisplayGPSDatabase("Display GPS database", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F6,0),"Display GPS database",a_GPSDatabase);
+		final DisplayGPSDatabaseAction actionDisplayGPSDatabase = new DisplayGPSDatabaseAction("Display GPS database", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F6,0),"Display GPS database",a_GPSDatabase);
 		final JMenuItem itemDisplayGPSDatabase = new JMenuItem(actionDisplayGPSDatabase);
 		menuFile.add(itemDisplayGPSDatabase);
-		final ActionExportSubjects actionExportSubjects = new ActionExportSubjects("Export subjects", KeyEvent.CHAR_UNDEFINED, null,"Export the list of subjects",this,a_photoList);
+		final DisplayFilterAction actionFilter = new DisplayFilterAction("Filter list", KeyEvent.VK_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0),"Filter the list of photos",this,a_photoList,selection);
+		final JMenuItem itemFilter = new JMenuItem(actionFilter);
+		menuFile.add(itemFilter);
+        final ExportSubjectsAction actionExportSubjects = new ExportSubjectsAction("Export subjects", KeyEvent.CHAR_UNDEFINED, null,"Export the list of subjects",this,a_photoList);
 		final JMenuItem itemExportSubjects = new JMenuItem(actionExportSubjects);
 		menuFile.add(itemExportSubjects);
-		final ActionExportLocations actionExportLocations = new ActionExportLocations("Export locations", KeyEvent.CHAR_UNDEFINED, null,"Export the list of locations",this,a_photoList);
+		final ExportLocationsAction actionExportLocations = new ExportLocationsAction("Export locations", KeyEvent.CHAR_UNDEFINED, null,"Export the list of locations",this,a_photoList);
 		final JMenuItem itemExportLocations = new JMenuItem(actionExportLocations);
 		menuFile.add(itemExportLocations);
-		final ActionCreateCopiesForPrinting actionCreateCopiesForPrinting = new ActionCreateCopiesForPrinting("Create copies for printing", KeyEvent.CHAR_UNDEFINED, null,"Copies the file for a printing",this,a_photoList);
+		final CreateCopiesForPrintingAction actionCreateCopiesForPrinting = new CreateCopiesForPrintingAction("Create copies for printing", KeyEvent.CHAR_UNDEFINED, null,"Copies the file for a printing",this,a_photoList);
 		final JMenuItem itemCreateCopiesForPrinting = new JMenuItem(actionCreateCopiesForPrinting);
 		menuFile.add(itemCreateCopiesForPrinting);
-		final ActionQuit a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",a_photoList,a_GPSDatabase,scheduler);
+		final QuitAction a_actionQuit = new QuitAction("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",a_photoList,a_GPSDatabase,scheduler);
 		final JMenuItem itemQuit = new JMenuItem(a_actionQuit);
 		menuFile.add(itemQuit);
 
 		final JMenu menuView = new JMenu("View");
 		menuView.setMnemonic(KeyEvent.VK_V);
 		a_menubar.add(menuView);
-		final ActionNextPhoto actionNextPhoto = new ActionNextPhoto("Next photo", KeyEvent.VK_N, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),"Display next photo",selection);
+		final NextPhotoAction actionNextPhoto = new NextPhotoAction("Next photo", KeyEvent.VK_N, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),"Display next photo",selection);
 		final JMenuItem itemNextPhoto = new JMenuItem(actionNextPhoto);
 		menuView.add(itemNextPhoto);
-		final ActionPreviousPhoto actionPreviousPhoto = new ActionPreviousPhoto("Previous photo", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK),"Display previous photo",selection);
+		final PreviousPhotoAction actionPreviousPhoto = new PreviousPhotoAction("Previous photo", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK),"Display previous photo",selection);
 		final JMenuItem itemPreviousPhoto = new JMenuItem(actionPreviousPhoto);
 		menuView.add(itemPreviousPhoto);
-		final ActionFullScreen actionFullScreen = new ActionFullScreen("Full screen", KeyEvent.VK_F, KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK),"Full screen mode on/off",this);
+		final FullScreenAction actionFullScreen = new FullScreenAction("Full screen", KeyEvent.VK_F, KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK),"Full screen mode on/off",this);
 		final JMenuItem itemFullScreen = new JMenuItem(actionFullScreen);
 		menuView.add(itemFullScreen);
 
@@ -147,36 +150,30 @@ public class PhotoDisplayer extends JFrame
 		final JMenu submenuEditQuality = new JMenu("Set Quality");
 		for (int i=0; i<PhotoQuality.getTraits().length; i++) {
 		    final PhotoQuality v = (PhotoQuality)(PhotoQuality.getTraits()[i]);
-		    submenuEditQuality.add(new JMenuItem(new ActionChangeQuality(v,a_photoList,selection)));
+		    submenuEditQuality.add(new JMenuItem(new ChangeQualityAction(v,a_photoList,selection)));
 		}
 		menuEdit.add(submenuEditQuality);
 		final JMenu submenuEditOriginality = new JMenu("Set Originality");
 		for (int i=0; i<PhotoOriginality.getTraits().length; i++) {
 		    final PhotoOriginality v = (PhotoOriginality)(PhotoOriginality.getTraits()[i]);
-		    submenuEditOriginality.add(new JMenuItem(new ActionChangeOriginality(v,a_photoList,selection)));
+		    submenuEditOriginality.add(new JMenuItem(new ChangeOriginalityAction(v,a_photoList,selection)));
 		}
 		menuEdit.add(submenuEditOriginality);
 		final JMenu submenuEditPrivacy = new JMenu("Set Privacy");
 		for (int i=0; i<PhotoPrivacy.getTraits().length; i++) {
 		    final PhotoPrivacy v = (PhotoPrivacy)(PhotoPrivacy.getTraits()[i]);
-		    submenuEditPrivacy.add(new JMenuItem(new ActionChangePrivacy(v,a_photoList,selection)));
+		    submenuEditPrivacy.add(new JMenuItem(new ChangePrivacyAction(v,a_photoList,selection)));
 		}
 		menuEdit.add(submenuEditPrivacy);
-		final ActionResetNumberOfCopies actionResetNumberOfCopies = new ActionResetNumberOfCopies("Reset numbers of copîes", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
+		final ResetNumberOfCopiesAction actionResetNumberOfCopies = new ResetNumberOfCopiesAction("Reset numbers of copîes", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
 		final JMenuItem itemResetNumberOfCopies = new JMenuItem(actionResetNumberOfCopies);
 		menuEdit.add(itemResetNumberOfCopies);
-		final ActionEditSubjects actionEditSubjects = new ActionEditSubjects("Edit subjects", KeyEvent.CHAR_UNDEFINED, null,"Display the subject editor",this,a_photoList);
+		final EditSubjectsAction actionEditSubjects = new EditSubjectsAction("Edit subjects", KeyEvent.CHAR_UNDEFINED, null,"Display the subject editor",this,a_photoList);
 		final JMenuItem itemEditSubjects = new JMenuItem(actionEditSubjects);
 		menuEdit.add(itemEditSubjects);
-		final ActionEditLocations actionEditLocations = new ActionEditLocations("Edit locations", KeyEvent.CHAR_UNDEFINED, null,"Display the location editor",this,a_photoList,a_GPSDatabase);
+		final EditLocationsAction actionEditLocations = new EditLocationsAction("Edit locations", KeyEvent.CHAR_UNDEFINED, null,"Display the location editor",this,a_photoList,a_GPSDatabase);
 		final JMenuItem itemEditLocations = new JMenuItem(actionEditLocations);
 		menuEdit.add(itemEditLocations);
-
-		final JMenu filterView = new JMenu("Filter");
-		a_menubar.add(filterView);
-		final ActionDisplayFilter actionFilter = new ActionDisplayFilter("Filter list", 0, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK),"Filter the list of photos",this,a_photoList,selection);
-		final JMenuItem itemFilter = new JMenuItem(actionFilter);
-		filterView.add(itemFilter);
 		
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		new WindowClosingListener(this,

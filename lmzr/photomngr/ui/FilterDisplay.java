@@ -28,28 +28,28 @@ import lmzr.photomngr.data.filter.PhotoListFilter;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
-import lmzr.photomngr.ui.filter.FilterOnAuthorComponent;
-import lmzr.photomngr.ui.filter.FilterOnCopiesComponent;
-import lmzr.photomngr.ui.filter.FilterOnFormatComponent;
-import lmzr.photomngr.ui.filter.FilterOnHierachicalCompoundStringComponent;
-import lmzr.photomngr.ui.filter.FilterOnTraitDisplayComponent;
+import lmzr.photomngr.ui.filter.AuthorComponentFilterUI;
+import lmzr.photomngr.ui.filter.CopiesComponentFilterUI;
+import lmzr.photomngr.ui.filter.FormatComponentFilterUI;
+import lmzr.photomngr.ui.filter.HierachicalCompoundStringComponentFilterUI;
+import lmzr.photomngr.ui.filter.TraitDisplayComponentFilterUI;
 
 /**
  * 
  */
 public class FilterDisplay extends JDialog {
 
-    final private FilterOnTraitDisplayComponent a_quality;
-    final private FilterOnTraitDisplayComponent a_originality;
-    final private FilterOnTraitDisplayComponent a_privacy;
-    final private FilterOnHierachicalCompoundStringComponent a_location;
-    final private FilterOnHierachicalCompoundStringComponent a_subject1;
-    final private FilterOnHierachicalCompoundStringComponent a_subject2;
-    final private FilterOnHierachicalCompoundStringComponent a_subject3;
-    final private FilterOnHierachicalCompoundStringComponent a_subject4;
-    final private FilterOnFormatComponent a_format;
-    final private FilterOnAuthorComponent a_author;
-    final private FilterOnCopiesComponent a_copies;
+    final private TraitDisplayComponentFilterUI a_quality;
+    final private TraitDisplayComponentFilterUI a_originality;
+    final private TraitDisplayComponentFilterUI a_privacy;
+    final private HierachicalCompoundStringComponentFilterUI a_location;
+    final private HierachicalCompoundStringComponentFilterUI a_subject1;
+    final private HierachicalCompoundStringComponentFilterUI a_subject2;
+    final private HierachicalCompoundStringComponentFilterUI a_subject3;
+    final private HierachicalCompoundStringComponentFilterUI a_subject4;
+    final private FormatComponentFilterUI a_format;
+    final private AuthorComponentFilterUI a_author;
+    final private CopiesComponentFilterUI a_copies;
     
     /**
      * @param frame 
@@ -68,47 +68,47 @@ public class FilterDisplay extends JDialog {
         final JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         
-        a_quality = new FilterOnTraitDisplayComponent("quality",filter.getFilterOnQuality());
+        a_quality = new TraitDisplayComponentFilterUI("quality",filter.getFilterOnQuality());
         p.add(a_quality);
         a_quality.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        a_originality = new FilterOnTraitDisplayComponent("originality",filter.getFilterOnOriginality());
+        a_originality = new TraitDisplayComponentFilterUI("originality",filter.getFilterOnOriginality());
         p.add(a_originality);
         a_originality.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_privacy = new FilterOnTraitDisplayComponent("privacy",filter.getFilterOnPrivacy());
+        a_privacy = new TraitDisplayComponentFilterUI("privacy",filter.getFilterOnPrivacy());
         p.add(a_privacy);
         a_privacy.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_location = new FilterOnHierachicalCompoundStringComponent("location",list.getLocationFactory(),filter.getFilterOnLocation());
+        a_location = new HierachicalCompoundStringComponentFilterUI("location",list.getLocationFactory(),filter.getFilterOnLocation());
         p.add(a_location);
         a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_subject1 = new FilterOnHierachicalCompoundStringComponent("subject 1",list.getSubjectFactory(),filter.getFilterOnSubject1());
+        a_subject1 = new HierachicalCompoundStringComponentFilterUI("subject 1",list.getSubjectFactory(),filter.getFilterOnSubject1());
         p.add(a_subject1);
         a_subject1.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_subject2 = new FilterOnHierachicalCompoundStringComponent("subject 2",list.getSubjectFactory(),filter.getFilterOnSubject2());
+        a_subject2 = new HierachicalCompoundStringComponentFilterUI("subject 2",list.getSubjectFactory(),filter.getFilterOnSubject2());
         p.add(a_subject2);
         a_subject2.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_subject3 = new FilterOnHierachicalCompoundStringComponent("subject 3",list.getSubjectFactory(),filter.getFilterOnSubject3());
+        a_subject3 = new HierachicalCompoundStringComponentFilterUI("subject 3",list.getSubjectFactory(),filter.getFilterOnSubject3());
         p.add(a_subject3);
         a_subject3.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_subject4 = new FilterOnHierachicalCompoundStringComponent("subject 4",list.getSubjectFactory(),filter.getFilterOnSubject4());
+        a_subject4 = new HierachicalCompoundStringComponentFilterUI("subject 4",list.getSubjectFactory(),filter.getFilterOnSubject4());
         p.add(a_subject4);
         a_subject4.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_format = new FilterOnFormatComponent("format",filter.getFilterOnFormat());
+        a_format = new FormatComponentFilterUI("format",filter.getFilterOnFormat());
         p.add(a_format);
         a_format.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_author = new FilterOnAuthorComponent("author",list.getAuthorFactory(),filter.getFilterOnAuthor());
+        a_author = new AuthorComponentFilterUI("author",list.getAuthorFactory(),filter.getFilterOnAuthor());
         p.add(a_author);
         a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        a_copies = new FilterOnCopiesComponent("copies",filter.getFilterOnCopies());
+        a_copies = new CopiesComponentFilterUI("copies",filter.getFilterOnCopies());
         p.add(a_copies);
         a_copies.setAlignmentX(Component.LEFT_ALIGNMENT);
         

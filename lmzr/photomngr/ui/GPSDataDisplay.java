@@ -17,12 +17,12 @@ import javax.swing.WindowConstants;
 import lmzr.photomngr.data.SaveEvent;
 import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
-import lmzr.photomngr.ui.action.ActionClose;
-import lmzr.photomngr.ui.action.ActionCopy;
-import lmzr.photomngr.ui.action.ActionCopyFromNext;
-import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
-import lmzr.photomngr.ui.action.ActionPaste;
-import lmzr.photomngr.ui.action.ActionSave;
+import lmzr.photomngr.ui.action.CloseAction;
+import lmzr.photomngr.ui.action.CopyAction;
+import lmzr.photomngr.ui.action.CopyFromNextAction;
+import lmzr.photomngr.ui.action.CopyFromPreviousAction;
+import lmzr.photomngr.ui.action.PasteAction;
+import lmzr.photomngr.ui.action.SaveAction;
 
 /**
  * @author Laurent
@@ -53,26 +53,26 @@ public class GPSDataDisplay extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		final ActionSave a_actionSave = new ActionSave("Save GPS data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_GPSdatabase);
+		final SaveAction a_actionSave = new SaveAction("Save GPS data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_GPSdatabase);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
-		final ActionClose a_actionClose = new ActionClose("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
+		final CloseAction a_actionClose = new CloseAction("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
 		final JMenuItem itemClose = new JMenuItem(a_actionClose);
 		menuFile.add(itemClose);
 
 		final JMenu menuEdit = new JMenu("Edit");
 		menuEdit.setMnemonic(KeyEvent.VK_E);
 		a_menubar.add(menuEdit);
-		final ActionCopy actionCopy = new ActionCopy("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_treeTable);
+		final CopyAction actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_treeTable);
 		final JMenuItem itemCopy = new JMenuItem(actionCopy);
 		menuEdit.add(itemCopy);
-		final ActionPaste actionPaste = new ActionPaste("Paste", KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_treeTable);
+		final PasteAction actionPaste = new PasteAction("Paste", KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_treeTable);
 		final JMenuItem itemPaste = new JMenuItem(actionPaste);
 		menuEdit.add(itemPaste);
-		final ActionCopyFromPrevious actionCopyFromPrevious = new ActionCopyFromPrevious("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_treeTable);
+		final CopyFromPreviousAction actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_treeTable);
 		final JMenuItem itemCopyFromPrevious = new JMenuItem(actionCopyFromPrevious);
 		menuEdit.add(itemCopyFromPrevious);
-		final ActionCopyFromNext actionCopyFromNext = new ActionCopyFromNext("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_treeTable);
+		final CopyFromNextAction actionCopyFromNext = new CopyFromNextAction("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_treeTable);
 		final JMenuItem itemCopyFromNext = new JMenuItem(actionCopyFromNext);
 		menuEdit.add(itemCopyFromNext);
 

@@ -23,13 +23,13 @@ import lmzr.photomngr.data.SaveEvent;
 import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.scheduler.Scheduler;
-import lmzr.photomngr.ui.action.ActionCopy;
-import lmzr.photomngr.ui.action.ActionCopyFromNext;
-import lmzr.photomngr.ui.action.ActionCopyFromPrevious;
-import lmzr.photomngr.ui.action.ActionPaste;
-import lmzr.photomngr.ui.action.ActionQuit;
-import lmzr.photomngr.ui.action.ActionRenameFolder;
-import lmzr.photomngr.ui.action.ActionSave;
+import lmzr.photomngr.ui.action.CopyAction;
+import lmzr.photomngr.ui.action.CopyFromNextAction;
+import lmzr.photomngr.ui.action.CopyFromPreviousAction;
+import lmzr.photomngr.ui.action.PasteAction;
+import lmzr.photomngr.ui.action.QuitAction;
+import lmzr.photomngr.ui.action.RenameFolderAction;
+import lmzr.photomngr.ui.action.SaveAction;
 
 
 /**
@@ -42,12 +42,12 @@ public class PhotoListDisplay extends JFrame
 	final private PhotoListTable a_table;
 	final private PhotoList a_list;
 	final private ListSelectionManager a_selection;
-	final private ActionSave a_actionSave;
-	final private ActionRenameFolder a_actionRenameFolder;
-	final private ActionCopy a_actionCopy;
-	final private ActionPaste a_actionPaste;
-	final private ActionCopyFromNext a_actionCopyFromNext;
-	final private ActionCopyFromPrevious a_actionCopyFromPrevious;
+	final private SaveAction a_actionSave;
+	final private RenameFolderAction a_actionRenameFolder;
+	final private CopyAction a_actionCopy;
+	final private PasteAction a_actionPaste;
+	final private CopyFromNextAction a_actionCopyFromNext;
+	final private CopyFromPreviousAction a_actionCopyFromPrevious;
 
 
     /**
@@ -82,29 +82,29 @@ public class PhotoListDisplay extends JFrame
 		final JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		a_menubar.add(menuFile);
-		a_actionSave = new ActionSave("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_list);
+		a_actionSave = new SaveAction("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_list);
 		final JMenuItem itemSave = new JMenuItem(a_actionSave);
 		menuFile.add(itemSave);
-		final ActionQuit a_actionQuit = new ActionQuit("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",photoList,GPSDatabase,scheduler);
+		final QuitAction a_actionQuit = new QuitAction("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",photoList,GPSDatabase,scheduler);
 		final JMenuItem itemQuit = new JMenuItem(a_actionQuit);
 		menuFile.add(itemQuit);
 
 		final JMenu menuEdit = new JMenu("Edit");
 		menuEdit.setMnemonic(KeyEvent.VK_E);
 		a_menubar.add(menuEdit);
-		a_actionCopy = new ActionCopy("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_table);
+		a_actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_table);
 		final JMenuItem itemCopy = new JMenuItem(a_actionCopy);
 		menuEdit.add(itemCopy);
-		a_actionPaste = new ActionPaste("Paste", KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_table);
+		a_actionPaste = new PasteAction("Paste", KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_table);
 		final JMenuItem itemPaste = new JMenuItem(a_actionPaste);
 		menuEdit.add(itemPaste);
-		a_actionCopyFromPrevious = new ActionCopyFromPrevious("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
+		a_actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
 		final JMenuItem itemCopyFromPrevious = new JMenuItem(a_actionCopyFromPrevious);
 		menuEdit.add(itemCopyFromPrevious);
-		a_actionCopyFromNext = new ActionCopyFromNext("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
+		a_actionCopyFromNext = new CopyFromNextAction("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
 		final JMenuItem itemCopyFromNext = new JMenuItem(a_actionCopyFromNext);
 		menuEdit.add(itemCopyFromNext);
-		a_actionRenameFolder = new ActionRenameFolder("Rename folder", KeyEvent.CHAR_UNDEFINED, null,"Rename the folder",this,a_list,a_selection);
+		a_actionRenameFolder = new RenameFolderAction("Rename folder", KeyEvent.CHAR_UNDEFINED, null,"Rename the folder",this,a_list,a_selection);
 		final JMenuItem itemRenameFolder = new JMenuItem(a_actionRenameFolder);
 		menuEdit.add(itemRenameFolder);
 

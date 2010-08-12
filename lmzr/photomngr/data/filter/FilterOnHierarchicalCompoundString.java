@@ -1,5 +1,7 @@
 package lmzr.photomngr.data.filter;
 
+import java.util.Set;
+
 import lmzr.photomngr.data.PhotoList;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundString;
@@ -9,14 +11,14 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
  */
 public class FilterOnHierarchicalCompoundString {
 
-	private final HierarchicalCompoundString a_values[];
+	private final Set<HierarchicalCompoundString> a_values;
     final private int a_parameter; 
 
 	/**
 	 * @param values
      * @param parameter (i.e. column index in the PhotoList)
 	 */
-	public FilterOnHierarchicalCompoundString(final HierarchicalCompoundString values[],
+	public FilterOnHierarchicalCompoundString(final Set<HierarchicalCompoundString> values,
 			                                  final int parameter) {
 		a_values = values;
 		a_parameter = parameter;
@@ -30,27 +32,14 @@ public class FilterOnHierarchicalCompoundString {
      */
     public boolean filter(final PhotoList list, final int index) {
         
-    	if (a_values==null) return true;
     	final Object value = list.getValueAt(index,a_parameter);
     	if ( list.getColumnClass(a_parameter)==HierarchicalCompoundString.class ) {
             final HierarchicalCompoundString hcs = (HierarchicalCompoundString)value;
-            for (int i=0; i<a_values.length; i++) {
-            	HierarchicalCompoundString l = hcs;
-            	while ( l!=null ) {
-            		if ( l==a_values[i] ) return true;
-            		l = l.getParent();
-            	}
-            }
+            if ( a_values.contains(hcs) ) return true;
     	} else if ( list.getColumnClass(a_parameter)==MultiHierarchicalCompoundString.class ) {
             final MultiHierarchicalCompoundString mhcs = (MultiHierarchicalCompoundString)value;
-            for (int i=0; i<a_values.length; i++) {
-            	for (int j=0; j<mhcs.getParts().length; j++) {
-            	HierarchicalCompoundString l = mhcs.getParts()[j];
-            	    while ( l!=null ) {
-            	    	if ( l==a_values[i] ) return true;
-            	    	l = l.getParent();
-            	    }
-            	}
+        	for (HierarchicalCompoundString hcs : mhcs.getParts() ) {
+                if ( a_values.contains(hcs) ) return true;
             }
     	} else {
     		throw new ClassCastException("filter on HierarchicalCompoundString is corrupted");
@@ -69,7 +58,7 @@ public class FilterOnHierarchicalCompoundString {
     /**
      * @return values of the filter
      */
-    public HierarchicalCompoundString[] getValues() {
+    public Set<HierarchicalCompoundString> getValues() {
     	return a_values;
     }
     
@@ -77,6 +66,6 @@ public class FilterOnHierarchicalCompoundString {
      * @return indicate if the filter is enabled
      */
     public boolean isEnabled() {
-    	return a_values!=null;
+    	return ( a_values.size()>0 );
     }
 }

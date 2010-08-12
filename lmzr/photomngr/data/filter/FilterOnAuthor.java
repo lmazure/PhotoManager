@@ -10,7 +10,7 @@ import lmzr.photomngr.data.PhotoList;
  */
 public class FilterOnAuthor {
 
-    final private  HashSet<String> a_filteredAuthors; 
+    final private HashSet<String> a_filteredAuthors; 
     
     /**
      * creates a filter accepting all authors
