@@ -330,5 +330,4 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
 			setValueAt(new Boolean(true), h, PARAM_SELECTED);
 		}
 	}
-
 }

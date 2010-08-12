@@ -35,7 +35,12 @@ public class TreeSelectioner extends JXTreeTable {
 	 * @param selection
 	 */
 	public void setSelection(final Set<HierarchicalCompoundString> selection) {
+		
 		((DatabaseForTreeSelectioner)getTreeTableModel()).setSelection(selection);
+		
+		for (HierarchicalCompoundString h : selection ) {
+			expandPath(HierarchicalCompoundStringFactory.getPath(h.getParent()));
+		}
 	}
 
 }

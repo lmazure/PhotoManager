@@ -255,9 +255,13 @@ public class SubjectCellEditor extends JComponent
 
     		a_text.setText(value);
 
-            final MultiHierarchicalCompoundString v = a_photoList.getSubjectFactory().create(value);
-            final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>(Arrays.asList(v.getParts()));
-            a_tree.setSelection(selection);
+    		if ( value.length()>0 ) {
+	            final MultiHierarchicalCompoundString v = a_photoList.getSubjectFactory().create(value);
+	            final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>(Arrays.asList(v.getParts()));
+	            a_tree.setSelection(selection);
+    		} else {
+	            a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
+    		}
     		
     	}
     	

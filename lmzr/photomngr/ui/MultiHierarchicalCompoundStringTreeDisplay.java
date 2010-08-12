@@ -14,7 +14,7 @@ public class MultiHierarchicalCompoundStringTreeDisplay extends JTree {
      * @param factory
      */
     public MultiHierarchicalCompoundStringTreeDisplay(final MultiHierarchicalCompoundStringFactory factory) {
-        super(factory);
+        super(factory.getHierarchicalCompoundStringFactory());
         setRootVisible(false);
     }
     

@@ -10,7 +10,10 @@ import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.EventObject;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -31,6 +34,7 @@ import lmzr.photomngr.ui.treeSelectioner.DatabaseForTreeSelectioner;
 import lmzr.photomngr.ui.treeSelectioner.TreeSelectioner;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
+import lmzr.util.string.MultiHierarchicalCompoundString;
 
 /**
  *
@@ -115,9 +119,12 @@ public class LocationCellEditor extends JComponent
     		a_text.setText(value);
     		
             if ( !value.equals("") ) {
-            	// set the selection in the selection tree 
             	final HierarchicalCompoundString v = LocationCellEditor.this.a_factory.create(value);
-            	a_tree.getTreeTableModel().setValueAt(new Boolean(true), v, DatabaseForTreeSelectioner.PARAM_SELECTED);
+	            final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>();
+	            selection.add(v);
+	            a_tree.setSelection(selection);
+            } else {
+            	a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
             }
 
             setVisible(true);
