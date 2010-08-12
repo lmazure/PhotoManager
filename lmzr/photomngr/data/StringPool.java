@@ -2,10 +2,17 @@ package lmzr.photomngr.data;
 
 import java.util.HashMap;
 
+/**
+ * @author Laurent
+ *
+ */
 public class StringPool {
 
 	private final HashMap<String,String> a_pool;
 	
+	/**
+	 * 
+	 */
 	public StringPool() {
 	    a_pool = new HashMap<String,String>(); 
 	}

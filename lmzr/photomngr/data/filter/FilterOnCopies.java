@@ -22,6 +22,7 @@ public class FilterOnCopies extends FilterBase {
 
     /**
      * create a filter accepting the given number of copies
+     * @param isEnabled 
      * @param min
      * @param max
      */

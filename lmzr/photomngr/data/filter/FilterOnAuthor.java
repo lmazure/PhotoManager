@@ -22,6 +22,7 @@ public class FilterOnAuthor extends FilterBase {
 
     /**
      * creates a filter filtering the specified authors
+     * @param isEnabled 
      * @param filteredAuthors
      */
     public FilterOnAuthor(final boolean isEnabled,

@@ -8,6 +8,10 @@ import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.ui.PhotoGeometryEditor;
 
+/**
+ * @author Laurent
+ *
+ */
 public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
 
 	   final private PhotoList a_photoList;

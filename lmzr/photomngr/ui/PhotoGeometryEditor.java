@@ -12,6 +12,10 @@ import javax.swing.WindowConstants;
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 
+/**
+ * @author Laurent
+ *
+ */
 public class PhotoGeometryEditor extends JFrame {
 
     final private ListSelectionManager a_selection;

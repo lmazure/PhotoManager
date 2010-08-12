@@ -10,7 +10,14 @@ import java.awt.event.WindowListener;
  */
 public class WindowClosingListener implements WindowListener {
 
+	/**
+	 * @author Laurent
+	 *
+	 */
 	public interface Callback {
+		/**
+		 * 
+		 */
 		void windowClosing();
 	}
 	

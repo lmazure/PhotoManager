@@ -13,6 +13,10 @@ import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoHeaderData;
 import lmzr.photomngr.data.PhotoList;
 
+/**
+ * @author Laurent
+ *
+ */
 public class PhotoParametersTableModel implements TableModel, ListSelectionListener {
 
     /**

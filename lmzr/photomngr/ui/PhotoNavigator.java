@@ -41,6 +41,10 @@ import lmzr.photomngr.ui.player.Player_QuickTime;
 import lmzr.photomngr.ui.player.Player_VideoLAN;
 import lmzr.photomngr.ui.player.Player_WindowsMediaPlayer;
 
+/**
+ * @author Laurent
+ *
+ */
 public class PhotoNavigator extends JFrame 
                             implements ListSelectionListener, TableModelListener, PhotoListMetaDataListener {
 	

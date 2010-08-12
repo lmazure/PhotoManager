@@ -6,6 +6,10 @@ import java.net.URISyntaxException;
 import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 
+/**
+ * @author Laurent
+ *
+ */
 public class BingMapURICreator implements MapURICreator {
 
 

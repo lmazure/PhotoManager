@@ -52,7 +52,7 @@ public class SubjectCellEditor extends JComponent
                                implements TableCellEditor {
 
     final private Vector<CellEditorListener> a_listenerList;
-    final public JTextArea a_textfield;
+    final private JTextArea a_textfield;
     final private JButton a_button;
     private InternalSubjectCellEditor a_internal;
     final private PhotoList a_photoList;

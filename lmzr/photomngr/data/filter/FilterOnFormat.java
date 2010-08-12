@@ -26,6 +26,7 @@ public class FilterOnFormat extends FilterBase {
 
     /**
      * creates a filter with the specified formats
+     * @param isEnabled 
      * @param formats
      * @param values
      */

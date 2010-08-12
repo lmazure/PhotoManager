@@ -1,7 +1,6 @@
 package lmzr.photomngr.data.filter;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Vector;
 
@@ -20,7 +19,6 @@ import lmzr.photomngr.data.SaveListener;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
-import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 

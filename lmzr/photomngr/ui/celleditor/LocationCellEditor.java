@@ -10,7 +10,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import java.util.EventObject;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +33,6 @@ import lmzr.photomngr.ui.treeSelectioner.DatabaseForTreeSelectioner;
 import lmzr.photomngr.ui.treeSelectioner.TreeSelectioner;
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
-import lmzr.util.string.MultiHierarchicalCompoundString;
 
 /**
  *

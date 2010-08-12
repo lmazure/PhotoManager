@@ -33,6 +33,7 @@ public class LaunchGoogleMapsAction extends PhotoManagerAction {
 	 * @param GPSDatabase 
 	 * @param photoList 
 	 * @param selection 
+	 * @param mapURICreator 
 	 */
 	public LaunchGoogleMapsAction(final String text,
 			                      final int mnemonic,

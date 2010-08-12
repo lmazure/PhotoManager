@@ -28,6 +28,7 @@ public class FilterOnPhotoTrait extends FilterBase {
 
     /**
      * creates a filter with the specified value
+     * @param isEnabled 
      * @param traits
      * @param values
      * @param parameter (i.e. column index in the PhotoList)

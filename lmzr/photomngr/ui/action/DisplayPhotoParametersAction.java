@@ -8,6 +8,10 @@ import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.ui.PhotoParametersDisplay;
 
+/**
+ * @author Laurent
+ *
+ */
 public class DisplayPhotoParametersAction extends PhotoManagerAction {
 
     final private PhotoList a_photoList;

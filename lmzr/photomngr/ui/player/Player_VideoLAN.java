@@ -8,6 +8,9 @@ import lmzr.photomngr.data.DataFormat;
  */
 public class Player_VideoLAN extends Player {
 
+	/**
+	 * 
+	 */
 	public Player_VideoLAN() {
 		super("VideoLAN",
 			  new String[] {"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe",

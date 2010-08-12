@@ -21,6 +21,7 @@ public class ComponentFilterUI extends JPanel {
     
     /**
      * @param label
+     * @param filter 
      */
     public ComponentFilterUI(final String label,
     		                 final FilterBase filter) {
@@ -62,6 +63,9 @@ public class ComponentFilterUI extends JPanel {
         a_pane.setVisible(isFilterEnabled);    	
     }
     
+    /**
+     * @return true if the filer is active, false otherwise
+     */
     public boolean isActive() {
     	return a_title.isSelected();
     }

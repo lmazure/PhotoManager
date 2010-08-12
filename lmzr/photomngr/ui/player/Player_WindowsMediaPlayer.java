@@ -8,6 +8,9 @@ import lmzr.photomngr.data.DataFormat;
  */
 public class Player_WindowsMediaPlayer extends Player {
 	
+	/**
+	 * 
+	 */
 	public Player_WindowsMediaPlayer() {
 		super("Windows Media Player",
 			  new String[] {"C:\\Program Files\\Windows Media Player\\wmplayer.exe",

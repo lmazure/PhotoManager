@@ -12,6 +12,10 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
 import org.jdesktop.swingx.tree.TreeModelSupport;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
+/**
+ * @author Laurent
+ *
+ */
 public class DatabaseForTreeSelectioner implements TreeTableModel {
 
 	/**

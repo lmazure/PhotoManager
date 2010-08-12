@@ -4,6 +4,10 @@ import java.net.URI;
 
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 
+/**
+ * @author Laurent
+ *
+ */
 public interface MapURICreator {
 
 	/**

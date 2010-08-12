@@ -9,6 +9,10 @@ import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.ui.PhotoNavigator;
 
+/**
+ * @author Laurent
+ *
+ */
 public class DisplayPhotoNavigatorAction extends PhotoManagerAction {
 
 	   final private PhotoList a_photoList;
@@ -21,6 +25,7 @@ public class DisplayPhotoNavigatorAction extends PhotoManagerAction {
 		 * @param accelerator
 		 * @param tooltipText
 		 * @param photoList
+		 * @param GPSDatabase 
 		 * @param selection
 		 */
 		public DisplayPhotoNavigatorAction(final String text,

@@ -11,10 +11,18 @@ import javax.swing.WindowConstants;
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 
+/**
+ * @author Laurent
+ *
+ */
 public class PhotoParametersDisplay extends JFrame {
 	
 	final PhotoParametersTableModel a_tableModel;
 	
+	/**
+	 * @param photoList
+	 * @param selection
+	 */
 	public PhotoParametersDisplay(final PhotoList photoList,
                                   final ListSelectionManager selection) {
 		super();

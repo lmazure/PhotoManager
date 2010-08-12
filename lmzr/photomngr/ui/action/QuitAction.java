@@ -25,6 +25,7 @@ public class QuitAction extends PhotoManagerAction {
 	 * @param tooltipText
 	 * @param list 
 	 * @param GPSDatabase 
+	 * @param scheduler 
 	 */
 	public QuitAction(final String text,
 	                  final int mnemonic,

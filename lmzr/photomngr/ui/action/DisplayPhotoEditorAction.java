@@ -9,6 +9,10 @@ import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.ui.PhotoEditor;
 
+/**
+ * @author Laurent
+ *
+ */
 public class DisplayPhotoEditorAction extends PhotoManagerAction {
 
 	   final private PhotoList a_photoList;

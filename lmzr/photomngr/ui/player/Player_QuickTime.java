@@ -8,6 +8,9 @@ import lmzr.photomngr.data.DataFormat;
  */
 public class Player_QuickTime extends Player {
 
+	/**
+	 * 
+	 */
 	public Player_QuickTime() {
 		super("QuickTime",
 			  new String[] {"C:\\Program Files (x86)\\QuickTime\\QuickTimePlayer.exe",

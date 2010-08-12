@@ -1,17 +1,30 @@
 package lmzr.photomngr.data.filter;
 
+/**
+ * @author Laurent
+ *
+ */
 public class FilterBase {
 
 	private boolean a_isEnabled;
 	
+	/**
+	 * @param isEnabled
+	 */
 	protected FilterBase(final boolean isEnabled) {
 		a_isEnabled = isEnabled;		
 	}
 	
+	/**
+	 * @return true if the filter is enable, false otherwise
+	 */
 	public boolean isEnabled() {
 		return a_isEnabled;
 	}
 	
+	/**
+	 * @param isEnabled
+	 */
 	public void setEnabled(final boolean isEnabled) {
 		a_isEnabled = isEnabled;
 	}
