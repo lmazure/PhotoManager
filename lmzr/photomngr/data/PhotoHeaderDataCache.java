@@ -79,7 +79,7 @@ public class PhotoHeaderDataCache {
     		final String data[][] = new String[a_fileCache.size()][];
 
 			Integer i=0;
-			for (PhotoHeaderData headerData: a_fileCache.values()) {
+			for (PhotoHeaderData headerData: a_fileCache.values()) {  //TODO il y a un concurrent access ici
 				data[i++] = headerData.getStringArray();
 			}
         	isDirty = false;

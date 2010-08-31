@@ -3,6 +3,7 @@ package lmzr.photomngr.ui.action;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import lmzr.photomngr.data.ListSelectionManager;
@@ -48,9 +49,17 @@ public class StartPlayerAction extends PhotoManagerAction {
      */
     public void actionPerformed(final ActionEvent e) {
 
+    	if ( a_player.getExecutable()==null ) {
+	        JOptionPane.showMessageDialog(null,
+                                          "Unable to find executable of \n"+a_player.getName(),
+                                          "Launch error",
+                                          JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	
         try {
             final String[] commandLine = { a_player.getExecutable().getAbsolutePath(),
-                    a_photoList.getPhoto(a_selection.getSelection()[0]).getFullPath() };
+                                           a_photoList.getPhoto(a_selection.getSelection()[0]).getFullPath() };
             Runtime.getRuntime().exec(commandLine);
         } catch (final IOException e1) {
             e1.printStackTrace();
