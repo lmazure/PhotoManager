@@ -2,6 +2,7 @@ package lmzr.photomngr.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,10 +79,13 @@ public class PhotoHeaderDataCache {
 			
     		final String data[][] = new String[a_fileCache.size()][];
 
-			Integer i=0;
+			int i=0;
 			for (PhotoHeaderData headerData: a_fileCache.values()) {  //TODO il y a un concurrent access ici
-				data[i++] = headerData.getStringArray();
+				if ( headerData.isCorrectlyParsed() ) {
+					data[i++] = headerData.getStringArray();
+				}
 			}
+			final int size = i;
         	isDirty = false;
 
         	// create the folder cache if necessary
@@ -91,7 +95,7 @@ public class PhotoHeaderDataCache {
 			a_scheduler.submitIO("save header data cache of \""+a_folderName+"\"",
                 new Runnable() { @Override public void run() {
         	        try {
-        	        	StringTableFromToExcel.save(getFilename(),data);
+        	        	StringTableFromToExcel.save(getFilename(),Arrays.copyOf(data, size));
     	        	} catch (final IOException e) {
     	        		System.err.println("failed to save header data cache in \""+getFilename()+"\"");
     	        		return;

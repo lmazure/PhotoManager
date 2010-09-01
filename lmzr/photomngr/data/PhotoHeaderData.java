@@ -25,6 +25,7 @@ import com.drew.metadata.exif.ExifDirectory;
 public class PhotoHeaderData {
 
     final private String a_filename;
+    final private boolean a_isCorrectlyParsed;
     final private int a_width;
     final private int a_height;
     final private int a_orientation;
@@ -78,6 +79,7 @@ public class PhotoHeaderData {
     	
     	if ( ( format != DataFormat.JPEG ) && ( format != DataFormat.AVI ) ) {
     		// the other formats are not supported for the time being
+    		a_isCorrectlyParsed = false;
 	    	a_width = 0;
 	    	a_height= 0;
 	    	a_orientation = DEFAULT_ORIENTATION;
@@ -108,6 +110,7 @@ public class PhotoHeaderData {
     		if ( overridenfilename.endsWith(".avi") ) f = overridenfilename.substring(0,overridenfilename.length()-3) + "thm";
     		final File ff = new File(f);
     		if ( !ff.exists()) {
+        		a_isCorrectlyParsed = false;
     	    	a_width = 0;
     	    	a_height= 0;
     	    	a_orientation = DEFAULT_ORIENTATION;
@@ -131,6 +134,7 @@ public class PhotoHeaderData {
     		overridenfilename = f;
     	}
     	
+    	boolean isCorrectlyParsed = true;
     	int width = 0;
     	int height= 0;
     	int orientation = DEFAULT_ORIENTATION;
@@ -226,6 +230,7 @@ public class PhotoHeaderData {
                     	}
                     } catch (final MetadataException e) {
                     	// should never occur, the data is corrupted
+                    	isCorrectlyParsed = false;
                     	System.err.println("failed to parse "+overridenfilename);
                     	e.printStackTrace();
                     }
@@ -233,6 +238,7 @@ public class PhotoHeaderData {
             }
         } catch (final JpegProcessingException e) {
 			// should never occur, the data is corrupted
+        	isCorrectlyParsed = false;
         	System.err.println("failed to parse "+overridenfilename);
 			e.printStackTrace();
         }
@@ -247,11 +253,14 @@ public class PhotoHeaderData {
 	        	    height = image.getHeight();
 	        	    width = image.getWidth();
 	        	} catch (final IOException e) {
-	        		// do nothing;
+                	isCorrectlyParsed = false;
+                	System.err.println("failed to parse "+overridenfilename);
+        			e.printStackTrace();
 	        	}
             }
         }
         
+        a_isCorrectlyParsed = isCorrectlyParsed;
 		a_width = width;
 		a_height = height;
     	a_orientation = orientation;
@@ -280,6 +289,8 @@ public class PhotoHeaderData {
     public PhotoHeaderData(final String data[]) {
 
 		a_filename = data[0];
+
+		a_isCorrectlyParsed = true;
 
 		int width;
 		try {
@@ -389,6 +400,13 @@ public class PhotoHeaderData {
         array[18] = Integer.toString(a_canon_subject_distance);
  
         return array;
+    }
+    
+    /**
+     * @return true is the file was correctly parse, false otherwise
+     */
+    public boolean isCorrectlyParsed() {
+    	return a_isCorrectlyParsed;
     }
     
     /**
