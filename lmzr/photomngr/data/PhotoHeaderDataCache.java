@@ -36,7 +36,7 @@ public class PhotoHeaderDataCache {
 		
 		public FolderCache(final String folderName) {
 			a_folderName = folderName;
-			a_fileCache = Collections.synchronizedMap(new HashMap<String,PhotoHeaderData>());
+			a_fileCache = new HashMap<String,PhotoHeaderData>();
 			isDirty = false;
 			loadFromDisk();
 		}
@@ -51,8 +51,10 @@ public class PhotoHeaderDataCache {
 			}
 			
 			final PhotoHeaderData newHeaderData = new PhotoHeaderData(a_photoDirectory,a_folderName,filename,format);
-				
-			a_fileCache.put(filename, newHeaderData);
+
+			synchronized(a_fileCache) {
+				a_fileCache.put(filename, newHeaderData);
+			}
 			isDirty = true;
 			
 			return newHeaderData;
@@ -76,13 +78,16 @@ public class PhotoHeaderDataCache {
 		private void saveToDisk() {
 			
 			if ( !isDirty ) return;
-			
-    		final String data[][] = new String[a_fileCache.size()][];
 
+    		final String data[][] = new String[a_fileCache.size()][];
+    		
 			int i=0;
-			for (PhotoHeaderData headerData: a_fileCache.values()) {  //TODO il y a un concurrent access ici
-				if ( headerData.isCorrectlyParsed() ) {
-					data[i++] = headerData.getStringArray();
+
+			synchronized (a_fileCache) {
+				for (PhotoHeaderData headerData: a_fileCache.values()) {
+					if ( headerData.isCorrectlyParsed() ) {
+						data[i++] = headerData.getStringArray();
+					}
 				}
 			}
 			final int size = i;
@@ -132,7 +137,7 @@ public class PhotoHeaderDataCache {
 		a_photoDirectory = photoDirectory;
 		a_cacheDirectory = cacheDirectory;
         a_scheduler = scheduler;
-		a_folderCache = Collections.synchronizedMap(new HashMap<String,FolderCache>());
+		a_folderCache = new HashMap<String,FolderCache>();
 		a_timerForPeriodicSaves = new Timer();
 		a_timerForPeriodicSaves.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -156,7 +161,9 @@ public class PhotoHeaderDataCache {
 		
 		if  ( folderCache == null ) {
 			folderCache = new FolderCache(folderName);
-			a_folderCache.put(folderName, folderCache);
+			synchronized(a_folderCache) {
+				a_folderCache.put(folderName, folderCache);
+			}
 		}
 		
 		return folderCache.getHeaderData(filename,format);
@@ -166,9 +173,13 @@ public class PhotoHeaderDataCache {
 	 * Save all the cache on disk.
 	 */
 	private void save() {
-		
-		for ( FolderCache folderCache : a_folderCache.values() ) {
-			folderCache.saveToDisk();
+
+		synchronized(a_folderCache) {
+			for ( FolderCache folderCache : a_folderCache.values() ) {
+				folderCache.saveToDisk();
+			}
 		}
+		
 	}
+	
 }
