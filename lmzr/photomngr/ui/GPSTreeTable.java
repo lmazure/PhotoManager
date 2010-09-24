@@ -30,5 +30,13 @@ public class GPSTreeTable extends JXTreeTable {
 		colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setCellRenderer(new GPSDataDeleteCellRenderer());
 		colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setCellEditor(new GPSDataDeleteCellEditor());
 
+		getColumnModel().getColumn(GPSDatabase.PARAM_LOCATION).setPreferredWidth(500);
+		getColumnModel().getColumn(GPSDatabase.PARAM_LATITUDE_MIN).setPreferredWidth(120);
+		getColumnModel().getColumn(GPSDatabase.PARAM_LATITUDE_MAX).setPreferredWidth(120);
+		getColumnModel().getColumn(GPSDatabase.PARAM_LONGITUDE_MIN).setPreferredWidth(120);
+		getColumnModel().getColumn(GPSDatabase.PARAM_LONGITUDE_MAX).setPreferredWidth(120);
+		getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setPreferredWidth(200);
+		getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setPreferredWidth(200);
+
 	}
 }

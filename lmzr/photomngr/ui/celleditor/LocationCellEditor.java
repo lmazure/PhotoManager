@@ -70,7 +70,6 @@ public class LocationCellEditor extends JComponent
             		new TreeModelListener() {
 						@Override
 						public void treeNodesChanged(final TreeModelEvent e) {
-							System.out.println(e);
 							final HierarchicalCompoundString string = (HierarchicalCompoundString)e.getChildren()[0];
 							final Boolean value = (Boolean)a_tree.getTreeTableModel().getValueAt(string, DatabaseForTreeSelectioner.PARAM_SELECTED); 
 							if ( value.booleanValue() ) {

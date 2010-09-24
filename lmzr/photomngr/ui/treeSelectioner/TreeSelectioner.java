@@ -18,17 +18,17 @@ public class TreeSelectioner extends JXTreeTable {
 	/**
 	 * 
 	 */
-	public static int MODE_MONO_SELECTION = 1;
+	final public static int MODE_MONO_SELECTION = 1;
 
 	/**
 	 * 
 	 */
-	public static int MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN = 2;
+	final public static int MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN = 2;
 	
 	/**
 	 * 
 	 */
-	public static int MODE_MULTI_SELECTION_WITHOUT_SELECT_ALL_COLUMN = 3;
+	final public static int MODE_MULTI_SELECTION_WITHOUT_SELECT_ALL_COLUMN = 3;
 	
 	/**
 	 * @param dataDescription 
@@ -40,6 +40,16 @@ public class TreeSelectioner extends JXTreeTable {
                            final int mode) {
 		
 		super(new DatabaseForTreeSelectioner(dataDescription, compoundStringFactory, mode));
+
+		getColumnModel().getColumn(DatabaseForTreeSelectioner.PARAM_VALUE).setPreferredWidth(500);
+		getColumnModel().getColumn(DatabaseForTreeSelectioner.PARAM_SELECTED).setPreferredWidth(30);
+		getColumnModel().getColumn(DatabaseForTreeSelectioner.PARAM_SELECT_ALL).setPreferredWidth(30);
+
+		moveColumn(DatabaseForTreeSelectioner.PARAM_VALUE, DatabaseForTreeSelectioner.PARAM_SELECT_ALL);
+		
+		if ( mode != MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN ) {
+			removeColumn(getColumnModel().getColumn(1));
+		}
 	}
 
 	/**

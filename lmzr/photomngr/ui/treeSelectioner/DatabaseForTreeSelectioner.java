@@ -74,7 +74,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
 	 */
 	@Override
 	public int getColumnCount() {
-		return (a_mode == TreeSelectioner.MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN) ? 3 : 2;
+		return 3;
 	}
 
 	/**
