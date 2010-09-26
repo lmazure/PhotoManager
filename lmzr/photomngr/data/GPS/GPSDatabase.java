@@ -522,7 +522,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	 */
 	public void performLocationMapTranslation(final Map<String, String> map) {
 		
-		for ( String oldLoc: map.keySet()) {
+		for ( final String oldLoc: map.keySet()) {
 			
 			final String newLoc = map.get(oldLoc);
 			final HierarchicalCompoundString oldLocation = a_locationFactory.create(oldLoc);
@@ -545,7 +545,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 								           + ") because that one has already some different coordinates ");
 					}
 				} else {
-					a_data.put(newLocation, oldData.clone());					
+					a_data.put(newLocation, oldData.clone());
+					setAsUnsaved();
 				}
 			}
 		}
