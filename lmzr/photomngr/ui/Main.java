@@ -51,6 +51,16 @@ public class Main {
         final String s_root = root;
         final Scheduler scheduler = new Scheduler();
         
+        final File rootDir = new File(root);
+        if ( !rootDir.exists() ) {
+        	System.err.println("directory \""+root+"\" does not exist");
+        	return;
+        }
+        if ( !rootDir.canRead() ) {
+        	System.err.println("directory \""+root+"\" is not readable");
+        	return;
+        }
+        
         final ConcretePhotoList a_list = new ConcretePhotoList(s_root+File.separator+"photo_ref.txt",
         		                                               s_root,
         		                                               cache,
