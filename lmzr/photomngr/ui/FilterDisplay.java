@@ -156,7 +156,7 @@ public class FilterDisplay extends JDialog {
 					}
 		});
 		pack();
-        setSize(500,700);
+        setSize(650,700);
     }
     
 	/**

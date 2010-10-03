@@ -45,6 +45,7 @@ public class HierachicalCompoundStringComponentFilterUI extends ComponentFilterU
        final JScrollPane scrollpane = new JScrollPane(a_tree);
        getPane().add(scrollpane);
        setFilterEnabled(filter.isEnabled());
+       a_tree.setSelection(filter.getValues());
      }    
     
     /**

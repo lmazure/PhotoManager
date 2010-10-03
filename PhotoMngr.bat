@@ -1,1 +1,1 @@
-java -Xmx400M -cp ".;..\utilities;..\exif;..\..\lib\XSwing 1.6\lib\swingx-1.6.jar;..\..\lib\JMF-2.1.1e\lib\jmf.jar" lmzr.photomngr.ui.Main "L:/images/classified" "L:/cache" &
+java -Xmx400M -cp ".;..\utilities;..\exif;..\..\lib\XSwing 1.6\lib\swingx-1.6.jar;..\..\lib\JMF-2.1.1e\lib\jmf.jar" lmzr.photomngr.ui.Main "C:\Users\Laurent\multimedia\images\classified" "C:\Users\Laurent\multimedia\cache" &
