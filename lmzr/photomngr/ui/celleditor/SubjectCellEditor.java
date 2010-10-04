@@ -151,6 +151,7 @@ public class SubjectCellEditor extends JComponent
     	final private JTextField a_edit;
     	final private JButton a_propositions[];
         final private TreeSelectioner a_tree;
+        private String a_keptValue;
     	
     	InternalSubjectCellEditor(final MultiHierarchicalCompoundStringFactory factory,
     			                  final Frame parent){
@@ -191,7 +192,6 @@ public class SubjectCellEditor extends JComponent
             a_text.setDocument(SubjectCellEditor.this.a_textfield.getDocument());
             c.add(a_text);
         	a_text.setAlignmentX(0.f);
-            final String keptValue = a_text.getText();
             
             a_tree = new TreeSelectioner("subject", factory.getHierarchicalCompoundStringFactory(), TreeSelectioner.MODE_MULTI_SELECTION_WITHOUT_SELECT_ALL_COLUMN);
             final JScrollPane j = new JScrollPane(a_tree); 
@@ -240,7 +240,7 @@ public class SubjectCellEditor extends JComponent
     		});
     		bCancel.addActionListener(new ActionListener() {
     					public void actionPerformed(final ActionEvent e) {
-    						a_text.setText(keptValue);
+    						a_text.setText(a_keptValue);
     						close();
     					}
     		});
@@ -270,6 +270,7 @@ public class SubjectCellEditor extends JComponent
     	 */
     	private void open(final String value) {
 
+    		a_keptValue = value;
     		setText(value);
 
 	        a_edit.requestFocusInWindow();

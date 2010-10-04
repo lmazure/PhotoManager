@@ -359,6 +359,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	@Override
 	public void performSubjectMapTranslation(final Map<String, String> map) {
 		a_list.performSubjectMapTranslation(map);
+    	applyFilter();
 	}
 
 	/**
@@ -367,6 +368,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	@Override
 	public void performLocationMapTranslation(final Map<String, String> map) {
 		a_list.performLocationMapTranslation(map);
+    	applyFilter();
 	}
 
 }

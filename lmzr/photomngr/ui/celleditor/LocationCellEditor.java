@@ -45,6 +45,7 @@ public class LocationCellEditor extends JComponent
     final private JButton a_button;
     private InternalLocationCellEditor a_internal;
     final private HierarchicalCompoundStringFactory a_factory;
+    private String a_keptValue;
     
     private class InternalLocationCellEditor extends JDialog {
 
@@ -62,7 +63,6 @@ public class LocationCellEditor extends JComponent
             a_text = new JTextField(60);
             a_text.setDocument(LocationCellEditor.this.a_textfield.getDocument());
             c.add(a_text);
-            final String keptValue = a_text.getText();
             
             a_tree = new TreeSelectioner("location", factory, TreeSelectioner.MODE_MONO_SELECTION);
             c.add(new JScrollPane(a_tree));
@@ -103,7 +103,7 @@ public class LocationCellEditor extends JComponent
     		});
     		bCancel.addActionListener(new ActionListener() {
     					public void actionPerformed(final ActionEvent e) {
-    						a_text.setText(keptValue);
+    						a_text.setText(a_keptValue);
     						close();
     					}
     		});
@@ -113,6 +113,7 @@ public class LocationCellEditor extends JComponent
     	
     	private void open(final String value) {
     		
+    		a_keptValue = value;
     		a_text.setText(value);
     		
             if ( !value.equals("") ) {
