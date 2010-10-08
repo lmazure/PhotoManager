@@ -163,15 +163,14 @@ public class PhotoHeaderData {
                 final Iterator<?> tags = directory.getTagIterator();
                 while (tags.hasNext()) {
                     final Tag tag = (Tag)tags.next();
-                    try {
+//                    try {
 //                        System.out.println("tag="+tag.getTagTypeHex());
 //                        System.out.println("tag name="+tag.getTagName());
 //                        System.out.println("directory name="+tag.getDirectoryName());
 //                        System.out.println("value="+tag.getDescription());
 //                        System.out.println("--------------------------------");
-                    } catch (Exception e) {
-                        //
-                    }
+//                    } catch (Exception e) {
+//                    }
                     try {
                     	if (tag.getDirectoryName().equals("Jpeg")) {
                     		if (tag.getTagType() == 0x0001) {

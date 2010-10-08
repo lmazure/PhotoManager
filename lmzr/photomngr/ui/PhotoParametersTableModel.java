@@ -1,5 +1,14 @@
 package lmzr.photomngr.ui;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.event.ListSelectionEvent;
@@ -8,9 +17,15 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import com.drew.imaging.jpeg.JpegMetadataReader;
+import com.drew.imaging.jpeg.JpegProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.Tag;
+
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.Photo;
-import lmzr.photomngr.data.PhotoHeaderData;
 import lmzr.photomngr.data.PhotoList;
 
 /**
@@ -19,75 +34,8 @@ import lmzr.photomngr.data.PhotoList;
  */
 public class PhotoParametersTableModel implements TableModel, ListSelectionListener {
 
-    /**
-     * 
-     */
-    static final public int PARAM_WITDH = 0;
-    /**
-     * 
-     */
-    static final public int PARAM_HEIGHT = 1;
-    /**
-     * 
-     */
-    static final public int PARAM_MANUFACTURER = 2;
-    /**
-     * 
-     */
-    static final public int PARAM_MODEL = 3;
-    /**
-     * 
-     */
-    static final public int PARAM_EXPOSURE_TIME = 4;
-    /**
-     * 
-     */
-    static final public int PARAM_SHUTTER_SPEED = 5;
-    /**
-     * 
-     */
-    static final public int PARAM_APERTURE_VALUE = 6;
-    /**
-     * 
-     */
-    static final public int PARAM_FLASH = 7;
-    /**
-     * 
-     */
-    static final public int PARAM_FOCAL_LENGTH = 8;
-    /**
-     * 
-     */
-    static final public int PARAM_SELF_TIMER_MODE = 9;
-    /**
-     * 
-     */
-    static final public int PARAM_CANON_SELF_TIMER_DELAY = 10;
-    /**
-     * 
-     */
-    static final public int PARAM_CANON_FLASH_MODE = 11;
-    /**
-     * 
-     */
-    static final public int PARAM_CANON_CONTINUOUS_DRIVE_MODE = 12;
-    /**
-     * 
-     */
-    static final public int PARAM_CANON_FOCUS_MODE = 13;
-    /**
-     * 
-     */
-    static final public int PARAM_CANON_ISO = 14;
-    /**
-     * 
-     */
-    static final public int PARAM_CANON_SUBJECT_DISTANCE = 15;
-    /**
-     * 
-     */
-    static final public int NB_PARAM = 16;
-
+	private List<Map<String,String>> a_maps;
+	List<String> a_tags;
     
     final private PhotoList a_photoList;
     final private ListSelectionManager a_selection;
@@ -104,6 +52,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
         a_selection = selection;
         a_selection.addListener(this);
 		a_listOfListeners = new Vector<TableModelListener>();
+		updateData();
 	}
 
 	/**
@@ -166,7 +115,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 	 */
 	@Override
 	public int getRowCount() {
-		return NB_PARAM;
+		return a_tags.size();
 	}
 
 	/**
@@ -175,110 +124,16 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 	@Override
 	public Object getValueAt(final int rowIndex,
 			                 final int columnIndex) {
-		
+
+		final String tag = a_tags.get(rowIndex);
+
 		if ( columnIndex == 0) {
-			return getRowHeader(rowIndex);
+			return tag;
 		}
 		
-		return getCellValueCell(rowIndex,columnIndex);
+		return a_maps.get(columnIndex-1).get(tag);
 	}
 
-	/**
-	 * return the value of a cell which is not in the header row
-	 * 
-	 * @param rowIndex
-	 * @param columnIndex
-	 * @return value of the cell
-	 */
-	private String getCellValueCell(final int rowIndex,
-                                    final int columnIndex) {
-		
-        final int selection[] = a_selection.getSelection();
-        final PhotoHeaderData headerData = a_photoList.getPhoto(selection[columnIndex-1]).getHeaderData();
-
-        switch (rowIndex) {
-        case PARAM_WITDH:
-        	return Integer.toString(headerData.getWidth());
-        case PARAM_HEIGHT:
-        	return Integer.toString(headerData.getHeight());
-        case PARAM_MANUFACTURER:
-        	return headerData.getManufacturer();
-        case PARAM_MODEL:
-        	return headerData.getModel();
-        case PARAM_EXPOSURE_TIME:
-        	return headerData.getExposureTime();
-        case PARAM_SHUTTER_SPEED:
-        	return headerData.getShutterSpeed();
-        case PARAM_APERTURE_VALUE:
-        	return headerData.getApertureValue();
-        case PARAM_FLASH:
-        	return headerData.getFlash();
-        case PARAM_FOCAL_LENGTH:
-        	return Double.toString(headerData.getFocalLength());
-        case PARAM_SELF_TIMER_MODE:
-        	return headerData.getSelfTimerMode();
-        case PARAM_CANON_SELF_TIMER_DELAY:
-        	return headerData.getCanonSelfTimerDelay();
-        case PARAM_CANON_FLASH_MODE:
-        	return headerData.getCanonFlashMode();
-        case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
-        	return headerData.getCanonContinuousDriveMode();
-        case PARAM_CANON_FOCUS_MODE:
-        	return headerData.getCanonFocusMode();
-        case PARAM_CANON_ISO:
-        	return headerData.getCanonISO();
-        case PARAM_CANON_SUBJECT_DISTANCE:
-        	return Integer.toString(headerData.getCanonSubjectDistance());
-        }
-
-        return null;
-	}
-
-	/**
-	 * return the value of a cell which is in the header row
-	 * 
-	 * @param rowIndex
-	 * @return value of the cell
-	 */
-	private String getRowHeader(final int rowIndex) {
-		
-        switch (rowIndex) {
-        case PARAM_WITDH:
-        	return "Width";
-        case PARAM_HEIGHT:
-        	return "Height";
-        case PARAM_MANUFACTURER:
-        	return "Manufacturer";
-        case PARAM_MODEL:
-        	return "Model";
-        case PARAM_EXPOSURE_TIME:
-        	return "Exposure Time";
-        case PARAM_SHUTTER_SPEED:
-        	return "Shutter Speed";
-        case PARAM_APERTURE_VALUE:
-        	return "Aperture Value";
-        case PARAM_FLASH:
-        	return "Flash";
-        case PARAM_FOCAL_LENGTH:
-        	return "Focal Length";
-        case PARAM_SELF_TIMER_MODE:
-        	return "Self Timer Mode";
-        case PARAM_CANON_SELF_TIMER_DELAY:
-        	return "Canon Self Timer Delay";
-        case PARAM_CANON_FLASH_MODE:
-        	return "Canon Flash Mode";
-        case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
-        	return "Canon Continuous Drive Mode";
-        case PARAM_CANON_FOCUS_MODE:
-        	return "Canon Focus Mode";
-        case PARAM_CANON_ISO:
-        	return "Canon ISO";
-        case PARAM_CANON_SUBJECT_DISTANCE:
-        	return "Canon Subject Distance";
-        }
-        
-        return null;
-	}
 	
 	/**
 	 * @see javax.swing.table.TableModel#isCellEditable(int, int)
@@ -305,8 +160,56 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 	 */
 	@Override
 	public void valueChanged(final ListSelectionEvent e) {
+		updateData();
         final TableModelEvent event = new TableModelEvent(this, TableModelEvent.HEADER_ROW);
         for (TableModelListener l : a_listOfListeners) l.tableChanged(event);		
 	}
 
+	private void updateData() {
+
+        final int selection[] = a_selection.getSelection();
+        a_maps = new ArrayList<Map<String,String>>();
+        Set<String> tags = new HashSet<String>();
+        a_tags = new ArrayList<String>();
+
+        for ( final int index : selection ) {
+        	final String filename = a_photoList.getPhoto(index).getFullPath();
+        	final Map<String,String> map = getTags(filename);
+        	a_maps.add(map);
+        	tags.addAll(map.keySet());
+        }
+        
+        a_tags = new ArrayList<String>(tags);
+        Collections.sort(a_tags, String.CASE_INSENSITIVE_ORDER);
+	}
+	
+    /**
+     * @return a set containing the EXIF tags of the file
+     *         if the file was not properly parsed, an empty set is returned
+     */
+    private Map<String,String> getTags(final String filename) {
+    	
+    	final Map<String,String> map = new HashMap<String,String>();    	
+    		
+        try {
+            final File file = new File(filename);
+            final Metadata metadata = JpegMetadataReader.readMetadata(file);
+            final Iterator<?> directories = metadata.getDirectoryIterator();
+            while (directories.hasNext()) {
+                final Directory directory = (Directory)directories.next();
+                final Iterator<?> tags = directory.getTagIterator();
+                while (tags.hasNext()) {
+                	final Tag tag = (Tag)tags.next();
+                    map.put( tag.getDirectoryName() + " / " + tag.getTagName(), directory.getDescription(tag.getTagType()) );
+                }
+            }
+        } catch (final JpegProcessingException e) {
+			// should never occur, the data is corrupted
+			e.printStackTrace();
+        } catch (final MetadataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return map;
+    }
 }
