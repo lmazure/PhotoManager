@@ -26,6 +26,7 @@ import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.photomngr.ui.action.CopyAction;
 import lmzr.photomngr.ui.action.CopyFromNextAction;
 import lmzr.photomngr.ui.action.CopyFromPreviousAction;
+import lmzr.photomngr.ui.action.CutAction;
 import lmzr.photomngr.ui.action.PasteAction;
 import lmzr.photomngr.ui.action.QuitAction;
 import lmzr.photomngr.ui.action.RenameFolderAction;
@@ -45,6 +46,7 @@ public class PhotoListDisplay extends JFrame
 	final private SaveAction a_actionSave;
 	final private RenameFolderAction a_actionRenameFolder;
 	final private CopyAction a_actionCopy;
+	final private CutAction a_actionCut;
 	final private PasteAction a_actionPaste;
 	final private CopyFromNextAction a_actionCopyFromNext;
 	final private CopyFromPreviousAction a_actionCopyFromPrevious;
@@ -95,7 +97,10 @@ public class PhotoListDisplay extends JFrame
 		a_actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_table);
 		final JMenuItem itemCopy = new JMenuItem(a_actionCopy);
 		menuEdit.add(itemCopy);
-		a_actionPaste = new PasteAction("Paste", KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_table);
+		a_actionCut = new CutAction("Cut", KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),"Cut",a_table);
+		final JMenuItem itemCut = new JMenuItem(a_actionCut);
+		menuEdit.add(itemCut);
+		a_actionPaste = new PasteAction("Paste", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_table);
 		final JMenuItem itemPaste = new JMenuItem(a_actionPaste);
 		menuEdit.add(itemPaste);
 		a_actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
@@ -115,6 +120,8 @@ public class PhotoListDisplay extends JFrame
 
 		a_table.getInputMap().put((KeyStroke)a_actionCopy.getValue(Action.ACCELERATOR_KEY),a_actionCopy.getValue(Action.NAME));
 		a_table.getActionMap().put(a_actionCopy.getValue(Action.NAME),a_actionCopy);
+		a_table.getInputMap().put((KeyStroke)a_actionCut.getValue(Action.ACCELERATOR_KEY),a_actionCut.getValue(Action.NAME));
+		a_table.getActionMap().put(a_actionCut.getValue(Action.NAME),a_actionCut);
 		a_table.getInputMap().put((KeyStroke)a_actionPaste.getValue(Action.ACCELERATOR_KEY),a_actionPaste.getValue(Action.NAME));
 		a_table.getActionMap().put(a_actionPaste.getValue(Action.NAME),a_actionPaste);
 

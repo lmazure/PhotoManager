@@ -21,6 +21,7 @@ import lmzr.photomngr.ui.action.CloseAction;
 import lmzr.photomngr.ui.action.CopyAction;
 import lmzr.photomngr.ui.action.CopyFromNextAction;
 import lmzr.photomngr.ui.action.CopyFromPreviousAction;
+import lmzr.photomngr.ui.action.CutAction;
 import lmzr.photomngr.ui.action.PasteAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
@@ -66,7 +67,10 @@ public class GPSDataDisplay extends JFrame
 		final CopyAction actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_treeTable);
 		final JMenuItem itemCopy = new JMenuItem(actionCopy);
 		menuEdit.add(itemCopy);
-		final PasteAction actionPaste = new PasteAction("Paste", KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_treeTable);
+		final CutAction actionCut = new CutAction("Cut", KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),"Cut",a_treeTable);
+		final JMenuItem itemCut = new JMenuItem(actionCut);
+		menuEdit.add(itemCut);
+		final PasteAction actionPaste = new PasteAction("Paste", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_treeTable);
 		final JMenuItem itemPaste = new JMenuItem(actionPaste);
 		menuEdit.add(itemPaste);
 		final CopyFromPreviousAction actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_treeTable);
@@ -83,6 +87,8 @@ public class GPSDataDisplay extends JFrame
 		
 		a_treeTable.getInputMap().put((KeyStroke)actionCopy.getValue(Action.ACCELERATOR_KEY),actionCopy.getValue(Action.NAME));
 		a_treeTable.getActionMap().put(actionCopy.getValue(Action.NAME),actionCopy);
+		a_treeTable.getInputMap().put((KeyStroke)actionCut.getValue(Action.ACCELERATOR_KEY),actionCut.getValue(Action.NAME));
+		a_treeTable.getActionMap().put(actionCut.getValue(Action.NAME),actionCut);
 		a_treeTable.getInputMap().put((KeyStroke)actionPaste.getValue(Action.ACCELERATOR_KEY),actionPaste.getValue(Action.NAME));
 		a_treeTable.getActionMap().put(actionPaste.getValue(Action.NAME),actionPaste);
 

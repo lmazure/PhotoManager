@@ -11,10 +11,13 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
+import lmzr.util.string.HierarchicalCompoundString;
+import lmzr.util.string.MultiHierarchicalCompoundString;
+
 /**
  * Action to copy
  */
-public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
+public class CutAction extends PhotoManagerAction implements ClipboardOwner {
 
 	final private JTable a_table;
 
@@ -25,11 +28,11 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
 	 * @param tooltipText
 	 * @param table 
 	 */
-	public CopyAction(final String text,
-                      final int mnemonic,
-                      final KeyStroke accelerator,
-                      final String tooltipText,
-                      final JTable table) {
+	public CutAction(final String text,
+                     final int mnemonic,
+                     final KeyStroke accelerator,
+                     final String tooltipText,
+                     final JTable table) {
 		super(text, mnemonic, accelerator, tooltipText);
 		
 		a_table = table;
@@ -42,13 +45,23 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
 	public void actionPerformed(final ActionEvent e) {
 
 		final ListSelectionModel selection = a_table.getSelectionModel();
-		if ( selection.getMinSelectionIndex() == -1 ) return;
+		final int selectedRow = selection.getMinSelectionIndex();
+		if ( selectedRow == -1 ) return;
 
 		final int selectedColumn = a_table.getSelectedColumn();
 		if ( selectedColumn == -1) return;
 
-		final StringSelection fieldContent = new StringSelection(a_table.getValueAt(selection.getMinSelectionIndex(),selectedColumn).toString());
+		if ( !a_table.isCellEditable(selectedRow,selectedColumn) ) return;
+		
+		final Class<?> columnClass = a_table.getColumnClass(selectedColumn);
+		if ( (columnClass != String.class ) &&
+			 (columnClass != HierarchicalCompoundString.class ) &&
+			 (columnClass != MultiHierarchicalCompoundString.class ) ) return;
+
+		final StringSelection fieldContent = new StringSelection(a_table.getValueAt(selectedRow,selectedColumn).toString());
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);
+
+		a_table.setValueAt("",selectedRow,selectedColumn);
 	}
 	
 	/**
