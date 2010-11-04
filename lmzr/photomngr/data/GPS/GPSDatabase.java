@@ -232,16 +232,20 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			return location.toShortString();
 		case PARAM_LATITUDE_MIN:
 			if (data==null) return "";
-			return data.getLatitudeMin();
+			final String latMin =  data.getLatitudeMin();
+			return ( latMin == null ) ? "" : latMin;
 		case PARAM_LATITUDE_MAX:
 			if (data==null) return "";
-			return data.getLatitudeMax();
+			final String latMax = data.getLatitudeMax();
+			return ( latMax == null ) ? "" : latMax;
 		case PARAM_LONGITUDE_MIN:
 			if (data==null) return "";
-			return data.getLongitudeMin();
+			final String longMin =  data.getLongitudeMin();
+			return ( longMin == null ) ? "" : longMin;
 		case PARAM_LONGITUDE_MAX:
 			if (data==null) return "";
-			return data.getLongitudeMax();
+			final String longMax = data.getLongitudeMax();
+			return ( longMax == null ) ? "" : longMax;
 		case PARAM_GPS_DATA_FOR_MAPPING:
         case PARAM_GPS_DATA_FOR_DELETING:
 			return new GPSRecord(location,data);

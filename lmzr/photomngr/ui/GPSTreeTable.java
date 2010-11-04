@@ -37,6 +37,5 @@ public class GPSTreeTable extends JXTreeTable {
 		getColumnModel().getColumn(GPSDatabase.PARAM_LONGITUDE_MAX).setPreferredWidth(120);
 		getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setPreferredWidth(200);
 		getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setPreferredWidth(200);
-
 	}
 }

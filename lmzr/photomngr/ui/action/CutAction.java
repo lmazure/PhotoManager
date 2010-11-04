@@ -51,14 +51,20 @@ public class CutAction extends PhotoManagerAction implements ClipboardOwner {
 		final int selectedColumn = a_table.getSelectedColumn();
 		if ( selectedColumn == -1) return;
 
+		// do not cut non-editable cell
 		if ( !a_table.isCellEditable(selectedRow,selectedColumn) ) return;
 		
+		// do not cut non-emptiable cell
 		final Class<?> columnClass = a_table.getColumnClass(selectedColumn);
 		if ( (columnClass != String.class ) &&
 			 (columnClass != HierarchicalCompoundString.class ) &&
 			 (columnClass != MultiHierarchicalCompoundString.class ) ) return;
-
-		final StringSelection fieldContent = new StringSelection(a_table.getValueAt(selectedRow,selectedColumn).toString());
+		
+		// do not cut empty cell
+		final String string = a_table.getValueAt(selectedRow,selectedColumn).toString();
+		if ( string.length()==0 ) return;
+		
+		final StringSelection fieldContent = new StringSelection(string);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);
 
 		a_table.setValueAt("",selectedRow,selectedColumn);
