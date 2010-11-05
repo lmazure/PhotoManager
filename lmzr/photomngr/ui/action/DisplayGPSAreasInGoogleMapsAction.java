@@ -23,6 +23,11 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.util.string.HierarchicalCompoundString;
 
+/**
+ * display the GPS coordinates in Google Maps
+ * @author Laurent
+ *
+ */
 public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 
 	final private GPSDatabase a_GPSDatabase;
@@ -40,6 +45,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 	 * @param GPSDatabase 
 	 * @param photoList 
 	 * @param selection 
+	 * @param cacheDirectory 
 	 */
 	public DisplayGPSAreasInGoogleMapsAction(final String text,
 			                                 final int mnemonic,
@@ -157,9 +163,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 		final StringBuilder str = new StringBuilder();
 		boolean stringHasBeenAdded = false;
 		
-		System.out.println("--- start ---");
-		System.out.println("managing "+location);
-		final GPSRecord record =  a_GPSDatabase.getGPSData(location);
+		final GPSRecord record =  (GPSRecord)a_GPSDatabase.getValueAt(location,GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING);
 		if ( record != null ) {
 			final GPSData data = record.getGPSData();
 			if ( ( data!=null) && data.isComplete() ) {
@@ -174,8 +178,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 				str.append(",");
 				str.append(data.getLongitudeMaxAsDouble());
 				str.append(",\"red\")");
-				stringHasBeenAdded = true;				
-				System.out.println("adding String");
+				stringHasBeenAdded = true;
 			}
 		}
 		
@@ -184,14 +187,11 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 			if ( s.length() > 0) {
 				if ( stringHasBeenAdded ) {
 					str.append(",\n");
-					System.out.println("adding newline");
 				}
 				str.append(s);
 				stringHasBeenAdded = true;
-				System.out.println("adding Substring"+s);
 			}
 		}
-		System.out.println("--- end ---");
 		
 		return str;
 	}

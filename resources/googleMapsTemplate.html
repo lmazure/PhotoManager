@@ -42,9 +42,10 @@ function initialize() {
 			new google.maps.LatLng(r.latMin, r.lngMin),
 			new google.maps.LatLng(r.latMin, r.lngMax),
 			new google.maps.LatLng(r.latMax, r.lngMax),
-			new google.maps.LatLng(r.latMax, r.lngMin)
+			new google.maps.LatLng(r.latMax, r.lngMin),
+			new google.maps.LatLng(r.latMin, r.lngMin),
 		];
-		var path = new google.maps.Polygon({
+		var path = new google.maps.Polyline({
 			path: coordinates,
 			strokeColor: r.color,
 			strokeOpacity: 1.0,
