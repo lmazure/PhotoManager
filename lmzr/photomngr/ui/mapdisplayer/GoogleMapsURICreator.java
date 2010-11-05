@@ -13,7 +13,7 @@ import lmzr.util.string.HierarchicalCompoundString;
  * @author Laurent
  *
  */
-public class GoogleMapURICreator implements MapURICreator {
+public class GoogleMapsURICreator implements MapURICreator {
 
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#createMapURLFromGPSData(lmzr.util.string.HierarchicalCompoundString, lmzr.photomngr.data.GPS.GPSData)

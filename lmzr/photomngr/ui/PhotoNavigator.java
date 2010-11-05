@@ -30,11 +30,11 @@ import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
-import lmzr.photomngr.ui.action.LaunchGoogleMapsAction;
+import lmzr.photomngr.ui.action.DisplayMapAction;
 import lmzr.photomngr.ui.action.StartPlayerAction;
 import lmzr.photomngr.ui.mapdisplayer.BingMapURICreator;
 import lmzr.photomngr.ui.mapdisplayer.GeoportailMapURICreator;
-import lmzr.photomngr.ui.mapdisplayer.GoogleMapURICreator;
+import lmzr.photomngr.ui.mapdisplayer.GoogleMapsURICreator;
 import lmzr.photomngr.ui.mapdisplayer.MapURICreator;
 import lmzr.photomngr.ui.player.Player;
 import lmzr.photomngr.ui.player.Player_QuickTime;
@@ -52,7 +52,7 @@ public class PhotoNavigator extends JFrame
     final private static DateFormat s_timeFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
     
 	final static MapURICreator s_geoportailMapURICreator = new GeoportailMapURICreator();
-	final static MapURICreator s_googleMapURICreator = new GoogleMapURICreator();
+	final static MapURICreator s_googleMapURICreator = new GoogleMapsURICreator();
 	final static MapURICreator s_bingMapURICreator = new BingMapURICreator();
 
 
@@ -160,33 +160,33 @@ public class PhotoNavigator extends JFrame
         mapFull.add(a_map);
         
         final JPanel mapButtons = new JPanel();
-        a_googleMap = new JButton(new LaunchGoogleMapsAction("Google",
-        		                                             KeyEvent.CHAR_UNDEFINED,
-        		                                             null,
-        		                                             "display Google Maps",
-        		                                             a_GPSDatabase,
-        		                                             a_photoList,
-        		                                             a_selection,
-        		                                             s_googleMapURICreator));
+        a_googleMap = new JButton(new DisplayMapAction("Google",
+        		                                       KeyEvent.CHAR_UNDEFINED,
+        		                                       null,
+        		                                       "display Google Maps",
+        		                                       a_GPSDatabase,
+        		                                       a_photoList,
+        		                                       a_selection,
+        		                                       s_googleMapURICreator));
         mapButtons.add(a_googleMap);
-        a_geoportailMap = new JButton(new LaunchGoogleMapsAction("Geoportail",
-        		                                                 KeyEvent.CHAR_UNDEFINED,
-        		                                                 null,
-        		                                                 "display Geoportail Maps",
-        		                                                 a_GPSDatabase,
-        		                                                 a_photoList,
-        		                                                 a_selection,
-        		                                                 s_geoportailMapURICreator));
+        a_geoportailMap = new JButton(new DisplayMapAction("Geoportail",
+        		                                           KeyEvent.CHAR_UNDEFINED,
+        		                                           null,
+        		                                           "display Geoportail Maps",
+        		                                           a_GPSDatabase,
+        		                                           a_photoList,
+        		                                           a_selection,
+        		                                           s_geoportailMapURICreator));
         mapButtons.add(a_geoportailMap);
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_bingMap = new JButton(new LaunchGoogleMapsAction("Bing",
-                                                           KeyEvent.CHAR_UNDEFINED,
-                                                           null,
-                                                           "display Geoportail Maps",
-                                                           a_GPSDatabase,
-                                                           a_photoList,
-                                                           a_selection,
-                                                           s_bingMapURICreator));
+        a_bingMap = new JButton(new DisplayMapAction("Bing",
+                                                     KeyEvent.CHAR_UNDEFINED,
+                                                     null,
+                                                     "display Geoportail Maps",
+                                                     a_GPSDatabase,
+                                                     a_photoList,
+                                                     a_selection,
+                                                     s_bingMapURICreator));
         mapButtons.add(a_bingMap);
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
 

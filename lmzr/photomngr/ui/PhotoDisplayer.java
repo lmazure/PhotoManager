@@ -29,6 +29,7 @@ import lmzr.photomngr.ui.action.ChangeOriginalityAction;
 import lmzr.photomngr.ui.action.ChangePrivacyAction;
 import lmzr.photomngr.ui.action.ChangeQualityAction;
 import lmzr.photomngr.ui.action.CreateCopiesForPrintingAction;
+import lmzr.photomngr.ui.action.DisplayGPSAreasInGoogleMapsAction;
 import lmzr.photomngr.ui.action.DisplayGPSDatabaseAction;
 import lmzr.photomngr.ui.action.DisplayPhotoEditorAction;
 import lmzr.photomngr.ui.action.DisplayPhotoGeometryEditorAction;
@@ -64,13 +65,15 @@ public class PhotoDisplayer extends JFrame
      * @param GPSDatabase
      * @param subsampler
      * @param selection
+     * @param cacheDirectory
      * @throws HeadlessException
      */
     public PhotoDisplayer(final Scheduler scheduler,
     		              final FilteredPhotoList photoList,
     		              final GPSDatabase GPSDatabase,
     		              final SubsampledImageCachedManager subsampler,
-                          final ListSelectionManager selection) throws HeadlessException {
+                          final ListSelectionManager selection,
+                          final String cacheDirectory) throws HeadlessException {
         
         super();
         
@@ -174,6 +177,9 @@ public class PhotoDisplayer extends JFrame
 		final EditLocationsAction actionEditLocations = new EditLocationsAction("Edit locations", KeyEvent.CHAR_UNDEFINED, null,"Display the location editor",this,a_photoList,a_GPSDatabase);
 		final JMenuItem itemEditLocations = new JMenuItem(actionEditLocations);
 		menuEdit.add(itemEditLocations);
+		final DisplayGPSAreasInGoogleMapsAction actionDisplayGPSAreasInGoogleMaps = new DisplayGPSAreasInGoogleMapsAction("Check GPS Area", KeyEvent.CHAR_UNDEFINED, null,"Display Google Maps with GPS Areas",a_GPSDatabase,a_photoList,selection,cacheDirectory);
+		final JMenuItem itemDisplayGPSAreasInGoogleMaps = new JMenuItem(actionDisplayGPSAreasInGoogleMaps);
+		menuEdit.add(itemDisplayGPSAreasInGoogleMaps);
 		
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		new WindowClosingListener(this,

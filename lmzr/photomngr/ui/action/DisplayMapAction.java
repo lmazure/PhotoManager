@@ -18,7 +18,7 @@ import lmzr.util.string.HierarchicalCompoundString;
  * @author Laurent
  *
  */
-public class LaunchGoogleMapsAction extends PhotoManagerAction {
+public class DisplayMapAction extends PhotoManagerAction {
 
 	final private GPSDatabase a_GPSDatabase;
 	final private PhotoList a_photoList;
@@ -35,14 +35,14 @@ public class LaunchGoogleMapsAction extends PhotoManagerAction {
 	 * @param selection 
 	 * @param mapURICreator 
 	 */
-	public LaunchGoogleMapsAction(final String text,
-			                      final int mnemonic,
-			                      final KeyStroke accelerator,
-			                      final String tooltipText,
-			                      final GPSDatabase GPSDatabase,
-    			                  final PhotoList photoList,
-			                      final ListSelectionManager selection,
-			                      final MapURICreator mapURICreator) {
+	public DisplayMapAction(final String text,
+			                final int mnemonic,
+			                final KeyStroke accelerator,
+			                final String tooltipText,
+			                final GPSDatabase GPSDatabase,
+			                final PhotoList photoList,
+			                final ListSelectionManager selection,
+			                final MapURICreator mapURICreator) {
 		super(text, mnemonic, accelerator, tooltipText);
 		a_GPSDatabase = GPSDatabase;
 		a_photoList = photoList;

@@ -81,7 +81,8 @@ public class Main {
         		                         a_filteredList,
         		                         a_GPSDatabase,
         		                         new SubsampledImageCachedManager(cache),
-        		                         selection);
+        		                         selection,
+        		                         cache);
         
         final int i = a_list.getRowCount()-1;
         a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);
