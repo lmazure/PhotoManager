@@ -324,7 +324,7 @@ public class GPSData implements Cloneable {
 		final Pattern pattern = Pattern.compile( "([" +
 				                                 positiveLetter +
 				                                 negativeLetter +
-				                                 "]) (\\d{1,2})� (\\d{1,2})' (\\d{1,2})''");
+				                                 "]) (\\d{1,2})° (\\d{1,2})['′] (\\d{1,2})(['′]['′]|″)");
 		final Matcher matcher = pattern.matcher(str);
 		if ( !matcher.matches() ) throw new IllegalArgumentException("\""+str+"\" cannot be parsed into a longitude/latitude");
 		final String s1 = matcher.group(1);
@@ -368,7 +368,7 @@ public class GPSData implements Cloneable {
 		       ( (coordinate>0) ? positiveLetter : negativeLetter ) +
 		       " " +
 		       degrees +
-		       "� " +
+		       "° " +
 		       minutes +
 		       "' " +
 		       seconds +
