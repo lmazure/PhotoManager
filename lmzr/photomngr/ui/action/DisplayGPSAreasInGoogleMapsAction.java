@@ -3,24 +3,15 @@ package lmzr.photomngr.ui.action;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.URL;
 
 import javax.swing.KeyStroke;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.photomngr.data.GPS.GPSDatabase;
-import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
+import lmzr.photomngr.ui.mapdisplayer.GoogleMapsURICreator;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
@@ -34,8 +25,6 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 	final private PhotoList a_photoList;
 	final private ListSelectionManager a_selection;
 	final private  String a_cacheDirectory;
-	final private String templateName = "resources/googleMapsTemplate.html";
-	final private String listPlaceholder = "__LIST_PLACEHOLDER__";
 	
 	/**
 	 * @param text
@@ -70,35 +59,20 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 
 		final HierarchicalCompoundString location = (HierarchicalCompoundString)(a_photoList.getValueAt(a_selection.getSelection()[0],
 				                                                                                        PhotoList.PARAM_LOCATION));
-		//final GPSRecord data = a_GPSDatabase.getGPSData(location);
 
-		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		final URL url = classLoader.getResource(templateName);
-		if ( url == null ) {
-			System.err.println("failed to locate template \""+templateName+"\"");
-			return;
-		}
-		
 		final String folder = (String)a_photoList.getValueAt(a_selection.getSelection()[0], PhotoList.PARAM_FOLDER);
 		final String filename = "displayGPSAreasInGoogleMaps_" + escape(location.toLongString()) + ".html";
 		final File file = new File(a_cacheDirectory + File.separator + folder + File.separator + filename);		
-				
+
+		final GoogleMapsURICreator creator = new GoogleMapsURICreator();
+		
 		try {
-			final InputStream inputStream = url.openStream();
-		    final BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF8"));
-		    final Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"));
-		    String str;
-		    while  ( (str = in.readLine()) != null ) {
-		    	out.write(handleLine(str));
-		    	out.write('\n');
-		    }
-		    in.close();
-		    out.close();
+			creator.createMapURIForGPSDebug(file, location, a_GPSDatabase);
 		} catch (final IOException e1) {
-			System.err.println("failed to write file \""+file+"\"");			
+			System.err.println("failed to generate file for debugging GPS");			
 			e1.printStackTrace();
 		}
-		
+
 		try {
 			Desktop.getDesktop().browse(file.toURI());
 		} catch (final HeadlessException ex) {
@@ -132,68 +106,5 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 		
 		return new String(chars);
 	}
-	
-	/**
-	 * edit a line by replacing the placeholders by their real content
-	 * @param string
-	 * @return 
-	 */
-	private String handleLine(final String string) {
-		
-		String str = string;
-		
-		if ( string.indexOf(listPlaceholder)>=0 ) {
-			str = str.replace(listPlaceholder, listOfGPSAreas());
-		}
-		
-		return str;
-	}
-	
-	private String listOfGPSAreas() {
-		final StringBuilder s = listOfGPSAreasRecurse((HierarchicalCompoundString)a_GPSDatabase.getRoot());
-		return s.toString();
-	}
-	
-	/**
-	 * @param location
-	 * @return
-	 */
-	private StringBuilder listOfGPSAreasRecurse(final HierarchicalCompoundString location) {
-		
-		final StringBuilder str = new StringBuilder();
-		boolean stringHasBeenAdded = false;
-		
-		final GPSRecord record =  (GPSRecord)a_GPSDatabase.getValueAt(location,GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING);
-		if ( record != null ) {
-			final GPSData data = record.getGPSData();
-			if ( ( data!=null) && data.isComplete() ) {
-				str.append("new GPSRectangle(\"");
-				str.append(location);
-				str.append("\",");
-				str.append(data.getLatitudeMinAsDouble());
-				str.append(",");
-				str.append(data.getLatitudeMaxAsDouble());
-				str.append(",");
-				str.append(data.getLongitudeMinAsDouble());
-				str.append(",");
-				str.append(data.getLongitudeMaxAsDouble());
-				str.append(",\"red\")");
-				stringHasBeenAdded = true;
-			}
-		}
-		
-		for ( int i=0; i<a_GPSDatabase.getChildCount(location); i++) {
-			final StringBuilder s = listOfGPSAreasRecurse((HierarchicalCompoundString)a_GPSDatabase.getChild(location, i));
-			if ( s.length() > 0) {
-				if ( stringHasBeenAdded ) {
-					str.append(",\n");
-				}
-				str.append(s);
-				stringHasBeenAdded = true;
-			}
-		}
-		
-		return str;
-	}
-	
+
 }

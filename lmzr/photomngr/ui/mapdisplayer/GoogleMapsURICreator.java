@@ -73,12 +73,12 @@ public class GoogleMapsURICreator implements MapURICreator {
 	 * in red.
 	 * @param file file where to write the HTML and JavaScript data 
 	 * @param locationToHighlight the location to highlight
-	 * @param GPSDatabase GPS database
-	 * @return 
+	 * @param gpsDatabase GPS database
+	 * @throws IOException 
 	 */
 	public void createMapURIForGPSDebug(final File file,
 			                            final HierarchicalCompoundString locationToHighlight,
-                                        final GPSDatabase GPSDatabase) throws IOException
+                                        final GPSDatabase gpsDatabase) throws IOException
 	{
 		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		final URL url = classLoader.getResource(templateName);
@@ -93,7 +93,7 @@ public class GoogleMapsURICreator implements MapURICreator {
 	    
 	    String str;
 	    while  ( (str = in.readLine()) != null ) {
-	    	out.write(handleLine(str,locationToHighlight, GPSDatabase));
+	    	out.write(handleLine(str,locationToHighlight, gpsDatabase));
 	    	out.write('\n');
 	    }
 	    
@@ -105,17 +105,17 @@ public class GoogleMapsURICreator implements MapURICreator {
 	 * edit a line by replacing the placeholders by their real content
 	 * @param string the current template line
 	 * @param locationToHighlight the current location to highlight
-	 * @param GPSDatabase GPS database
+	 * @param gpsDatabase GPS database
 	 * @return 
 	 */
 	static private String handleLine(final String string,
 			                         final HierarchicalCompoundString locationToHighlight,
-			                         final GPSDatabase GPSDatabase) {
+			                         final GPSDatabase gpsDatabase) {
 		
 		String str = string;
 		
 		if ( string.indexOf(listPlaceholder)>=0 ) {
-			str = str.replace(listPlaceholder, listOfGPSAreas(locationToHighlight, GPSDatabase));
+			str = str.replace(listPlaceholder, listOfGPSAreas(locationToHighlight, gpsDatabase));
 		}
 		
 		return str;
@@ -123,32 +123,32 @@ public class GoogleMapsURICreator implements MapURICreator {
 	
 	/**
 	 * @param locationToHighlight
-	 * @param GPSDatabase
+	 * @param gpsDatabase
 	 * @return
 	 */
 	static private String listOfGPSAreas(final HierarchicalCompoundString locationToHighlight,
-			                             final GPSDatabase GPSDatabase)
+			                             final GPSDatabase gpsDatabase)
 	{
-		final StringBuilder s = listOfGPSAreasRecurse((HierarchicalCompoundString)GPSDatabase.getRoot(),
+		final StringBuilder s = listOfGPSAreasRecurse((HierarchicalCompoundString)gpsDatabase.getRoot(),
 				                                      locationToHighlight,
-				                                      GPSDatabase);
+				                                      gpsDatabase);
 		return s.toString();
 	}
 	
 	/**
 	 * @param location
 	 * @param locationToHighlight
-	 * @param GPSDatabase
+	 * @param gpsDatabase
 	 * @return
 	 */
 	static private StringBuilder listOfGPSAreasRecurse(final HierarchicalCompoundString location,
 			                                           final HierarchicalCompoundString locationToHighlight,
-			                                           final GPSDatabase GPSDatabase) {
+			                                           final GPSDatabase gpsDatabase) {
 		
 		final StringBuilder str = new StringBuilder();
 		boolean stringHasBeenAdded = false;
 		
-		final GPSRecord record =  GPSDatabase.getGPSData(location);
+		final GPSRecord record =  (GPSRecord)gpsDatabase.getValueAt(location,GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING);
 		if ( record != null ) {
 			final GPSData data = record.getGPSData();
 			if ( ( data!=null) && data.isComplete() ) {
@@ -169,9 +169,9 @@ public class GoogleMapsURICreator implements MapURICreator {
 			}
 		}
 		
-		for ( int i=0; i<GPSDatabase.getChildCount(location); i++) {
-			final HierarchicalCompoundString child = (HierarchicalCompoundString)GPSDatabase.getChild(location, i);
-			final StringBuilder s = listOfGPSAreasRecurse(child, locationToHighlight, GPSDatabase);
+		for ( int i=0; i<gpsDatabase.getChildCount(location); i++) {
+			final HierarchicalCompoundString child = (HierarchicalCompoundString)gpsDatabase.getChild(location, i);
+			final StringBuilder s = listOfGPSAreasRecurse(child, locationToHighlight, gpsDatabase);
 			if ( s.length() > 0) {
 				if ( stringHasBeenAdded ) {
 					str.append(",\n");
