@@ -27,8 +27,13 @@ import lmzr.util.string.HierarchicalCompoundString;
 public class GoogleMapsURICreator implements MapURICreator {
 	
 	static final private String templateName = "resources/googleMapsTemplate.html";
-	static final private String listPlaceholder = "__LIST_PLACEHOLDER__";
-
+	
+	static final private String listPlaceholder = "__PLACEHOLDER_LIST__";
+	static final private String mapCenterPlaceholder = "__PLACEHOLDER_MAPCENTER__";
+	static final private String zoomPlaceholder = "__PLACEHOLDER_ZOOM__";
+	
+	static final private String defaultCenter = "47.0, 2.0"; 
+	static final private String defaultZoom = "6";
 
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#createMapURLFromGPSData(lmzr.util.string.HierarchicalCompoundString, lmzr.photomngr.data.GPS.GPSData)
@@ -117,7 +122,39 @@ public class GoogleMapsURICreator implements MapURICreator {
 		if ( string.indexOf(listPlaceholder)>=0 ) {
 			str = str.replace(listPlaceholder, listOfGPSAreas(locationToHighlight, gpsDatabase));
 		}
-		
+
+		if ( string.indexOf(mapCenterPlaceholder)>=0 ) {
+			String center = defaultCenter;
+			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
+			if ( record!=null ) {
+				final GPSData gps = record.getGPSData();
+				if ( gps!=null ) {
+					center = gps.getLatitudeAsDouble().toString()
+					         + ","
+					         + gps.getLongitudeAsDouble().toString();
+				}
+			}
+			str = str.replace(mapCenterPlaceholder, center);
+		}
+
+		if ( string.indexOf(zoomPlaceholder)>=0 ) {
+			String zoom = defaultZoom;
+			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
+			if ( record != null ) {
+				final GPSData gps = record.getGPSData();
+				if ( gps != null ) {
+					final double earthRadiusInMeters = 6365000;
+					final double longitudeRangeInMeters = ( gps.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(gps.getLatitudeRangeAsDouble() / 180.0);  
+					final double latitudeRangeInMeters = ( gps.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters;
+					final double rangeInMeters = Math.max(longitudeRangeInMeters, latitudeRangeInMeters);
+					final double z = Math.log(rangeInMeters)/Math.log(2);
+					final int zoomAsInt = 25 - (int)Math.floor(z);
+					zoom = Integer.toString(zoomAsInt);
+				}
+			}
+			str = str.replace(zoomPlaceholder, zoom);
+		}
+
 		return str;
 	}
 	

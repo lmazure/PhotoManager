@@ -1,5 +1,6 @@
 package lmzr.photomngr.data.GPS;
 
+import java.text.NumberFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -324,11 +325,18 @@ public class GPSData implements Cloneable {
 		final Pattern pattern = Pattern.compile( "([" +
 				                                 positiveLetter +
 				                                 negativeLetter +
-				                                 "]) (\\d{1,2})° (\\d{1,2})['′] (\\d{1,2})(['′]['′]|″)");
+				                                 "]) *(\\d{1,2})° *(\\d{1,2})['′] *(\\d{1,2})(['′]['′]|″) *(\\d{0,3})");
 		final Matcher matcher = pattern.matcher(str);
 		if ( !matcher.matches() ) throw new IllegalArgumentException("\""+str+"\" cannot be parsed into a longitude/latitude");
 		final String s1 = matcher.group(1);
-		double value = Integer.parseInt(matcher.group(2)) + Integer.parseInt(matcher.group(3))/60.0 + Integer.parseInt(matcher.group(4))/3600.0;
+		double value = Integer.parseInt(matcher.group(2))
+		               + Integer.parseInt(matcher.group(3))/60.0
+		               + Integer.parseInt(matcher.group(4))/3600.0;
+		double decimals = 0;
+		if ( matcher.group(6).length()>0 ) {
+			decimals = Integer.parseInt(matcher.group(6))/(3600.0*Math.pow(10, matcher.group(6).length()));
+		}
+		value += decimals;
 		if ( s1.charAt(0) == negativeLetter ) {
 			return -value;  
 		}
@@ -359,20 +367,28 @@ public class GPSData implements Cloneable {
                                  final char positiveLetter,
                                  final char negativeLetter) {
 		
-		final double val = Math.abs(coordinate)+1./7200.; // to avoid rounding errors
+		final double val = Math.abs(coordinate)+1./7200000.; // to avoid rounding errors
 		final int degrees = (int)Math.floor(val);
-		final int minutes = (int)Math.floor((val-degrees)*60);
-		final int seconds = (int)Math.floor(((val-degrees)*60-minutes)*60);
+		final double minutesF = (val-degrees)*60;
+		final int minutes = (int)Math.floor(minutesF);
+		final double secondsF = (minutesF-minutes)*60;
+		final int seconds = (int)Math.floor(secondsF);
+		final int decimals = (int)Math.floor((secondsF-seconds)*1000);
 		
-		return "" +
-		       ( (coordinate>0) ? positiveLetter : negativeLetter ) +
-		       " " +
-		       degrees +
-		       "° " +
-		       minutes +
-		       "' " +
-		       seconds +
-		       "''";
+		NumberFormat nf=NumberFormat.getInstance();
+		nf.setMinimumIntegerDigits(3);
+		nf.setMaximumIntegerDigits(3);
+		
+		return ""
+		       + ( (coordinate>0) ? positiveLetter : negativeLetter )
+		       + " "
+		       + degrees
+		       + "° "
+		       + minutes
+		       + "' "
+		       + seconds
+		       + "'' "
+		       + nf.format(decimals);
 	}
 
 }
