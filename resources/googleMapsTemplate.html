@@ -13,12 +13,12 @@
 <script type="text/javascript">
 function initialize() {
 
-	var myLatLng = new google.maps.LatLng(47.0, 2.0);
+	var myLatLng = new google.maps.LatLng(__PLACEHOLDER_MAPCENTER__);
 
 	var myOptions = {
-		zoom: 6,
+		zoom: __PLACEHOLDER_ZOOM__,
 		center: myLatLng,
-		mapTypeId: google.maps.MapTypeId.TERRAIN
+		mapTypeId: google.maps.MapTypeId.SATELLITE 
 	};
 	 
 	function GPSRectangle(name,latMin, latMax, lngMin, lngMax, color) {
@@ -31,7 +31,7 @@ function initialize() {
 	}
 
 	var rectangleList = new Array (
-		__LIST_PLACEHOLDER__
+		__PLACEHOLDER_LIST__
 	);
 
 	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
