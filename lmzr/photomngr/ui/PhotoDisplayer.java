@@ -168,13 +168,13 @@ public class PhotoDisplayer extends JFrame
 		    submenuEditPrivacy.add(new JMenuItem(new ChangePrivacyAction(v,a_photoList,selection)));
 		}
 		menuEdit.add(submenuEditPrivacy);
-		final ResetNumberOfCopiesAction actionResetNumberOfCopies = new ResetNumberOfCopiesAction("Reset numbers of copîes", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
+		final ResetNumberOfCopiesAction actionResetNumberOfCopies = new ResetNumberOfCopiesAction("Reset numbers of copï¿½es", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
 		final JMenuItem itemResetNumberOfCopies = new JMenuItem(actionResetNumberOfCopies);
 		menuEdit.add(itemResetNumberOfCopies);
-		final EditSubjectsAction actionEditSubjects = new EditSubjectsAction("Edit subjects", KeyEvent.CHAR_UNDEFINED, null,"Display the subject editor",this,a_photoList);
+		final EditSubjectsAction actionEditSubjects = new EditSubjectsAction("Edit subjects", KeyEvent.CHAR_UNDEFINED, null,"Display the subject editor",this,a_photoList,selection);
 		final JMenuItem itemEditSubjects = new JMenuItem(actionEditSubjects);
 		menuEdit.add(itemEditSubjects);
-		final EditLocationsAction actionEditLocations = new EditLocationsAction("Edit locations", KeyEvent.CHAR_UNDEFINED, null,"Display the location editor",this,a_photoList,a_GPSDatabase);
+		final EditLocationsAction actionEditLocations = new EditLocationsAction("Edit locations", KeyEvent.CHAR_UNDEFINED, null,"Display the location editor",this,a_photoList,selection,a_GPSDatabase);
 		final JMenuItem itemEditLocations = new JMenuItem(actionEditLocations);
 		menuEdit.add(itemEditLocations);
 		final DisplayGPSAreasInGoogleMapsAction actionDisplayGPSAreasInGoogleMaps = new DisplayGPSAreasInGoogleMapsAction("Check GPS Area", KeyEvent.CHAR_UNDEFINED, null,"Display Google Maps with GPS Areas",a_GPSDatabase,a_photoList,selection,cacheDirectory);

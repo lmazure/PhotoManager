@@ -23,7 +23,7 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, SaveListener, TableModelListener {
 
@@ -36,6 +36,10 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     final private Vector<SaveListener> a_listOfSaveListeners;
     private PhotoListFilter a_filter;
 
+    private interface Task {
+    	void perform();
+    }
+    
     /**
      * @param list
      */
@@ -288,36 +292,8 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     public void setFilter(final PhotoListFilter filter,
     		              final ListSelectionManager selection) {
     	
-    	// record the current selection
-    	final int select[] = selection.getSelection();
-    	final int fromSelect[] = new int[select.length];
-    	for (int i=0; i<select.length; i++) fromSelect[i] = a_indexFromSource[select[i]];
-    	
-    	// apply the new filter
-        setFilter(filter);
-               
-        // send events
-        final TableModelEvent e = new TableModelEvent(this);
-        tableChanged(e);
-        final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this, PhotoListMetaDataEvent.FILTER_HAS_CHANGED);
-        photoListMetaDataChanged(f);
-
-        // update selection
-        final int toSelect[] = new int[ (select.length>0) ? select.length : 1 ];
-        int toSelectLength = 0;
-    	for (int i=0; i<select.length; i++) { 
-    		final int index = a_indexToSource[fromSelect[i]];
-    		if ( index!=-1 ){
-        		toSelect[toSelectLength++] = index;    			
-    		}
-    	}
-    	if ( toSelectLength==0 && a_rowCount>0 ){
-    		toSelect[0] = a_rowCount-1;
-    		toSelectLength = 1;
-    	}
-        int finalSelect[] = new int[toSelectLength];
-        for (int i=0; i<toSelectLength; i++) finalSelect[i] = toSelect[i];
-        selection.setSelection(finalSelect);
+		doTask(new Task() {@Override public void perform() { a_filter = filter; }},
+				   selection);
     }
     
     /**
@@ -354,21 +330,81 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     }
 
 	/**
+	 * @param map
+	 * @param selection
+	 */
+	public void performSubjectMapTranslation(final Map<String, String> map,
+	                                         final ListSelectionManager selection) {
+
+		doTask(new Task() {@Override public void perform() { performSubjectMapTranslation(map); }},
+			   selection);
+	}
+
+
+	/**
+	 * @param map
+	 * @param selection
+	 */
+	public void performLocationMapTranslation(final Map<String, String> map,
+	                                          final ListSelectionManager selection) {
+
+		doTask(new Task() {@Override public void perform() { performLocationMapTranslation(map); }},
+			   selection);
+	}
+
+	/**
 	 * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
 	 */
-	@Override
 	public void performSubjectMapTranslation(final Map<String, String> map) {
 		a_list.performSubjectMapTranslation(map);
-    	applyFilter();
 	}
 
 	/**
 	 * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
 	 */
-	@Override
 	public void performLocationMapTranslation(final Map<String, String> map) {
 		a_list.performLocationMapTranslation(map);
-    	applyFilter();
 	}
 
+	/**
+	 * @param task
+	 * @param selection
+	 */
+	private void doTask(final Task task,
+                        final ListSelectionManager selection) {
+		
+    	// record the current selection
+    	final int select[] = selection.getSelection();
+    	final int fromSelect[] = new int[select.length];
+    	for (int i=0; i<select.length; i++) fromSelect[i] = a_indexFromSource[select[i]];
+
+    	// perform the task
+		task.perform();
+
+    	// reapply the filter
+        applyFilter();
+               
+        // send events
+        final TableModelEvent e = new TableModelEvent(this);
+        tableChanged(e);
+        final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this, PhotoListMetaDataEvent.FILTER_HAS_CHANGED);
+        photoListMetaDataChanged(f);
+
+        // update selection
+        final int toSelect[] = new int[ (select.length>0) ? select.length : 1 ];
+        int toSelectLength = 0;
+    	for (int i=0; i<select.length; i++) { 
+    		final int index = a_indexToSource[fromSelect[i]];
+    		if ( index!=-1 ){
+        		toSelect[toSelectLength++] = index;    			
+    		}
+    	}
+    	if ( toSelectLength==0 && a_rowCount>0 ){
+    		toSelect[0] = a_rowCount-1;
+    		toSelectLength = 1;
+    	}
+        int finalSelect[] = new int[toSelectLength];
+        for (int i=0; i<toSelectLength; i++) finalSelect[i] = toSelect[i];
+        selection.setSelection(finalSelect);
+	}
 }

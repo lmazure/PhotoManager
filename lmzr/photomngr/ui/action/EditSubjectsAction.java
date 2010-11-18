@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
+import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.ui.MapTranslationPerformer;
 import lmzr.photomngr.ui.SubjectBatchEditor;
@@ -18,6 +19,7 @@ public class EditSubjectsAction extends PhotoManagerAction
 
 	final private JFrame a_frame;
 	final private FilteredPhotoList a_photoList;
+	final private ListSelectionManager a_selection;
 
 	/**
 	 * @param text
@@ -32,11 +34,13 @@ public class EditSubjectsAction extends PhotoManagerAction
 			                  final KeyStroke accelerator,
 			                  final String tooltipText,
 			                  final JFrame frame,
-			                  final FilteredPhotoList photoList) {
+			                  final FilteredPhotoList photoList,
+		    		          final ListSelectionManager selection) {
 		
 		super(text, mnemonic, accelerator, tooltipText);
 		a_frame = frame;
 		a_photoList = photoList;
+		a_selection = selection;
 	}
 
 	/**
@@ -54,6 +58,6 @@ public class EditSubjectsAction extends PhotoManagerAction
 	 * @see lmzr.photomngr.ui.MapTranslationPerformer#performMapTranslation(java.util.Map)
 	 */
 	public void performMapTranslation(final Map<String,String> map) {
-		a_photoList.performSubjectMapTranslation(map);
+		a_photoList.performSubjectMapTranslation(map,a_selection);
 	}
 }
