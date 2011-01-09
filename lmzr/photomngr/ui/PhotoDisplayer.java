@@ -168,7 +168,7 @@ public class PhotoDisplayer extends JFrame
 		    submenuEditPrivacy.add(new JMenuItem(new ChangePrivacyAction(v,a_photoList,selection)));
 		}
 		menuEdit.add(submenuEditPrivacy);
-		final ResetNumberOfCopiesAction actionResetNumberOfCopies = new ResetNumberOfCopiesAction("Reset numbers of cop�es", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
+		final ResetNumberOfCopiesAction actionResetNumberOfCopies = new ResetNumberOfCopiesAction("Reset numbers of copies", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
 		final JMenuItem itemResetNumberOfCopies = new JMenuItem(actionResetNumberOfCopies);
 		menuEdit.add(itemResetNumberOfCopies);
 		final EditSubjectsAction actionEditSubjects = new EditSubjectsAction("Edit subjects", KeyEvent.CHAR_UNDEFINED, null,"Display the subject editor",this,a_photoList,selection);
