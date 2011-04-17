@@ -200,7 +200,7 @@ public class GoogleMapsURICreator implements MapURICreator {
 				str.append(",");
 				str.append(data.getLongitudeMaxAsDouble());
 				str.append(",\"");
-				str.append(location.equals(locationToHighlight)?"red":"blue");
+				str.append(location.equals(locationToHighlight)?"#FF0000":"#0000FF");
 				str.append("\")");
 				stringHasBeenAdded = true;				
 			}
