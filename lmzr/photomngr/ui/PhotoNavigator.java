@@ -1,6 +1,7 @@
 package lmzr.photomngr.ui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -96,6 +97,7 @@ public class PhotoNavigator extends JFrame
 		add(panel);
 
 		a_folder = new JComboBox();
+        a_folder.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_folder.getPreferredSize().height));
         updateFolderList();
         panel.add(a_folder);
         a_folder.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -128,7 +130,8 @@ public class PhotoNavigator extends JFrame
         navigator.add(a_nextPhoto);
         panel.add(navigator);
         navigator.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+        navigator.setMaximumSize(new Dimension(Integer.MAX_VALUE,navigator.getPreferredSize().height));
+
         a_dateTime = new JLabel();
         a_dateTime.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(a_dateTime);
@@ -150,6 +153,7 @@ public class PhotoNavigator extends JFrame
         }
         viewerButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
         viewerButtons.setBorder(BorderFactory.createTitledBorder("external viewers"));
+        viewerButtons.setMaximumSize(new Dimension(Integer.MAX_VALUE,viewerButtons.getPreferredSize().height));
 
         panel.add(viewerButtons);
         
@@ -189,6 +193,7 @@ public class PhotoNavigator extends JFrame
                                                      s_bingMapURICreator));
         mapButtons.add(a_bingMap);
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mapButtons.setMaximumSize(new Dimension(Integer.MAX_VALUE,mapButtons.getPreferredSize().height));
 
         mapFull.add(mapButtons);
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -285,6 +290,7 @@ public class PhotoNavigator extends JFrame
         } else {
             a_dateTime.setText(" ");
         }
+        //TODO the code below is stupid and broken
         final String location = photo.getIndexData().getLocation().toLongString();
     	final GPSRecord gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
     	if (location!=null) {
