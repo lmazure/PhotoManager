@@ -174,7 +174,7 @@ public class SubsampledImageCachedManager {
 	 * @param image
 	 * @param file
 	 */
-	public static void recordImage(final BufferedImage image,
+	private static void recordImage(final BufferedImage image,
 			                       final File file) {
 		// create the directory
 		final File directory = file.getParentFile();
