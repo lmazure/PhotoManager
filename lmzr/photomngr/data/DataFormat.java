@@ -41,6 +41,10 @@ public class DataFormat {
 	 * 
 	 */
 	final static public DataFormat MOV = new DataFormat("QuickTime", new String[]{"mov"});
+	/**
+	 * 
+	 */
+	final static public DataFormat WMV = new DataFormat("WindowMediaPlayer", new String[]{"wmv"});
 		
 	final private String a_format;
 	final private String a_extensions[];
@@ -90,7 +94,8 @@ public class DataFormat {
 				                   DataFormat.VOB,
 				                   DataFormat.GIF,
 				                   DataFormat.FLV,
-				                   DataFormat.MOV };
+				                   DataFormat.MOV,
+				                   DataFormat.WMV };
 		return all;
 	}
 }

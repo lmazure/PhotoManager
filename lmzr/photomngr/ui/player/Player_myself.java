@@ -14,7 +14,7 @@ public class Player_myself extends Player {
 	public Player_myself() {
 		super("PhotoManager",
 			  new String[] {},
-			  new DataFormat[] { DataFormat.JPEG,
+			  new DataFormat[] { DataFormat.JPEG, //TODO do we still need this?
 					             DataFormat.MPEG,
 					             DataFormat.WAV,
 					             DataFormat.MP3,

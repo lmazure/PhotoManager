@@ -21,7 +21,8 @@ public class Player_WindowsMediaPlayer extends Player {
                                  DataFormat.MP3,
                                  DataFormat.AVI,
                                  DataFormat.GIF,
-                                 DataFormat.MOV} );
+                                 DataFormat.MOV,
+                                 DataFormat.WMV} );
 	}
 
 }
