@@ -22,7 +22,7 @@ public class Photo {
     private PhotoHeaderData a_headerData;
     final private DataFormat a_format;
     private boolean a_isOK;
-    static private DataFormatFactory s_formatFactory = new DataFormatFactory();
+    final static private DataFormatFactory s_formatFactory = new DataFormatFactory();
     
     static final StringPool s_pool = new StringPool(); 
 
