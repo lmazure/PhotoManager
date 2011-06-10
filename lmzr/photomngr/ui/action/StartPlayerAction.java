@@ -6,8 +6,7 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import lmzr.photomngr.data.ListSelectionManager;
-import lmzr.photomngr.data.PhotoList;
+import lmzr.photomngr.data.PhotoProvider;
 import lmzr.photomngr.ui.player.Player;
 
 /**
@@ -15,8 +14,7 @@ import lmzr.photomngr.ui.player.Player;
  */
 public class StartPlayerAction extends PhotoManagerAction {
 
-    final private PhotoList a_photoList;
-    final private ListSelectionManager a_selection;
+    final private PhotoProvider a_photoProvider;
     final private Player a_player;
 
     /**
@@ -32,14 +30,12 @@ public class StartPlayerAction extends PhotoManagerAction {
                              final int mnemonic,
                              final KeyStroke accelerator,
                              final String tooltipText,
-                             final PhotoList photoList,
-                             final ListSelectionManager selection,
+                             final PhotoProvider photoProvider,
                              final Player player) {
 
         super(text, mnemonic, accelerator, tooltipText);
 
-        a_photoList = photoList;
-        a_selection = selection;
+        a_photoProvider = photoProvider;
         a_player = player;
     }
 
@@ -59,7 +55,7 @@ public class StartPlayerAction extends PhotoManagerAction {
     	
         try {
             final String[] commandLine = { a_player.getExecutable().getAbsolutePath(),
-                                           a_photoList.getPhoto(a_selection.getSelection()[0]).getFullPath() };
+                                           a_photoProvider.getPhoto().getFullPath() };
             Runtime.getRuntime().exec(commandLine);
         } catch (final IOException e1) {
             e1.printStackTrace();

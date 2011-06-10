@@ -47,7 +47,7 @@ public class PhotoDisplayerComponentFontManager {
      */
     public Font getMessageFont(final Dimension slotSize) {
         
-        final int fontSize = slotSize.width/15;
+        final int fontSize = slotSize.width/25;
         
         if (fontSize==a_messageFontSize) return a_messageFont;
         

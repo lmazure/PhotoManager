@@ -12,6 +12,20 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
  */
 public class BingMapURICreator implements MapURICreator {
 
+	/**
+	 * 
+	 */
+	public BingMapURICreator()
+	{
+	}
+
+	/**
+	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#getName()
+	 */
+	public String getName()
+	{
+		return "Bing";
+	}
 
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#createMapURLFromGPSData(lmzr.util.string.HierarchicalCompoundString, lmzr.photomngr.data.GPS.GPSData)

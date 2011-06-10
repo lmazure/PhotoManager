@@ -29,33 +29,25 @@ import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.PhotoListMetaDataEvent;
 import lmzr.photomngr.data.PhotoListMetaDataListener;
+import lmzr.photomngr.data.PhotoProvider;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.photomngr.ui.action.DisplayMapAction;
 import lmzr.photomngr.ui.action.StartPlayerAction;
-import lmzr.photomngr.ui.mapdisplayer.BingMapURICreator;
-import lmzr.photomngr.ui.mapdisplayer.GeoportailMapURICreator;
-import lmzr.photomngr.ui.mapdisplayer.GoogleMapsURICreator;
+import lmzr.photomngr.ui.mapdisplayer.MapURICreatorFactory;
 import lmzr.photomngr.ui.mapdisplayer.MapURICreator;
 import lmzr.photomngr.ui.player.Player;
-import lmzr.photomngr.ui.player.Player_QuickTime;
-import lmzr.photomngr.ui.player.Player_VideoLAN;
-import lmzr.photomngr.ui.player.Player_WindowsMediaPlayer;
+import lmzr.photomngr.ui.player.PlayerFactory;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  *
  */
 public class PhotoNavigator extends JFrame 
-                            implements ListSelectionListener, TableModelListener, PhotoListMetaDataListener {
+                            implements ListSelectionListener, TableModelListener, PhotoListMetaDataListener, PhotoProvider {
 	
     final private static DateFormat s_dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
     final private static DateFormat s_timeFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
-    
-	final static MapURICreator s_geoportailMapURICreator = new GeoportailMapURICreator();
-	final static MapURICreator s_googleMapURICreator = new GoogleMapsURICreator();
-	final static MapURICreator s_bingMapURICreator = new BingMapURICreator();
-
 
     final private ListSelectionManager a_selection;
     final private PhotoList a_photoList;
@@ -67,12 +59,9 @@ public class PhotoNavigator extends JFrame
     final private JLabel a_file;
     final private JLabel a_dateTime;
     final private JLabel a_map;
-    final private JButton a_googleMap;
-    final private JButton a_geoportailMap;
-    final private JButton a_bingMap;
-    final static private Player a_players[] = new Player[] { new Player_VideoLAN(), new Player_WindowsMediaPlayer(), new Player_QuickTime() }; 
-    final private JButton a_play[];
-    private int a_previousSelection[];
+    final private JButton[] a_mapDisplayers;
+    final private JButton[] a_play;
+    private int[] a_previousSelection;
 
 	
     /**
@@ -139,15 +128,16 @@ public class PhotoNavigator extends JFrame
         
         final JPanel viewerButtons = new JPanel();
 
-        a_play = new JButton[a_players.length];
-        for (int i=0; i<a_players.length; i++) {
-	        a_play[i] = new JButton(new StartPlayerAction( a_players[i].getName(),
+        final PlayerFactory playerFactory = new PlayerFactory();
+        final Player[] players = playerFactory.getPlayers();
+        a_play = new JButton[players.length];
+        for (int i=0; i<players.length; i++) {
+	        a_play[i] = new JButton(new StartPlayerAction( players[i].getName(),
 	        		                                       KeyEvent.CHAR_UNDEFINED,
 	        		                                       null,
-	        		                                       "start "+a_players[i].getName(),
-	        		                                       a_photoList,
-	        		                                       a_selection,
-	        		                                       a_players[i]));
+	        		                                       "start "+players[i].getName(),
+	        		                                       this,
+	        		                                       players[i]));
 	        viewerButtons.add(a_play[i]);
 	        a_play[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }
@@ -164,34 +154,21 @@ public class PhotoNavigator extends JFrame
         mapFull.add(a_map);
         
         final JPanel mapButtons = new JPanel();
-        a_googleMap = new JButton(new DisplayMapAction("Google",
-        		                                       KeyEvent.CHAR_UNDEFINED,
-        		                                       null,
-        		                                       "display Google Maps",
-        		                                       a_GPSDatabase,
-        		                                       a_photoList,
-        		                                       a_selection,
-        		                                       s_googleMapURICreator));
-        mapButtons.add(a_googleMap);
-        a_geoportailMap = new JButton(new DisplayMapAction("Geoportail",
-        		                                           KeyEvent.CHAR_UNDEFINED,
-        		                                           null,
-        		                                           "display Geoportail Maps",
-        		                                           a_GPSDatabase,
-        		                                           a_photoList,
-        		                                           a_selection,
-        		                                           s_geoportailMapURICreator));
-        mapButtons.add(a_geoportailMap);
-        mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
-        a_bingMap = new JButton(new DisplayMapAction("Bing",
-                                                     KeyEvent.CHAR_UNDEFINED,
-                                                     null,
-                                                     "display Geoportail Maps",
-                                                     a_GPSDatabase,
-                                                     a_photoList,
-                                                     a_selection,
-                                                     s_bingMapURICreator));
-        mapButtons.add(a_bingMap);
+        final MapURICreatorFactory mapURICreatorFactory = new MapURICreatorFactory();
+        final MapURICreator[] mapURICreators = mapURICreatorFactory.getMapDisplayers();
+        a_mapDisplayers = new JButton[mapURICreators.length];
+        for (int i=0; i<mapURICreators.length; i++) {
+        	final String siteName = mapURICreators[i].getName();
+        	a_mapDisplayers[i] = new JButton(new DisplayMapAction(siteName,
+	        		                                              KeyEvent.CHAR_UNDEFINED,
+	        		                                              null,
+	        		                                              "display " + siteName + " map",
+	        		                                              a_GPSDatabase,
+	        		                                              a_photoList,
+	        		                                              a_selection,
+	        		                                              mapURICreators[i]));
+	        mapButtons.add(a_mapDisplayers[i]);
+        }
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
         mapButtons.setMaximumSize(new Dimension(Integer.MAX_VALUE,mapButtons.getPreferredSize().height));
 
@@ -272,9 +249,7 @@ public class PhotoNavigator extends JFrame
             // zero or more than one image is selected
             // -> empty the text fields and disable all the fields (except previous and next if at least one 
             a_map.setText("");
-        	a_googleMap.setEnabled(false);
-        	a_geoportailMap.setEnabled(false);
-        	a_bingMap.setEnabled(false);
+            for ( JButton b: a_mapDisplayers) b.setEnabled(false);
             a_dateTime.setText("");
             pack();
             return;
@@ -296,20 +271,14 @@ public class PhotoNavigator extends JFrame
     	if (location!=null) {
 	    	if ( gps != null && gps.getGPSData().isComplete() ) {
 	    		a_map.setText("map "+gps.getLocation().toString());
-	        	a_googleMap.setEnabled(true);
-	        	a_geoportailMap.setEnabled(true);
-	        	a_bingMap.setEnabled(true);
+	            for ( JButton b: a_mapDisplayers) b.setEnabled(true);
 	    	} else {
 	    		a_map.setText("no map for "+location);
-	        	a_googleMap.setEnabled(false);    		
-	        	a_geoportailMap.setEnabled(false);    		
-	        	a_bingMap.setEnabled(false);    		
+	            for ( JButton b: a_mapDisplayers) b.setEnabled(false);
 	    	}
     	} else {
     		a_map.setText("map");
-        	a_googleMap.setEnabled(false);    		
-        	a_geoportailMap.setEnabled(false);    		
-        	a_bingMap.setEnabled(false);    		
+            for ( JButton b: a_mapDisplayers) b.setEnabled(false);
     	}
     	
     	pack();
@@ -376,4 +345,12 @@ public class PhotoNavigator extends JFrame
         a_photoList.removeMetaListener(this);
     }
 
+    /**
+     * @see lmzr.photomngr.data.PhotoProvider#getPhoto()
+     * @return photo currently displayed
+     */
+    public Photo getPhoto()
+    {
+    	return a_photoList.getPhoto(a_selection.getSelection()[0]);
+    }
 }

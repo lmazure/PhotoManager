@@ -15,4 +15,9 @@ public interface MapURICreator {
 	 * @return URL displaying the corresponding map
 	 */
 	public URI createMapURIFromGPSData(final GPSRecord record);
+	
+	/**
+	 * @return name of the site
+	 */
+	public String getName();
 }

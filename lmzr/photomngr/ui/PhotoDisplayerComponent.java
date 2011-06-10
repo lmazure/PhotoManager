@@ -303,6 +303,7 @@ public class PhotoDisplayerComponent extends JComponent
 	 * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
 	 */
 	public void tableChanged(final TableModelEvent e) {
+		
         final int firstRow = e.getFirstRow();
         final int lastRow = (e.getLastRow()==Integer.MAX_VALUE) ? (a_photoList.getRowCount()-1)
                                                                 : e.getLastRow();

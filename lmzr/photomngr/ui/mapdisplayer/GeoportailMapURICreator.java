@@ -11,7 +11,22 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
  *
  */
 public class GeoportailMapURICreator implements MapURICreator {
+	
+	/**
+	 * 
+	 */
+	public GeoportailMapURICreator()
+	{
+	}
 
+	/**
+	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#getName()
+	 */
+	public String getName()
+	{
+		return "Geoportail";
+	}
+	
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#createMapURLFromGPSData(lmzr.util.string.HierarchicalCompoundString, lmzr.photomngr.data.GPS.GPSData)
 	 */

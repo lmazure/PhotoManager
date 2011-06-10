@@ -18,7 +18,7 @@ import lmzr.photomngr.ui.mapdisplayer.MapURICreator;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author lmazure
+ * @author Laurent Mazuré
  *
  */
 public class GPSDataDisplayMapCellEditor extends JButton

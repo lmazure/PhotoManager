@@ -36,6 +36,21 @@ public class GoogleMapsURICreator implements MapURICreator {
 	static final private String defaultZoom = "6";
 
 	/**
+	 * 
+	 */
+	public GoogleMapsURICreator()
+	{
+	}
+	
+	/**
+	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#getName()
+	 */
+	public String getName()
+	{
+		return "Google";
+	}
+
+	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#createMapURLFromGPSData(lmzr.util.string.HierarchicalCompoundString, lmzr.photomngr.data.GPS.GPSData)
 	 */
 	public URI createMapURIFromGPSData(final GPSRecord record) {
