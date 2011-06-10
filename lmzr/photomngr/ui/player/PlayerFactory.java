@@ -1,5 +1,9 @@
 package lmzr.photomngr.ui.player;
 
+/**
+ * @author Laurent
+ *
+ */
 public class PlayerFactory {
 
 	final static private Player[] s_player = new Player[] {
@@ -16,7 +20,7 @@ public class PlayerFactory {
 	}
 	
 	/**
-	 * @return list of supported players
+	 * @return array of supported players
 	 */
 	public Player[] getPlayers()
 	{

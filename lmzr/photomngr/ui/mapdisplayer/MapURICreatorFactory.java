@@ -1,5 +1,9 @@
 package lmzr.photomngr.ui.mapdisplayer;
 
+/**
+ * @author Laurent
+ *
+ */
 public class MapURICreatorFactory {
 
 	final static MapURICreator[] s_mapDisplayers = new MapURICreator[] {
@@ -15,6 +19,9 @@ public class MapURICreatorFactory {
 	{
 	}
 	
+	/**
+	 * @return array of available players
+	 */
 	public MapURICreator[] getMapDisplayers()
 	{
 		return s_mapDisplayers;

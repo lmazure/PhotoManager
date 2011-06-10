@@ -27,7 +27,8 @@ public class EditSubjectsAction extends PhotoManagerAction
 	 * @param accelerator
 	 * @param tooltipText
 	 * @param frame 
-	 * @param photoList 
+	 * @param photoList
+	 * @param selection
 	 */
 	public EditSubjectsAction(final String text,
 			                  final int mnemonic,

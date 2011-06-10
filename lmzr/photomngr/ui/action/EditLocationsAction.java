@@ -30,6 +30,7 @@ public class EditLocationsAction extends PhotoManagerAction
 	 * @param tooltipText
 	 * @param frame 
 	 * @param photoList 
+	 * @param selection 
 	 * @param GPSDatabase 
 	 */
 	public EditLocationsAction(final String text,

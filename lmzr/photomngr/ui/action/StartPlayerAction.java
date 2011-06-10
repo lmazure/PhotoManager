@@ -22,8 +22,7 @@ public class StartPlayerAction extends PhotoManagerAction {
      * @param mnemonic
      * @param accelerator
      * @param tooltipText
-     * @param photoList
-     * @param selection
+     * @param photoProvider
      * @param player
      */
     public StartPlayerAction(final String text,
