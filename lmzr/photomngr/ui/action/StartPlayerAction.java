@@ -56,7 +56,10 @@ public class StartPlayerAction extends PhotoManagerAction {
         try {
             final String[] commandLine = { a_player.getExecutable().getAbsolutePath(),
                                            a_photoProvider.getPhoto().getFullPath() };
-            Runtime.getRuntime().exec(commandLine);
+            final Process p = Runtime.getRuntime().exec(commandLine);
+            // the two next lines are necessary to get VLC running correctly
+            p.getInputStream().close();
+            p.getErrorStream().close();
         } catch (final IOException e1) {
             e1.printStackTrace();
         }
