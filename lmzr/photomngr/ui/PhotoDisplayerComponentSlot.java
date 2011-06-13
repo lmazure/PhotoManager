@@ -35,7 +35,7 @@ import lmzr.photomngr.ui.player.PlayerFactory;
 import lmzr.photomngr.ui.player.Player_myself;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class PhotoDisplayerComponentSlot extends JComponent
                                          implements ImageComputationConsumer, ComponentListener, PhotoProvider {
@@ -133,7 +133,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
         	a_display.setVisible(false);
         }
     	
-        if (!(new Player_myself()).isFormatSupported(format)) {
+        if (a_photo==null) {
         	// unsupported format
         	repaint();
         } else {
