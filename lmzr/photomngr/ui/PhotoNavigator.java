@@ -179,7 +179,7 @@ public class PhotoNavigator extends JFrame
         
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         update();
         

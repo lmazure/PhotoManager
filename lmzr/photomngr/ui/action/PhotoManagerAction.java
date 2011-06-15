@@ -7,6 +7,7 @@ import javax.swing.KeyStroke;
 
 /**
  * base class for actions
+ * @author Laurent Mazuré
  */
 public abstract class PhotoManagerAction extends AbstractAction {
 	

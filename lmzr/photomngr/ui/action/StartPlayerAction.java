@@ -11,6 +11,7 @@ import lmzr.photomngr.ui.player.Player;
 
 /**
  * Action to start a image/movie displayer
+ * @author Laurent Mazuré
  */
 public class StartPlayerAction extends PhotoManagerAction {
 

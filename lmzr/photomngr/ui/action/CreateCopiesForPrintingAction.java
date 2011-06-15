@@ -11,6 +11,7 @@ import lmzr.photomngr.exporter.Exporter;
 
 /**
  * Action to create exportable copies
+ * @author Laurent Mazuré
  */
 public class CreateCopiesForPrintingAction extends PhotoManagerAction {
 

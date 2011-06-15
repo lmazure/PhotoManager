@@ -15,8 +15,7 @@ import lmzr.photomngr.ui.mapdisplayer.MapURICreator;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class DisplayMapAction extends PhotoManagerAction {
 

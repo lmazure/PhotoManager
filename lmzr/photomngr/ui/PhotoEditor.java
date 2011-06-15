@@ -31,7 +31,7 @@ import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
 import lmzr.photomngr.ui.celleditor.SubjectCellEditor;
 
 /**
- * @author lmazure
+ * @author Laurent Mazuré
  *
  */
 public class PhotoEditor extends JFrame
@@ -194,7 +194,9 @@ public class PhotoEditor extends JFrame
                         		               a_selection.getSelection()[0],
                                                PhotoList.PARAM_COPIES);}});
         
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        
+        pack();
         
         update();
     }

@@ -60,7 +60,7 @@ public class PhotoGeometryEditor extends JFrame {
 			                                       PhotoList.PARAM_ROTATION);};}});
         display.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         
         pack();
     }

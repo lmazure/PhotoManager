@@ -1,6 +1,5 @@
 package lmzr.photomngr.ui.action;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import javax.swing.KeyStroke;
@@ -10,13 +9,13 @@ import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.ui.PhotoEditor;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class DisplayPhotoEditorAction extends PhotoManagerAction {
 
 	   final private PhotoList a_photoList;
 	   final private ListSelectionManager a_selection;
+	   PhotoEditor a_PhotoEditor;
 
 		/**
 		 * @param text
@@ -35,6 +34,7 @@ public class DisplayPhotoEditorAction extends PhotoManagerAction {
 	        super(text, mnemonic, accelerator, tooltipText);
 			a_photoList = photoList;
 	        a_selection = selection;
+	        a_PhotoEditor = null;
 		}
 
 
@@ -43,8 +43,9 @@ public class DisplayPhotoEditorAction extends PhotoManagerAction {
 		 */
 		public void actionPerformed(final ActionEvent e) {
 
-	        final PhotoEditor a_PhotoEditor = new PhotoEditor(a_photoList, a_selection);
-	        a_PhotoEditor.setBounds(new Rectangle(0,0,300,550));
+			if (a_PhotoEditor==null)
+				a_PhotoEditor = new PhotoEditor(a_photoList, a_selection);
+			
 	        a_PhotoEditor.setVisible(true);
 		}
 }

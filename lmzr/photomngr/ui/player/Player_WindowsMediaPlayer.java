@@ -13,8 +13,8 @@ public class Player_WindowsMediaPlayer extends Player {
 	 */
 	public Player_WindowsMediaPlayer() {
 		super("Windows Media Player",
-			  new String[] {"C:\\Program Files\\Windows Media Player\\wmplayer.exe",
-		                    "C:\\Program Files (x86)\\Windows Media Player\\wmplayer.exe"},
+			  new String[] {"C:/Program Files/Windows Media Player/wmplayer.exe",
+		                    "C:/Program Files (x86)/Windows Media Player/wmplayer.exe"},
 		      new DataFormat[] { DataFormat.JPEG,
                                  DataFormat.MPEG,
                                  DataFormat.WAV,

@@ -11,12 +11,14 @@ import lmzr.photomngr.ui.PhotoDisplayer;
 
 /**
  * Action to display the filter
+ * @author Laurent Mazuré
  */
 public class DisplayFilterAction extends PhotoManagerAction {
 
 	final private PhotoDisplayer a_photoDisplayer;
     final private FilteredPhotoList a_photoList;
     final private ListSelectionManager a_selection;
+    FilterDisplay a_filter; 
 
 		/**
 		 * @param text
@@ -38,6 +40,7 @@ public class DisplayFilterAction extends PhotoManagerAction {
 	        a_photoDisplayer = photoDisplayer;
 	        a_photoList = photoList;
 	        a_selection = selection;
+	        a_filter = null;
 		}
 	
 	
@@ -45,7 +48,10 @@ public class DisplayFilterAction extends PhotoManagerAction {
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
 		public void actionPerformed(final ActionEvent e) {
-		    final FilterDisplay filter = new FilterDisplay(a_photoDisplayer,a_photoList,a_selection);
-		    filter.setVisible(true);
+			
+			if ( a_filter == null)
+				a_filter = new FilterDisplay(a_photoDisplayer,a_photoList,a_selection);
+			
+		    a_filter.setVisible(true);
 		}
 	}

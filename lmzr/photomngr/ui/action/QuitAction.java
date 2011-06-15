@@ -11,6 +11,7 @@ import lmzr.photomngr.scheduler.Scheduler;
 
 /**
  * Action to quit
+ * @author Laurent Mazuré
  */
 public class QuitAction extends PhotoManagerAction {
 

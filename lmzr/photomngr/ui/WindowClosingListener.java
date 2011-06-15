@@ -5,13 +5,12 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 /**
- * @author lmazure
+ * @author Laurent Mazuré
  *
  */
 public class WindowClosingListener implements WindowListener {
 
 	/**
-	 * @author Laurent
 	 *
 	 */
 	public interface Callback {
@@ -82,5 +81,4 @@ public class WindowClosingListener implements WindowListener {
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 	}
-
 }

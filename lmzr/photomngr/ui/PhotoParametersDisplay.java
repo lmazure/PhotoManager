@@ -12,7 +12,7 @@ import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  *
  */
 public class PhotoParametersDisplay extends JFrame {
@@ -36,7 +36,7 @@ public class PhotoParametersDisplay extends JFrame {
 		final JScrollPane scrollPane = new JScrollPane(table);
 		pane.add(scrollPane, BorderLayout.CENTER);
 		
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         
         pack();
 	}

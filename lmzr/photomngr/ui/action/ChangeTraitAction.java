@@ -8,7 +8,9 @@ import lmzr.photomngr.data.phototrait.PhotoTrait;
 
 /**
  * Action to change a trait of the selected photos
+ * @author Laurent Mazuré
  */
+
 public class ChangeTraitAction extends PhotoManagerAction {
 
 	final private FilteredPhotoList a_photoList;

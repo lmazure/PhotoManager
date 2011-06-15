@@ -8,6 +8,7 @@ import lmzr.photomngr.data.ListSelectionManager;
 
 /**
  * Action to display the previous photo
+ * @author Laurent Mazuré
  */
 public class PreviousPhotoAction extends PhotoManagerAction {
 

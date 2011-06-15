@@ -7,6 +7,7 @@ import javax.swing.KeyStroke;
 
 /**
  * Action to close a JFRame
+ * @author Laurent Mazuré
  */
 public class CloseAction extends PhotoManagerAction {
 

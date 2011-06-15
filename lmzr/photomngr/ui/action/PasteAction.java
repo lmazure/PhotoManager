@@ -13,6 +13,7 @@ import javax.swing.ListSelectionModel;
 
 /**
  * Action to paste
+ * @author Laurent Mazuré
  */
 public class PasteAction extends PhotoManagerAction {
 

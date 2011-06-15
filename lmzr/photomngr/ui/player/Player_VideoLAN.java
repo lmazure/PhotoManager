@@ -13,8 +13,8 @@ public class Player_VideoLAN extends Player {
 	 */
 	public Player_VideoLAN() {
 		super("VideoLAN",
-			  new String[] {"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe",
-				            "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe"},
+			  new String[] {"C:/Program Files (x86)/VideoLAN/VLC/vlc.exe",
+				            "C:/Program Files/VideoLAN/VLC/vlc.exe"},
 		  	  new DataFormat[] { DataFormat.MPEG,
                                  DataFormat.WAV,
                                  DataFormat.MP3,

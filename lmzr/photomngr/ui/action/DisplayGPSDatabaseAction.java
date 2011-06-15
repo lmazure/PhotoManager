@@ -1,6 +1,5 @@
 package lmzr.photomngr.ui.action;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import javax.swing.KeyStroke;
@@ -9,12 +8,12 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.ui.GPSDataDisplay;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class DisplayGPSDatabaseAction extends PhotoManagerAction {
 
 	private final GPSDatabase a_GPSDatabase;
+	GPSDataDisplay a_GPSDisplay;
 
 	/**
 	 * @param text
@@ -30,6 +29,7 @@ public class DisplayGPSDatabaseAction extends PhotoManagerAction {
 	                                final GPSDatabase GPSDatabase) {
         super(text, mnemonic, accelerator, tooltipText);
         a_GPSDatabase = GPSDatabase;
+        a_GPSDisplay = null;
 	}
 
 
@@ -38,9 +38,11 @@ public class DisplayGPSDatabaseAction extends PhotoManagerAction {
 	 */
 	public void actionPerformed(final ActionEvent e) {
 
-        final GPSDataDisplay a_GPSDisplay = new GPSDataDisplay(a_GPSDatabase);
-        a_GPSDisplay.setBounds(new Rectangle(0,0,900,400));
-        a_GPSDisplay.setVisible(true);
+		if ( a_GPSDisplay == null ) {
+	        a_GPSDisplay = new GPSDataDisplay(a_GPSDatabase);
+		}
+
+		a_GPSDisplay.setVisible(true);
 
 	}
 }

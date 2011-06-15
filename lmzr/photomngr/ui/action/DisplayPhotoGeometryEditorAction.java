@@ -9,14 +9,14 @@ import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.ui.PhotoGeometryEditor;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
 
 	   final private PhotoList a_photoList;
 	   final private ListSelectionManager a_selection;
-
+	   PhotoGeometryEditor a_PhotoGeometryEditor;
+	   
 		/**
 		 * @param text
 		 * @param mnemonic
@@ -34,6 +34,7 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
 	        super(text, mnemonic, accelerator, tooltipText);
 			a_photoList = photoList;
 	        a_selection = selection;
+	        a_PhotoGeometryEditor = null;
 		}
 
 
@@ -42,7 +43,9 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
 		 */
 		public void actionPerformed(final ActionEvent e) {
 
-	        final PhotoGeometryEditor a_PhotoGeometryEditor = new PhotoGeometryEditor(a_photoList, a_selection);
+			if (a_PhotoGeometryEditor==null)
+				a_PhotoGeometryEditor = new PhotoGeometryEditor(a_photoList, a_selection);
+			
 	        a_PhotoGeometryEditor.setVisible(true);
 		}
 

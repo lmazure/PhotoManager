@@ -13,6 +13,7 @@ import lmzr.photomngr.ui.SubjectBatchEditor;
 
 /**
  * Action to edit the list of subjects
+ * @author Laurent Mazuré
  */
 public class EditSubjectsAction extends PhotoManagerAction
                                 implements MapTranslationPerformer {

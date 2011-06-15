@@ -2,6 +2,7 @@ package lmzr.photomngr.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -26,7 +27,7 @@ import lmzr.photomngr.ui.action.PasteAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  *
  */
 public class GPSDataDisplay extends JFrame
@@ -96,7 +97,9 @@ public class GPSDataDisplay extends JFrame
 		
 		saveChanged(new SaveEvent(a_GPSdatabase, a_GPSdatabase.isSaved()));
 		
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        
+        setBounds(new Rectangle(0,0,900,400));
 	}
 
 	/**

@@ -9,14 +9,14 @@ import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.ui.PhotoParametersDisplay;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class DisplayPhotoParametersAction extends PhotoManagerAction {
 
     final private PhotoList a_photoList;
     final private ListSelectionManager a_selection;
-
+    PhotoParametersDisplay a_PhotoParametersDisplay;
+    
 	/**
 	 * @param text
 	 * @param mnemonic
@@ -34,6 +34,7 @@ public class DisplayPhotoParametersAction extends PhotoManagerAction {
         super(text, mnemonic, accelerator, tooltipText);
 		a_photoList = photoList;
         a_selection = selection;
+        a_PhotoParametersDisplay = null;
 	}
 
 
@@ -42,7 +43,9 @@ public class DisplayPhotoParametersAction extends PhotoManagerAction {
 	 */
 	public void actionPerformed(final ActionEvent e) {
 
-        final PhotoParametersDisplay a_PhotoParametersDisplay = new PhotoParametersDisplay(a_photoList, a_selection);
+		if (a_PhotoParametersDisplay==null)
+			a_PhotoParametersDisplay = new PhotoParametersDisplay(a_photoList, a_selection);
+		
         a_PhotoParametersDisplay.setVisible(true);
 
 	}

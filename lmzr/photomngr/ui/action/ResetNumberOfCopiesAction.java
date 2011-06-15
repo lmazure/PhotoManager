@@ -9,6 +9,7 @@ import lmzr.photomngr.data.filter.FilteredPhotoList;
 
 /**
  * Action to reset the number of copies
+ * @author Laurent Mazuré
  */
 public class ResetNumberOfCopiesAction extends PhotoManagerAction {
 	

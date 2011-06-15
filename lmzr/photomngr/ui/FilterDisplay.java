@@ -35,7 +35,7 @@ import lmzr.photomngr.ui.filter.HierachicalCompoundStringComponentFilterUI;
 import lmzr.photomngr.ui.filter.TraitDisplayComponentFilterUI;
 
 /**
- * 
+ * @author Laurent Mazuré
  */
 public class FilterDisplay extends JDialog {
 
@@ -164,7 +164,6 @@ public class FilterDisplay extends JDialog {
 	 */
 	private void close() {
 		setVisible(false);
-		dispose();		
 	}
 
 }

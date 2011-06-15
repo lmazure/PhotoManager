@@ -13,6 +13,7 @@ import javax.swing.ListSelectionModel;
 
 /**
  * Action to copy
+ * @author Laurent Mazuré
  */
 public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
 

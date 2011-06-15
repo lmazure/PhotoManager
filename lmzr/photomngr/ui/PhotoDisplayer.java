@@ -49,6 +49,7 @@ import lmzr.photomngr.ui.action.SaveAction;
 
 /**
  * display a photo is an independent window
+ * @author Laurent Mazuré
  */
 public class PhotoDisplayer extends JFrame
                             implements SaveListener {

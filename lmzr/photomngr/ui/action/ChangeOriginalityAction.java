@@ -7,7 +7,9 @@ import lmzr.photomngr.data.phototrait.PhotoOriginality;
 
 /**
  * Action to display the originality of the selected photos
- */
+ * @author Laurent Mazuré
+*/
+
 public class ChangeOriginalityAction extends ChangeTraitAction {
 
 	/**
