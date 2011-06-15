@@ -12,7 +12,8 @@ import lmzr.photomngr.scheduler.Scheduler.Priority;
 
 /**
  * initially from http://binkley.blogspot.com/2009/04/jumping-work-queue-in-executor.html
- *
+ * 
+ * @author Laurent Mazuré
  */
 public class PriorityExecutor extends ThreadPoolExecutor {
     
@@ -118,7 +119,6 @@ public class PriorityExecutor extends ThreadPoolExecutor {
     }
 
     /**
-     * @author lmazure
      *
      */
     private static class PriorityTaskComparator implements Comparator<Runnable> {

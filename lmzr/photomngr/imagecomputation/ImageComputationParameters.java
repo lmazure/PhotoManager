@@ -1,7 +1,7 @@
 package lmzr.photomngr.imagecomputation;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public class ImageComputationParameters {
 

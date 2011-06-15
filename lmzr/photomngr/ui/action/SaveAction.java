@@ -10,6 +10,7 @@ import lmzr.photomngr.data.SaveableModel;
 
 /**
  * Action to save all the data
+ * 
  * @author Laurent Mazuré
  */
 public class SaveAction extends PhotoManagerAction {

@@ -3,8 +3,7 @@ package lmzr.photomngr.data;
 import java.util.HashMap;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class StringPool {
 

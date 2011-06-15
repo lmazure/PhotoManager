@@ -5,8 +5,7 @@ import java.util.HashSet;
 import lmzr.photomngr.data.PhotoList;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class FilterOnAuthor extends FilterBase {
 

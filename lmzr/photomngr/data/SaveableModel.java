@@ -3,8 +3,7 @@ package lmzr.photomngr.data;
 import java.io.IOException;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public interface SaveableModel {
 

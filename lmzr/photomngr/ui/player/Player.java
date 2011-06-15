@@ -8,8 +8,7 @@ import java.util.Set;
 import lmzr.photomngr.data.DataFormat;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public abstract class Player {
 

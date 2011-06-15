@@ -3,8 +3,7 @@ package lmzr.photomngr.ui.player;
 import lmzr.photomngr.data.DataFormat;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class Player_WindowsMediaPlayer extends Player {
 	

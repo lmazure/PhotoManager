@@ -48,7 +48,8 @@ import lmzr.photomngr.ui.action.ResetNumberOfCopiesAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
 /**
- * display a photo is an independent window
+ * display a photo in an independent window
+ * 
  * @author Laurent Mazuré
  */
 public class PhotoDisplayer extends JFrame

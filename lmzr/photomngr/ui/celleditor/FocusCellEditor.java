@@ -1,8 +1,7 @@
 package lmzr.photomngr.ui.celleditor;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class FocusCellEditor extends TextFieldForFloatCellEditor {
 

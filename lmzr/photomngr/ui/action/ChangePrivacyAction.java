@@ -7,6 +7,7 @@ import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 
 /**
  * Action to display the privacy of the selected photos
+ * 
  * @author Laurent Mazuré
  */
 

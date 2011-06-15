@@ -21,8 +21,7 @@ import lmzr.photomngr.data.PhotoList;
  * but this is so simple, I don't want to use DOM).
  * A random token is added to avoid strange to guess the directory name.
  * 
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class Exporter {
 

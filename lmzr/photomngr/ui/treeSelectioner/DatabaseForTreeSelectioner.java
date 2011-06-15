@@ -13,8 +13,7 @@ import org.jdesktop.swingx.tree.TreeModelSupport;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class DatabaseForTreeSelectioner implements TreeTableModel {
 

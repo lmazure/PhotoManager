@@ -14,6 +14,7 @@ import lmzr.util.string.HierarchicalCompoundString;
 
 /**
  * Common code to export the list of subjects and export the list of locations
+ * 
  * @author Laurent Mazuré
  */
 

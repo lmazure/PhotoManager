@@ -8,6 +8,7 @@ import lmzr.photomngr.data.phototrait.PhotoTrait;
 
 /**
  * Action to change a trait of the selected photos
+ * 
  * @author Laurent Mazuré
  */
 

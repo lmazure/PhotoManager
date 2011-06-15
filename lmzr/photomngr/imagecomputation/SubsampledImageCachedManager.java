@@ -18,13 +18,11 @@ import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoHeaderData;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class SubsampledImageCachedManager {
 
 	/**
-	 * @author Laurent
 	 *
 	 */
 	public class SubsampledImage {

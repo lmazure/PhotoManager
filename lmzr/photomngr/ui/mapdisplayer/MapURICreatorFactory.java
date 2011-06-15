@@ -1,8 +1,7 @@
 package lmzr.photomngr.ui.mapdisplayer;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class MapURICreatorFactory {
 

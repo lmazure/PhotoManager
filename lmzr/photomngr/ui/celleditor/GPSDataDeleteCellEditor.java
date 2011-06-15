@@ -15,8 +15,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author lmazure
- *
+ * @author Laurent Mazuré
  */
 public class GPSDataDeleteCellEditor extends JButton
                                      implements TableCellEditor {

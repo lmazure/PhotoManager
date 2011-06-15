@@ -16,7 +16,7 @@ import lmzr.util.io.StringTableFromToExcel;
  * This class is designed to be be simply dropped in between Photo and PhotoHeaderData.
  * I should surely break this "simple drop in" rule to have a better implementation saving CPU and memory.
  * 
- * @author Laurent
+ * @author Laurent Mazuré
  *
  */
 public class PhotoHeaderDataCache {
@@ -24,8 +24,6 @@ public class PhotoHeaderDataCache {
 	/**
 	 * Cache for one image folder.
 	 * 
-	 * @author Laurent
-	 *
 	 */
 	private class FolderCache {
 		

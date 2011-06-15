@@ -3,8 +3,7 @@ package lmzr.photomngr.data.filter;
 import lmzr.photomngr.data.PhotoList;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class FilterOnCopies extends FilterBase {
 

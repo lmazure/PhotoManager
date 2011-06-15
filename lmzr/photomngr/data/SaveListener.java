@@ -3,8 +3,7 @@ package lmzr.photomngr.data;
 import java.util.EventListener;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public interface SaveListener extends EventListener {
 

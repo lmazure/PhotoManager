@@ -4,8 +4,7 @@ import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public interface MapDisplayer {
 

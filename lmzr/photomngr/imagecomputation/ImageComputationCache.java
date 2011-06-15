@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import lmzr.photomngr.data.Photo;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public class ImageComputationCache {
 

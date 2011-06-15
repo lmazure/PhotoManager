@@ -22,13 +22,11 @@ import javax.swing.JTextField;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class SubjectBatchEditor extends JDialog {
 
 	/**
-	 * @author Laurent
 	 *
 	 */
 	private class Row {

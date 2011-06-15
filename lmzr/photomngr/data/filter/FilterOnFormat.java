@@ -4,8 +4,7 @@ import lmzr.photomngr.data.DataFormat;
 import lmzr.photomngr.data.PhotoList;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class FilterOnFormat extends FilterBase {
 

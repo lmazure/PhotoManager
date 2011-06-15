@@ -3,8 +3,7 @@ package lmzr.photomngr.data;
 import java.util.EventObject;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class SaveEvent extends EventObject {
 

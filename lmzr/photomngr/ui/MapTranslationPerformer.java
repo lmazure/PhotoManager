@@ -3,8 +3,7 @@ package lmzr.photomngr.ui;
 import java.util.Map;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public interface MapTranslationPerformer {
 

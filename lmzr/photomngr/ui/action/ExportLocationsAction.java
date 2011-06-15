@@ -9,6 +9,7 @@ import lmzr.photomngr.data.filter.FilteredPhotoList;
 
 /**
  * Action to export the list of subjects
+ * 
  * @author Laurent Mazuré
  */
 public class ExportLocationsAction extends ExportAction {

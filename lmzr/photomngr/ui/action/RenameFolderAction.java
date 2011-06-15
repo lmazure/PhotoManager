@@ -14,6 +14,7 @@ import lmzr.photomngr.ui.PhotoListDisplay;
 
 /**
  * Action to rename a folder
+ * 
  * @author Laurent Mazuré
  */
 public class RenameFolderAction extends PhotoManagerAction {

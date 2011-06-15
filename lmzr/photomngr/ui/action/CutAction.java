@@ -16,6 +16,7 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
 
 /**
  * Action to copy
+ * 
  * @author Laurent Mazuré
  */
 public class CutAction extends PhotoManagerAction implements ClipboardOwner {

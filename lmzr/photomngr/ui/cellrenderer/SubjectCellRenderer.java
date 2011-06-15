@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public class SubjectCellRenderer extends JTextArea
                                  implements TableCellRenderer {

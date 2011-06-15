@@ -10,7 +10,7 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public interface PhotoList extends TableModel, SaveableModel {
 

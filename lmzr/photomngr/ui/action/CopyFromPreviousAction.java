@@ -8,6 +8,7 @@ import javax.swing.ListSelectionModel;
 
 /**
  * Action to copy a parameter from the previous image
+ * 
  * @author Laurent Mazuré
  */
 public class CopyFromPreviousAction extends PhotoManagerAction {

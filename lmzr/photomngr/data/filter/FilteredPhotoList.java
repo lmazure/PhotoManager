@@ -23,7 +23,7 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent Mazurï¿½
+ * @author Laurent Mazuré
  */
 public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, SaveListener, TableModelListener {
 

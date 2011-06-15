@@ -1,8 +1,7 @@
 package lmzr.photomngr.data.filter;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class FilterBase {
 

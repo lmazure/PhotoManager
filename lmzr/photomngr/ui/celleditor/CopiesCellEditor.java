@@ -8,7 +8,7 @@ import java.util.EventObject;
 
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public class CopiesCellEditor extends ComboBoxCellEditor {
 

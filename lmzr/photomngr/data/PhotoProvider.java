@@ -1,8 +1,7 @@
 package lmzr.photomngr.data;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public interface PhotoProvider {
 

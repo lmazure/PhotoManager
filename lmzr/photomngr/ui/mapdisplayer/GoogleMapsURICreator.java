@@ -21,8 +21,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class GoogleMapsURICreator implements MapURICreator {
 	

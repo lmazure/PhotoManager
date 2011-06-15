@@ -8,8 +8,7 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
 import org.jdesktop.swingx.JXTreeTable;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class TreeSelectioner extends JXTreeTable {
 

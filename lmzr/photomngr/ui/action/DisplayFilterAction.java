@@ -11,6 +11,7 @@ import lmzr.photomngr.ui.PhotoDisplayer;
 
 /**
  * Action to display the filter
+ * 
  * @author Laurent Mazuré
  */
 public class DisplayFilterAction extends PhotoManagerAction {

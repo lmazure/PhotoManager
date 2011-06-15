@@ -24,8 +24,7 @@ import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class GPSDatabase implements TreeTableModel, SaveableModel {
 
@@ -68,9 +67,6 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     
     /**
      * A GPS record is a couple (location, GPS coordinates)
-     * 
-     * @author Laurent Mazuré
-     *
      */
     public class GPSRecord {
 

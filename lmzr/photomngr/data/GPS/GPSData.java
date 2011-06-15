@@ -5,8 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class GPSData implements Cloneable {
 

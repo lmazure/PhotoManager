@@ -3,7 +3,7 @@ package lmzr.photomngr.data.phototrait;
 import java.util.HashMap;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public class PhotoOriginality extends PhotoTrait {
 

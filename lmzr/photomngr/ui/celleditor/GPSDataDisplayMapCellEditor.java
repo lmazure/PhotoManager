@@ -19,7 +19,6 @@ import lmzr.util.string.HierarchicalCompoundString;
 
 /**
  * @author Laurent Mazuré
- *
  */
 public class GPSDataDisplayMapCellEditor extends JButton
                                          implements TableCellEditor {

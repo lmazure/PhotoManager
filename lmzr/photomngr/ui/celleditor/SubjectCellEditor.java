@@ -45,8 +45,7 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author lmazure
- *
+ * @author Laurent Mazuré
  */
 public class SubjectCellEditor extends JComponent
                                implements TableCellEditor {
@@ -58,7 +57,6 @@ public class SubjectCellEditor extends JComponent
     final private PhotoList a_photoList;
     
     /**
-     * @author Laurent
      *
      */
     private class SubjectEditListener implements DocumentListener {

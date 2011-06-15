@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import lmzr.photomngr.data.Photo;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public interface ImageComputationConsumer {
 

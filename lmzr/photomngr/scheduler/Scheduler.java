@@ -5,8 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * @author lmazure
- *
+ * @author Laurent Mazuré
  */
 public class Scheduler {
 

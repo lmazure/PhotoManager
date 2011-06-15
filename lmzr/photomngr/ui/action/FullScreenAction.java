@@ -9,6 +9,7 @@ import lmzr.photomngr.ui.PhotoDisplayer;
 
 /**
  * Action to display the display full screen
+ * 
  * @author Laurent Mazuré
  */
 public class FullScreenAction extends PhotoManagerAction {

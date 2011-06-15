@@ -16,6 +16,7 @@ import lmzr.util.string.HierarchicalCompoundString;
 
 /**
  * display the GPS coordinates in Google Maps
+ * 
  * @author Laurent Mazuré
  */
 public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {

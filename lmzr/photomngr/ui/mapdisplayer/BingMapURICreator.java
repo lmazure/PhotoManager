@@ -7,8 +7,7 @@ import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class BingMapURICreator implements MapURICreator {
 

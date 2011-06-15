@@ -7,6 +7,7 @@ import lmzr.photomngr.data.phototrait.PhotoQuality;
 
 /**
  * Action to display the quality of the selected photos
+ * 
  * @author Laurent Mazuré
  */
 

@@ -9,8 +9,7 @@ import javax.swing.table.TableCellRenderer;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 
 /**
- * @author lmazure
- *
+ * @author Laurent Mazuré
  */
 public class GPSDataDeleteCellRenderer extends JButton
                                            implements TableCellRenderer {

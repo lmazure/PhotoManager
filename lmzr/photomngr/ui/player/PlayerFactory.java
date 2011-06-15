@@ -1,8 +1,7 @@
 package lmzr.photomngr.ui.player;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class PlayerFactory {
 

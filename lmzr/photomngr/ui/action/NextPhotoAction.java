@@ -8,6 +8,7 @@ import lmzr.photomngr.data.ListSelectionManager;
 
 /**
  * Action to display the next photo
+ * 
  * @author Laurent Mazuré
  */
 public class NextPhotoAction extends PhotoManagerAction {

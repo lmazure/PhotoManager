@@ -30,7 +30,7 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent
+ * @author Laurent Mazuré
  */
 public class ConcretePhotoList extends Object
                                implements PhotoList, SaveableModel {

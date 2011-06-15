@@ -3,8 +3,7 @@ package lmzr.photomngr.ui.player;
 import lmzr.photomngr.data.DataFormat;
 
 /**
- * @author Laurent Mazurï¿½
- *
+ * @author Laurent Mazuré
  */
 public class Player_VideoLAN extends Player {
 

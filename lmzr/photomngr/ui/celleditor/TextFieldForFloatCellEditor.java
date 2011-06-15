@@ -15,8 +15,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
 /**
- * @author Laurent
- *
+ * @author Laurent Mazuré
  */
 public class TextFieldForFloatCellEditor extends JTextField implements TableCellEditor {
 

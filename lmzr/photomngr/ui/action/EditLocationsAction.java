@@ -14,6 +14,7 @@ import lmzr.photomngr.ui.SubjectBatchEditor;
 
 /**
  * Action to edit the list of subjects
+ * 
  * @author Laurent Mazuré
  */
 public class EditLocationsAction extends PhotoManagerAction

@@ -35,7 +35,7 @@ import lmzr.photomngr.ui.player.PlayerFactory;
 import lmzr.photomngr.ui.player.Player_myself;
 
 /**
- * @author Laurent Mazurï¿½
+ * @author Laurent Mazuré
  */
 public class PhotoDisplayerComponentSlot extends JComponent
                                          implements ImageComputationConsumer, ComponentListener, PhotoProvider {
