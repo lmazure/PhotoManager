@@ -42,7 +42,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
 
     final static private DateFormat s_dateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.FULL);
     final static private PhotoDisplayerComponentFontManager a_fontManager = new PhotoDisplayerComponentFontManager();
-    static private ImageComputationManager s_computationManager;
+    final private ImageComputationManager a_computationManager;
     
     private Photo a_photo;
     private ImageComputationParameters a_params;
@@ -57,13 +57,11 @@ public class PhotoDisplayerComponentSlot extends JComponent
      * @param subsampler
      */
     public PhotoDisplayerComponentSlot(final Scheduler scheduler,
-                                       final SubsampledImageCachedManager subsampler) {
+                                       final SubsampledImageCachedManager subsampler,
+                                       final ImageComputationManager computationManager) {
         super();
         
-        // initialize the ImageComputationManager if this has not already been done
-        if ( s_computationManager == null ) {
-        	s_computationManager = new ImageComputationManager(scheduler,subsampler);
-        }
+        a_computationManager = computationManager;
         
 	    final GridBagLayout gridbag = new GridBagLayout();
 	    final GridBagConstraints constraints = new GridBagConstraints();
@@ -270,7 +268,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
 					a_computation.cancel(false);
 				}
 				a_params = params;
-				a_computation = s_computationManager.compute(a_photo,a_params,this);
+				a_computation = a_computationManager.compute(a_photo,a_params,this,true);
 			}
 		}
 

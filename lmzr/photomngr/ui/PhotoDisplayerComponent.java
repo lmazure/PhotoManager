@@ -12,6 +12,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.Future;
 
 import javax.swing.JComponent;
 import javax.swing.event.ListSelectionEvent;
@@ -22,6 +24,7 @@ import javax.swing.event.TableModelListener;
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoList;
+import lmzr.photomngr.imagecomputation.ImageComputationConsumer;
 import lmzr.photomngr.imagecomputation.ImageComputationManager;
 import lmzr.photomngr.imagecomputation.ImageComputationParameters;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
@@ -31,15 +34,20 @@ import lmzr.photomngr.scheduler.Scheduler;
  * @author Laurent Mazuré
  */
 public class PhotoDisplayerComponent extends JComponent
-                                     implements ListSelectionListener, TableModelListener, MouseWheelListener, MouseListener, MouseMotionListener {
+                                     implements ImageComputationConsumer, ListSelectionListener, TableModelListener, MouseWheelListener, MouseListener, MouseMotionListener {
     
     final private ListSelectionManager a_selection;
     final private SubsampledImageCachedManager a_subsampler;
     final private PhotoList a_photoList;
+    final private ImageComputationManager a_computationManager;
     private PhotoDisplayerComponentSlot[] a_slots;
     private int[] a_photoIndex;
     private int a_startX, a_startY;
     final private Scheduler a_scheduler;
+    private Future<?> a_nextPrefetchFuture;
+    private Photo a_nextPrefetchPhoto;
+    private Future<?> a_previousPrefetchFuture;
+    private Photo a_previousPrefetchPhoto;
     
     /**
      * @param scheduler 
@@ -50,7 +58,8 @@ public class PhotoDisplayerComponent extends JComponent
     public PhotoDisplayerComponent(final Scheduler scheduler,
                                    final PhotoList photoList,
     							   final SubsampledImageCachedManager subsampler,
-                                   final ListSelectionManager selection) {
+                                   final ListSelectionManager selection,
+                                   final ImageComputationManager computationManager) {
         super();
         addMouseListener(this);
         addMouseWheelListener(this);
@@ -60,14 +69,21 @@ public class PhotoDisplayerComponent extends JComponent
         a_subsampler = subsampler;
         a_photoList = photoList;
         a_photoList.addTableModelListener(this);
+        a_computationManager = computationManager;
+
         setLayout(new GridLayout(1,1));
         a_slots = new PhotoDisplayerComponentSlot[1];
-        a_slots[0] = new PhotoDisplayerComponentSlot(scheduler,a_subsampler);
+        a_slots[0] = new PhotoDisplayerComponentSlot(scheduler,a_subsampler,a_computationManager);
         a_slots[0].setName("initial slot");
         add(a_slots[0]);
         a_photoIndex = new int[1];
         a_photoIndex[0] = -1;
         a_scheduler = scheduler;
+        
+        a_nextPrefetchFuture = null;
+        a_nextPrefetchPhoto = null;
+        a_previousPrefetchFuture = null;
+        a_previousPrefetchPhoto = null;
     }
     
     /**
@@ -96,6 +112,41 @@ public class PhotoDisplayerComponent extends JComponent
             a_slots[i].setPhoto(null);
             a_photoIndex[i] = -1;
         }
+        
+        if ( a_previousPrefetchFuture != null ) {
+        	a_previousPrefetchFuture.cancel(false);
+        	a_previousPrefetchFuture = null;
+        	a_previousPrefetchPhoto = null;
+        }
+
+        if ( a_nextPrefetchFuture != null ) {
+        	a_nextPrefetchFuture.cancel(false);
+        	a_nextPrefetchFuture = null;
+        	a_nextPrefetchPhoto = null;
+        }
+
+        if ( selection.length==1 ) {
+	        int previous = (selection[0]>0) ? (selection[0]-1) : (a_photoList.getRowCount()-1);
+	        a_previousPrefetchPhoto = a_photoList.getPhoto(previous);
+	        a_previousPrefetchFuture = prefetch(a_previousPrefetchPhoto);
+	        
+	        int next = (selection[selection.length-1]<(a_photoList.getRowCount()-1)) ? (selection[selection.length-1]+1) : 0;
+	        a_nextPrefetchPhoto = a_photoList.getPhoto(next);
+	        a_nextPrefetchFuture = prefetch(a_nextPrefetchPhoto);
+        }
+    }
+    
+    private Future<?> prefetch(final Photo photo)
+    {
+    	if ( (getSize().width==0) || (getSize().height==0) ) return null;
+
+		final ImageComputationParameters params = new ImageComputationParameters(getSize().width,
+																              	 getSize().height,
+												  				                 photo.getIndexData().getZoom(),
+																                 photo.getIndexData().getRotation(),
+																                 photo.getIndexData().getFocusX(),
+																                 photo.getIndexData().getFocusY());
+		return a_computationManager.compute(photo,params,this,false);
     }
     
     /**
@@ -162,8 +213,8 @@ public class PhotoDisplayerComponent extends JComponent
         
         if ( n > a_slots.length ) {
             final PhotoDisplayerComponentSlot slots[] = new PhotoDisplayerComponentSlot[n];
-            for (int i =0; i<a_slots.length; i++) slots[i]=a_slots[i];
-            for (int i=a_slots.length; i<n; i++) slots[i]=new PhotoDisplayerComponentSlot(a_scheduler,a_subsampler);
+            for (int i =0; i<a_slots.length; i++) slots[i] = a_slots[i];
+            for (int i=a_slots.length; i<n; i++) slots[i] = new PhotoDisplayerComponentSlot(a_scheduler,a_subsampler,a_computationManager);
             a_slots = slots;
             a_photoIndex = new int[n];
         } else if ( n < a_slots.length ) {
@@ -311,5 +362,25 @@ public class PhotoDisplayerComponent extends JComponent
             if (  index>=firstRow && index<=lastRow) a_slots[i].update();
         }
 	}
+
+	/**
+	 * @param photo
+	 * @param params
+	 * @param image
+	 */
+	@Override
+	public void consumeImageComputation(final Photo photo,
+			                            final ImageComputationParameters params,
+			                            final BufferedImage image) {
+		if (photo==a_nextPrefetchPhoto) {
+			a_nextPrefetchFuture = null;
+			a_nextPrefetchPhoto = null;
+		}
+
+		if (photo==a_previousPrefetchPhoto) {
+			a_previousPrefetchFuture = null;
+			a_previousPrefetchPhoto = null;
+		}
+    }
 
 }

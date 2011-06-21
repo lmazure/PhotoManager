@@ -308,7 +308,6 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
 	@Override
 	public void valueForPathChanged(final TreePath arg0,
 			                        final Object arg1) {
-		// TODO Auto-generated method stub	
 	}	
 
 	/**

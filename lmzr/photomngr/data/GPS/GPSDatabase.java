@@ -415,8 +415,6 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	@Override
 	public void valueForPathChanged(final TreePath arg0,
 			                        final Object arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 	
     /**

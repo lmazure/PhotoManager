@@ -23,6 +23,7 @@ import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.data.phototrait.PhotoOriginality;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
+import lmzr.photomngr.imagecomputation.ImageComputationManager;
 import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.photomngr.ui.action.ChangeOriginalityAction;
@@ -56,6 +57,7 @@ public class PhotoDisplayer extends JFrame
                             implements SaveListener {
 
     final private FilteredPhotoList a_photoList;
+    final private ImageComputationManager a_computationManager;
     final private GPSDatabase a_GPSDatabase;
 	final private JMenuBar a_menubar;
 	private boolean a_isFullScreen;
@@ -80,13 +82,14 @@ public class PhotoDisplayer extends JFrame
         super();
         
         a_photoList = photoList;
+        a_computationManager = new ImageComputationManager(scheduler, subsampler);
         a_photoList.addSaveListener(this);
         a_GPSDatabase = GPSDatabase;
         a_GPSDatabase.addSaveListener(this);
         
         saveChanged(new SaveEvent(photoList,photoList.isSaved()));
         
-    	final PhotoDisplayerComponent displayer = new PhotoDisplayerComponent(scheduler, photoList, subsampler, selection);
+    	final PhotoDisplayerComponent displayer = new PhotoDisplayerComponent(scheduler, photoList, subsampler, selection, a_computationManager);
         getContentPane().add(displayer);
         
         addComponentListener(new ComponentAdapter() {

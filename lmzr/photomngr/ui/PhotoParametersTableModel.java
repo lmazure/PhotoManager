@@ -206,7 +206,6 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 			// should never occur, the data is corrupted
 			e.printStackTrace();
         } catch (final MetadataException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	return map;

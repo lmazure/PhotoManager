@@ -27,6 +27,13 @@ public class ImageComputationParameters {
                                       final float focusX,
                                       final float focusY) {
         super();
+
+        if ( (zoom==0) ||
+           	 (width==0) ||
+           	 (height==0) ) {
+           	throw new IllegalArgumentException("incorrect ImageComputationParameters");
+           }
+           
         a_width = width;
         a_height = height;
         a_zoom = zoom;

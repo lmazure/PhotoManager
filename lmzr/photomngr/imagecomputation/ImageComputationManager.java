@@ -108,6 +108,9 @@ public class ImageComputationManager {
         return(zoom);
     }
     
+    /**
+     *
+     */
     private class Computer implements Runnable {
         
         final private Photo a_photo;
@@ -153,7 +156,6 @@ public class ImageComputationManager {
 	            
             } catch (final Throwable ex) {
             	ex.printStackTrace();
-            	//throw(ex);
             }
         }
 
@@ -174,12 +176,14 @@ public class ImageComputationManager {
      * @param photo photo on which the computation should be performed
      * @param params parameters of the computation
      * @param consumer object using the result of the computation
+     * @param forDisplay shall be true if the image is computed for displayed, false if the image is computed for prefetch
      * @return the computation task (if the image is already in the cache, the consumer
      *  is called at once and this method returns null)
      */
     public Future<?> compute(final Photo photo,
                              final ImageComputationParameters params,
-                             final ImageComputationConsumer consumer) {
+                             final ImageComputationConsumer consumer,
+                             final boolean forDisplay) {
         
         final BufferedImage i = a_cache.get(photo, params);
         if (i!=null) {
@@ -187,12 +191,12 @@ public class ImageComputationManager {
             consumer.consumeImageComputation(photo,params,i);
             return null;
         }
+        
 		// the image to compute is not in the cache
-		return a_scheduler.submitCPU("compute image \""+photo.getFilename()+"\" for display",
-				                  Scheduler.Category.CATEGORY_NOW,
-                                  Scheduler.Priority.PRIORITY_VERY_HIGH,
-				                  1.0,
-				                  new Computer(photo,params,consumer));
+		return a_scheduler.submitCPU("compute image \""+photo.getFilename()+"\" for " + (forDisplay ? "display" : "prefetch"),
+				                     (forDisplay ? Scheduler.Category.CATEGORY_NOW : Scheduler.Category.CATEGORY_FUTURE),
+				                     (forDisplay ? Scheduler.Priority.PRIORITY_VERY_HIGH : Scheduler.Priority.PRIORITY_VERY_HIGH),
+				                     1.0,
+				                     new Computer(photo,params,consumer));
     }
-    
 }

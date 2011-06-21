@@ -71,7 +71,7 @@ public class SubsampledImageCachedManager {
 	 * @param photo
 	 * @param params
 	 * @param subsamplingFactor
-	 * @return subsampled image
+	 * @return sub-sampled image
 	 */
 	public SubsampledImage getImage(final Photo photo,
 								    final ImageComputationParameters params,
@@ -79,7 +79,7 @@ public class SubsampledImageCachedManager {
 		
 		double f;
 		final PhotoHeaderData header = photo.getHeaderData();
-        final int orientation = photo.getHeaderData().getOrientation();
+        final int orientation = header.getOrientation();
         final double z = params.getZoom();
         final double paramHeight = params.getHeight();
 		final double paramWidth = params.getWidth();

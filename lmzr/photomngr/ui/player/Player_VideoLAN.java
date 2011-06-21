@@ -21,7 +21,8 @@ public class Player_VideoLAN extends Player {
                                  DataFormat.VOB,
                                  DataFormat.GIF,
                                  DataFormat.FLV,
-                                 DataFormat.MOV} );
+                                 DataFormat.MOV,
+                                 DataFormat.WMV} );
 	}
 
 }
