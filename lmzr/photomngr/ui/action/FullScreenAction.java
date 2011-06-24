@@ -8,7 +8,7 @@ import javax.swing.KeyStroke;
 import lmzr.photomngr.ui.PhotoDisplayer;
 
 /**
- * Action to display the display full screen
+ * Action to display the display using the full screen
  * 
  * @author Laurent Mazuré
  */

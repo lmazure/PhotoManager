@@ -169,7 +169,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
             final Font font = a_fontManager.getMessageFont(getSize());
             if (font ==null) return;
             g2.setFont(font);
-            final FontMetrics metrics = g.getFontMetrics();
+            final FontMetrics metrics = g2.getFontMetrics();
             g2.setColor(Color.BLACK);
             String str;
             if ((new Player_myself()).isFormatSupported(a_photo.getFormat())) {

@@ -49,7 +49,7 @@ import lmzr.photomngr.ui.action.ResetNumberOfCopiesAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
 /**
- * display a photo in an independent window
+ * JFrame used to display the photo(s)
  * 
  * @author Laurent Mazuré
  */
@@ -197,17 +197,20 @@ public class PhotoDisplayer extends JFrame
 	 * @param isFullScreen
 	 */
     public void setFullScreen(final boolean isFullScreen) {
-	    if ( isFullScreen == a_isFullScreen ) return;
+    	
         dispose();
-        setUndecorated(isFullScreen);
-        a_menubar.setVisible(!isFullScreen);
+
         if (isFullScreen) {
             a_bounds = getBounds();
             setBounds(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+            setUndecorated(true);
         } else {
             setBounds(a_bounds);
+            setUndecorated(false);
         }
+        
         setVisible(true);
+
         a_isFullScreen = isFullScreen;
 	}
 	
