@@ -27,7 +27,7 @@ import lmzr.photomngr.ui.action.PasteAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  *
  */
 public class GPSDataDisplay extends JFrame
@@ -120,6 +120,4 @@ public class GPSDataDisplay extends JFrame
 	public void saveChanged(final SaveEvent e) {
         setTitle("GPS data - [GPS data is " + (e.isSaved() ? "saved]" : "modified]") );
 	}
-
-	
 }

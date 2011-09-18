@@ -31,7 +31,7 @@ import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 import lmzr.photomngr.scheduler.Scheduler;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class PhotoDisplayerComponent extends JComponent
                                      implements ImageComputationConsumer, ListSelectionListener, TableModelListener, MouseWheelListener, MouseListener, MouseMotionListener {
@@ -54,6 +54,7 @@ public class PhotoDisplayerComponent extends JComponent
      * @param photoList
      * @param subsampler
      * @param selection
+     * @param computationManager 
      */
     public PhotoDisplayerComponent(final Scheduler scheduler,
                                    final PhotoList photoList,

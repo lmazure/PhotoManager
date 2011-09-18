@@ -68,9 +68,6 @@ public class PhotoListDisplay extends JFrame
 
 		a_table = new PhotoListTable(photoList, filteredPhotoList,this);
 
-	    saveChanged(new SaveEvent(photoList,a_list.isSaved()));
-        photoList.addSaveListener(this);
-
 		// listen to change of the selection column(s)
 		a_selection = new ListSelectionManager(photoList,getLineSelectionListModel());
 		a_selection.addListener(this);
@@ -128,7 +125,10 @@ public class PhotoListDisplay extends JFrame
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		new WindowClosingListener(this,
                 new WindowClosingListener.Callback() { @Override public void windowClosing() { a_actionQuit.controlledExit(); }});
-}
+
+	    saveChanged(new SaveEvent(photoList,a_list.isSaved()));
+        photoList.addSaveListener(this);
+    }
     
     /**
      * @return selection list model
@@ -148,7 +148,12 @@ public class PhotoListDisplay extends JFrame
      * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
     public void saveChanged(final SaveEvent e) {
+
+    	final boolean photoListIsSaved = e.isSaved();
+
         setTitle("photo list - [photo data is " + (e.isSaved() ? "saved]" : "modified]") );
+
+        a_actionSave.setEnabled(!photoListIsSaved);
     }
     
     /**
@@ -162,7 +167,7 @@ public class PhotoListDisplay extends JFrame
     
 		a_actionCopy.setEnabled(a_table.getSelectedColumn()!=-1);
 		
-		// ne marche pas car il faut aussi écouter la sélection de la colonne
+		// ne marche pas car il faut aussi ï¿½couter la sï¿½lection de la colonne
     	boolean editable;
     	
 		if ( select.length==0 ||

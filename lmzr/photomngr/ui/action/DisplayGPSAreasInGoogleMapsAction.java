@@ -17,7 +17,7 @@ import lmzr.util.string.HierarchicalCompoundString;
 /**
  * display the GPS coordinates in Google Maps
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 
@@ -68,14 +68,14 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 		
 		try {
 			creator.createMapURIForGPSDebug(file, location, a_GPSDatabase);
-		} catch (final IOException e1) {
+		} catch (final IOException ex) {
 			System.err.println("failed to generate file for debugging GPS");			
-			e1.printStackTrace();
+			ex.printStackTrace();
 		}
 
 		try {
 			Desktop.getDesktop().browse(file.toURI());
-		} catch (final HeadlessException ex) {
+		} catch (final HeadlessException ex) { //TODO stupid cut 'n paste
 			System.err.println("failed to start a browser to display the map of "+location.toString());
 			ex.printStackTrace();
 		} catch (final UnsupportedOperationException ex) {

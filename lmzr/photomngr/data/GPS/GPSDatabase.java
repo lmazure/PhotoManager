@@ -24,7 +24,7 @@ import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class GPSDatabase implements TreeTableModel, SaveableModel {
 
@@ -197,7 +197,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 		case PARAM_LONGITUDE_MAX:
 		    return "max. longitude";
 		case PARAM_GPS_DATA_FOR_MAPPING:
-		    return "Google maps";
+		    return "Geoportail";
         case PARAM_GPS_DATA_FOR_DELETING:
             return "delete";
 		}
