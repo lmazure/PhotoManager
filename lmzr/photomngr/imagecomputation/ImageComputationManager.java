@@ -44,59 +44,62 @@ public class ImageComputationManager {
 		final double paramHeight = params.getHeight();
 		final double paramWidth = params.getWidth();
 		
+		final double cos = Math.abs(Math.cos(r));
+		final double sin = Math.abs(Math.sin(r));
+		
 		switch (orientation) {
 	        case 1:
 	        default: {
-	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
+	            final double f = z * Math.min(paramHeight/(cos*headerHeight+sin*headerWidth),paramWidth/(cos*headerWidth+sin*headerHeight));
 	            zoom = new AffineTransform(f,0,
 	                                       0,f,
 	                                       (paramWidth-f*headerWidth*(1+fx))/2,(paramHeight-f*headerHeight*(1+fy))/2);
 	            break;        	    
 	        }
 	        case 2: {
-	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
+	            final double f = z * Math.min(paramHeight/(cos*headerHeight+sin*headerWidth),paramWidth/(cos*headerWidth+sin*headerHeight));
 	            zoom = new AffineTransform(-f,0,
 	                                       0,f,
 	                                       (paramWidth+f*headerWidth*(1+fx))/2,(paramHeight-f*headerHeight*(1+fy))/2);
 	            break;        	    
 	        }
 	        case 3: {
-	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
+	            final double f = z * Math.min(paramHeight/(cos*headerHeight+sin*headerWidth),paramWidth/(cos*headerWidth+sin*headerHeight));
 	            zoom = new AffineTransform(-f,0,
 	                                       0,-f,
 	                                       (paramWidth+f*headerWidth*(1+fx))/2,(paramHeight+f*headerHeight*(1+fy))/2);
 	            break;        	    
 	        }
 	        case 4: {
-	            final double f = z * Math.min(paramHeight/headerHeight,paramWidth/headerWidth);
+	            final double f = z * Math.min(paramHeight/(cos*headerHeight+sin*headerWidth),paramWidth/(cos*headerWidth+sin*headerHeight));
 	            zoom = new AffineTransform(f,0,
 	                                       0,-f,
 	                                       (paramWidth-f*headerWidth*(1+fx))/2,(paramHeight+f*headerHeight*(1+fy))/2);
 	            break;        	    
 	        }
 	        case 5: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            final double f = z * Math.min(paramHeight/(cos*headerWidth+sin*headerHeight),paramWidth/(cos*headerHeight+sin*headerWidth));
 	            zoom = new AffineTransform(0,f,
 	                                       f,0,
 	                                       (paramWidth-f*headerHeight*(1+fy))/2,(paramHeight-f*headerWidth*(1+fx))/2);
 	            break;
 	        }
 	        case 6: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            final double f = z * Math.min(paramHeight/(cos*headerWidth+sin*headerHeight),paramWidth/(cos*headerHeight+sin*headerWidth));
 	            zoom = new AffineTransform(0,f,
 	                                       -f,0,
 	                                       (paramWidth+f*headerHeight*(1+fy))/2,(paramHeight-f*headerWidth*(1+fx))/2);
 	            break;
 	        }
 	        case 7: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            final double f = z * Math.min(paramHeight/(cos*headerWidth+sin*headerHeight),paramWidth/(cos*headerHeight+sin*headerWidth));
 	            zoom = new AffineTransform(0,f,
 	                                       -f,0,
 	                                       (paramWidth+f*headerHeight*(1+fy))/2,(paramHeight-f*headerWidth*(1+fx))/2);
 	            break;
 	        }
 	        case 8: {
-	            final double f = z * Math.min(paramHeight/headerWidth,paramWidth/headerHeight);
+	            final double f = z * Math.min(paramHeight/(cos*headerWidth+sin*headerHeight),paramWidth/(cos*headerHeight+sin*headerWidth));
 	            zoom = new AffineTransform(0,-f,
 	                                       f,0,
 	                                       (paramWidth-f*headerHeight*(1+fy))/2,(paramHeight+f*headerWidth*(1+fx))/2);
