@@ -45,7 +45,7 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class SubjectCellEditor extends JComponent
                                implements TableCellEditor {
@@ -127,6 +127,7 @@ public class SubjectCellEditor extends JComponent
 
 			final Vector<Map.Entry<String, Integer>> list = new Vector<Map.Entry<String, Integer>>(record.entrySet());
 			Collections.sort(list, new Comparator<Map.Entry<String, Integer>>(){
+				@Override
 				public int compare(Map.Entry<String, Integer> entry, Map.Entry<String, Integer> entry1)
 				{
 					return (entry.getValue().equals(entry1.getValue()) ? 0 : (entry.getValue() > entry1.getValue() ? -1 : 1));
@@ -165,7 +166,8 @@ public class SubjectCellEditor extends JComponent
         	a_edit.setAlignmentX(0.f);
         	a_edit.addActionListener(new ActionListener() {
         		// ceci est un copier/coller de ci-dessous
-        		public void actionPerformed(ActionEvent event) {
+        		@Override
+				public void actionPerformed(ActionEvent event) {
         			transferPropositionButtonTextToTextfield(a_propositions[0]);
         		} 
         	});
@@ -177,7 +179,8 @@ public class SubjectCellEditor extends JComponent
             	a_propositions[i].setAlignmentX(0.f);
                 a_propositions[i].addActionListener(
                         new ActionListener() {
-                            public void actionPerformed(final ActionEvent e) {
+                            @Override
+							public void actionPerformed(final ActionEvent e) {
                             	transferPropositionButtonTextToTextfield((JButton)e.getSource());
                             }});
 
@@ -232,12 +235,14 @@ public class SubjectCellEditor extends JComponent
     		buttonsPane.add(bCancel);
     		getRootPane().setDefaultButton(bOk);
     		bOk.addActionListener(new ActionListener() {
-    				public void actionPerformed(final ActionEvent e) {
+    				@Override
+					public void actionPerformed(final ActionEvent e) {
     					close();
     				}
     		});
     		bCancel.addActionListener(new ActionListener() {
-    					public void actionPerformed(final ActionEvent e) {
+    					@Override
+						public void actionPerformed(final ActionEvent e) {
     						a_text.setText(a_keptValue);
     						close();
     					}
@@ -326,7 +331,8 @@ public class SubjectCellEditor extends JComponent
         add(a_button);
         a_button.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	a_internal.open(a_textfield.getText());}});
 
         a_internal = new InternalSubjectCellEditor(a_photoList.getSubjectFactory(), parent);
@@ -353,7 +359,8 @@ public class SubjectCellEditor extends JComponent
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
-    public Component getTableCellEditorComponent(final JTable table,
+    @Override
+	public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value,
                                                  final boolean isSelected,
                                                  final int row,
@@ -377,21 +384,24 @@ public class SubjectCellEditor extends JComponent
     /**
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
-    public Object getCellEditorValue() {
+    @Override
+	public Object getCellEditorValue() {
         return a_textfield.getText();
     }
 
     /**
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
-    public boolean shouldSelectCell(final EventObject anEvent) {
+    @Override
+	public boolean shouldSelectCell(final EventObject anEvent) {
         return true;
     }
 
     /**
      * @see javax.swing.CellEditor#stopCellEditing()
      */
-    public boolean stopCellEditing() {
+    @Override
+	public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
     }
@@ -399,28 +409,32 @@ public class SubjectCellEditor extends JComponent
     /**
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
-    public void cancelCellEditing() {
+    @Override
+	public void cancelCellEditing() {
         fireEditingCanceled();
     }
 
     /**
      * @see javax.swing.CellEditor#addCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void addCellEditorListener(final CellEditorListener l) {
+    @Override
+	public void addCellEditorListener(final CellEditorListener l) {
         a_listenerList.add(l);
     }
 
     /**
      * @see javax.swing.CellEditor#removeCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void removeCellEditorListener(final CellEditorListener l) {
+    @Override
+	public void removeCellEditorListener(final CellEditorListener l) {
         a_listenerList.remove(l);
     }
     
     /**
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
-    public boolean isCellEditable(final EventObject event) {
+    @Override
+	public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programmatically edited
             return true;

@@ -14,7 +14,7 @@ import lmzr.photomngr.ui.SubjectBatchEditor;
 /**
  * Action to edit the list of subjects
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class EditSubjectsAction extends PhotoManagerAction
                                 implements MapTranslationPerformer {
@@ -49,6 +49,7 @@ public class EditSubjectsAction extends PhotoManagerAction
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		
 		final SubjectBatchEditor editor = new SubjectBatchEditor(a_frame,
@@ -60,6 +61,7 @@ public class EditSubjectsAction extends PhotoManagerAction
 	/**
 	 * @see lmzr.photomngr.ui.MapTranslationPerformer#performMapTranslation(java.util.Map)
 	 */
+	@Override
 	public void performMapTranslation(final Map<String,String> map) {
 		a_photoList.performSubjectMapTranslation(map,a_selection);
 	}

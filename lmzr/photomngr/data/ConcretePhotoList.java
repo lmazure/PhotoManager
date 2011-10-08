@@ -30,7 +30,7 @@ import lmzr.util.string.MultiHierarchicalCompoundString;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class ConcretePhotoList extends Object
                                implements PhotoList, SaveableModel {
@@ -155,7 +155,8 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#getRowCount()
      */
-    public int getRowCount() {
+    @Override
+	public int getRowCount() {
         
         final int rowCount = a_listOfPhotos.size();
         
@@ -165,7 +166,8 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#getColumnCount()
      */
-    public int getColumnCount() {
+    @Override
+	public int getColumnCount() {
         return NB_PARAM;
     }
 
@@ -174,7 +176,8 @@ public class ConcretePhotoList extends Object
      * @param rowIndex
      * @return photo
      */
-    public Photo getPhoto(final int rowIndex) {
+    @Override
+	public Photo getPhoto(final int rowIndex) {
 
         final Photo photo = a_listOfPhotos.get(rowIndex);
         
@@ -184,7 +187,8 @@ public class ConcretePhotoList extends Object
     /**
      * @return flag indicating if the current values are saved
      */
-    public boolean isSaved() {
+    @Override
+	public boolean isSaved() {
 
         final boolean isSaved = a_isSaved;
         
@@ -219,7 +223,8 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
-    public String getColumnName(final int columnIndex) {
+    @Override
+	public String getColumnName(final int columnIndex) {
         switch (columnIndex) {
         case PARAM_FOLDER:
             return "folder";
@@ -297,7 +302,8 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
-    public Class<?> getColumnClass(final int columnIndex) {
+    @Override
+	public Class<?> getColumnClass(final int columnIndex) {
         switch (columnIndex) {
         case PARAM_FOLDER:
         case PARAM_FILENAME:
@@ -354,7 +360,8 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
-    public boolean isCellEditable(final int rowIndex,
+    @Override
+	public boolean isCellEditable(final int rowIndex,
     		                      final int columnIndex) {
         switch (columnIndex) {
         case PARAM_PRIVACY:
@@ -400,7 +407,8 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
-    public Object getValueAt(final int rowIndex,
+    @Override
+	public Object getValueAt(final int rowIndex,
                              final int columnIndex) {
         Object value = null;
         
@@ -516,7 +524,8 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
-    public void setValueAt(final Object value,
+    @Override
+	public void setValueAt(final Object value,
                            final int rowIndex,
                            final int columnIndex) {
     	
@@ -705,28 +714,32 @@ public class ConcretePhotoList extends Object
     /**
      * @see javax.swing.table.TableModel#addTableModelListener(javax.swing.event.TableModelListener)
      */
-    public void addTableModelListener(final TableModelListener l) {
+    @Override
+	public void addTableModelListener(final TableModelListener l) {
         a_listOfListeners.add(l);
     }
     
     /**
      * @see javax.swing.table.TableModel#removeTableModelListener(javax.swing.event.TableModelListener)
      */
-    public void removeTableModelListener(final TableModelListener l) {
+    @Override
+	public void removeTableModelListener(final TableModelListener l) {
         a_listOfListeners.remove(l);
     }
     
     /**
      * @param l
      */
-    public void addMetaListener(final PhotoListMetaDataListener l) {
+    @Override
+	public void addMetaListener(final PhotoListMetaDataListener l) {
         a_listOfMetaDataListeners.add(l);
     }
     
     /**
      * @param l
      */
-    public void removeMetaListener(final PhotoListMetaDataListener l) {
+    @Override
+	public void removeMetaListener(final PhotoListMetaDataListener l) {
         a_listOfMetaDataListeners.remove(l);
     }
 
@@ -749,28 +762,32 @@ public class ConcretePhotoList extends Object
     /**
      * @return location factory
      */
-    public HierarchicalCompoundStringFactory getLocationFactory() {
+    @Override
+	public HierarchicalCompoundStringFactory getLocationFactory() {
         return a_locationFactory;
     }
 
     /**
      * @return subject factory
      */
-    public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
+    @Override
+	public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
         return a_subjectFactory;
     }
 
     /**
      * @return author factory
      */
-    public AuthorFactory getAuthorFactory() {
+    @Override
+	public AuthorFactory getAuthorFactory() {
         return a_authorFactory;
     }
     
     /**
      * @throws IOException
      */
-    public void save() throws IOException {
+    @Override
+	public void save() throws IOException {
     	
         // check that the data is not already saved
     	if (a_isSaved) {
@@ -923,7 +940,8 @@ public class ConcretePhotoList extends Object
         }
 
         Collections.sort(content,new Comparator<String>() {
-        	public int compare(final String s1, final String s2) {
+        	@Override
+			public int compare(final String s1, final String s2) {
         		final Long lastModified1 = modificationDateTimes.get(s1);
         		final Long lastModified2 = modificationDateTimes.get(s2);
         		return lastModified1.compareTo(lastModified2);

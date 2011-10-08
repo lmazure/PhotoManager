@@ -15,7 +15,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class GPSDataDeleteCellEditor extends JButton
                                      implements TableCellEditor {
@@ -30,7 +30,8 @@ public class GPSDataDeleteCellEditor extends JButton
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
-    public Component getTableCellEditorComponent(final JTable table,
+    @Override
+	public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value,
                                                  final boolean isSelected, 
                                                  final int row,
@@ -55,46 +56,53 @@ public class GPSDataDeleteCellEditor extends JButton
     /**
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
-    public void cancelCellEditing() {
+    @Override
+	public void cancelCellEditing() {
     }
 
     /**
      * @see javax.swing.CellEditor#stopCellEditing()
      */
-    public boolean stopCellEditing() {        
+    @Override
+	public boolean stopCellEditing() {        
         return true;
     }
 
     /**
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
-    public Object getCellEditorValue() {
+    @Override
+	public Object getCellEditorValue() {
         return null;
     }
 
     /**
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
-    public boolean isCellEditable(final EventObject anEvent) {
+    @Override
+	public boolean isCellEditable(final EventObject anEvent) {
         return true;
     }
 
     /**
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
-    public boolean shouldSelectCell(final EventObject anEvent) {
+    @Override
+	public boolean shouldSelectCell(final EventObject anEvent) {
         return true;
     }
 
     /**
      * @see javax.swing.CellEditor#addCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void addCellEditorListener(final CellEditorListener l) {
+    @Override
+	public void addCellEditorListener(final CellEditorListener l) {
     }
 
     /**
      * @see javax.swing.CellEditor#removeCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void removeCellEditorListener(final CellEditorListener l) {
+    @Override
+	public void removeCellEditorListener(final CellEditorListener l) {
     }
 }

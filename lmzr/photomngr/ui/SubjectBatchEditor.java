@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class SubjectBatchEditor extends JDialog {
 
@@ -45,7 +45,8 @@ public class SubjectBatchEditor extends JDialog {
 			a_edit = edit;
 			a_edit.addActionListener(
 	                new ActionListener() {
-	                    public void actionPerformed(final ActionEvent e) {
+	                    @Override
+						public void actionPerformed(final ActionEvent e) {
 	                    	if ( edit.isSelected()) {
 	                    		edited.setEditable(true);
 	                    		setEditedText(initial.getText());
@@ -60,7 +61,8 @@ public class SubjectBatchEditor extends JDialog {
 			a_propagate = propagate;
 			a_propagate.addActionListener(
 	                new ActionListener() {
-	                    public void actionPerformed(final ActionEvent e) {
+	                    @Override
+						public void actionPerformed(final ActionEvent e) {
 	                    	int i = a_position; 
 	                    	while ( i<a_rows.size() && a_rows.get(i).getInitialText().startsWith(a_initial.getText()) ) {
 	                    		final String initialText = a_rows.get(i).getInitialText();
@@ -131,12 +133,14 @@ public class SubjectBatchEditor extends JDialog {
 		buttonsPane.add(bCancel);
 		getRootPane().setDefaultButton(bCancel);
 		bOk.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					performer.performMapTranslation(getTranslationMap());
 				    close();
 				}
 		});
 		bCancel.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(final ActionEvent e) {
 						close();
 					}

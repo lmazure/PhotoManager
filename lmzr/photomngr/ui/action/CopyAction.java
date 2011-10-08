@@ -14,7 +14,7 @@ import javax.swing.ListSelectionModel;
 /**
  * Action to copy
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
 
@@ -41,6 +41,7 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 
 		final ListSelectionModel selection = a_table.getSelectionModel();
@@ -56,6 +57,7 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
 	/**
 	 * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
 	 */
+	@Override
 	public void lostOwnership(final Clipboard clipboard,
 			                  final Transferable contents) {
 	}

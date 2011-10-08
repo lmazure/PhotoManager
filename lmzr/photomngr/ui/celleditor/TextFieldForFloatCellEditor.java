@@ -15,7 +15,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class TextFieldForFloatCellEditor extends JTextField implements TableCellEditor {
 
@@ -32,14 +32,16 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
 	/**
      * @param listener
      */
-    public void addCellEditorListener(final CellEditorListener listener) {
+    @Override
+	public void addCellEditorListener(final CellEditorListener listener) {
         a_listenerList.add(listener);
     } 
     
     /**
      * @param listener
      */
-    public void removeCellEditorListener(final CellEditorListener listener) {
+    @Override
+	public void removeCellEditorListener(final CellEditorListener listener) {
         a_listenerList.remove(listener);
     } 
     
@@ -62,14 +64,16 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
     /**
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
-    public void cancelCellEditing() {
+    @Override
+	public void cancelCellEditing() {
         fireEditingCanceled();
     } 
     
     /**
      * @return x
      */
-    public boolean stopCellEditing() {
+    @Override
+	public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
     } 
@@ -78,7 +82,8 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      * @param event
      * @return x
      */
-    public boolean isCellEditable(final EventObject event) {
+    @Override
+	public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programaticaly edited
             return true;
@@ -100,7 +105,8 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      * @param event
      * @return x
      */
-    public boolean shouldSelectCell(final EventObject event) {
+    @Override
+	public boolean shouldSelectCell(final EventObject event) {
         return true;
     } 
         
@@ -112,7 +118,8 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      * @param column
      * @return x
      */
-    public Component getTableCellEditorComponent(final JTable table,
+    @Override
+	public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value, 
                                                  final boolean isSelected,
                                                  final int row,
@@ -128,7 +135,8 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      * @return selected element
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
-    public Object getCellEditorValue() {
+    @Override
+	public Object getCellEditorValue() {
         return getText(); 
     }   
 

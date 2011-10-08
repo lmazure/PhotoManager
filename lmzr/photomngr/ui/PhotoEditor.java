@@ -31,7 +31,7 @@ import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
 import lmzr.photomngr.ui.celleditor.SubjectCellEditor;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  *
  */
 public class PhotoEditor extends JFrame
@@ -80,12 +80,14 @@ public class PhotoEditor extends JFrame
         a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_location.addTextFocusListener (
                 new FocusListener() {
-                    public void focusLost(final FocusEvent e) {
+                    @Override
+					public void focusLost(final FocusEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_location.getText(),
                     			               a_selection.getSelection()[0],
                     			               PhotoList.PARAM_LOCATION);}
-                    public void focusGained(final FocusEvent e) {
+                    @Override
+					public void focusGained(final FocusEvent e) {
                     }
                 });        
         a_subject = new SubjectCellEditor(photoList, this);
@@ -93,12 +95,14 @@ public class PhotoEditor extends JFrame
         a_subject.setBorder(BorderFactory.createTitledBorder("subject"));
         a_subject.addTextFocusListener (
                 new FocusListener() { 
-                    public void focusLost(final FocusEvent e) {
+                    @Override
+					public void focusLost(final FocusEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_subject.getText(),
                     			               a_selection.getSelection()[0],
                     			               PhotoList.PARAM_SUBJECT);}
-                    public void focusGained(final FocusEvent e) {
+                    @Override
+					public void focusGained(final FocusEvent e) {
                     }
                 });
         panel.add(a_subject);
@@ -109,7 +113,8 @@ public class PhotoEditor extends JFrame
         a_quality.setMaximumSize(a_quality.getPreferredSize());
         a_quality.addActionListener(
             new ActionListener() {
-                public void actionPerformed(final ActionEvent e) {
+                @Override
+				public void actionPerformed(final ActionEvent e) {
                 	if (a_isAdjusting) return;
                     a_photoList.setValueAt(a_quality.getSelectedItem(),
                                            a_selection.getSelection()[0],
@@ -122,7 +127,8 @@ public class PhotoEditor extends JFrame
         a_originality.setMaximumSize(a_originality.getPreferredSize());
         a_originality.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                         a_photoList.setValueAt(a_originality.getSelectedItem(),
                         		               a_selection.getSelection()[0],
@@ -135,7 +141,8 @@ public class PhotoEditor extends JFrame
         a_privacy.setMaximumSize(a_privacy.getPreferredSize());
         a_privacy.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                         a_photoList.setValueAt(a_privacy.getSelectedItem(),
                         		               a_selection.getSelection()[0],
@@ -150,7 +157,8 @@ public class PhotoEditor extends JFrame
         a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_author.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_author.getSelectedItem(),
                     			               a_selection.getSelection()[0],
@@ -163,7 +171,8 @@ public class PhotoEditor extends JFrame
         a_panorama.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_panorama.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_panorama.getText(),
                     			               a_selection.getSelection()[0],
@@ -175,7 +184,8 @@ public class PhotoEditor extends JFrame
         a_panoramaFirst.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_panoramaFirst.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                     	a_photoList.setValueAt(a_panoramaFirst.getText(),
                     			               a_selection.getSelection()[0],
@@ -188,7 +198,8 @@ public class PhotoEditor extends JFrame
         a_copies.setAlignmentX(Component.LEFT_ALIGNMENT);
         a_copies.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	if (a_isAdjusting) return;
                         a_photoList.setValueAt(a_copies.getSelectedItem(),
                         		               a_selection.getSelection()[0],
@@ -255,7 +266,8 @@ public class PhotoEditor extends JFrame
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
-    public void valueChanged(final ListSelectionEvent e) {
+    @Override
+	public void valueChanged(final ListSelectionEvent e) {
 
         if (e.getValueIsAdjusting()) {
             // event compression -> only the last one is taken into account
@@ -268,7 +280,8 @@ public class PhotoEditor extends JFrame
     /**
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
      */
-    public void tableChanged(final TableModelEvent e) {
+    @Override
+	public void tableChanged(final TableModelEvent e) {
         update();
     }
     

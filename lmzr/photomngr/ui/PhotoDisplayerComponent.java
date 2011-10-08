@@ -90,7 +90,8 @@ public class PhotoDisplayerComponent extends JComponent
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
-    public void valueChanged(final ListSelectionEvent e) {
+    @Override
+	public void valueChanged(final ListSelectionEvent e) {
         
         if (e.getValueIsAdjusting()) {
             // event compression -> only the last one is taken into account
@@ -238,6 +239,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @param e
 	 */
+	@Override
 	public void mouseDragged(final MouseEvent e) {
 		
 		if ( e.getModifiersEx()!=InputEvent.BUTTON1_DOWN_MASK) return;
@@ -272,6 +274,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @param e
 	 */
+	@Override
 	public void mouseMoved(final MouseEvent e) {
 		// do nothing
 	}
@@ -279,6 +282,7 @@ public class PhotoDisplayerComponent extends JComponent
    	/**
 	 * @param e
 	 */
+	@Override
 	public void mouseClicked(final MouseEvent e) {
 		// do nothing
 	}
@@ -286,6 +290,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @param e
 	 */
+	@Override
 	public void mousePressed(final MouseEvent e) {
 		a_startX = e.getX();
 		a_startY = e.getY();
@@ -294,6 +299,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @param e
 	 */
+	@Override
 	public void mouseReleased(final MouseEvent e) {
 		mouseDragged(e);
 	}
@@ -301,6 +307,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @param e
 	 */
+	@Override
 	public void mouseEntered(final MouseEvent e) {
 		// do nothing
 	}
@@ -308,6 +315,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @param e
 	 */
+	@Override
 	public void mouseExited(final MouseEvent e) {
 		// do nothing
 	}
@@ -315,6 +323,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
+	@Override
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		
 		if ( a_photoList.getRowCount()==0 ) {
@@ -353,6 +362,7 @@ public class PhotoDisplayerComponent extends JComponent
 	/**
 	 * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
 	 */
+	@Override
 	public void tableChanged(final TableModelEvent e) {
 		
         final int firstRow = e.getFirstRow();

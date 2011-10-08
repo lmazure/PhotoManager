@@ -97,12 +97,14 @@ public class LocationCellEditor extends JComponent
     		buttonsPane.add(bCancel);
     		getRootPane().setDefaultButton(bOk);
     		bOk.addActionListener(new ActionListener() {
-    				public void actionPerformed(final ActionEvent e) {
+    				@Override
+					public void actionPerformed(final ActionEvent e) {
     					close();
     				}
     		});
     		bCancel.addActionListener(new ActionListener() {
-    					public void actionPerformed(final ActionEvent e) {
+    					@Override
+						public void actionPerformed(final ActionEvent e) {
     						a_text.setText(a_keptValue);
     						close();
     					}
@@ -158,7 +160,8 @@ public class LocationCellEditor extends JComponent
         add(a_button);
         a_button.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                     	a_internal.open(a_textfield.getText());}});
         
         a_internal = new InternalLocationCellEditor(a_factory, parent);
@@ -185,7 +188,8 @@ public class LocationCellEditor extends JComponent
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
-    public Component getTableCellEditorComponent(final JTable table,
+    @Override
+	public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value,
                                                  final boolean isSelected,
                                                  final int row,
@@ -209,21 +213,24 @@ public class LocationCellEditor extends JComponent
     /**
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
-    public Object getCellEditorValue() {
+    @Override
+	public Object getCellEditorValue() {
         return a_textfield.getText();
     }
 
     /**
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
-    public boolean shouldSelectCell(final EventObject e) {
+    @Override
+	public boolean shouldSelectCell(final EventObject e) {
         return true;
     }
 
     /**
      * @see javax.swing.CellEditor#stopCellEditing()
      */
-    public boolean stopCellEditing() {
+    @Override
+	public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
     }
@@ -231,28 +238,32 @@ public class LocationCellEditor extends JComponent
     /**
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
-    public void cancelCellEditing() {
+    @Override
+	public void cancelCellEditing() {
         fireEditingCanceled();
     }
 
     /**
      * @see javax.swing.CellEditor#addCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void addCellEditorListener(final CellEditorListener l) {
+    @Override
+	public void addCellEditorListener(final CellEditorListener l) {
         a_listenerList.add(l);
     }
 
     /**
      * @see javax.swing.CellEditor#removeCellEditorListener(javax.swing.event.CellEditorListener)
      */
-    public void removeCellEditorListener(final CellEditorListener l) {
+    @Override
+	public void removeCellEditorListener(final CellEditorListener l) {
         a_listenerList.remove(l);
     }
     
     /**
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
-    public boolean isCellEditable(final EventObject event) {
+    @Override
+	public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programmatically edited
             return true;

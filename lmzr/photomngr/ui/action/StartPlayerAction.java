@@ -12,7 +12,7 @@ import lmzr.photomngr.ui.player.Player;
 /**
  * Action to start a image/movie displayer
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class StartPlayerAction extends PhotoManagerAction {
 
@@ -44,7 +44,8 @@ public class StartPlayerAction extends PhotoManagerAction {
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(final ActionEvent e) {
+    @Override
+	public void actionPerformed(final ActionEvent e) {
 
     	if ( a_player.getExecutable()==null ) {
 	        JOptionPane.showMessageDialog(null,

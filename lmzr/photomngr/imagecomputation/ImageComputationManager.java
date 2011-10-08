@@ -136,7 +136,8 @@ public class ImageComputationManager {
         /**
          * @see java.lang.Runnable#run()
          */
-        public void run() {
+        @Override
+		public void run() {
             try {
             	final SubsampledImage image = a_subsampler.getImage(a_photo, a_params, 1.0);
 	            if ( image.getImage() == null ) {

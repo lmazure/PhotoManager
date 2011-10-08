@@ -8,7 +8,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.ui.GPSDataDisplay;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class DisplayGPSDatabaseAction extends PhotoManagerAction {
 
@@ -36,6 +36,7 @@ public class DisplayGPSDatabaseAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 
 		if ( a_GPSDisplay == null ) {

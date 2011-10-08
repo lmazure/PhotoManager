@@ -10,7 +10,7 @@ import lmzr.photomngr.ui.PhotoDisplayer;
 /**
  * Action to display the display using the full screen
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class FullScreenAction extends PhotoManagerAction {
 
@@ -36,6 +36,7 @@ public class FullScreenAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		a_photoDisplayer.setFullScreen(!a_photoDisplayer.getFullScreen());
 	}

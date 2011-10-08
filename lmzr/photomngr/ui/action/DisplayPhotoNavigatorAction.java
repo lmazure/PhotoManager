@@ -10,7 +10,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.ui.PhotoNavigator;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class DisplayPhotoNavigatorAction extends PhotoManagerAction {
 
@@ -46,6 +46,7 @@ public class DisplayPhotoNavigatorAction extends PhotoManagerAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 
 			if ( a_PhotoNavigator==null)

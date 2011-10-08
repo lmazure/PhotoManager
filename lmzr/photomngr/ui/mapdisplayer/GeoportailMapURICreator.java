@@ -7,7 +7,7 @@ import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class GeoportailMapURICreator implements MapURICreator {
 	
@@ -21,6 +21,7 @@ public class GeoportailMapURICreator implements MapURICreator {
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#getName()
 	 */
+	@Override
 	public String getName()
 	{
 		return "Geoportail";
@@ -29,6 +30,7 @@ public class GeoportailMapURICreator implements MapURICreator {
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#createMapURLFromGPSData(lmzr.util.string.HierarchicalCompoundString, lmzr.photomngr.data.GPS.GPSData)
 	 */
+	@Override
 	public URI createMapURIFromGPSData(final GPSRecord record) {
 		
 		final GPSData data = record.getGPSData();

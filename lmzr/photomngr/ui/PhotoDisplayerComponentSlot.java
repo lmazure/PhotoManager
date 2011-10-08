@@ -239,7 +239,8 @@ public class PhotoDisplayerComponentSlot extends JComponent
     /**
      * @see lmzr.photomngr.imagecomputation.ImageComputationConsumer#consumeImageComputation(lmzr.photomngr.data.Photo, lmzr.photomngr.imagecomputation.ImageComputationParameters, java.awt.image.BufferedImage)
      */
-    public void consumeImageComputation(final Photo photo,
+    @Override
+	public void consumeImageComputation(final Photo photo,
                                         final ImageComputationParameters params,
                                         final BufferedImage image) {
         
@@ -279,33 +280,38 @@ public class PhotoDisplayerComponentSlot extends JComponent
     /**
      * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
      */
-    public void componentResized(final ComponentEvent e) {
+    @Override
+	public void componentResized(final ComponentEvent e) {
     	callImageComputation();
     }
 
     /**
      * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
      */
-    public void componentMoved(final ComponentEvent e) {
+    @Override
+	public void componentMoved(final ComponentEvent e) {
     }
 
     /**
      * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
      */
-    public void componentShown(final ComponentEvent e) {
+    @Override
+	public void componentShown(final ComponentEvent e) {
     }
 
     /**
      * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
      */
-    public void componentHidden(final ComponentEvent e) {
+    @Override
+	public void componentHidden(final ComponentEvent e) {
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoProvider#getPhoto()
      * @return photo currently displayed
      */
-    public Photo getPhoto()
+    @Override
+	public Photo getPhoto()
     {
     	return a_photo;
     }

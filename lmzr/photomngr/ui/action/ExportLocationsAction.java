@@ -10,7 +10,7 @@ import lmzr.photomngr.data.filter.FilteredPhotoList;
 /**
  * Action to export the list of subjects
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class ExportLocationsAction extends ExportAction {
 	
@@ -37,6 +37,7 @@ public class ExportLocationsAction extends ExportAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
+		@Override
 		public void actionPerformed( final ActionEvent e) {
 		    dumpRoot(a_photoList.getLocationFactory().getRootAsHierarchicalCompoundString());
 		}

@@ -10,7 +10,7 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public interface PhotoList extends TableModel, SaveableModel {
 
@@ -161,12 +161,14 @@ public interface PhotoList extends TableModel, SaveableModel {
     /**
      * @see javax.swing.table.TableModel#getRowCount()
      */
-    public abstract int getRowCount();
+    @Override
+	public abstract int getRowCount();
 
     /**
      * @see javax.swing.table.TableModel#getColumnCount()
      */
-    public abstract int getColumnCount();
+    @Override
+	public abstract int getColumnCount();
 
     /**
      * @param rowIndex
@@ -182,39 +184,46 @@ public interface PhotoList extends TableModel, SaveableModel {
     /**
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
-    public abstract String getColumnName(final int columnIndex);
+    @Override
+	public abstract String getColumnName(final int columnIndex);
 
     /**
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
-    public abstract Class<?> getColumnClass(final int columnIndex);
+    @Override
+	public abstract Class<?> getColumnClass(final int columnIndex);
 
     /**
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
-    public abstract boolean isCellEditable(final int rowIndex, final int columnIndex);
+    @Override
+	public abstract boolean isCellEditable(final int rowIndex, final int columnIndex);
 
     /**
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
-    public abstract Object getValueAt(final int rowIndex, final int columnIndex);
+    @Override
+	public abstract Object getValueAt(final int rowIndex, final int columnIndex);
 
     /**
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
-    public abstract void setValueAt(final Object value,
+    @Override
+	public abstract void setValueAt(final Object value,
                                     final int rowIndex,
                                     final int columnIndex);
 
     /**
      * @see javax.swing.table.TableModel#addTableModelListener(javax.swing.event.TableModelListener)
      */
-    public abstract void addTableModelListener(final TableModelListener l);
+    @Override
+	public abstract void addTableModelListener(final TableModelListener l);
 
     /**
      * @see javax.swing.table.TableModel#removeTableModelListener(javax.swing.event.TableModelListener)
      */
-    public abstract void removeTableModelListener(final TableModelListener l);
+    @Override
+	public abstract void removeTableModelListener(final TableModelListener l);
 
     /**
      * @param l
@@ -239,7 +248,8 @@ public interface PhotoList extends TableModel, SaveableModel {
     /**
      * @throws IOException
      */
-    public abstract void save() throws IOException;
+    @Override
+	public abstract void save() throws IOException;
     
     /**
      * @return location factory

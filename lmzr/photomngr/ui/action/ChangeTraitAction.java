@@ -9,7 +9,7 @@ import lmzr.photomngr.data.phototrait.PhotoTrait;
 /**
  * Action to change a trait of the selected photos
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 
 public class ChangeTraitAction extends PhotoManagerAction {
@@ -42,6 +42,7 @@ public class ChangeTraitAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final int select[] = a_selection.getSelection();
 		for (int i=0; i<select.length; i++) {

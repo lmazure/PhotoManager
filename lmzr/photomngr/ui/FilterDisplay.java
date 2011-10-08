@@ -35,7 +35,7 @@ import lmzr.photomngr.ui.filter.HierachicalCompoundStringComponentFilterUI;
 import lmzr.photomngr.ui.filter.TraitDisplayComponentFilterUI;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class FilterDisplay extends JDialog {
 
@@ -123,6 +123,7 @@ public class FilterDisplay extends JDialog {
 		buttonsPane.add(bCancel);
 		getRootPane().setDefaultButton(bOk);
 		bOk.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 				    final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(a_originality.isActive(),PhotoOriginality.getTraits(),a_originality.getValues(),PhotoList.PARAM_ORIGINALITY);
 				    final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(a_privacy.isActive(),PhotoPrivacy.getTraits(),a_privacy.getValues(),PhotoList.PARAM_PRIVACY);
@@ -151,6 +152,7 @@ public class FilterDisplay extends JDialog {
 				}
 		});
 		bCancel.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(final ActionEvent e) {
 						close();
 					}

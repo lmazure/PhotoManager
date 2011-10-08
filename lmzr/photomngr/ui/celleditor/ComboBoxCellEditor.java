@@ -31,21 +31,24 @@ public class ComboBoxCellEditor extends JComboBox
         a_listenerList = new Vector<CellEditorListener>();
 
         addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent event) { fireEditingStopped(); } 
+            @Override
+			public void actionPerformed(final ActionEvent event) { fireEditingStopped(); } 
         });
     }
     
     /**
      * @param listener
      */
-    public void addCellEditorListener(final CellEditorListener listener) {
+    @Override
+	public void addCellEditorListener(final CellEditorListener listener) {
         a_listenerList.add(listener);
     } 
     
     /**
      * @param listener
      */
-    public void removeCellEditorListener(final CellEditorListener listener) {
+    @Override
+	public void removeCellEditorListener(final CellEditorListener listener) {
         a_listenerList.remove(listener);
     } 
     
@@ -68,14 +71,16 @@ public class ComboBoxCellEditor extends JComboBox
     /**
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
-    public void cancelCellEditing() {
+    @Override
+	public void cancelCellEditing() {
         fireEditingCanceled();
     } 
     
     /**
      * @return x
      */
-    public boolean stopCellEditing() {
+    @Override
+	public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
     } 
@@ -84,7 +89,8 @@ public class ComboBoxCellEditor extends JComboBox
      * @param event
      * @return x
      */
-    public boolean isCellEditable(final EventObject event) {
+    @Override
+	public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programaticaly edited
             return true;
@@ -106,7 +112,8 @@ public class ComboBoxCellEditor extends JComboBox
      * @param event
      * @return x
      */
-    public boolean shouldSelectCell(final EventObject event) {
+    @Override
+	public boolean shouldSelectCell(final EventObject event) {
         return true;
     } 
         
@@ -118,7 +125,8 @@ public class ComboBoxCellEditor extends JComboBox
      * @param column
      * @return x
      */
-    public Component getTableCellEditorComponent(final JTable table,
+    @Override
+	public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value, 
                                                  final boolean isSelected,
                                                  final int row,
@@ -131,7 +139,8 @@ public class ComboBoxCellEditor extends JComboBox
      * @return selected element
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
-    public Object getCellEditorValue() {
+    @Override
+	public Object getCellEditorValue() {
         return getSelectedItem(); 
     }   
 }

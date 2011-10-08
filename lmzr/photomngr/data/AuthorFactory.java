@@ -56,7 +56,9 @@ public class AuthorFactory {
 	public String[] getAuthors() {
 		if ( a_cache == null ) {
 			final Record[] r = a_set.values().toArray(new Record[0]);
-			Arrays.sort(r,new Comparator<Record>() { public int compare(final Record r1, final Record r2) { return r2.getNumber() - r1.getNumber(); }}); 
+			Arrays.sort(r,new Comparator<Record>() { @Override
+				public int compare(final Record r1, final Record r2) { return r2.getNumber() - r1.getNumber(); }
+			}); 
 			a_cache = new String[r.length];
 			for (int i=0; i<r.length; i++) a_cache[i] = r[i].getString(); 
 		}

@@ -39,7 +39,8 @@ public class ComponentFilterUI extends JPanel {
         add(a_pane);
         
         final ActionListener listener = new ActionListener() {
-        	public void actionPerformed(final ActionEvent e) {
+        	@Override
+			public void actionPerformed(final ActionEvent e) {
         		final boolean b = a_title.isSelected();
         		a_pane.setVisible(b);
         		filter.setEnabled(b);}};

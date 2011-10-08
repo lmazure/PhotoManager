@@ -147,7 +147,8 @@ public class PhotoListDisplay extends JFrame
     /**
      * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
-    public void saveChanged(final SaveEvent e) {
+    @Override
+	public void saveChanged(final SaveEvent e) {
 
     	final boolean photoListIsSaved = e.isSaved();
 
@@ -159,7 +160,8 @@ public class PhotoListDisplay extends JFrame
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
-    public void valueChanged(final ListSelectionEvent e) {
+    @Override
+	public void valueChanged(final ListSelectionEvent e) {
 
 		final int select[] = a_selection.getSelection();
 

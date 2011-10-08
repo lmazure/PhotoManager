@@ -12,7 +12,7 @@ import lmzr.photomngr.ui.PhotoDisplayer;
 /**
  * Action to display the filter
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class DisplayFilterAction extends PhotoManagerAction {
 
@@ -48,6 +48,7 @@ public class DisplayFilterAction extends PhotoManagerAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			
 			if ( a_filter == null)

@@ -10,7 +10,7 @@ import lmzr.photomngr.data.filter.FilteredPhotoList;
 /**
  * Action to reset the number of copies
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class ResetNumberOfCopiesAction extends PhotoManagerAction {
 	
@@ -37,6 +37,7 @@ public class ResetNumberOfCopiesAction extends PhotoManagerAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			for (int i=0; i<a_photoList.getRowCount(); i++) {
 				if ( ((Integer)a_photoList.getValueAt(i, PhotoList.PARAM_COPIES)).intValue() > 0 ) {

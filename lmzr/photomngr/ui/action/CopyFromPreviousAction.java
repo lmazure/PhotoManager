@@ -9,7 +9,7 @@ import javax.swing.ListSelectionModel;
 /**
  * Action to copy a parameter from the previous image
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class CopyFromPreviousAction extends PhotoManagerAction {
 
@@ -36,6 +36,7 @@ public class CopyFromPreviousAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		
 		final ListSelectionModel selection = a_table.getSelectionModel();

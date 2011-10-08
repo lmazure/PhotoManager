@@ -14,7 +14,7 @@ import javax.swing.ListSelectionModel;
 /**
  * Action to paste
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class PasteAction extends PhotoManagerAction {
 
@@ -42,6 +42,7 @@ public class PasteAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		
 		final Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);			

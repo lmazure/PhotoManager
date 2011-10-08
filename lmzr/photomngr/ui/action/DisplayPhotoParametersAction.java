@@ -9,7 +9,7 @@ import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.ui.PhotoParametersDisplay;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class DisplayPhotoParametersAction extends PhotoManagerAction {
 
@@ -41,6 +41,7 @@ public class DisplayPhotoParametersAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 
 		if (a_PhotoParametersDisplay==null)

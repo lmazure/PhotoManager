@@ -12,7 +12,7 @@ import lmzr.photomngr.exporter.Exporter;
 /**
  * Action to create exportable copies
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class CreateCopiesForPrintingAction extends PhotoManagerAction {
 
@@ -42,6 +42,7 @@ public class CreateCopiesForPrintingAction extends PhotoManagerAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 
 			final Exporter exporter = new Exporter(a_frame);

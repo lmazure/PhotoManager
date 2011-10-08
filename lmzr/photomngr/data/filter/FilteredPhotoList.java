@@ -23,7 +23,7 @@ import lmzr.util.string.HierarchicalCompoundStringFactory;
 import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, SaveListener, TableModelListener {
 
@@ -81,91 +81,104 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     /**
      * @see lmzr.photomngr.data.PhotoList#getRowCount()
      */
-    public int getRowCount() {
+    @Override
+	public int getRowCount() {
         return a_rowCount;
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getColumnCount()
      */
-    public int getColumnCount() {
+    @Override
+	public int getColumnCount() {
         return a_list.getColumnCount();
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getPhoto(int)
      */
-    public Photo getPhoto(final int index) {
+    @Override
+	public Photo getPhoto(final int index) {
         return a_list.getPhoto(a_indexFromSource[index]);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#isSaved()
      */
-    public boolean isSaved() {
+    @Override
+	public boolean isSaved() {
         return a_list.isSaved();
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getColumnName(int)
      */
-    public String getColumnName(final int columnIndex) {
+    @Override
+	public String getColumnName(final int columnIndex) {
         return a_list.getColumnName(columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getColumnClass(int)
      */
-    public Class<?> getColumnClass(final int columnIndex) {
+    @Override
+	public Class<?> getColumnClass(final int columnIndex) {
         return a_list.getColumnClass(columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#isCellEditable(int, int)
      */
-    public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+    @Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
         return a_list.isCellEditable(a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getValueAt(int, int)
      */
-    public Object getValueAt(final int rowIndex, final int columnIndex) {
+    @Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
         return a_list.getValueAt(a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#setValueAt(java.lang.Object, int, int)
      */
-    public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
+    @Override
+	public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
         a_list.setValueAt(value,a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
      * @see javax.swing.table.TableModel#addTableModelListener(javax.swing.event.TableModelListener)
      */
-    public void addTableModelListener(final TableModelListener l) {
+    @Override
+	public void addTableModelListener(final TableModelListener l) {
         a_listOfListeners.add(l);
     }
     
     /**
      * @see javax.swing.table.TableModel#removeTableModelListener(javax.swing.event.TableModelListener)
      */
-    public void removeTableModelListener(final TableModelListener l) {
+    @Override
+	public void removeTableModelListener(final TableModelListener l) {
         a_listOfListeners.remove(l);
     }
     
     /**
      * @param l
      */
-    public void addMetaListener(final PhotoListMetaDataListener l) {
+    @Override
+	public void addMetaListener(final PhotoListMetaDataListener l) {
         a_listOfMetaDataListeners.add(l);
     }
     
     /**
      * @param l
      */
-    public void removeMetaListener(final PhotoListMetaDataListener l) {
+    @Override
+	public void removeMetaListener(final PhotoListMetaDataListener l) {
         a_listOfMetaDataListeners.remove(l);
     }
 
@@ -188,14 +201,16 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     /**
      * @see lmzr.photomngr.data.PhotoList#save()
      */
-    public void save() throws IOException {
+    @Override
+	public void save() throws IOException {
         a_list.save();
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoListMetaDataListener#photoListMetaDataChanged(lmzr.photomngr.data.PhotoListMetaDataEvent)
      */
-    public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
+    @Override
+	public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
         final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this,e.getChange());
         for (PhotoListMetaDataListener l: a_listOfMetaDataListeners) l.photoListMetaDataChanged(f);
     }
@@ -203,7 +218,8 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     /**
      * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
-    public void saveChanged(final SaveEvent e) {
+    @Override
+	public void saveChanged(final SaveEvent e) {
         final SaveEvent f = new SaveEvent(this,e.isSaved());
         for (SaveListener l: a_listOfSaveListeners) l.saveChanged(f);
     }
@@ -211,21 +227,24 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     /**
      * @return location factory
      */
-    public HierarchicalCompoundStringFactory getLocationFactory() {
+    @Override
+	public HierarchicalCompoundStringFactory getLocationFactory() {
         return a_list.getLocationFactory();
     }
 
     /**
      * @return subject factory
      */
-    public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
+    @Override
+	public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
         return a_list.getSubjectFactory();
     }
 
     /**
      * @return author factory
      */
-    public AuthorFactory getAuthorFactory() {
+    @Override
+	public AuthorFactory getAuthorFactory() {
         return a_list.getAuthorFactory();
     }
     
@@ -233,7 +252,8 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     /**
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
      */
-    public void tableChanged(final TableModelEvent e) {
+    @Override
+	public void tableChanged(final TableModelEvent e) {
 
     	if ( e.getType()==TableModelEvent.UPDATE && e.getLastRow()!=Integer.MAX_VALUE ) {
     		 
@@ -355,6 +375,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	/**
 	 * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
 	 */
+	@Override
 	public void performSubjectMapTranslation(final Map<String, String> map) {
 		a_list.performSubjectMapTranslation(map);
 	}
@@ -362,6 +383,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
 	/**
 	 * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
 	 */
+	@Override
 	public void performLocationMapTranslation(final Map<String, String> map) {
 		a_list.performLocationMapTranslation(map);
 	}

@@ -15,7 +15,7 @@ import lmzr.photomngr.ui.PhotoListDisplay;
 /**
  * Action to rename a folder
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class RenameFolderAction extends PhotoManagerAction {
 	
@@ -49,6 +49,7 @@ public class RenameFolderAction extends PhotoManagerAction {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			
 			if (!a_photoList.isSaved()) {

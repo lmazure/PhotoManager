@@ -420,7 +420,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     /**
      * @throws IOException
      */
-    public void save() throws IOException {
+    @Override
+	public void save() throws IOException {
     	
     	if (a_isSaved) return;
 

@@ -242,7 +242,8 @@ public class PhotoDisplayer extends JFrame
     /**
      * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
-    public void saveChanged(final SaveEvent e) {
+    @Override
+	public void saveChanged(final SaveEvent e) {
     	
     	final boolean photoListIsSaved = a_photoList.isSaved();
     	final boolean GPSDatabaseIsSaved = a_GPSDatabase.isSaved();

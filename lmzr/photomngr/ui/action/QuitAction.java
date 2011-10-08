@@ -12,7 +12,7 @@ import lmzr.photomngr.scheduler.Scheduler;
 /**
  * Action to quit
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class QuitAction extends PhotoManagerAction {
 
@@ -46,6 +46,7 @@ public class QuitAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 	    controlledExit();
 	}

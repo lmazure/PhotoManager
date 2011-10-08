@@ -40,7 +40,7 @@ import lmzr.photomngr.ui.player.Player;
 import lmzr.photomngr.ui.player.PlayerFactory;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  *
  */
 public class PhotoNavigator extends JFrame 
@@ -93,7 +93,8 @@ public class PhotoNavigator extends JFrame
         a_folderIsDisabled = false;
         a_folder.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(final ActionEvent e) {
+                    @Override
+					public void actionPerformed(final ActionEvent e) {
                         if (a_folderIsDisabled) return;
                         for (int i=0; i<a_photoList.getRowCount(); i++) {
                             final String f = a_photoList.getPhoto(i).getFolder();
@@ -109,11 +110,13 @@ public class PhotoNavigator extends JFrame
         a_nextPhoto = new JButton("next");
         a_nextPhoto.addActionListener(
                 new ActionListener() { 
-                    public void actionPerformed(final ActionEvent e) { a_selection.next(1);}});
+                    @Override
+					public void actionPerformed(final ActionEvent e) { a_selection.next(1);}});
         a_previousPhoto = new JButton("prev.");
         a_previousPhoto.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed( final ActionEvent e) { a_selection.previous(1);}});
+                    @Override
+					public void actionPerformed( final ActionEvent e) { a_selection.previous(1);}});
         navigator.add(a_file);
         navigator.add(a_previousPhoto);
         navigator.add(a_nextPhoto);
@@ -287,7 +290,8 @@ public class PhotoNavigator extends JFrame
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
-    public void valueChanged(final ListSelectionEvent e) {
+    @Override
+	public void valueChanged(final ListSelectionEvent e) {
 
         if (e.getValueIsAdjusting()) {
             // event compression -> only the last one is taken into account
@@ -300,7 +304,8 @@ public class PhotoNavigator extends JFrame
     /**
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
      */
-    public void tableChanged(final TableModelEvent e) {
+    @Override
+	public void tableChanged(final TableModelEvent e) {
     	if ( e.getType()==TableModelEvent.INSERT || e.getType()==TableModelEvent.DELETE ) {
     		updateFolderList();
     	}
@@ -328,6 +333,7 @@ public class PhotoNavigator extends JFrame
 	/**
 	 * @see lmzr.photomngr.data.PhotoListMetaDataListener#photoListMetaDataChanged(lmzr.photomngr.data.PhotoListMetaDataEvent)
 	 */
+	@Override
 	public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
 		if (e.getChange()==PhotoListMetaDataEvent.FILTER_HAS_CHANGED) updateFolderList();
 	}
@@ -349,7 +355,8 @@ public class PhotoNavigator extends JFrame
      * @see lmzr.photomngr.data.PhotoProvider#getPhoto()
      * @return photo currently displayed
      */
-    public Photo getPhoto()
+    @Override
+	public Photo getPhoto()
     {
     	return a_photoList.getPhoto(a_selection.getSelection()[0]);
     }

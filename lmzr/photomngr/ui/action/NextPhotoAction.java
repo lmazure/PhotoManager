@@ -9,7 +9,7 @@ import lmzr.photomngr.data.ListSelectionManager;
 /**
  * Action to display the next photo
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class NextPhotoAction extends PhotoManagerAction {
 
@@ -35,6 +35,7 @@ public class NextPhotoAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		a_selection.next(1);
 	}

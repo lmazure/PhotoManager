@@ -11,7 +11,7 @@ import lmzr.photomngr.data.SaveableModel;
 /**
  * Action to save all the data
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class SaveAction extends PhotoManagerAction {
 
@@ -37,6 +37,7 @@ public class SaveAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 	    try {
 	        a_model.save();

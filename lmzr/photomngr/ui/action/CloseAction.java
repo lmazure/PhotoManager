@@ -8,7 +8,7 @@ import javax.swing.KeyStroke;
 /**
  * Action to close a JFrame
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class CloseAction extends PhotoManagerAction {
 
@@ -34,6 +34,7 @@ public class CloseAction extends PhotoManagerAction {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		a_frame.dispose();
 	}

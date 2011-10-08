@@ -21,7 +21,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class GoogleMapsURICreator implements MapURICreator {
 	
@@ -44,6 +44,7 @@ public class GoogleMapsURICreator implements MapURICreator {
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#getName()
 	 */
+	@Override
 	public String getName()
 	{
 		return "Google";
@@ -52,6 +53,7 @@ public class GoogleMapsURICreator implements MapURICreator {
 	/**
 	 * @see lmzr.photomngr.ui.mapdisplayer.MapURICreator#createMapURLFromGPSData(lmzr.util.string.HierarchicalCompoundString, lmzr.photomngr.data.GPS.GPSData)
 	 */
+	@Override
 	public URI createMapURIFromGPSData(final GPSRecord record) {
 
 		final HierarchicalCompoundString location = record.getLocation();
