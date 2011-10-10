@@ -2,7 +2,6 @@ package lmzr.photomngr.ui.action;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.data.phototrait.PhotoPrivacy;
 
 /**
@@ -19,7 +18,7 @@ public class ChangePrivacyAction extends ChangeTraitAction {
 	 * @param selection 
 	 */
 	public ChangePrivacyAction(final PhotoPrivacy value,
-                               final FilteredPhotoList photoList,
+                               final PhotoList photoList,
  			                   final ListSelectionManager selection) {
         super(value,"privacy",PhotoList.PARAM_PRIVACY,photoList,selection);
 	}	

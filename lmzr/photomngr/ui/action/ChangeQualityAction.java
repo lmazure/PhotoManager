@@ -2,7 +2,6 @@ package lmzr.photomngr.ui.action;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
-import lmzr.photomngr.data.filter.FilteredPhotoList;
 import lmzr.photomngr.data.phototrait.PhotoQuality;
 
 /**
@@ -19,7 +18,7 @@ public class ChangeQualityAction extends ChangeTraitAction {
 	 * @param selection 
 	 */
 	public ChangeQualityAction(final PhotoQuality value,
-                               final FilteredPhotoList photoList,
+                               final PhotoList photoList,
  			                   final ListSelectionManager selection) {
         super(value,"quality",PhotoList.PARAM_QUALITY,photoList,selection);
 	}	

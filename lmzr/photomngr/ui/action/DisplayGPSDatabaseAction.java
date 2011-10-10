@@ -13,7 +13,7 @@ import lmzr.photomngr.ui.GPSDataDisplay;
 public class DisplayGPSDatabaseAction extends PhotoManagerAction {
 
 	private final GPSDatabase a_GPSDatabase;
-	GPSDataDisplay a_GPSDisplay;
+	private GPSDataDisplay a_GPSDisplay;
 
 	/**
 	 * @param text

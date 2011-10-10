@@ -1,8 +1,6 @@
 package lmzr.photomngr.ui;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,16 +9,23 @@ import javax.swing.WindowConstants;
 
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
+import lmzr.photomngr.ui.action.RotateAction;
 
 /**
- * @author Laurent Mazur�
+ * @author Laurent Mazuré
  */
 public class PhotoGeometryEditor extends JFrame {
 
     final private ListSelectionManager a_selection;
     final private PhotoList a_photoList;
-    final private JButton a_rotateLeft;
-    final private JButton a_rotateRight;
+    final private JButton a_rotateLeft90;
+    final private JButton a_rotateRight90;
+    final private JButton a_rotateLeft10;
+    final private JButton a_rotateRight10;
+    final private JButton a_rotateLeft1;
+    final private JButton a_rotateRight1;
+    final private JButton a_rotateLeft01;
+    final private JButton a_rotateRight01;
 
     /**
      * @param photoList
@@ -37,30 +42,37 @@ public class PhotoGeometryEditor extends JFrame {
         final JPanel display = new JPanel();
         display.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(display);
-        a_rotateLeft = new JButton("rotate left");
-        a_rotateRight = new JButton("rotate right");
-        display.add(a_rotateLeft);
-        a_rotateLeft.addActionListener(
-                new ActionListener() { 
-                    @Override
-					public void actionPerformed(final ActionEvent e) {
-                    	for (int i=0; i<a_selection.getSelection().length; i++) {
-                    	    float r = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ROTATION))).floatValue();
-                    	    a_photoList.setValueAt(new Float(r-90.),
- 			                                       a_selection.getSelection()[i],
-			                                       PhotoList.PARAM_ROTATION);};}});
-        display.add(a_rotateRight);
-        a_rotateRight.addActionListener(
-                new ActionListener() { 
-                    @Override
-					public void actionPerformed(final ActionEvent e) {
-                    	for (int i=0; i<a_selection.getSelection().length; i++) {
-                    	    float r = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ROTATION))).floatValue();
-                    	    a_photoList.setValueAt(new Float(r+90.),
- 			                                       a_selection.getSelection()[i],
-			                                       PhotoList.PARAM_ROTATION);};}});
-        display.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        a_rotateLeft90 = new JButton("↺ 90°");
+        a_rotateRight90 = new JButton("↻ 90°");
+        display.add(a_rotateLeft90);
+        a_rotateLeft90.addActionListener(new RotateAction(-90.0f, a_photoList, a_selection));
+        display.add(a_rotateRight90);
+        a_rotateRight90.addActionListener(new RotateAction(90.0f, a_photoList, a_selection));
         
+        a_rotateLeft10 = new JButton("↺ 10°");
+        a_rotateRight10 = new JButton("↻ 10°");
+        display.add(a_rotateLeft10);
+        a_rotateLeft10.addActionListener(new RotateAction(-10.0f, a_photoList, a_selection));
+        display.add(a_rotateRight10);
+        a_rotateRight10.addActionListener(new RotateAction(10.0f, a_photoList, a_selection));
+        
+        a_rotateLeft1 = new JButton("↺ 1°");
+        a_rotateRight1 = new JButton("↻ 1°");
+        display.add(a_rotateLeft1);
+        a_rotateLeft1.addActionListener(new RotateAction(-1.0f, a_photoList, a_selection));
+        display.add(a_rotateRight1);
+        a_rotateRight1.addActionListener(new RotateAction(1.0f, a_photoList, a_selection));
+
+        a_rotateLeft01 = new JButton("↺ 0.1°");
+        a_rotateRight01 = new JButton("↻ 0.1°");
+        display.add(a_rotateLeft01);
+        a_rotateLeft01.addActionListener(new RotateAction(-0.1f, a_photoList, a_selection));
+        display.add(a_rotateRight01);
+        a_rotateRight01.addActionListener(new RotateAction(0.1f, a_photoList, a_selection));
+
+        display.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         
         pack();
