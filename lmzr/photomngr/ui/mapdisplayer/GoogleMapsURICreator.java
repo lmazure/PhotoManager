@@ -144,10 +144,10 @@ public class GoogleMapsURICreator implements MapURICreator {
 			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
 			if ( record!=null ) {
 				final GPSData gps = record.getGPSData();
-				if ( gps!=null ) {
-					center = gps.getLatitudeAsDouble().toString()
-					         + ","
-					         + gps.getLongitudeAsDouble().toString();
+				if ( gps!=null && gps.isComplete() ) {
+					final Double latitude = gps.getLatitudeAsDouble(); 
+					final Double longitude = gps.getLongitudeAsDouble();
+					center = latitude.toString() + "," + longitude.toString();
 				}
 			}
 			str = str.replace(mapCenterPlaceholder, center);
@@ -158,10 +158,11 @@ public class GoogleMapsURICreator implements MapURICreator {
 			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
 			if ( record != null ) {
 				final GPSData gps = record.getGPSData();
-				if ( gps != null ) {
+				if ( gps != null && gps.isComplete() ) {
+					final Double latitudeRange = gps.getLatitudeRangeAsDouble();
 					final double earthRadiusInMeters = 6365000;
-					final double longitudeRangeInMeters = ( gps.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(gps.getLatitudeRangeAsDouble() / 180.0);  
-					final double latitudeRangeInMeters = ( gps.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters;
+					final double longitudeRangeInMeters = ( latitudeRange / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(latitudeRange / 180.0);  
+					final double latitudeRangeInMeters = ( latitudeRange / 180.0)  *  Math.PI * earthRadiusInMeters;
 					final double rangeInMeters = Math.max(longitudeRangeInMeters, latitudeRangeInMeters);
 					final double z = Math.log(rangeInMeters)/Math.log(2);
 					final int zoomAsInt = 25 - (int)Math.floor(z);
