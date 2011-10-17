@@ -160,8 +160,10 @@ public class GoogleMapsURICreator implements MapURICreator {
 				final GPSData gps = record.getGPSData();
 				if ( gps != null && gps.isComplete() ) {
 					final Double latitudeRange = gps.getLatitudeRangeAsDouble();
+					final Double longitudeRange = gps.getLongitudeRangeAsDouble();
+					final Double latitude = gps.getLatitudeAsDouble();
 					final double earthRadiusInMeters = 6365000;
-					final double longitudeRangeInMeters = ( latitudeRange / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(latitudeRange / 180.0);  
+					final double longitudeRangeInMeters = ( longitudeRange / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(latitude / 180.0);  
 					final double latitudeRangeInMeters = ( latitudeRange / 180.0)  *  Math.PI * earthRadiusInMeters;
 					final double rangeInMeters = Math.max(longitudeRangeInMeters, latitudeRangeInMeters);
 					final double z = Math.log(rangeInMeters)/Math.log(2);
