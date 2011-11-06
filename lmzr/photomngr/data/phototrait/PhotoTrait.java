@@ -8,12 +8,12 @@ public class PhotoTrait {
     final private int a_value;
     
     /**
-     * integer value encoding a undefined trait
+     * integer value encoding an undefined trait
      */
     static final protected int UNDEFINED_TRAIT_VALUE = -1;
     
     /**
-     * string value encoding a undefined trait
+     * string value encoding an undefined trait
      */
     static final protected String UNDEFINED_TRAIT_STRING = "unclassified";
 
