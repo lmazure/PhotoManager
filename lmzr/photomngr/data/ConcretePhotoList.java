@@ -87,11 +87,11 @@ public class ConcretePhotoList extends Object
         // quick check that the data is not corrupted
         for (int i=1; i<data.length; i++) {
             if (data[i][0]=="") {
-                System.err.println(excelFilename+" is corrupted: no folder name a line "+(i+1));
+                System.err.println(excelFilename+" is corrupted: no folder name at line "+(i+1));
                 System.exit(1);
             }
             if (data[i][1]=="") {
-                System.err.println(excelFilename+" is corrupted: no file name a line "+(i+1));
+                System.err.println(excelFilename+" is corrupted: no file name at line "+(i+1));
                 System.exit(1);
             }
         }
