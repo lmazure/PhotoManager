@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -16,11 +18,12 @@ import com.drew.metadata.MetadataException;
 import com.drew.metadata.Tag;
 import com.drew.metadata.exif.CanonMakernoteDirectory;
 import com.drew.metadata.exif.ExifDirectory;
+import com.drew.metadata.exif.GpsDirectory;
 
 /**
  * Header data of an image/video.
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class PhotoHeaderData {
 
@@ -44,6 +47,9 @@ public class PhotoHeaderData {
     final private String a_canon_focus_mode;
     final private String a_canon_iso;
     final private int a_canon_subject_distance;
+    final private double a_latitude;
+    final private double a_longitude;
+    final private double a_altitude;
     
     static final private int DEFAULT_ORIENTATION = 1;
     static final private Date DEFAULT_DATE = new Date(0);
@@ -61,6 +67,9 @@ public class PhotoHeaderData {
     static final private String DEFAULT_CANON_FOCUS_MODE = "";
     static final private String DEFAULT_CANON_ISO = "";
     static final private int DEFAULT_CANON_SUBJECT_DISTANCE = -1;
+    static final private double DEFAULT_LATITUDE = Double.NaN;
+    static final private double DEFAULT_LONGITUDE = Double.NaN;
+    static final private double DEFAULT_ALTITUDE = Double.NaN;
     
     static final StringPool s_pool = new StringPool(); 
 
@@ -98,16 +107,19 @@ public class PhotoHeaderData {
 	    	a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
 	    	a_canon_iso = DEFAULT_CANON_ISO;
 	    	a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+	    	a_latitude = DEFAULT_LATITUDE;
+	    	a_longitude = DEFAULT_LONGITUDE;
+	    	a_altitude = DEFAULT_ALTITUDE; 
 	    	return;    		
     	}
     	
-    	String overridenfilename = photoDirectory + File.separator + folderName + File.separator + fileName;
+    	String overridenFilename = photoDirectory + File.separator + folderName + File.separator + fileName;
     	
     	// if this is an AVI file, try to read the corresponding THM file (for Canon videos)
     	if ( format == DataFormat.AVI ) {
     		String f = "";
-    		if ( overridenfilename.endsWith(".AVI") ) f = overridenfilename.substring(0,overridenfilename.length()-3) + "THM";
-    		if ( overridenfilename.endsWith(".avi") ) f = overridenfilename.substring(0,overridenfilename.length()-3) + "thm";
+    		if ( overridenFilename.endsWith(".AVI") ) f = overridenFilename.substring(0,overridenFilename.length()-3) + "THM";
+    		if ( overridenFilename.endsWith(".avi") ) f = overridenFilename.substring(0,overridenFilename.length()-3) + "thm";
     		final File ff = new File(f);
     		if ( !ff.exists()) {
         		a_isCorrectlyParsed = false;
@@ -129,9 +141,12 @@ public class PhotoHeaderData {
     	    	a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
     	    	a_canon_iso = DEFAULT_CANON_ISO;
     	    	a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+    	    	a_latitude = DEFAULT_LATITUDE;
+    	    	a_longitude = DEFAULT_LONGITUDE;
+    	    	a_altitude = DEFAULT_ALTITUDE; 
     	    	return;
     		}
-    		overridenfilename = f;
+    		overridenFilename = f;
     	}
     	
     	boolean isCorrectlyParsed = true;
@@ -153,9 +168,15 @@ public class PhotoHeaderData {
     	String canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
     	String canon_iso = DEFAULT_CANON_ISO;
     	int canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+    	String latitudeRef = null;
+    	String latitude = null;
+    	String longitudeRef = null;
+    	String longitude = null;
+    	String altitudeRef = null;
+    	String altitude = null;
         
         try {
-            final File file = new File(overridenfilename);
+            final File file = new File(overridenFilename);
             final Metadata metadata = JpegMetadataReader.readMetadata(file);
             final Iterator<?> directories = metadata.getDirectoryIterator();
             while (directories.hasNext()) {
@@ -163,14 +184,14 @@ public class PhotoHeaderData {
                 final Iterator<?> tags = directory.getTagIterator();
                 while (tags.hasNext()) {
                     final Tag tag = (Tag)tags.next();
-//                    try {
-//                        System.out.println("tag="+tag.getTagTypeHex());
-//                        System.out.println("tag name="+tag.getTagName());
-//                        System.out.println("directory name="+tag.getDirectoryName());
-//                        System.out.println("value="+tag.getDescription());
-//                        System.out.println("--------------------------------");
-//                    } catch (Exception e) {
-//                    }
+                    try {
+                        System.out.println("tag="+tag.getTagTypeHex());
+                        System.out.println("tag name="+tag.getTagName());
+                        System.out.println("directory name="+tag.getDirectoryName());
+                        System.out.println("value="+tag.getDescription());
+                        System.out.println("--------------------------------");
+                    } catch (Exception e) {
+                    }
                     try {
                     	if (tag.getDirectoryName().equals("Jpeg")) {
                     		if (tag.getTagType() == 0x0001) {
@@ -226,11 +247,25 @@ public class PhotoHeaderData {
                     				e.printStackTrace();
                     			}
                     		}
+                    	}	 else if (tag.getDirectoryName().equals("GPS")) {
+                    		if (tag.getTagType() == GpsDirectory.TAG_GPS_LATITUDE_REF) {
+                    			latitudeRef = directory.getDescription(tag.getTagType());
+                    		} else if (tag.getTagType() == GpsDirectory.TAG_GPS_LATITUDE) {
+                    			latitude = directory.getDescription(tag.getTagType());
+                    		} else if (tag.getTagType() == GpsDirectory.TAG_GPS_LONGITUDE_REF) {
+                    			longitudeRef = directory.getDescription(tag.getTagType());
+                    		} else if (tag.getTagType() == GpsDirectory.TAG_GPS_LONGITUDE) {
+                    			longitude = directory.getDescription(tag.getTagType());
+                    		} else if (tag.getTagType() == GpsDirectory.TAG_GPS_ALTITUDE_REF) {
+                    			altitudeRef = directory.getDescription(tag.getTagType());
+                    		} else if (tag.getTagType() == GpsDirectory.TAG_GPS_ALTITUDE) {
+                    			altitude = directory.getDescription(tag.getTagType());
+                    		}
                     	}
                     } catch (final MetadataException e) {
                     	// should never occur, the data is corrupted
                     	isCorrectlyParsed = false;
-                    	System.err.println("failed to parse "+overridenfilename);
+                    	System.err.println("failed to parse "+overridenFilename);
                     	e.printStackTrace();
                     }
                 }
@@ -238,14 +273,14 @@ public class PhotoHeaderData {
         } catch (final JpegProcessingException e) {
 			// should never occur, the data is corrupted
         	isCorrectlyParsed = false;
-        	System.err.println("failed to parse "+overridenfilename);
+        	System.err.println("failed to parse "+overridenFilename);
 			e.printStackTrace();
         }
         
         // JPEG file with no tag (I'll have to read the JPEG and EXIF specifications...)
         if ( format == DataFormat.JPEG &&
         	( width == 0 || height == 0 ) ) {
-        	final File file = new File(overridenfilename);
+        	final File file = new File(overridenFilename);
         	if (file.exists()) {
 	        	try {
 	        	    final BufferedImage image = ImageIO.read(file);
@@ -253,7 +288,7 @@ public class PhotoHeaderData {
 	        	    width = image.getWidth();
 	        	} catch (final IOException e) {
                 	isCorrectlyParsed = false;
-                	System.err.println("failed to parse "+overridenfilename);
+                	System.err.println("failed to parse "+overridenFilename);
         			e.printStackTrace();
 	        	}
             }
@@ -278,6 +313,27 @@ public class PhotoHeaderData {
     	a_canon_focus_mode = canon_focus_mode;
     	a_canon_iso = canon_iso;
     	a_canon_subject_distance = canon_subject_distance;
+    	
+		final Double lat = parseLatitude(latitude, latitudeRef);
+		if ( lat!=null ) {
+			a_latitude = lat.doubleValue();
+		} else {
+	    	a_latitude = DEFAULT_LONGITUDE;
+		}
+
+		final Double lon = parseLongitude(longitude, longitudeRef);
+		if ( lon!=null ) {
+			a_longitude = lon.doubleValue();
+		} else {
+	    	a_longitude = DEFAULT_LONGITUDE;
+		}
+
+		final Double alt = parseAltitude(altitude, altitudeRef);
+		if ( alt!=null ) {
+			a_altitude = alt.doubleValue();
+		} else {
+	    	a_altitude = DEFAULT_ALTITUDE;
+		}
     }
 
     /**
@@ -343,6 +399,7 @@ public class PhotoHeaderData {
             focal_length = Double.parseDouble(data[11]);
 		} catch (final NumberFormatException e) {
 			// should never occur, the data is corrupted
+			//TODO suppress this useless test
 			e.printStackTrace();
 			focal_length = DEFAULT_FOCAL_LENGTH;
 		}
@@ -365,7 +422,9 @@ public class PhotoHeaderData {
 		}
 		a_canon_subject_distance = canon_subject_distance;
 
-    	
+    	a_latitude = Double.parseDouble(data[19]);
+    	a_longitude = Double.parseDouble(data[20]);
+    	a_altitude = Double.parseDouble(data[21]);
     }
     
     /**
@@ -376,7 +435,7 @@ public class PhotoHeaderData {
      */
     public String[] getStringArray() {
     	
-    	final String array[] = new String[19];
+    	final String array[] = new String[22];
     	
     	array[0] = a_filename;
     	array[1] = Integer.toString(a_width);
@@ -397,6 +456,9 @@ public class PhotoHeaderData {
         array[16] = a_canon_focus_mode;
         array[17] = a_canon_iso;
         array[18] = Integer.toString(a_canon_subject_distance);
+        array[19] = Double.toString(a_latitude);
+        array[20] = Double.toString(a_longitude);
+        array[21] = Double.toString(a_altitude);
  
         return array;
     }
@@ -543,4 +605,112 @@ public class PhotoHeaderData {
         return a_canon_subject_distance;    	
     }
 
+    /**
+     * @return the latitude, NaN if undefined
+     */
+    public double getLatitude() {
+    	return a_latitude;
+    }
+    
+    /**
+     * @return the longitude, NaN if undefined
+     */
+    public double getLongitude() {
+    	return a_longitude;
+    }
+    
+    /**
+     * @return the altitude, NaN if undefined
+     */
+    public double getAltitude() {
+    	return a_altitude;
+    }
+    
+    /**
+     * @param latitude
+     * @param latitudeRef
+     * @return latitude if this one is correctly defined
+     * null otherwise
+     */
+    private Double parseLatitude(final String latitude,
+    							 final String latitudeRef)
+    {
+    	if (latitude==null) return null;
+    	final Double x = parseXxitude(latitude);
+    	if ( x == null ) return null;
+    	
+    	if ( latitudeRef==null ) return null;
+    	if ( latitudeRef.equals("N")) return x;
+    	if ( latitudeRef.equals("S")) return new Double(-x.doubleValue());
+    	return null;
+    }
+
+    /**
+     * @param longitude
+     * @param longitudeRef
+     * @return longitude if this one is correctly defined
+     * null otherwise
+     */
+    private Double parseLongitude(final String longitude,
+    		 				      final String longitudeRef)
+    {
+    	if (longitude==null) return null;
+    	final Double x = parseXxitude(longitude);
+    	if ( x == null ) return null;
+    	
+    	if ( longitudeRef==null ) return null;
+    	if ( longitudeRef.equals("E")) return x;
+    	if ( longitudeRef.equals("O")) return new Double(-x.doubleValue());
+    	return null;
+    }
+
+    /**
+     * @param Xxitude
+     * @return unsigned latitude/longitude if this one is correctly defined
+     * null otherwise
+     */
+    private Double parseXxitude(final String Xxitude)
+    {
+		final Pattern pattern = Pattern.compile( "(\\d+)\"(\\d+)'(\\d+\\.\\d*)");
+		final Matcher matcher = pattern.matcher(Xxitude);
+		if ( !matcher.matches() ) return null;
+		
+		final String s1 = matcher.group(1);
+		int value1 = Integer.parseInt(s1);
+		final String s2 = matcher.group(2);
+		int value2 = Integer.parseInt(s2);
+		final String s3 = matcher.group(3);
+		double value3 = Double.parseDouble(s3);
+		
+		double value = (double)value1 + (double)value2/60.0 + value3/3600.0; 
+
+		return new Double(value);
+    }
+    
+    /**
+     * @param altitude
+     * @param altitudeRef
+     * @return altitude if this one is correctly defined
+     * null otherwise
+     */
+    private Double parseAltitude(final String altitude,
+    							 final String altitudeRef)
+    {
+    	if (altitude==null) return null;
+    	if (altitudeRef==null) return null;
+    	
+    	if ( !altitudeRef.equals("Sea level")) return null;
+    	
+		final Pattern pattern = Pattern.compile( "(\\d+)/(\\d+) metres");
+        final Matcher matcher = pattern.matcher(altitude);
+        if ( !matcher.matches() ) return null;
+        
+        final String s1 = matcher.group(1);
+        int value1 = Integer.parseInt(s1);
+        final String s2 = matcher.group(2);
+        int value2 = Integer.parseInt(s2);
+        if (value2==0) return null;
+        
+        return new Double((double)value1/(double)value2);
+    }
 }
