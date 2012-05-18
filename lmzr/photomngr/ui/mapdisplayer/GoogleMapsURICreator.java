@@ -15,6 +15,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import lmzr.photomngr.data.Photo;
+import lmzr.photomngr.data.PhotoHeaderData;
+import lmzr.photomngr.data.PhotoList;
 import lmzr.photomngr.data.GPS.GPSData;
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
@@ -25,11 +28,12 @@ import lmzr.util.string.HierarchicalCompoundString;
  */
 public class GoogleMapsURICreator implements MapURICreator {
 	
-	static final private String templateName = "resources/googleMapsTemplate.html";
+	static final private String s_templateName = "resources/googleMapsTemplate.html";
 	
-	static final private String listPlaceholder = "__PLACEHOLDER_LIST__";
-	static final private String mapCenterPlaceholder = "__PLACEHOLDER_MAPCENTER__";
-	static final private String zoomPlaceholder = "__PLACEHOLDER_ZOOM__";
+	static final private String s_areaListPlaceholder = "__PLACEHOLDER_AREALIST__";
+	static final private String s_pointListPlaceholder = "__PLACEHOLDER_POINTLIST__";
+	static final private String s_mapCenterPlaceholder = "__PLACEHOLDER_MAPCENTER__";
+	static final private String s_zoomPlaceholder = "__PLACEHOLDER_ZOOM__";
 	
 	static final private String defaultCenter = "47.0, 2.0"; 
 	static final private String defaultZoom = "6";
@@ -92,19 +96,21 @@ public class GoogleMapsURICreator implements MapURICreator {
 	/**
 	 * create a file displaying all the GPS area in blue, except for locationToHighlight which will be displayed
 	 * in red.
-	 * @param file file where to write the HTML and JavaScript data 
-	 * @param locationToHighlight the location to highlight
-	 * @param gpsDatabase GPS database
+	 * @param file                file where to write the HTML and JavaScript data 
+	 * @param photoList           list of photos
+	 * @param locationToHighlight current location to highlight
+	 * @param gpsDatabase         GPS database
 	 * @throws IOException 
 	 */
 	public void createMapURIForGPSDebug(final File file,
+                                        final PhotoList photoList,
 			                            final HierarchicalCompoundString locationToHighlight,
                                         final GPSDatabase gpsDatabase) throws IOException
 	{
 		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		final URL url = classLoader.getResource(templateName);
+		final URL url = classLoader.getResource(s_templateName);
 		if ( url == null ) {
-			System.err.println("failed to locate template \""+templateName+"\"");
+			System.err.println("failed to locate template \""+s_templateName+"\"");
 			return;
 		}
 				
@@ -114,7 +120,7 @@ public class GoogleMapsURICreator implements MapURICreator {
 	    
 	    String str;
 	    while  ( (str = in.readLine()) != null ) {
-	    	out.write(handleLine(str,locationToHighlight, gpsDatabase));
+	    	out.write(handleLine(str, photoList, locationToHighlight, gpsDatabase));
 	    	out.write('\n');
 	    }
 	    
@@ -124,22 +130,28 @@ public class GoogleMapsURICreator implements MapURICreator {
 
 	/**
 	 * edit a line by replacing the placeholders by their real content
-	 * @param string the current template line
-	 * @param locationToHighlight the current location to highlight
-	 * @param gpsDatabase GPS database
+	 * @param string              current template line
+	 * @param photoList           list of photos
+	 * @param locationToHighlight current location to highlight
+	 * @param gpsDatabase         GPS database
 	 * @return 
 	 */
 	static private String handleLine(final String string,
+			                         final PhotoList photoList,
 			                         final HierarchicalCompoundString locationToHighlight,
 			                         final GPSDatabase gpsDatabase) {
 		
 		String str = string;
 		
-		if ( string.indexOf(listPlaceholder)>=0 ) {
-			str = str.replace(listPlaceholder, listOfGPSAreas(locationToHighlight, gpsDatabase));
+		if ( string.indexOf(s_areaListPlaceholder)>=0 ) {
+			str = str.replace(s_areaListPlaceholder, listOfGPSAreas(locationToHighlight, gpsDatabase));
 		}
 
-		if ( string.indexOf(mapCenterPlaceholder)>=0 ) {
+		else if ( string.indexOf(s_pointListPlaceholder)>=0 ) {
+			str = str.replace(s_pointListPlaceholder, listOfGPSPoints(photoList));
+		}
+
+		else if ( string.indexOf(s_mapCenterPlaceholder)>=0 ) {
 			String center = defaultCenter;
 			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
 			if ( record!=null ) {
@@ -150,10 +162,10 @@ public class GoogleMapsURICreator implements MapURICreator {
 					center = latitude.toString() + "," + longitude.toString();
 				}
 			}
-			str = str.replace(mapCenterPlaceholder, center);
+			str = str.replace(s_mapCenterPlaceholder, center);
 		}
 
-		if ( string.indexOf(zoomPlaceholder)>=0 ) {
+		else if ( string.indexOf(s_zoomPlaceholder)>=0 ) {
 			String zoom = defaultZoom;
 			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
 			if ( record != null ) {
@@ -171,10 +183,41 @@ public class GoogleMapsURICreator implements MapURICreator {
 					zoom = Integer.toString(zoomAsInt);
 				}
 			}
-			str = str.replace(zoomPlaceholder, zoom);
+			str = str.replace(s_zoomPlaceholder, zoom);
 		}
 
 		return str;
+	}
+
+	/**
+	 * @param photoList
+	 * @return
+	 */
+	static private String listOfGPSPoints(final PhotoList photoList)
+	{
+		final StringBuilder str = new StringBuilder();
+		boolean stringHasBeenAdded = false;
+		
+		for (int i=0; i<photoList.getRowCount();i++) {
+			final Photo photo = photoList.getPhoto(i);
+			final PhotoHeaderData headerData = photo.getHeaderData();
+			final double latitude = headerData.getLatitude();
+			final double longitude = headerData.getLongitude();
+			if ( !Double.isNaN(latitude) && !Double.isNaN(longitude) ) {
+				if ( stringHasBeenAdded ) {
+					str.append(",\n");
+				}
+				str.append("new GPSPoint(\"");
+				str.append(photo.getFullPath());
+				str.append("\",");
+				str.append(latitude);
+				str.append(",");
+				str.append(longitude);
+				str.append(")");
+				stringHasBeenAdded = true;
+			}
+		}
+			return str.toString();
 	}
 	
 	/**
@@ -199,8 +242,8 @@ public class GoogleMapsURICreator implements MapURICreator {
 	 */
 	static private StringBuilder listOfGPSAreasRecurse(final HierarchicalCompoundString location,
 			                                           final HierarchicalCompoundString locationToHighlight,
-			                                           final GPSDatabase gpsDatabase) {
-		
+			                                           final GPSDatabase gpsDatabase)
+	{
 		final StringBuilder str = new StringBuilder();
 		boolean stringHasBeenAdded = false;
 		

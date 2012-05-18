@@ -21,6 +21,12 @@ function initialize() {
 		mapTypeId: google.maps.MapTypeId.SATELLITE 
 	};
 	 
+	function GPSPoint(path, lat, lng) {
+		this.path = path;
+		this.lat = lat;
+		this.lng = lng;
+	}
+
 	function GPSRectangle(name,latMin, latMax, lngMin, lngMax, color) {
 		this.name = name;
 		this.latMin = latMin;
@@ -30,12 +36,25 @@ function initialize() {
 		this.color = color;
 	}
 
+	var pointList = new Array (
+		__PLACEHOLDER_POINTLIST__
+	);
+
 	var rectangleList = new Array (
-		__PLACEHOLDER_LIST__
+		__PLACEHOLDER_AREALIST__
 	);
 
 	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
+	for (var i=0; i<pointList.length; i++) {
+	    var p = pointList[i];
+	    var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(p.lat, p.lng),
+            map: map,
+            title: p.path
+            });
+	}
+	
 	for (var i=0; i<rectangleList.length; i++) {
 		var r = rectangleList[i];
 		var coordinates = [

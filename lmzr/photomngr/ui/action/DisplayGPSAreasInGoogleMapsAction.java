@@ -1,7 +1,6 @@
 package lmzr.photomngr.ui.action;
 
 import java.awt.Desktop;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +66,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 		final GoogleMapsURICreator creator = new GoogleMapsURICreator();
 		
 		try {
-			creator.createMapURIForGPSDebug(file, location, a_GPSDatabase);
+			creator.createMapURIForGPSDebug(file, a_photoList, location, a_GPSDatabase);
 		} catch (final IOException ex) {
 			System.err.println("failed to generate file for debugging GPS");			
 			ex.printStackTrace();
@@ -75,13 +74,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 
 		try {
 			Desktop.getDesktop().browse(file.toURI());
-		} catch (final HeadlessException ex) { //TODO stupid cut 'n paste
-			System.err.println("failed to start a browser to display the map of "+location.toString());
-			ex.printStackTrace();
-		} catch (final UnsupportedOperationException ex) {
-			System.err.println("failed to start a browser to display the map of "+location.toString());
-			ex.printStackTrace();
-		} catch (final IOException ex) {
+		} catch (final Exception ex) {
 			System.err.println("failed to start a browser to display the map of "+location.toString());
 			ex.printStackTrace();
 		}

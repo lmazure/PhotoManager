@@ -184,6 +184,7 @@ public class PhotoHeaderData {
                 final Iterator<?> tags = directory.getTagIterator();
                 while (tags.hasNext()) {
                     final Tag tag = (Tag)tags.next();
+                    /*
                     try {
                         System.out.println("tag="+tag.getTagTypeHex());
                         System.out.println("tag name="+tag.getTagName());
@@ -192,6 +193,7 @@ public class PhotoHeaderData {
                         System.out.println("--------------------------------");
                     } catch (Exception e) {
                     }
+                    */
                     try {
                     	if (tag.getDirectoryName().equals("Jpeg")) {
                     		if (tag.getTagType() == 0x0001) {
@@ -275,6 +277,29 @@ public class PhotoHeaderData {
         	isCorrectlyParsed = false;
         	System.err.println("failed to parse "+overridenFilename);
 			e.printStackTrace();
+    		a_isCorrectlyParsed = false;
+	    	a_width = 0;
+	    	a_height= 0;
+	    	a_orientation = DEFAULT_ORIENTATION;
+	    	a_date = DEFAULT_DATE;
+	    	a_manufacturer = DEFAULT_MANUFACTURER;
+	    	a_model = DEFAULT_MODEL;
+	    	a_exposure_time = DEFAULT_EXPOSURE_TIME;
+	    	a_shutter_speed = DEFAULT_SHUTTER_SPEED;
+	    	a_aperture_value = DEFAULT_APERTURE_VALUE;
+	    	a_flash = DEFAULT_FLASH;
+	    	a_focal_length = DEFAULT_FOCAL_LENGTH;
+	    	a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
+	    	a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
+	    	a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
+	    	a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
+	    	a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
+	    	a_canon_iso = DEFAULT_CANON_ISO;
+	    	a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+	    	a_latitude = DEFAULT_LATITUDE;
+	    	a_longitude = DEFAULT_LONGITUDE;
+	    	a_altitude = DEFAULT_ALTITUDE; 
+	    	return;
         }
         
         // JPEG file with no tag (I'll have to read the JPEG and EXIF specifications...)
@@ -289,7 +314,29 @@ public class PhotoHeaderData {
 	        	} catch (final IOException e) {
                 	isCorrectlyParsed = false;
                 	System.err.println("failed to parse "+overridenFilename);
-        			e.printStackTrace();
+        			e.printStackTrace();    		a_isCorrectlyParsed = false;
+        	    	a_width = 0;
+        	    	a_height= 0;
+        	    	a_orientation = DEFAULT_ORIENTATION;
+        	    	a_date = DEFAULT_DATE;
+        	    	a_manufacturer = DEFAULT_MANUFACTURER;
+        	    	a_model = DEFAULT_MODEL;
+        	    	a_exposure_time = DEFAULT_EXPOSURE_TIME;
+        	    	a_shutter_speed = DEFAULT_SHUTTER_SPEED;
+        	    	a_aperture_value = DEFAULT_APERTURE_VALUE;
+        	    	a_flash = DEFAULT_FLASH;
+        	    	a_focal_length = DEFAULT_FOCAL_LENGTH;
+        	    	a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
+        	    	a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
+        	    	a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
+        	    	a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
+        	    	a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
+        	    	a_canon_iso = DEFAULT_CANON_ISO;
+        	    	a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+        	    	a_latitude = DEFAULT_LATITUDE;
+        	    	a_longitude = DEFAULT_LONGITUDE;
+        	    	a_altitude = DEFAULT_ALTITUDE; 
+        	    	return;	
 	        	}
             }
         }
