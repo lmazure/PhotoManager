@@ -16,7 +16,7 @@ import lmzr.util.io.StringTableFromToExcel;
  * This class is designed to be be simply dropped in between Photo and PhotoHeaderData.
  * I should surely break this "simple drop in" rule to have a better implementation saving CPU and memory.
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  *
  */
 public class PhotoHeaderDataCache {
@@ -29,12 +29,12 @@ public class PhotoHeaderDataCache {
 		
 		private final Map<String,PhotoHeaderData> a_fileCache;
 		private final String a_folderName;
-		private boolean isDirty;
+		private boolean a_isDirty;
 		
 		public FolderCache(final String folderName) {
 			a_folderName = folderName;
 			a_fileCache = new HashMap<String,PhotoHeaderData>();
-			isDirty = false;
+			a_isDirty = false;
 			loadFromDisk();
 		}
 		
@@ -52,7 +52,7 @@ public class PhotoHeaderDataCache {
 			synchronized(a_fileCache) {
 				a_fileCache.put(filename, newHeaderData);
 			}
-			isDirty = true;
+			a_isDirty = true;
 			
 			return newHeaderData;
 		}
@@ -74,13 +74,13 @@ public class PhotoHeaderDataCache {
 		
 		private void saveToDisk() {
 			
-			if ( !isDirty ) return;
+			if ( !a_isDirty ) return;
 
-    		final String data[][] = new String[a_fileCache.size()][];
-    		
+			final String data[][];
 			int i=0;
 
 			synchronized (a_fileCache) {
+	    		data = new String[a_fileCache.size()][];	    		
 				for (PhotoHeaderData headerData: a_fileCache.values()) {
 					if ( headerData.isCorrectlyParsed() ) {
 						data[i++] = headerData.getStringArray();
@@ -88,7 +88,7 @@ public class PhotoHeaderDataCache {
 				}
 			}
 			final int size = i;
-        	isDirty = false;
+        	a_isDirty = false;
 
         	// create the folder cache if necessary
     		final File directory = new File(getFoldername());
