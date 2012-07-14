@@ -13,36 +13,36 @@ import lmzr.photomngr.data.filter.FilteredPhotoList;
  * @author Laurent Mazur�
  */
 public class ResetNumberOfCopiesAction extends PhotoManagerAction {
-	
-    final private FilteredPhotoList a_photoList;
 
-		/**
-		 * @param text
-		 * @param mnemonic
-		 * @param accelerator
-		 * @param tooltipText
-		 * @param photoList 
-		 */
-		public ResetNumberOfCopiesAction(final String text,
-				                         final int mnemonic,
-				                         final KeyStroke accelerator,
-				                         final String tooltipText,
-				                		 final  FilteredPhotoList photoList) {
-	        super(text, mnemonic, accelerator, tooltipText);
-	        a_photoList = photoList;
+	final private FilteredPhotoList a_photoList;
 
-		}
-	
-	
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			for (int i=0; i<a_photoList.getRowCount(); i++) {
-				if ( ((Integer)a_photoList.getValueAt(i, PhotoList.PARAM_COPIES)).intValue() > 0 ) {
-					a_photoList.setValueAt(new Integer(0),i, PhotoList.PARAM_COPIES);
-				}
+	/**
+	 * @param text
+	 * @param mnemonic
+	 * @param accelerator
+	 * @param tooltipText
+	 * @param photoList 
+	 */
+	public ResetNumberOfCopiesAction(final String text,
+			                         final int mnemonic,
+			                         final KeyStroke accelerator,
+			                         final String tooltipText,
+			                         final  FilteredPhotoList photoList) {
+		super(text, mnemonic, accelerator, tooltipText);
+		a_photoList = photoList;
+
+	}
+
+
+	/**
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		for (int i=0; i<a_photoList.getRowCount(); i++) {
+			if ( ((Integer)a_photoList.getValueAt(i, PhotoList.PARAM_COPIES)).intValue() > 0 ) {
+				a_photoList.setValueAt(new Integer(0),i, PhotoList.PARAM_COPIES);
 			}
 		}
 	}
+}

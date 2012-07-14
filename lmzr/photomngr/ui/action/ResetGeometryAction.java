@@ -5,6 +5,10 @@ import java.awt.event.ActionEvent;
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 
+/**
+ * @author Laurent
+ *
+ */
 public class ResetGeometryAction extends PhotoManagerAction {
 
 	final private PhotoList a_photoList;

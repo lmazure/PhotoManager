@@ -15,7 +15,7 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
 
 	   final private PhotoList a_photoList;
 	   final private ListSelectionManager a_selection;
-	   PhotoGeometryEditor a_PhotoGeometryEditor;
+	   private PhotoGeometryEditor a_PhotoGeometryEditor;
 	   
 		/**
 		 * @param text

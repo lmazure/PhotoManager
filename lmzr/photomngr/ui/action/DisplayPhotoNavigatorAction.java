@@ -17,7 +17,7 @@ public class DisplayPhotoNavigatorAction extends PhotoManagerAction {
 	   final private PhotoList a_photoList;
 	   final private GPSDatabase a_GPSDatabase;
 	   final private ListSelectionManager a_selection;
-	   PhotoNavigator a_PhotoNavigator;
+	   private PhotoNavigator a_PhotoNavigator;
 
 		/**
 		 * @param text

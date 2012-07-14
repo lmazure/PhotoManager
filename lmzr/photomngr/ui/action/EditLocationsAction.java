@@ -36,13 +36,13 @@ public class EditLocationsAction extends PhotoManagerAction
 	 * @param GPSDatabase 
 	 */
 	public EditLocationsAction(final String text,
-			final int mnemonic,
-			final KeyStroke accelerator,
-			final String tooltipText,
-			final JFrame frame,
-			final FilteredPhotoList photoList,
-	        final ListSelectionManager selection,
-			final GPSDatabase GPSDatabase) {
+			                   final int mnemonic,
+			                   final KeyStroke accelerator,
+			                   final String tooltipText,
+			                   final JFrame frame,
+			                   final FilteredPhotoList photoList,
+			                   final ListSelectionManager selection,
+			                   final GPSDatabase GPSDatabase) {
 		
 		super(text, mnemonic, accelerator, tooltipText);
 		a_frame = frame;

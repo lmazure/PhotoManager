@@ -65,7 +65,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 		final GoogleMapsURICreator creator = new GoogleMapsURICreator();
 		
 		try {
-			File file = creator.createMapURIForGPSDebug(a_cacheDirectory, folder, filename, a_photoList, location, a_GPSDatabase);
+			final File file = creator.createMapURIForGPSDebug(a_cacheDirectory, folder, filename, a_photoList, location, a_GPSDatabase);
 			Desktop.getDesktop().browse(file.toURI());
 		} catch (final IOException ex) {
 			System.err.println("failed to generate file for debugging GPS");			
@@ -83,7 +83,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 	 */
 	private String escape(final String string) {
 		
-		int l = string.length();
+		final int l = string.length();
 		final char[] chars = new char[l];
 		string.getChars(0,l,chars,0);
 		

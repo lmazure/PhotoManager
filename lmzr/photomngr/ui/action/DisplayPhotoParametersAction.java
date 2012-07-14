@@ -15,7 +15,7 @@ public class DisplayPhotoParametersAction extends PhotoManagerAction {
 
     final private PhotoList a_photoList;
     final private ListSelectionManager a_selection;
-    PhotoParametersDisplay a_PhotoParametersDisplay;
+    private PhotoParametersDisplay a_PhotoParametersDisplay;
     
 	/**
 	 * @param text
