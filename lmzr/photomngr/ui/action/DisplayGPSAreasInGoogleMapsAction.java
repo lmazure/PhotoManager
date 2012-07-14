@@ -61,19 +61,15 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 
 		final String folder = (String)a_photoList.getValueAt(a_selection.getSelection()[0], PhotoList.PARAM_FOLDER);
 		final String filename = "displayGPSAreasInGoogleMaps_" + escape(location.toLongString()) + ".html";
-		final File file = new File(a_cacheDirectory + File.separator + folder + File.separator + filename);		
 
 		final GoogleMapsURICreator creator = new GoogleMapsURICreator();
 		
 		try {
-			creator.createMapURIForGPSDebug(file, a_photoList, location, a_GPSDatabase);
+			File file = creator.createMapURIForGPSDebug(a_cacheDirectory, folder, filename, a_photoList, location, a_GPSDatabase);
+			Desktop.getDesktop().browse(file.toURI());
 		} catch (final IOException ex) {
 			System.err.println("failed to generate file for debugging GPS");			
 			ex.printStackTrace();
-		}
-
-		try {
-			Desktop.getDesktop().browse(file.toURI());
 		} catch (final Exception ex) {
 			System.err.println("failed to start a browser to display the map of "+location.toString());
 			ex.printStackTrace();
@@ -83,7 +79,7 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
 	/**
 	 * generate a legal filename from a string
 	 * @param string
-	 * @return a acceptable filename (dubious characters are replaced by "_"
+	 * @return a acceptable filename (dubious characters are replaced by "_")
 	 */
 	private String escape(final String string) {
 		

@@ -96,22 +96,32 @@ public class GoogleMapsURICreator implements MapURICreator {
 	/**
 	 * create a file displaying all the GPS area in blue, except for locationToHighlight which will be displayed
 	 * in red.
-	 * @param file                file where to write the HTML and JavaScript data 
+	 * @param cacheDirectory      name of the cache directory
+	 * @param folder              name of the folder 
+	 * @param filename            name of the file where to write the HTML and JavaScript data 
 	 * @param photoList           list of photos
 	 * @param locationToHighlight current location to highlight
 	 * @param gpsDatabase         GPS database
+	 * @return created file
 	 * @throws IOException 
 	 */
-	public void createMapURIForGPSDebug(final File file,
+	public File createMapURIForGPSDebug(final String cacheDirectory,
+			                            final String folder,
+			                            final String filename,
                                         final PhotoList photoList,
 			                            final HierarchicalCompoundString locationToHighlight,
                                         final GPSDatabase gpsDatabase) throws IOException
 	{
+		final File file = new File(cacheDirectory + File.separator + folder + File.separator + filename);
+		
+		final File directory = new File(cacheDirectory + File.separator + folder);
+		directory.mkdir();
+
 		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		final URL url = classLoader.getResource(s_templateName);
 		if ( url == null ) {
 			System.err.println("failed to locate template \""+s_templateName+"\"");
-			return;
+			return file;
 		}
 				
 		final InputStream inputStream = url.openStream();
@@ -126,6 +136,8 @@ public class GoogleMapsURICreator implements MapURICreator {
 	    
 	    in.close();
 	    out.close();
+	    
+	    return file;
 	}
 
 	/**
@@ -217,7 +229,8 @@ public class GoogleMapsURICreator implements MapURICreator {
 				stringHasBeenAdded = true;
 			}
 		}
-			return str.toString();
+		
+		return str.toString();
 	}
 	
 	/**
