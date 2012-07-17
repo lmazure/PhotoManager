@@ -42,15 +42,15 @@ public class GeoportailMapURICreator implements MapURICreator {
 			final double longitudeRangeInMeters = ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(data.getLatitudeRangeAsDouble() / 180.0);  
 			final double latitudeRangeInMeters = ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters;
 			final double rangeInMeters = Math.max(longitudeRangeInMeters, latitudeRangeInMeters);
-			final double z = Math.log(rangeInMeters)/Math.log(2);
-			final int zoom = (int)Math.floor(z) - 2;
+			final double z = rangeInMeters / ( 2.0 * earthRadiusInMeters );
 			
-			final String str = "http://www.geoportail.fr/?c="
+			final String str = "http://www.geoportail.fr/accueil?c="
 					           + data.getLongitudeAsDouble()
 					           + ","
 					           + data.getLatitudeAsDouble()
-					           + "&l=Scan&z="
-					           + zoom;
+					           + "&z="
+					           + z
+					           + "&l=GEOGRAPHICALGRIDSYSTEMS.MAPS.3D$GEOPORTAIL:OGC:WMTS@aggregate(1)&permalink=yes";
 			uri = new URI(str);
 		} catch (final URISyntaxException e) {
 			// this should never occur
