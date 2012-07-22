@@ -215,6 +215,8 @@ public class GoogleMapsURICreator implements MapURICreator {
 			final PhotoHeaderData headerData = photo.getHeaderData();
 			final double latitude = headerData.getLatitude();
 			final double longitude = headerData.getLongitude();
+			final String character = "%E2%80%A2"; //TODO l'encoding HTML devrait être fait par le code JS au moment où il généère l'URL
+			final String color ="AAAA00";
 			if ( !Double.isNaN(latitude) && !Double.isNaN(longitude) ) {
 				if ( stringHasBeenAdded ) {
 					str.append(",\n");
@@ -225,6 +227,10 @@ public class GoogleMapsURICreator implements MapURICreator {
 				str.append(latitude);
 				str.append(",");
 				str.append(longitude);
+				str.append(",");
+				str.append("\""+character+"\"");
+				str.append(",");
+				str.append("\""+color+"\"");
 				str.append(")");
 				stringHasBeenAdded = true;
 			}
@@ -263,6 +269,7 @@ public class GoogleMapsURICreator implements MapURICreator {
 		final GPSRecord record =  (GPSRecord)gpsDatabase.getValueAt(location,GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING);
 		if ( record != null ) {
 			final GPSData data = record.getGPSData();
+			final String color = location.equals(locationToHighlight)?"#FF0000":"#0000FF";
 			if ( ( data!=null) && data.isComplete() ) {
 				str.append("new GPSRectangle(\"");
 				str.append(location);
@@ -274,9 +281,9 @@ public class GoogleMapsURICreator implements MapURICreator {
 				str.append(data.getLongitudeMinAsDouble());
 				str.append(",");
 				str.append(data.getLongitudeMaxAsDouble());
-				str.append(",\"");
-				str.append(location.equals(locationToHighlight)?"#FF0000":"#0000FF");
-				str.append("\")");
+				str.append(",");
+				str.append("\""+color+"\"");
+				str.append(")");
 				stringHasBeenAdded = true;				
 			}
 		}
