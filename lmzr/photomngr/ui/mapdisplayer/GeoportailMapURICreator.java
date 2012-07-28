@@ -9,7 +9,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 /**
  * @author Laurent Mazur�
  */
-public class GeoportailMapURICreator implements MapURICreator {
+public class GeoportailMapURICreator extends MapURICreator {
 	
 	/**
 	 * 
@@ -38,10 +38,7 @@ public class GeoportailMapURICreator implements MapURICreator {
 		URI uri = null;
 		
 		try {
-			final double earthRadiusInMeters = 6365000;
-			final double longitudeRangeInMeters = ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(data.getLatitudeRangeAsDouble() / 180.0);  
-			final double latitudeRangeInMeters = ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters;
-			final double rangeInMeters = Math.max(longitudeRangeInMeters, latitudeRangeInMeters);
+			final double rangeInMeters = getRangeInMeters(data);
 			final double z = rangeInMeters / ( 2.0 * earthRadiusInMeters );
 			
 			final String str = "http://www.geoportail.fr/accueil?c="

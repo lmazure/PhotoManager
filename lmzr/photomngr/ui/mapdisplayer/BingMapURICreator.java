@@ -9,7 +9,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 /**
  * @author Laurent Mazur�
  */
-public class BingMapURICreator implements MapURICreator {
+public class BingMapURICreator extends MapURICreator {
 
 	/**
 	 * 
@@ -38,10 +38,7 @@ public class BingMapURICreator implements MapURICreator {
 		URI uri = null;
 		
 		try {
-			final double earthRadiusInMeters = 6365000;
-			final double longitudeRangeInMeters = ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(data.getLatitudeRangeAsDouble() / 180.0);  
-			final double latitudeRangeInMeters = ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters;
-			final double rangeInMeters = Math.max(longitudeRangeInMeters, latitudeRangeInMeters);
+			final double rangeInMeters = getRangeInMeters(data);
 			final double z = Math.log(rangeInMeters)/Math.log(2);
 			final int zoom = 25 - (int)Math.floor(z);
 			

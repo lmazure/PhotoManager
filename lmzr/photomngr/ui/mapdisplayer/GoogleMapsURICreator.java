@@ -26,7 +26,7 @@ import lmzr.util.string.HierarchicalCompoundString;
 /**
  * @author Laurent Mazur�
  */
-public class GoogleMapsURICreator implements MapURICreator {
+public class GoogleMapsURICreator extends MapURICreator {
 	
 	static final private String s_templateName = "resources/googleMapsTemplate.html";
 	
@@ -158,47 +158,55 @@ public class GoogleMapsURICreator implements MapURICreator {
 		if ( string.indexOf(s_areaListPlaceholder)>=0 ) {
 			str = str.replace(s_areaListPlaceholder, listOfGPSAreas(locationToHighlight, gpsDatabase));
 		}
-
-		else if ( string.indexOf(s_pointListPlaceholder)>=0 ) {
+		
+		if ( string.indexOf(s_pointListPlaceholder)>=0 ) {
 			str = str.replace(s_pointListPlaceholder, listOfGPSPoints(photoList));
 		}
-
-		else if ( string.indexOf(s_mapCenterPlaceholder)>=0 ) {
-			String center = defaultCenter;
-			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
-			if ( record!=null ) {
-				final GPSData gps = record.getGPSData();
-				if ( gps!=null && gps.isComplete() ) {
-					final Double latitude = gps.getLatitudeAsDouble(); 
-					final Double longitude = gps.getLongitudeAsDouble();
-					center = latitude.toString() + "," + longitude.toString();
-				}
-			}
-			str = str.replace(s_mapCenterPlaceholder, center);
+		
+		if ( string.indexOf(s_mapCenterPlaceholder)>=0 ) {
+			str = str.replace(s_mapCenterPlaceholder, center(locationToHighlight, gpsDatabase));
 		}
-
-		else if ( string.indexOf(s_zoomPlaceholder)>=0 ) {
-			String zoom = defaultZoom;
-			final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
-			if ( record != null ) {
-				final GPSData gps = record.getGPSData();
-				if ( gps != null && gps.isComplete() ) {
-					final Double latitudeRange = gps.getLatitudeRangeAsDouble();
-					final Double longitudeRange = gps.getLongitudeRangeAsDouble();
-					final Double latitude = gps.getLatitudeAsDouble();
-					final double earthRadiusInMeters = 6365000;
-					final double longitudeRangeInMeters = ( longitudeRange / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(latitude / 180.0);  
-					final double latitudeRangeInMeters = ( latitudeRange / 180.0)  *  Math.PI * earthRadiusInMeters;
-					final double rangeInMeters = Math.max(longitudeRangeInMeters, latitudeRangeInMeters);
-					final double z = Math.log(rangeInMeters)/Math.log(2);
-					final int zoomAsInt = 25 - (int)Math.floor(z);
-					zoom = Integer.toString(zoomAsInt);
-				}
-			}
-			str = str.replace(s_zoomPlaceholder, zoom);
+		
+		if ( string.indexOf(s_zoomPlaceholder)>=0 ) {
+			str = str.replace(s_zoomPlaceholder, zoom(locationToHighlight, gpsDatabase));
 		}
 
 		return str;
+	}
+
+	static private String center(final HierarchicalCompoundString locationToHighlight,
+            final GPSDatabase gpsDatabase)
+	{
+		String center = defaultCenter;
+		final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
+		if ( record!=null ) {
+			final GPSData gps = record.getGPSData();
+			if ( gps!=null && gps.isComplete() ) {
+				final Double latitude = gps.getLatitudeAsDouble(); 
+				final Double longitude = gps.getLongitudeAsDouble();
+				center = latitude.toString() + "," + longitude.toString();
+			}
+		}
+		
+		return center;
+	}
+
+	static private String zoom(final HierarchicalCompoundString locationToHighlight,
+            final GPSDatabase gpsDatabase)
+	{
+		String zoom = defaultZoom;
+		final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
+		if ( record != null ) {
+			final GPSData gps = record.getGPSData();
+			if ( gps != null && gps.isComplete() ) {
+				final double rangeInMeters = getRangeInMeters(gps);
+				final double z = Math.log(rangeInMeters)/Math.log(2);
+				final int zoomAsInt = 25 - (int)Math.floor(z);
+				zoom = Integer.toString(zoomAsInt);
+			}
+		}
+
+		return zoom;
 	}
 
 	/**
@@ -215,7 +223,7 @@ public class GoogleMapsURICreator implements MapURICreator {
 			final PhotoHeaderData headerData = photo.getHeaderData();
 			final double latitude = headerData.getLatitude();
 			final double longitude = headerData.getLongitude();
-			final String character = "%E2%80%A2"; //TODO l'encoding HTML devrait être fait par le code JS au moment où il généère l'URL
+			final String character = "%E2%80%A2"; //TODO l'encoding HTML devrait être fait par le code JS au moment où il génère l'URL
 			final String color ="AAAA00";
 			if ( !Double.isNaN(latitude) && !Double.isNaN(longitude) ) {
 				if ( stringHasBeenAdded ) {
