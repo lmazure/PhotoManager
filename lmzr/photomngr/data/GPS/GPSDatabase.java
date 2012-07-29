@@ -99,7 +99,6 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     	}
     }
     
-    
     /**
      * @param excelFilename
      * @param locationFactory
@@ -550,5 +549,4 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 			}
 		}
 	}
-
 }

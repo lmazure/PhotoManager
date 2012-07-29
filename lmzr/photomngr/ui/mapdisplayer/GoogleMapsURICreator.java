@@ -14,6 +14,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoHeaderData;
@@ -24,7 +28,7 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
- * @author Laurent Mazur�
+ * @author Laurent Mazuré
  */
 public class GoogleMapsURICreator extends MapURICreator {
 	
@@ -156,7 +160,8 @@ public class GoogleMapsURICreator extends MapURICreator {
 		String str = string;
 		
 		if ( string.indexOf(s_areaListPlaceholder)>=0 ) {
-			str = str.replace(s_areaListPlaceholder, listOfGPSAreas(locationToHighlight, gpsDatabase));
+			final Map<HierarchicalCompoundString,GPSRecord> locations = getLocations(photoList, gpsDatabase);
+			str = str.replace(s_areaListPlaceholder, listOfGPSAreas(locationToHighlight, locations));
 		}
 		
 		if ( string.indexOf(s_pointListPlaceholder)>=0 ) {
@@ -174,6 +179,33 @@ public class GoogleMapsURICreator extends MapURICreator {
 		return str;
 	}
 
+	static private Map<HierarchicalCompoundString,GPSRecord> getLocations(final PhotoList photoList,
+                                                                          final GPSDatabase gpsDatabase)
+	{
+		final Map<HierarchicalCompoundString,GPSRecord> locations = new HashMap<HierarchicalCompoundString,GPSRecord>();
+		final Set<HierarchicalCompoundString> allLocations = new HashSet<HierarchicalCompoundString>();
+		
+		for (int i=0; i<photoList.getRowCount();i++) {
+			final Photo photo = photoList.getPhoto(i);
+			final HierarchicalCompoundString location = photo.getIndexData().getLocation();
+			if ( !allLocations.contains(location))
+			{
+				allLocations.add(location);
+				final GPSRecord record = gpsDatabase.getGPSData(location);
+				if ( record!= null )
+				{
+					final HierarchicalCompoundString l = record.getLocation();
+					if (!locations.containsKey(l))
+					{
+						locations.put(l, record);
+					}
+				}
+			}
+		}
+		
+		return locations;
+	}
+	
 	static private String center(final HierarchicalCompoundString locationToHighlight,
             final GPSDatabase gpsDatabase)
 	{
@@ -247,67 +279,35 @@ public class GoogleMapsURICreator extends MapURICreator {
 		return str.toString();
 	}
 	
-	/**
-	 * @param locationToHighlight
-	 * @param gpsDatabase
-	 * @return
-	 */
 	static private String listOfGPSAreas(final HierarchicalCompoundString locationToHighlight,
-			                             final GPSDatabase gpsDatabase)
-	{
-		final StringBuilder s = listOfGPSAreasRecurse((HierarchicalCompoundString)gpsDatabase.getRoot(),
-				                                      locationToHighlight,
-				                                      gpsDatabase);
-		return s.toString();
-	}
-	
-	/**
-	 * @param location
-	 * @param locationToHighlight
-	 * @param gpsDatabase
-	 * @return
-	 */
-	static private StringBuilder listOfGPSAreasRecurse(final HierarchicalCompoundString location,
-			                                           final HierarchicalCompoundString locationToHighlight,
-			                                           final GPSDatabase gpsDatabase)
+			                             final Map<HierarchicalCompoundString,GPSRecord> locations)
 	{
 		final StringBuilder str = new StringBuilder();
 		boolean stringHasBeenAdded = false;
 		
-		final GPSRecord record =  (GPSRecord)gpsDatabase.getValueAt(location,GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING);
-		if ( record != null ) {
-			final GPSData data = record.getGPSData();
+		for (HierarchicalCompoundString location: locations.keySet())
+		{
+			final GPSData data = locations.get(location).getGPSData();
 			final String color = location.equals(locationToHighlight)?"#FF0000":"#0000FF";
-			if ( ( data!=null) && data.isComplete() ) {
-				str.append("new GPSRectangle(\"");
-				str.append(location);
-				str.append("\",");
-				str.append(data.getLatitudeMinAsDouble());
-				str.append(",");
-				str.append(data.getLatitudeMaxAsDouble());
-				str.append(",");
-				str.append(data.getLongitudeMinAsDouble());
-				str.append(",");
-				str.append(data.getLongitudeMaxAsDouble());
-				str.append(",");
-				str.append("\""+color+"\"");
-				str.append(")");
-				stringHasBeenAdded = true;				
+			if ( stringHasBeenAdded ) {
+				str.append(",\n");
 			}
+			str.append("new GPSRectangle(\"");
+			str.append(location);
+			str.append("\",");
+			str.append(data.getLatitudeMinAsDouble());
+			str.append(",");
+			str.append(data.getLatitudeMaxAsDouble());
+			str.append(",");
+			str.append(data.getLongitudeMinAsDouble());
+			str.append(",");
+			str.append(data.getLongitudeMaxAsDouble());
+			str.append(",");
+			str.append("\""+color+"\"");
+			str.append(")");
+			stringHasBeenAdded = true;				
 		}
 		
-		for ( int i=0; i<gpsDatabase.getChildCount(location); i++) {
-			final HierarchicalCompoundString child = (HierarchicalCompoundString)gpsDatabase.getChild(location, i);
-			final StringBuilder s = listOfGPSAreasRecurse(child, locationToHighlight, gpsDatabase);
-			if ( s.length() > 0) {
-				if ( stringHasBeenAdded ) {
-					str.append(",\n");
-				}
-				str.append(s);
-				stringHasBeenAdded = true;
-			}
-		}
-		
-		return str;
-	}
+		return str.toString();
+	}	
 }
