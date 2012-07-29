@@ -296,7 +296,7 @@ public class GPSData implements Cloneable {
 	 * @param str longitude as a string
 	 * @return longitude as a double (in degrees)
 	 */
-	private double parseLongitude(final String str) {
+	private static double parseLongitude(final String str) {
 		return parseXxitude(str,'E','O');
 	}
 	
@@ -306,7 +306,7 @@ public class GPSData implements Cloneable {
 	 * @param str latitude as a string
 	 * @return latitude as a double (in degrees)
 	 */
-	private double parseLatitude(final String str) {
+	private static double parseLatitude(final String str) {
 		return parseXxitude(str,'N','S');
 	}
 
@@ -318,9 +318,9 @@ public class GPSData implements Cloneable {
 	 * @param negativeLetter letter for negative value
 	 * @return coordinate as a double (in degrees)
 	 */
-	private double parseXxitude(final String str,
-			                    final char positiveLetter,
-			                    final char negativeLetter) {
+	private static double parseXxitude(final String str,
+			                           final char positiveLetter,
+			                           final char negativeLetter) {
 		final Pattern pattern = Pattern.compile( "([" +
 				                                 positiveLetter +
 				                                 negativeLetter +
@@ -348,7 +348,7 @@ public class GPSData implements Cloneable {
 	 * @param latitude as a double
 	 * @return latitude as a string
 	 */
-	private String formatLongitude(final double latitude) {
+	private static String formatLongitude(final double latitude) {
 		return formatXxitude(latitude,'E','O');
 	}
 
@@ -358,11 +358,11 @@ public class GPSData implements Cloneable {
 	 * @param longitude as a double
 	 * @return longitude as a string
 	 */
-	private String formatLatitude(final double longitude) {
+	private static String formatLatitude(final double longitude) {
 		return formatXxitude(longitude,'N','S');
 	}
 	
-	private String formatXxitude(final double coordinate,
+	private static String formatXxitude(final double coordinate,
                                  final char positiveLetter,
                                  final char negativeLetter) {
 		
