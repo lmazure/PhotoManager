@@ -52,7 +52,7 @@ public class PhotoNavigator extends JFrame
     final private ListSelectionManager a_selection;
     final private PhotoList a_photoList;
     final private GPSDatabase a_GPSDatabase;
-    final private JComboBox a_folder;
+    final private JComboBox<String> a_folder;
     final private JButton a_nextPhoto;
     final private JButton a_previousPhoto;
     private boolean a_folderIsDisabled;
@@ -85,7 +85,7 @@ public class PhotoNavigator extends JFrame
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		add(panel);
 
-		a_folder = new JComboBox();
+		a_folder = new JComboBox<String>();
         a_folder.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_folder.getPreferredSize().height));
         updateFolderList();
         panel.add(a_folder);

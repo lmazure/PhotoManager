@@ -23,7 +23,7 @@ import lmzr.util.string.HierarchicalCompoundString;
 public class GPSDataDisplayMapCellEditor extends JButton
                                          implements TableCellEditor {
 	
-	final static MapURICreator s_geoportailMapURICreator = new GeoportailMapURICreator();
+	final static MapURICreator s_mapURICreator = new GeoportailMapURICreator();
 
 	/**
      * 
@@ -48,7 +48,7 @@ public class GPSDataDisplayMapCellEditor extends JButton
 
 	    if ( GPSData != null) {
 			try {
-				Desktop.getDesktop().browse(s_geoportailMapURICreator.createMapURIFromGPSData(record));
+				Desktop.getDesktop().browse(s_mapURICreator.createMapURIFromGPSData(record));
 			} catch (final HeadlessException ex) {
 				System.err.println("failed to start a browser to display the map of "+location.toString());
 				ex.printStackTrace();

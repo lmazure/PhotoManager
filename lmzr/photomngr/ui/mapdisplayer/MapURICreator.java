@@ -13,7 +13,7 @@ public abstract class MapURICreator {
 	/**
 	 * 
 	 */
-	static protected final double earthRadiusInMeters = 6365000;
+	static protected final double s_earthRadiusInMeters = 6365000;
 
 	/**
 	 * @param record
@@ -32,7 +32,7 @@ public abstract class MapURICreator {
 	 */
 	static public double getLongitudeRangeInMeters(GPSData data)
 	{
-		return ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters * Math.cos(data.getLatitudeRangeAsDouble() / 180.0);
+		return ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * s_earthRadiusInMeters * Math.cos(data.getLatitudeRangeAsDouble() / 180.0);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public abstract class MapURICreator {
 	 */
 	static public double getLatitudeRangeInMeters(GPSData data)
 	{
-		return ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * earthRadiusInMeters;
+		return ( data.getLatitudeRangeAsDouble() / 180.0)  *  Math.PI * s_earthRadiusInMeters;
 	}
 
 	/**

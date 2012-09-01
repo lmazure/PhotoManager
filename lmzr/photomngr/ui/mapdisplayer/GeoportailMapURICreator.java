@@ -39,7 +39,7 @@ public class GeoportailMapURICreator extends MapURICreator {
 		
 		try {
 			final double rangeInMeters = getRangeInMeters(data);
-			final double z = rangeInMeters / ( 2.0 * earthRadiusInMeters );
+			final double z = rangeInMeters / ( 2.0 * s_earthRadiusInMeters );
 			
 			final String str = "http://www.geoportail.fr/accueil?c="
 					           + data.getLongitudeAsDouble()
