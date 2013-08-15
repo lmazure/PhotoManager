@@ -3,7 +3,7 @@ package lmzr.photomngr.ui.player;
 import lmzr.photomngr.data.DataFormat;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class Player_WindowsMediaPlayer extends Player {
 	
@@ -21,7 +21,8 @@ public class Player_WindowsMediaPlayer extends Player {
                                  DataFormat.AVI,
                                  DataFormat.GIF,
                                  DataFormat.MOV,
-                                 DataFormat.WMV} );
+                                 DataFormat.WMV,
+                                 DataFormat.MTS} );
 	}
 
 }

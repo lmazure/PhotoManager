@@ -45,6 +45,10 @@ public class DataFormat {
 	 * 
 	 */
 	final static public DataFormat WMV = new DataFormat("WindowMediaPlayer", new String[]{"wmv"});
+	/**
+	 * 
+	 */
+	final static public DataFormat MTS = new DataFormat("Advanced Video Codec High Definition", new String[]{"mts"});
 		
 	final private String a_format;
 	final private String a_extensions[];
@@ -95,7 +99,8 @@ public class DataFormat {
 				                   DataFormat.GIF,
 				                   DataFormat.FLV,
 				                   DataFormat.MOV,
-				                   DataFormat.WMV };
+				                   DataFormat.WMV,
+				                   DataFormat.MTS};
 		return all;
 	}
 }

@@ -3,7 +3,7 @@ package lmzr.photomngr.ui.player;
 import lmzr.photomngr.data.DataFormat;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class Player_VideoLAN extends Player {
 
@@ -22,7 +22,8 @@ public class Player_VideoLAN extends Player {
                                  DataFormat.GIF,
                                  DataFormat.FLV,
                                  DataFormat.MOV,
-                                 DataFormat.WMV} );
+                                 DataFormat.WMV,
+                                 DataFormat.MTS} );
 	}
 
 }
