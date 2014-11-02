@@ -22,7 +22,8 @@ public class Player_WindowsMediaPlayer extends Player {
                                  DataFormat.GIF,
                                  DataFormat.MOV,
                                  DataFormat.WMV,
-                                 DataFormat.MTS} );
+                                 DataFormat.MTS,
+					             DataFormat.MP4} );
 	}
 
 }

@@ -49,6 +49,10 @@ public class DataFormat {
 	 * 
 	 */
 	final static public DataFormat MTS = new DataFormat("Advanced Video Codec High Definition", new String[]{"mts"});
+	/**
+	 * 
+	 */
+	final static public DataFormat MP4 = new DataFormat("MPEG-4 Part 14", new String[]{"mp4"});
 		
 	final private String a_format;
 	final private String a_extensions[];
@@ -100,7 +104,8 @@ public class DataFormat {
 				                   DataFormat.FLV,
 				                   DataFormat.MOV,
 				                   DataFormat.WMV,
-				                   DataFormat.MTS};
+				                   DataFormat.MTS,
+						           DataFormat.MP4};
 		return all;
 	}
 }

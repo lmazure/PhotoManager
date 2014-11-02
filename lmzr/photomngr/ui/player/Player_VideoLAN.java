@@ -23,7 +23,8 @@ public class Player_VideoLAN extends Player {
                                  DataFormat.FLV,
                                  DataFormat.MOV,
                                  DataFormat.WMV,
-                                 DataFormat.MTS} );
+                                 DataFormat.MTS,
+					             DataFormat.MP4} );
 	}
 
 }

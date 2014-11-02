@@ -3,7 +3,7 @@ package lmzr.photomngr.ui.player;
 import lmzr.photomngr.data.DataFormat;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class Player_QuickTime extends Player {
 
@@ -22,7 +22,8 @@ public class Player_QuickTime extends Player {
 					             DataFormat.VOB,
 					             DataFormat.GIF,
 					             DataFormat.FLV,
-					             DataFormat.MOV} );
+					             DataFormat.MOV,
+					             DataFormat.MP4} );
 	}
 
 }
