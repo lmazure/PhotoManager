@@ -2,6 +2,7 @@ package lmzr.photomngr.ui;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -46,12 +47,10 @@ public class PhotoGeometryEditor extends JFrame {
         final JPanel rotation = new JPanel();
         rotation.setLayout(new GridLayout(rotateFactors.length,2));
         for (float r: rotateFactors) {
-	        JButton rotateLeft = new JButton("↺ "+r+"°");
+	        final JButton rotateLeft = new JButton(new RotateAction("↺ "+r+"°", KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, -r));
 	        rotation.add(rotateLeft);
-	        rotateLeft.addActionListener(new RotateAction(-r, a_photoList, a_selection));
-	        JButton rotateRight = new JButton("↻ "+r+"°");
+	        final JButton rotateRight = new JButton(new RotateAction("↻ "+r+"°", KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, r));
 	        rotation.add(rotateRight);
-	        rotateRight.addActionListener(new RotateAction(r, a_photoList, a_selection));
         }
         
         rotation.setBorder(BorderFactory.createTitledBorder("rotate"));
@@ -60,12 +59,10 @@ public class PhotoGeometryEditor extends JFrame {
         final JPanel zoom = new JPanel();
         zoom.setLayout(new GridLayout(zoomFactors.length,2));
         for (float f: zoomFactors) {
-	        JButton multiply = new JButton("× "+f);
+	        final JButton multiply = new JButton(new ZoomAction("× "+f, KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, f));
 	        zoom.add(multiply);
-	        multiply.addActionListener(new ZoomAction(f, a_photoList, a_selection));
-	        JButton divide = new JButton("÷ "+f);
+	        final JButton divide = new JButton(new ZoomAction("÷ "+f, KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, 1.0f/f));
 	        zoom.add(divide);
-	        divide.addActionListener(new ZoomAction(1.0f/f, a_photoList, a_selection));
         }
 
         zoom.setBorder(BorderFactory.createTitledBorder("zoom"));

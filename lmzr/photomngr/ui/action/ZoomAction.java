@@ -2,6 +2,8 @@ package lmzr.photomngr.ui.action;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.KeyStroke;
+
 import lmzr.photomngr.data.ListSelectionManager;
 import lmzr.photomngr.data.PhotoList;
 
@@ -16,14 +18,22 @@ public class ZoomAction extends PhotoManagerAction {
 	final private ListSelectionManager a_selection;
 
 	/**
+	 * @param text
+	 * @param mnemonic
+	 * @param accelerator
+	 * @param tooltipText
+	 * @param photoList
+	 * @param selection
 	 * @param value
-	 * @param photoList 
-	 * @param selection 
 	 */
-	public ZoomAction(final float value,
-			          final PhotoList photoList,
-		 	   	      final ListSelectionManager selection) {
-		super("multiply zoom by " + value, 0, null, "multiply zoom by " + value);
+	public ZoomAction(final String text,
+           			  final int mnemonic,
+           			  final KeyStroke accelerator,
+           			  final String tooltipText,
+           			  final PhotoList photoList,
+		 	   	      final ListSelectionManager selection,
+		 	   	      final float value) {
+		super(text, mnemonic, accelerator, tooltipText);
 		a_value = value;
 		a_photoList = photoList;
 		a_selection = selection;

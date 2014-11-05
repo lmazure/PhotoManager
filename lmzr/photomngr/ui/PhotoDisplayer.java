@@ -48,6 +48,7 @@ import lmzr.photomngr.ui.action.NextPhotoAction;
 import lmzr.photomngr.ui.action.PreviousPhotoAction;
 import lmzr.photomngr.ui.action.QuitAction;
 import lmzr.photomngr.ui.action.ResetNumberOfCopiesAction;
+import lmzr.photomngr.ui.action.RotateAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
 /**
@@ -192,6 +193,12 @@ public class PhotoDisplayer extends JFrame
 		final ResetNumberOfCopiesAction actionResetNumberOfCopies = new ResetNumberOfCopiesAction("Reset numbers of copies", KeyEvent.CHAR_UNDEFINED, null,"Set all numbers of copies to zero",a_photoList);
 		final JMenuItem itemResetNumberOfCopies = new JMenuItem(actionResetNumberOfCopies);
 		menuEdit.add(itemResetNumberOfCopies);
+		final RotateAction actionRotateClockwize = new RotateAction("Rotate clockwise", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, ActionEvent.CTRL_MASK), null, a_photoList,a_selection, 90f);
+		final JMenuItem itemRotateClockwize = new JMenuItem(actionRotateClockwize);
+		menuEdit.add(itemRotateClockwize);
+		final RotateAction actionRotateCounterClockwize = new RotateAction("Rotate anticlockwise", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, ActionEvent.CTRL_MASK), null, a_photoList,a_selection, -90f);
+		final JMenuItem itemRotateCounterClockwize = new JMenuItem(actionRotateCounterClockwize);
+		menuEdit.add(itemRotateCounterClockwize);
 		final EditSubjectsAction actionEditSubjects = new EditSubjectsAction("Edit subjects", KeyEvent.CHAR_UNDEFINED, null,"Display the subject editor",this,a_photoList,a_selection);
 		final JMenuItem itemEditSubjects = new JMenuItem(actionEditSubjects);
 		menuEdit.add(itemEditSubjects);
