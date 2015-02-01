@@ -154,13 +154,9 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 	public Class<?> getColumnClass(final int columnIndex) {
 		switch (columnIndex) {
 		case PARAM_LOCATION:
-			return String.class;
 		case PARAM_LATITUDE_MIN:
-			return String.class;
 		case PARAM_LATITUDE_MAX:
-			return String.class;
 		case PARAM_LONGITUDE_MIN:
-			return String.class;
 		case PARAM_LONGITUDE_MAX:
 			return String.class;
 		case PARAM_GPS_DATA_FOR_MAPPING:
