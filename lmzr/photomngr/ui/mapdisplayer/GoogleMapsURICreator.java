@@ -262,7 +262,7 @@ public class GoogleMapsURICreator extends MapURICreator {
 					str.append(",\n");
 				}
 				str.append("new GPSPoint(\"");
-				str.append(photo.getFullPath());
+				str.append(photo.getFullPath().replace("\\", "\\\\"));
 				str.append("\",");
 				str.append(latitude);
 				str.append(",");
