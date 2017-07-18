@@ -26,6 +26,12 @@ public class Main {
      */
     public static void main(String[] args) {
     	Chrono.setBeginningOfTime();
+    	
+    	if (args.length != 2) {
+    		System.err.println("Syntax: PhotoManager <photoDirectory> <cacheDirectory>");
+    		System.exit(1);
+    	}
+    	
         new Main(args[0],args[1]);
     }
     
