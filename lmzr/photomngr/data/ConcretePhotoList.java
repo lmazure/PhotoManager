@@ -913,7 +913,7 @@ public class ConcretePhotoList extends Object
         if (list==null) return content;
 
         for ( String str: list)
-        	if ( s_formatFactory.createFormat(folder.getAbsolutePath()+ File.separator + str) != null )
+        	if ( s_formatFactory.createFormat(folder.getAbsolutePath() + File.separator + str) != null )
                 content.add(str);
         
         return content;
@@ -939,7 +939,7 @@ public class ConcretePhotoList extends Object
         	modificationDateTimes.put(s,new Long(modificationDateTime));
         }
 
-        Collections.sort(content,new Comparator<String>() {
+        Collections.sort(content, new Comparator<String>() {
         	@Override
 			public int compare(final String s1, final String s2) {
         		final Long lastModified1 = modificationDateTimes.get(s1);
@@ -947,7 +947,6 @@ public class ConcretePhotoList extends Object
         		return lastModified1.compareTo(lastModified2);
         	}
         }); 
-
     }
     
 	/**
@@ -984,7 +983,5 @@ public class ConcretePhotoList extends Object
         		setValueAt(map.get(location),i,PARAM_LOCATION);
         	}
         }
-
 	}
-
 }
