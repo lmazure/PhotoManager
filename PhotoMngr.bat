@@ -1,1 +1,1 @@
-"C:\Program Files\Java\jre1.8.0_144\bin\java.exe" -Xmx6000M -cp ".;..\utilities;..\exif;..\..\lib\XSwing 1.6\lib\swingx-1.6.jar;..\..\lib\JMF-2.1.1e\lib\jmf.jar" lmzr.photomngr.ui.Main "C:\Users\Laurent\multimedia\images\classified" "C:\Users\Laurent\multimedia\cache" &
+"C:\Program Files\Java\jre-9\bin\java.exe" -Xmx6000M -cp ".;..\utilities;..\exif;..\..\lib\XSwing 1.6\lib\swingx-1.6.jar;..\..\lib\JMF-2.1.1e\lib\jmf.jar" lmzr.photomngr.ui.Main "C:\Users\Laurent\multimedia\images\classified" "C:\Users\Laurent\multimedia\cache" &
