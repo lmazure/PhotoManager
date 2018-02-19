@@ -13,7 +13,7 @@ import org.jdesktop.swingx.tree.TreeModelSupport;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class DatabaseForTreeSelectioner implements TreeTableModel {
 
@@ -116,7 +116,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
 		case PARAM_SELECTED:
 			return a_selection.contains(string);
 		case PARAM_SELECT_ALL:
-			return new Boolean(isSubtreeSelected(string));
+			return Boolean.valueOf(isSubtreeSelected(string));
 		}
 		
 		return null;
@@ -159,7 +159,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
 					 (a_selection.size() > 0 ) ) {
 					// unselect the current selection
 					final HierarchicalCompoundString s = a_selection.iterator().next();
-					setValueAt(new Boolean(false),s,PARAM_SELECTED);
+					setValueAt(Boolean.valueOf(false), s, PARAM_SELECTED);
 				}
 				a_selection.add(string);				
 			} else {
@@ -325,11 +325,11 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
 		final HashSet<HierarchicalCompoundString> oldSelection = new HashSet<HierarchicalCompoundString>(a_selection); 
 			
 		for (HierarchicalCompoundString h : oldSelection ) {
-			setValueAt(new Boolean(false), h, PARAM_SELECTED);
+			setValueAt(Boolean.valueOf(false), h, PARAM_SELECTED);
 		}
 
 		for (HierarchicalCompoundString h : selection ) {
-			setValueAt(new Boolean(true), h, PARAM_SELECTED);
+			setValueAt(Boolean.valueOf(true), h, PARAM_SELECTED);
 		}
 	}
 }

@@ -232,7 +232,7 @@ public class PhotoEditor extends JFrame
             a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
             a_panorama.setText(" ");
             a_panoramaFirst.setText(" ");
-            a_copies.setSelectedItem(new Integer(0));
+            a_copies.setSelectedItem(Integer.valueOf(0));
             a_author.setSelectedItem("");
         	a_isAdjusting = false;
             return;
@@ -258,7 +258,7 @@ public class PhotoEditor extends JFrame
         final String panoramaFirst = photo.getIndexData().getPanoramaFirst();
         a_panoramaFirst.setText(panoramaFirst);
         final int copies = photo.getIndexData().getCopies();
-        a_copies.setSelectedItem(new Integer(copies));
+        a_copies.setSelectedItem(Integer.valueOf(copies));
        
     	a_isAdjusting = false;
     }

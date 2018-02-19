@@ -688,7 +688,7 @@ public class PhotoHeaderData {
     	
     	if ( latitudeRef==null ) return null;
     	if ( latitudeRef.equals("N")) return x;
-    	if ( latitudeRef.equals("S")) return new Double(-x.doubleValue());
+    	if ( latitudeRef.equals("S")) return Double.valueOf(-x.doubleValue());
     	return null;
     }
 
@@ -707,7 +707,7 @@ public class PhotoHeaderData {
     	
     	if ( longitudeRef==null ) return null;
     	if ( longitudeRef.equals("E")) return x;
-    	if ( longitudeRef.equals("O")) return new Double(-x.doubleValue());
+    	if ( longitudeRef.equals("O")) return Double.valueOf(-x.doubleValue());
     	return null;
     }
 
@@ -731,7 +731,7 @@ public class PhotoHeaderData {
 		
 		double value = (double)value1 + (double)value2/60.0 + value3/3600.0; 
 
-		return new Double(value);
+		return Double.valueOf(value);
     }
     
     /**
@@ -758,6 +758,6 @@ public class PhotoHeaderData {
         int value2 = Integer.parseInt(s2);
         if (value2==0) return null;
         
-        return new Double((double)value1/(double)value2);
+        return Double.valueOf((double)value1/(double)value2);
     }
 }

@@ -117,9 +117,9 @@ public class SubjectCellEditor extends JComponent
 					if ( ss.indexOf(str)>=0) {
 						final Integer inc = record.get(ss);
 						if ( inc == null ) {
-							record.put(ss,new Integer(0));
+							record.put(ss, Integer.valueOf(0));
 						} else {
-							record.put(ss,new Integer(inc.intValue()+1));
+							record.put(ss, Integer.valueOf(inc.intValue()+1));
 						}
 					}
 				}

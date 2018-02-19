@@ -28,16 +28,16 @@ public class ResetGeometryAction extends PhotoManagerAction {
 	@Override
 	public void actionPerformed(final ActionEvent arg0) {
     	for (int i=0; i<a_selection.getSelection().length; i++) {
-    	    a_photoList.setValueAt(new Float(1.0f),
+    	    a_photoList.setValueAt(Float.valueOf(1.0f),
                                    a_selection.getSelection()[i],
                                    PhotoList.PARAM_ZOOM);
-    	    a_photoList.setValueAt(new Float(0.0f),
+    	    a_photoList.setValueAt(Float.valueOf(0.0f),
                                    a_selection.getSelection()[i],
                                    PhotoList.PARAM_ROTATION);
-    	    a_photoList.setValueAt(new Float(0.0f),
+    	    a_photoList.setValueAt(Float.valueOf(0.0f),
                                    a_selection.getSelection()[i],
                                    PhotoList.PARAM_FOCUS_X);
-    	    a_photoList.setValueAt(new Float(0.0f),
+    	    a_photoList.setValueAt(Float.valueOf(0.0f),
                                    a_selection.getSelection()[i],
                                    PhotoList.PARAM_FOCUS_Y);
          }

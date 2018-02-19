@@ -423,7 +423,7 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getIndexData().getLocation();
             break;
         case PARAM_ORIENTATION:
-            value = new Integer(getPhoto(rowIndex).getHeaderData().getOrientation());
+            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getOrientation());
             break;
         case PARAM_SUBJECT:
             value = getPhoto(rowIndex).getIndexData().getSubject();
@@ -450,19 +450,19 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getIndexData().getAuthor();
             break;
         case PARAM_COPIES:
-            value = new Integer(getPhoto(rowIndex).getIndexData().getCopies());
+            value = Integer.valueOf(getPhoto(rowIndex).getIndexData().getCopies());
             break;
         case PARAM_ZOOM:
-            value = new Float(getPhoto(rowIndex).getIndexData().getZoom());
+            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getZoom());
             break;
         case PARAM_FOCUS_X:
-            value = new Float(getPhoto(rowIndex).getIndexData().getFocusX());
+            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getFocusX());
             break;
         case PARAM_FOCUS_Y:
-            value = new Float(getPhoto(rowIndex).getIndexData().getFocusY());
+            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getFocusY());
             break;
         case PARAM_ROTATION:
-            value = new Float(getPhoto(rowIndex).getIndexData().getRotation());
+            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getRotation());
             break;
         case PARAM_MANUFACTURER:
             value = getPhoto(rowIndex).getHeaderData().getManufacturer();
@@ -483,8 +483,8 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getHeaderData().getFlash();
             break;
         case PARAM_FOCAL_LENGTH:
-        	PhotoHeaderData d = getPhoto(rowIndex).getHeaderData();
-            value = new Double(d.getFocalLength());
+        	final PhotoHeaderData d = getPhoto(rowIndex).getHeaderData();
+            value = Double.valueOf(d.getFocalLength());
             break;
         case PARAM_SELF_TIMER_MODE:
             value = getPhoto(rowIndex).getHeaderData().getSelfTimerMode();
@@ -505,13 +505,13 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getHeaderData().getCanonISO();
             break;
         case PARAM_CANON_SUBJECT_DISTANCE:
-            value = new Integer(getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance());
+            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance());
             break;
         case PARAM_HEIGHT:
-            value = new Integer(getPhoto(rowIndex).getHeaderData().getHeight());
+            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getHeight());
             break;
         case PARAM_WITDH:
-            value = new Integer(getPhoto(rowIndex).getHeaderData().getWidth());
+            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getWidth());
             break;
         case PARAM_FORMAT:
             value = getPhoto(rowIndex).getFormat();
@@ -936,7 +936,7 @@ public class ConcretePhotoList extends Object
         for (String s : content) {
     		final File f = new File(folder + File.separator + s);
     		final long modificationDateTime = f.lastModified();
-        	modificationDateTimes.put(s,new Long(modificationDateTime));
+        	modificationDateTimes.put(s, Long.valueOf(modificationDateTime));
         }
 
         Collections.sort(content, new Comparator<String>() {

@@ -21,7 +21,7 @@ import lmzr.photomngr.data.PhotoList;
  * but this is so simple, I don't want to use DOM).
  * A random token is added to avoid strange to guess the directory name.
  * 
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class Exporter {
 
@@ -55,7 +55,7 @@ public class Exporter {
 	        return;
 	    }
 		try {
-			index = new BufferedWriter(new FileWriter(f.getPath()+File.separator+"index"+String.format("%06d",new Integer(rand.nextInt(1000000)))+".html"));
+			index = new BufferedWriter(new FileWriter(f.getPath()+File.separator+"index"+String.format("%06d", Integer.valueOf(rand.nextInt(1000000)))+".html"));
 			index.write("<HTML><BODY>");
 		} catch (final IOException e1) {
 	        System.err.println("failed to export subjects");
@@ -80,9 +80,9 @@ public class Exporter {
 			                           +"-"
 			                           +(j+1)
 			                           +"-"
-			                           +String.format("%04d",new Integer(total))
+			                           +String.format("%04d", Integer.valueOf(total))
 			                           +"-"
-			                           +String.format("%06d",new Integer(rand.nextInt(1000000)))
+			                           +String.format("%06d", Integer.valueOf(rand.nextInt(1000000)))
 			                           +fn1.substring(k);
 			        final FileChannel dstChannel = new FileOutputStream(f.getPath()+File.separator+fn2).getChannel();
 			    
@@ -94,7 +94,7 @@ public class Exporter {
 			        dstChannel.close();
 			        
 			        // update index
-					index.write("<A HREF='"+fn2+"'>photo "+String.format("%d",new Integer(total))+"</A><BR/>");
+					index.write("<A HREF='"+fn2+"'>photo "+String.format("%d", Integer.valueOf(total))+"</A><BR/>");
 					
 					// update increment
 					total++;

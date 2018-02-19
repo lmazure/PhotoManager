@@ -261,10 +261,10 @@ public class PhotoDisplayerComponent extends JComponent
 				final AffineTransform transform = ImageComputationManager.getAffineTransform(photo, params, 1.0).createInverse();
 				final Point2D orig = new Point2D.Double(transX, transY);
 				final Point2D res = transform.deltaTransform(orig, null);
-				final double newFocusX = photo.getIndexData().getFocusX() - 2 * res.getX()/photo.getHeaderData().getWidth();
-				final double newFocusY = photo.getIndexData().getFocusY() - 2 * res.getY()/photo.getHeaderData().getHeight();
-	            a_photoList.setValueAt(new Float(newFocusX),selection[i],PhotoList.PARAM_FOCUS_X);
-	            a_photoList.setValueAt(new Float(newFocusY),selection[i],PhotoList.PARAM_FOCUS_Y);
+				final float newFocusX = (float) (photo.getIndexData().getFocusX() - 2 * res.getX()/photo.getHeaderData().getWidth());
+				final float newFocusY = (float) (photo.getIndexData().getFocusY() - 2 * res.getY()/photo.getHeaderData().getHeight());
+	            a_photoList.setValueAt(Float.valueOf(newFocusX), selection[i],PhotoList.PARAM_FOCUS_X);
+	            a_photoList.setValueAt(Float.valueOf(newFocusY), selection[i],PhotoList.PARAM_FOCUS_Y);
 			} catch (final NoninvertibleTransformException e1) {
 				e1.printStackTrace();
 			}
@@ -344,7 +344,7 @@ public class PhotoDisplayerComponent extends JComponent
 	        for (int i=0; i<selection.length; i++) {
 	            final float oldZoom = a_photoList.getPhoto(selection[i]).getIndexData().getZoom();
 	            final float newZoom = oldZoom * incr;
-	            a_photoList.setValueAt(new Float(newZoom),selection[i],PhotoList.PARAM_ZOOM);
+	            a_photoList.setValueAt(Float.valueOf(newZoom),selection[i],PhotoList.PARAM_ZOOM);
 	        }
 	    } else if (e.getModifiersEx()==InputEvent.ALT_DOWN_MASK) {
 	    	final float incr = e.getWheelRotation();
@@ -354,7 +354,7 @@ public class PhotoDisplayerComponent extends JComponent
 	    		float newRot = oldRot + incr;
 	    		if ( newRot>180 ) newRot -= 360;
 	    		if ( newRot<=180 ) newRot += 360;
-	    		a_photoList.setValueAt(new Float(newRot),selection[i],PhotoList.PARAM_ROTATION);
+	    		a_photoList.setValueAt(Float.valueOf(newRot),selection[i],PhotoList.PARAM_ROTATION);
 	    	}
 	    }
 	}

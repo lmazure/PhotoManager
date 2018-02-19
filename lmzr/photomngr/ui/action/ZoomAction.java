@@ -43,7 +43,7 @@ public class ZoomAction extends PhotoManagerAction {
 	public void actionPerformed(final ActionEvent arg0) {
     	for (int i=0; i<a_selection.getSelection().length; i++) {
     	    final float z = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ZOOM))).floatValue();
-    	    a_photoList.setValueAt(new Float(z*a_value),
+    	    a_photoList.setValueAt(Float.valueOf(z*a_value),
                                    a_selection.getSelection()[i],
                                    PhotoList.PARAM_ZOOM);
          }

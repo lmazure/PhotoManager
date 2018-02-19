@@ -94,10 +94,10 @@ public class GPSData implements Cloneable {
 	 */
 	@Override
 	public int hashCode() {
-		return (new Double(a_latitudeMin)).hashCode()
-		        ^ (new Double(a_latitudeMax)).hashCode()
-		        ^ (new Double(a_longitudeMin)).hashCode()
-		        ^ (new Double(a_longitudeMax)).hashCode();
+		return (Double.valueOf(a_latitudeMin)).hashCode()
+		        ^ (Double.valueOf(a_latitudeMax)).hashCode()
+		        ^ (Double.valueOf(a_longitudeMin)).hashCode()
+		        ^ (Double.valueOf(a_longitudeMax)).hashCode();
 	}
 		
 	/**
