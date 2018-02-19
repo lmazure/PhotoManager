@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/exif"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/utilities"/>
-	<classpathentry kind="lib" path="C:/Users/Laurent/Documents/lib/XSwing 1.6/lib/swingx-1.6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Exif2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities"/>
+	<classpathentry kind="lib" path="H:/Documents/tools/lib/XSwing 1.6/lib/swingx-1.6.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-9"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

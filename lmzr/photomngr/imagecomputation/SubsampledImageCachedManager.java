@@ -3,22 +3,16 @@ package lmzr.photomngr.imagecomputation;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import lmzr.photomngr.data.Photo;
 import lmzr.photomngr.data.PhotoHeaderData;
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class SubsampledImageCachedManager {
 
@@ -173,23 +167,16 @@ public class SubsampledImageCachedManager {
 	 * @param file
 	 */
 	private static void recordImage(final BufferedImage image,
-			                       final File file) {
+			                        final File file) {
 		// create the directory
 		final File directory = file.getParentFile();
 		directory.mkdir();
 		
 		// save the file
 		try {
-			final DataOutputStream sortie = new DataOutputStream(new FileOutputStream(file));
-			final JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(sortie);
-			final JPEGEncodeParam param = enc.getDefaultJPEGEncodeParam(image);
-			param.setQuality(1f, false);
-			enc.setJPEGEncodeParam(param);
-			enc.encode(image);
-			sortie.close();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
+            ImageIO.write(image, "jpg", file);
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
     }
 	

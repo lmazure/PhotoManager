@@ -15,7 +15,7 @@ import lmzr.util.chrono.Chrono;
 
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent MazurÃ©
  */
 public class Main {
 
@@ -34,7 +34,7 @@ public class Main {
     	
         new Main(args[0], args[1]);
     }
-    
+
     /**
      * @param root directory where are the photo folders and the index file
      * @param cache directory where the cached images are stored
@@ -46,10 +46,10 @@ public class Main {
         });
 
     }
-    
+
     /**
-     * @param root
-     * @param cache
+     * @param root directory where are the photo folders and the index file
+     * @param cache directory where the cached images are stored
      */
     private void start(final String root,
                        final String cache) {
