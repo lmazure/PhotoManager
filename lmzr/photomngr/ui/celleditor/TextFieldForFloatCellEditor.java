@@ -94,7 +94,7 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
             return true;
         } else if  ( event instanceof KeyEvent ) {
            	final KeyEvent e = (KeyEvent)event;
-        	if ( (e.getModifiers() & InputEvent.CTRL_MASK) != 0 ) return false;
+        	if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
             return true;
         } else {
             return false;

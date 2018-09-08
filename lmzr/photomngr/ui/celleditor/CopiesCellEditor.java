@@ -8,7 +8,7 @@ import java.util.EventObject;
 
 
 /**
- * @author Laurent Mazuré
+ * @author Laurent Mazurï¿½
  */
 public class CopiesCellEditor extends ComboBoxCellEditor {
 
@@ -18,7 +18,7 @@ public class CopiesCellEditor extends ComboBoxCellEditor {
     public CopiesCellEditor() {
         super();
         setEditable(true);
-        for (int i=0; i<=5; i++) addItem(new Integer(i));
+        for (int i=0; i<=5; i++) addItem(Integer.valueOf(i));
     }
     
     /**
@@ -36,7 +36,7 @@ public class CopiesCellEditor extends ComboBoxCellEditor {
             return true;
         } else if  ( event instanceof KeyEvent ) {
            	final KeyEvent e = (KeyEvent)event;
-        	if ( (e.getModifiers() & InputEvent.CTRL_MASK) != 0 ) return false;
+        	if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
             return true;
         } else {
             return false;
