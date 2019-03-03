@@ -4,6 +4,7 @@ package lmzr.photomngr.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ProtocolException;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -78,8 +79,12 @@ public class ConcretePhotoList extends Object
         String data[][] = null;
         try {
             data = StringTableFromToExcel.read(excelFilename);
+        } catch (final ProtocolException e) {
+            System.err.println("Cannot parse file " + excelFilename);
+            e.printStackTrace();
+            System.exit(1);
         } catch (final IOException e) {
-			System.err.println("Cannot open file "+excelFilename);
+			System.err.println("Cannot read file " + excelFilename);
             e.printStackTrace();
             data = new String[0][0];
         }
@@ -87,11 +92,11 @@ public class ConcretePhotoList extends Object
         // quick check that the data is not corrupted
         for (int i=1; i<data.length; i++) {
             if (data[i][0]=="") {
-                System.err.println(excelFilename+" is corrupted: no folder name at line "+(i+1));
+                System.err.println(excelFilename + " is corrupted: no folder name at line " + (i+1));
                 System.exit(1);
             }
             if (data[i][1]=="") {
-                System.err.println(excelFilename+" is corrupted: no file name at line "+(i+1));
+                System.err.println(excelFilename + " is corrupted: no file name at line " + (i+1));
                 System.exit(1);
             }
         }

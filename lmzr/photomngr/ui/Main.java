@@ -42,7 +42,7 @@ public class Main {
     public Main(final String root,
     		    final String cache) {
         SwingUtilities.invokeLater(new Runnable() {
-            @Override public void run() { start(root, cache); }
+            @Override public void run() {start(root, cache); }
         });
 
     }
