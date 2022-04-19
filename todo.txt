@@ -1,0 +1,3 @@
+- recompiler et exécuter
+- résoudre problème license Google
+- réparer affichage IGN
