@@ -22,47 +22,47 @@ import lmzr.util.string.HierarchicalCompoundString;
  */
 public class GPSDataDisplayMapCellEditor extends JButton
                                          implements TableCellEditor {
-	
-	final static MapURICreator s_mapURICreator = new GeoportailMapURICreator();
 
-	/**
-     * 
+    final static MapURICreator s_mapURICreator = new GeoportailMapURICreator();
+
+    /**
+     *
      */
     public GPSDataDisplayMapCellEditor() {
-        super();        
+        super();
     }
 
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
     @Override
-	public Component getTableCellEditorComponent(final JTable table,
-    		                                     final Object value,
-                                                 final boolean isSelected, 
+    public Component getTableCellEditorComponent(final JTable table,
+                                                 final Object value,
+                                                 final boolean isSelected,
                                                  final int row,
                                                  final int column) {
-    	
-	    final GPSRecord record = (GPSRecord) value;
-	    final HierarchicalCompoundString location = record.getLocation();
-	    final GPSData GPSData = record.getGPSData();
 
-	    if ( GPSData != null) {
-			try {
-				Desktop.getDesktop().browse(s_mapURICreator.createMapURIFromGPSData(record));
-			} catch (final HeadlessException ex) {
-				System.err.println("failed to start a browser to display the map of "+location.toString());
-				ex.printStackTrace();
-			} catch (final UnsupportedOperationException ex) {
-				System.err.println("failed to start a browser to display the map of "+location.toString());
-				ex.printStackTrace();
-			} catch (final IOException ex) {
-				System.err.println("failed to start a browser to display the map of "+location.toString());
-				ex.printStackTrace();
-			}
-	    }
-	    
-	    setText("map " + record.getLocation().toShortString());
-	    setEnabled( ( record.getGPSData() != null) &&  record.getGPSData().isComplete() );
+        final GPSRecord record = (GPSRecord) value;
+        final HierarchicalCompoundString location = record.getLocation();
+        final GPSData GPSData = record.getGPSData();
+
+        if ( GPSData != null) {
+            try {
+                Desktop.getDesktop().browse(s_mapURICreator.createMapURIFromGPSData(record));
+            } catch (final HeadlessException ex) {
+                System.err.println("failed to start a browser to display the map of "+location.toString());
+                ex.printStackTrace();
+            } catch (final UnsupportedOperationException ex) {
+                System.err.println("failed to start a browser to display the map of "+location.toString());
+                ex.printStackTrace();
+            } catch (final IOException ex) {
+                System.err.println("failed to start a browser to display the map of "+location.toString());
+                ex.printStackTrace();
+            }
+        }
+
+        setText("map " + record.getLocation().toShortString());
+        setEnabled( ( record.getGPSData() != null) &&  record.getGPSData().isComplete() );
 
         return this;
     }
@@ -71,14 +71,15 @@ public class GPSDataDisplayMapCellEditor extends JButton
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
     @Override
-	public void cancelCellEditing() {
+    public void cancelCellEditing() {
+    	// do nothing
     }
 
     /**
      * @see javax.swing.CellEditor#stopCellEditing()
      */
     @Override
-	public boolean stopCellEditing() {        
+    public boolean stopCellEditing() {
         return true;
     }
 
@@ -86,7 +87,7 @@ public class GPSDataDisplayMapCellEditor extends JButton
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
     @Override
-	public Object getCellEditorValue() {
+    public Object getCellEditorValue() {
         return null;
     }
 
@@ -94,7 +95,7 @@ public class GPSDataDisplayMapCellEditor extends JButton
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
     @Override
-	public boolean isCellEditable(final EventObject anEvent) {
+    public boolean isCellEditable(final EventObject anEvent) {
         return true;
     }
 
@@ -102,7 +103,7 @@ public class GPSDataDisplayMapCellEditor extends JButton
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
     @Override
-	public boolean shouldSelectCell(final EventObject anEvent) {
+    public boolean shouldSelectCell(final EventObject anEvent) {
         return true;
     }
 
@@ -110,13 +111,15 @@ public class GPSDataDisplayMapCellEditor extends JButton
      * @see javax.swing.CellEditor#addCellEditorListener(javax.swing.event.CellEditorListener)
      */
     @Override
-	public void addCellEditorListener(final CellEditorListener l) {
+    public void addCellEditorListener(final CellEditorListener l) {
+    	// do nothing
     }
 
     /**
      * @see javax.swing.CellEditor#removeCellEditorListener(javax.swing.event.CellEditorListener)
      */
     @Override
-	public void removeCellEditorListener(final CellEditorListener l) {
+    public void removeCellEditorListener(final CellEditorListener l) {
+    	// do nothing
     }
 }

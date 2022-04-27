@@ -7,9 +7,9 @@ import java.util.Map;
  */
 public interface MapTranslationPerformer {
 
-	/**
-	 * @param map
-	 */
-	void performMapTranslation(Map<String,String> map);
-	
+    /**
+     * @param map
+     */
+    void performMapTranslation(Map<String,String> map);
+
 }

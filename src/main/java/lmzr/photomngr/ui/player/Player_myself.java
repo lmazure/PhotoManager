@@ -7,14 +7,14 @@ import lmzr.photomngr.data.DataFormat;
  */
 public class Player_myself extends Player {
 
-	/**
-	 * 
-	 */
-	public Player_myself() {
-		super("PhotoManager",
-			  new String[] {},
-			  new DataFormat[] { DataFormat.JPEG,
-					             DataFormat.GIF} );
-	}
+    /**
+     *
+     */
+    public Player_myself() {
+        super("PhotoManager",
+              new String[] {},
+              new DataFormat[] { DataFormat.JPEG,
+                                 DataFormat.GIF} );
+    }
 
 }

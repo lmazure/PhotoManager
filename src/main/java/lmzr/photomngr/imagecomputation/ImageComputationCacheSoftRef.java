@@ -13,11 +13,11 @@ import lmzr.photomngr.data.Photo;
 public class ImageComputationCacheSoftRef {
 
     static private class Record {
-        
+
         final private Photo a_photo;
         final private ImageComputationParameters a_params;
         final private BufferedImage a_image;
-        
+
         /**
          * @param photo
          * @param params
@@ -30,7 +30,7 @@ public class ImageComputationCacheSoftRef {
             a_params = params;
             a_image = image;
         }
-        
+
         /**
          * @return Returns the image.
          */
@@ -50,16 +50,16 @@ public class ImageComputationCacheSoftRef {
             return a_photo;
         }
     }
-    
+
     final private LinkedList<SoftReference<Record>> a_list;
-    
+
     /**
-     * 
+     *
      */
     ImageComputationCacheSoftRef() {
-        a_list = new LinkedList<SoftReference<Record>>();
+        a_list = new LinkedList<>();
     }
-    
+
     /**
      * @param photo
      * @param params
@@ -74,7 +74,7 @@ public class ImageComputationCacheSoftRef {
         add(r);
         return r.get().getImage();
     }
-    
+
     /**
      * @param photo
      * @param params
@@ -87,7 +87,7 @@ public class ImageComputationCacheSoftRef {
         if (r!=null) remove(r);
         add(new SoftReference<Record>(new Record(photo,params,image)));
     }
-    
+
     private SoftReference<Record> get(final Photo photo) {
         for (Iterator<SoftReference<Record>> it=a_list.iterator(); it.hasNext(); ) {
             final SoftReference<Record> e = it.next();
@@ -95,11 +95,11 @@ public class ImageComputationCacheSoftRef {
                 a_list.remove(e);
                 return null;
             }
-            if ( e.get().getPhoto() == photo ) return e; 
+            if ( e.get().getPhoto() == photo ) return e;
         }
         return null;
     }
-    
+
     private void remove(final SoftReference<Record> r) {
         a_list.remove(r);
     }

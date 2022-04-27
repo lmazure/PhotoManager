@@ -18,7 +18,7 @@ public class StringDebugger {
      */
     public static void dump(final String s) {
         final StringCharacterIterator it = new StringCharacterIterator(s);
-        
+
         for (char c=it.first(); c!=CharacterIterator.DONE; c=it.next()) {
             System.out.println(c+" 0x"+Integer.toString(c,16));
         }

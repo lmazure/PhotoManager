@@ -12,7 +12,7 @@ public class DateCellRenderer extends DefaultTableCellRenderer {
     final private static DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.MEDIUM);
 
     /**
-     * 
+     *
      */
     public DateCellRenderer() {
         super();
@@ -22,12 +22,12 @@ public class DateCellRenderer extends DefaultTableCellRenderer {
      * @see javax.swing.table.DefaultTableCellRenderer#setValue(java.lang.Object)
      */
     @Override
-	public void setValue(final Object value) {
+    public void setValue(final Object value) {
         Date date = (Date)value;
         if (date!=null) {
             super.setValue(format.format(date));
         } else {
-        	super.setValue("");
+            super.setValue("");
         }
     }
-} 
+}

@@ -12,11 +12,11 @@ import lmzr.photomngr.data.Photo;
 public class ImageComputationCache {
 
     static private class Record {
-    	
+
         final private Photo a_photo;
         final private ImageComputationParameters a_params;
         final private BufferedImage a_image;
-        
+
         /**
          * @param photo
          * @param params
@@ -29,7 +29,7 @@ public class ImageComputationCache {
             a_params = params;
             a_image = image;
         }
-        
+
         /**
          * @return Returns the image.
          */
@@ -55,19 +55,19 @@ public class ImageComputationCache {
             return a_params.getHeight()*a_params.getWidth();
         }
     }
-    
+
     static final private int s_maxSize = 6*1024*1024;
     final private LinkedList<Record> a_list;
     private int a_size;
-    
+
     /**
-     * 
+     *
      */
     ImageComputationCache() {
         a_list = new LinkedList<Record>();
         a_size = 0;
     }
-    
+
     /**
      * @param photo
      * @param params
@@ -82,7 +82,7 @@ public class ImageComputationCache {
         add(r);
         return r.getImage();
     }
-    
+
     /**
      * @param photo
      * @param params
@@ -98,15 +98,15 @@ public class ImageComputationCache {
             remove(a_list.getLast());
         }
     }
-    
+
     private Record get(final Photo photo) {
         for (Iterator<Record> it=a_list.iterator(); it.hasNext(); ) {
             final Record e = it.next();
-            if (e.getPhoto() == photo) return e; 
+            if (e.getPhoto() == photo) return e;
         }
         return null;
     }
-    
+
     private void remove(final Record r) {
         a_list.remove(r);
         a_size -= r.getSize();

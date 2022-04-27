@@ -25,54 +25,54 @@ import lmzr.photomngr.ui.cellrenderer.SubjectCellRenderer;
 import lmzr.util.ui.EnhancedJTable;
 
 /**
- * 
+ *
  */
 public class PhotoListTable extends EnhancedJTable {
 
     private boolean a_setVisibility;
-    
+
     /**
      * @param photoList
      * @param filteredPhotoList
      * @param parent
      */
     public PhotoListTable(final PhotoList photoList,
-    		              final PhotoList filteredPhotoList,
+                          final PhotoList filteredPhotoList,
                           final Frame parent) {
-        
+
         super(filteredPhotoList);
-        
+
         getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        
+
         setAutoResizeMode(AUTO_RESIZE_OFF);
-		        
-		getColumnModel().getColumn(PhotoList.PARAM_SUBJECT).setCellRenderer(new SubjectCellRenderer());
-		getColumnModel().getColumn(PhotoList.PARAM_LOCATION).setCellRenderer(new LocationCellRenderer());
-		getColumnModel().getColumn(PhotoList.PARAM_DATE).setCellRenderer(new DateCellRenderer());
 
-		getColumnModel().getColumn(PhotoList.PARAM_QUALITY).setCellEditor(new PhotoTraitCellEditor(PhotoQuality.getTraits()));
-		getColumnModel().getColumn(PhotoList.PARAM_PRIVACY).setCellEditor(new PhotoTraitCellEditor(PhotoPrivacy.getTraits()));
-		getColumnModel().getColumn(PhotoList.PARAM_ORIGINALITY).setCellEditor(new PhotoTraitCellEditor(PhotoOriginality.getTraits()));
-		getColumnModel().getColumn(PhotoList.PARAM_SUBJECT).setCellEditor(new SubjectCellEditor(photoList,parent));
-		getColumnModel().getColumn(PhotoList.PARAM_LOCATION).setCellEditor(new LocationCellEditor(filteredPhotoList.getLocationFactory(),parent));
-		getColumnModel().getColumn(PhotoList.PARAM_COPIES).setCellEditor(new CopiesCellEditor());
-		getColumnModel().getColumn(PhotoList.PARAM_ZOOM).setCellEditor(new ZoomCellEditor());
-		getColumnModel().getColumn(PhotoList.PARAM_FOCUS_X).setCellEditor(new FocusCellEditor());
-		getColumnModel().getColumn(PhotoList.PARAM_FOCUS_Y).setCellEditor(new FocusCellEditor());
-		getColumnModel().getColumn(PhotoList.PARAM_ROTATION).setCellEditor(new RotationCellEditor());
-		getColumnModel().getColumn(PhotoList.PARAM_AUTHOR).setCellEditor(new AuthorCellEditor(filteredPhotoList.getAuthorFactory()));
+        getColumnModel().getColumn(PhotoList.PARAM_SUBJECT).setCellRenderer(new SubjectCellRenderer());
+        getColumnModel().getColumn(PhotoList.PARAM_LOCATION).setCellRenderer(new LocationCellRenderer());
+        getColumnModel().getColumn(PhotoList.PARAM_DATE).setCellRenderer(new DateCellRenderer());
 
-		a_setVisibility = true;
+        getColumnModel().getColumn(PhotoList.PARAM_QUALITY).setCellEditor(new PhotoTraitCellEditor(PhotoQuality.getTraits()));
+        getColumnModel().getColumn(PhotoList.PARAM_PRIVACY).setCellEditor(new PhotoTraitCellEditor(PhotoPrivacy.getTraits()));
+        getColumnModel().getColumn(PhotoList.PARAM_ORIGINALITY).setCellEditor(new PhotoTraitCellEditor(PhotoOriginality.getTraits()));
+        getColumnModel().getColumn(PhotoList.PARAM_SUBJECT).setCellEditor(new SubjectCellEditor(photoList,parent));
+        getColumnModel().getColumn(PhotoList.PARAM_LOCATION).setCellEditor(new LocationCellEditor(filteredPhotoList.getLocationFactory(),parent));
+        getColumnModel().getColumn(PhotoList.PARAM_COPIES).setCellEditor(new CopiesCellEditor());
+        getColumnModel().getColumn(PhotoList.PARAM_ZOOM).setCellEditor(new ZoomCellEditor());
+        getColumnModel().getColumn(PhotoList.PARAM_FOCUS_X).setCellEditor(new FocusCellEditor());
+        getColumnModel().getColumn(PhotoList.PARAM_FOCUS_Y).setCellEditor(new FocusCellEditor());
+        getColumnModel().getColumn(PhotoList.PARAM_ROTATION).setCellEditor(new RotationCellEditor());
+        getColumnModel().getColumn(PhotoList.PARAM_AUTHOR).setCellEditor(new AuthorCellEditor(filteredPhotoList.getAuthorFactory()));
+
+        a_setVisibility = true;
     }
 
     /**
      * @see java.awt.Component#processEvent(java.awt.AWTEvent)
      */
     @Override
-	protected void processEvent(final AWTEvent e) {
+    protected void processEvent(final AWTEvent e) {
         a_setVisibility = false;
-        super.processEvent(e); 
+        super.processEvent(e);
         a_setVisibility = true;
     }
 
@@ -80,11 +80,11 @@ public class PhotoListTable extends EnhancedJTable {
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     @Override
-	public void valueChanged(final ListSelectionEvent e) {
-        
+    public void valueChanged(final ListSelectionEvent e) {
+
         super.valueChanged(e);
         repaint(new Rectangle());
-        
+
         if ( !a_setVisibility ) {
             // the user is manipulating the table itself -> we do not override its scrolling
             return;

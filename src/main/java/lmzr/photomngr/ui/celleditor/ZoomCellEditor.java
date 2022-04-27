@@ -5,10 +5,10 @@ package lmzr.photomngr.ui.celleditor;
  */
 public class ZoomCellEditor extends TextFieldForFloatCellEditor {
 
-	/**
-	 * 
-	 */
-	public ZoomCellEditor() {
-		super();
-	}
+    /**
+     *
+     */
+    public ZoomCellEditor() {
+        super();
+    }
 }

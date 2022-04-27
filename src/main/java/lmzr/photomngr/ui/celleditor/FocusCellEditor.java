@@ -5,10 +5,10 @@ package lmzr.photomngr.ui.celleditor;
  */
 public class FocusCellEditor extends TextFieldForFloatCellEditor {
 
-	/**
-	 * 
-	 */
-	public FocusCellEditor() {
-		super();
-	}
+    /**
+     *
+     */
+    public FocusCellEditor() {
+        super();
+    }
 }

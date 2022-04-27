@@ -18,79 +18,79 @@ import javax.swing.table.TableCellEditor;
 /**
  *
  */
-public class ComboBoxCellEditor extends JComboBox 
+public class ComboBoxCellEditor extends JComboBox
                                 implements TableCellEditor {
 
     final private Vector<CellEditorListener> a_listenerList;
-    
+
     /**
-     * 
+     *
      */
     public ComboBoxCellEditor() {
         super();
-        a_listenerList = new Vector<CellEditorListener>();
+        a_listenerList = new Vector<>();
 
         addActionListener(new ActionListener() {
             @Override
-			public void actionPerformed(final ActionEvent event) { fireEditingStopped(); } 
+            public void actionPerformed(final ActionEvent event) { fireEditingStopped(); }
         });
     }
-    
+
     /**
      * @param listener
      */
     @Override
-	public void addCellEditorListener(final CellEditorListener listener) {
+    public void addCellEditorListener(final CellEditorListener listener) {
         a_listenerList.add(listener);
-    } 
-    
+    }
+
     /**
      * @param listener
      */
     @Override
-	public void removeCellEditorListener(final CellEditorListener listener) {
+    public void removeCellEditorListener(final CellEditorListener listener) {
         a_listenerList.remove(listener);
-    } 
-    
+    }
+
     /**
-     * 
+     *
      */
     protected void fireEditingStopped() {
         final ChangeEvent e = new ChangeEvent(this);
         for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingStopped(e);
-    } 
-    
+    }
+
     /**
-     * 
+     *
      */
     protected void fireEditingCanceled() {
         final ChangeEvent e = new ChangeEvent(this);
         for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingCanceled(e);
-    } 
-    
+    }
+
     /**
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
     @Override
-	public void cancelCellEditing() {
+    public void cancelCellEditing() {
         fireEditingCanceled();
-    } 
-    
+    }
+
     /**
      * @return x
      */
     @Override
-	public boolean stopCellEditing() {
+    public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
-    } 
-    
+    }
+
     /**
      * @param event
      * @return x
      */
     @Override
-	public boolean isCellEditable(final EventObject event) {
+    public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programaticaly edited
             return true;
@@ -100,23 +100,23 @@ public class ComboBoxCellEditor extends JComboBox
             if ( e.getClickCount()!=2 ) return false;
             return true;
         } else if  ( event instanceof KeyEvent ) {
-           	final KeyEvent e = (KeyEvent)event;
-        	if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
+               final KeyEvent e = (KeyEvent)event;
+            if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
      * @param event
      * @return x
      */
     @Override
-	public boolean shouldSelectCell(final EventObject event) {
+    public boolean shouldSelectCell(final EventObject event) {
         return true;
-    } 
-        
+    }
+
     /**
      * @param table
      * @param value
@@ -126,21 +126,21 @@ public class ComboBoxCellEditor extends JComboBox
      * @return x
      */
     @Override
-	public Component getTableCellEditorComponent(final JTable table,
-                                                 final Object value, 
+    public Component getTableCellEditorComponent(final JTable table,
+                                                 final Object value,
                                                  final boolean isSelected,
                                                  final int row,
                                                  final int column) {
         setSelectedItem(value);
         return this;
     }
-    
+
     /**
      * @return selected element
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
     @Override
-	public Object getCellEditorValue() {
-        return getSelectedItem(); 
-    }   
+    public Object getCellEditorValue() {
+        return getSelectedItem();
+    }
 }

@@ -11,7 +11,7 @@ import lmzr.photomngr.ui.player.Player;
 
 /**
  * Action to start a image/movie displayer
- * 
+ *
  * @author Laurent Mazuré
  */
 public class StartPlayerAction extends PhotoManagerAction {
@@ -45,16 +45,16 @@ public class StartPlayerAction extends PhotoManagerAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
-	public void actionPerformed(final ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
 
-    	if ( a_player.getExecutable()==null ) {
-	        JOptionPane.showMessageDialog(null,
+        if ( a_player.getExecutable()==null ) {
+            JOptionPane.showMessageDialog(null,
                                           "Unable to find executable of \n"+a_player.getName(),
                                           "Launch error",
                                           JOptionPane.ERROR_MESSAGE);
-    		return;
-    	}
-    	
+            return;
+        }
+
         try {
             final String[] commandLine = { a_player.getExecutable().getAbsolutePath(),
                                            a_photoProvider.getPhoto().getFullPath() };

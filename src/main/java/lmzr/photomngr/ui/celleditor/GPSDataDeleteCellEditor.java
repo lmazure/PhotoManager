@@ -19,24 +19,24 @@ import lmzr.util.string.HierarchicalCompoundString;
  */
 public class GPSDataDeleteCellEditor extends JButton
                                      implements TableCellEditor {
-    
+
     /**
-     * 
+     *
      */
     public GPSDataDeleteCellEditor() {
-        super();        
+        super();
     }
 
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
     @Override
-	public Component getTableCellEditorComponent(final JTable table,
+    public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value,
-                                                 final boolean isSelected, 
+                                                 final boolean isSelected,
                                                  final int row,
                                                  final int column) {
-        
+
         final JXTreeTable treeTable = (JXTreeTable) table;
         final GPSDatabase database = (GPSDatabase) treeTable.getTreeTableModel();
         final GPSRecord record = (GPSRecord) value;
@@ -46,7 +46,7 @@ public class GPSDataDeleteCellEditor extends JButton
         database.setValueAt(null, location, GPSDatabase.PARAM_LATITUDE_MAX);
         database.setValueAt(null, location, GPSDatabase.PARAM_LONGITUDE_MIN);
         database.setValueAt(null, location, GPSDatabase.PARAM_LONGITUDE_MAX);
-        
+
         setText("delete");
         setEnabled(false);
 
@@ -57,14 +57,15 @@ public class GPSDataDeleteCellEditor extends JButton
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
     @Override
-	public void cancelCellEditing() {
+    public void cancelCellEditing() {
+    	// do nothing
     }
 
     /**
      * @see javax.swing.CellEditor#stopCellEditing()
      */
     @Override
-	public boolean stopCellEditing() {        
+    public boolean stopCellEditing() {
         return true;
     }
 
@@ -72,7 +73,7 @@ public class GPSDataDeleteCellEditor extends JButton
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
     @Override
-	public Object getCellEditorValue() {
+    public Object getCellEditorValue() {
         return null;
     }
 
@@ -80,7 +81,7 @@ public class GPSDataDeleteCellEditor extends JButton
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
     @Override
-	public boolean isCellEditable(final EventObject anEvent) {
+    public boolean isCellEditable(final EventObject anEvent) {
         return true;
     }
 
@@ -88,7 +89,7 @@ public class GPSDataDeleteCellEditor extends JButton
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
     @Override
-	public boolean shouldSelectCell(final EventObject anEvent) {
+    public boolean shouldSelectCell(final EventObject anEvent) {
         return true;
     }
 
@@ -96,13 +97,15 @@ public class GPSDataDeleteCellEditor extends JButton
      * @see javax.swing.CellEditor#addCellEditorListener(javax.swing.event.CellEditorListener)
      */
     @Override
-	public void addCellEditorListener(final CellEditorListener l) {
+    public void addCellEditorListener(final CellEditorListener l) {
+    	// do nothing
     }
 
     /**
      * @see javax.swing.CellEditor#removeCellEditorListener(javax.swing.event.CellEditorListener)
      */
     @Override
-	public void removeCellEditorListener(final CellEditorListener l) {
+    public void removeCellEditorListener(final CellEditorListener l) {
+    	// do nothing
     }
 }

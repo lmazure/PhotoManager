@@ -12,16 +12,16 @@ import lmzr.photomngr.scheduler.Scheduler.Priority;
 
 /**
  * initially from http://binkley.blogspot.com/2009/04/jumping-work-queue-in-executor.html
- * 
+ *
  * @author Laurent Mazuré
  */
 public class PriorityExecutor extends ThreadPoolExecutor {
-    
+
     /**
      * @param maxNumberOfThreads
      */
     public PriorityExecutor(final int maxNumberOfThreads) {
-        super(0, maxNumberOfThreads, 60L, TimeUnit.SECONDS, new PriorityBlockingQueue<Runnable>(2, new PriorityTaskComparator()));
+        super(0, maxNumberOfThreads, 60L, TimeUnit.SECONDS, new PriorityBlockingQueue<>(2, new PriorityTaskComparator()));
     }
 
     /**
@@ -32,7 +32,7 @@ public class PriorityExecutor extends ThreadPoolExecutor {
                                                final T value) {
 
         final PriorityRunnable run = (PriorityRunnable) runnable;
-        return new PriorityTask<T>(run.getCategory(), run.getPriority(), run.getSubpriority(), runnable, value);
+        return new PriorityTask<>(run.getCategory(), run.getPriority(), run.getSubpriority(), runnable, value);
     }
 
     /**
@@ -69,7 +69,7 @@ public class PriorityExecutor extends ThreadPoolExecutor {
             if (diff>0) return 1;
             return 0;
         }
-        
+
         /**
          * @param category
          * @param priority
@@ -79,9 +79,9 @@ public class PriorityExecutor extends ThreadPoolExecutor {
         private static double computePriority(final Category category,
                                               final Priority priority,
                                               final double subpriority) {
-            
+
             double prio = 0;
-            
+
             switch (category) {
             case CATEGORY_NOW:
                 prio = 20;
@@ -91,9 +91,9 @@ public class PriorityExecutor extends ThreadPoolExecutor {
                   break;
             case CATEBORY_BACKGROUND:
                 prio = 0;
-                break;                
+                break;
             }
-            
+
             switch (priority) {
             case PRIORITY_VERY_HIGH:
                 prio += 4;
@@ -111,9 +111,9 @@ public class PriorityExecutor extends ThreadPoolExecutor {
                 prio += 1;
                 break;
             }
-            
+
             prio += subpriority;
-            
+
             return prio;
         }
     }

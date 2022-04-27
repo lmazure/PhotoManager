@@ -31,7 +31,7 @@ public class PhotoIndexData {
      * @param data
      * @param locationFactory
      * @param subjectFactory
-     * @param authorFactory 
+     * @param authorFactory
      */
     public PhotoIndexData(final String data[],
                           final HierarchicalCompoundStringFactory locationFactory,
@@ -65,7 +65,7 @@ public class PhotoIndexData {
     /**
      * @param locationFactory
      * @param subjectFactory
-     * @param authorFactory 
+     * @param authorFactory
      */
     public PhotoIndexData(final HierarchicalCompoundStringFactory locationFactory,
                           final MultiHierarchicalCompoundStringFactory subjectFactory,
@@ -106,7 +106,7 @@ public class PhotoIndexData {
     public PhotoQuality getQuality() {
         return a_quality;
     }
-    
+
     /**
      * may be null if undefined in the photo index file
      * @return originality
@@ -122,7 +122,7 @@ public class PhotoIndexData {
     public PhotoPrivacy getPrivacy() {
         return a_privacy;
     }
-    
+
 
     /**
      * @param value
@@ -130,7 +130,7 @@ public class PhotoIndexData {
     public void setQuality(final PhotoQuality value) {
         a_quality = value;
     }
-    
+
     /**
      * @param value
      */
@@ -144,14 +144,14 @@ public class PhotoIndexData {
     public void setPrivacy(final PhotoPrivacy value) {
         a_privacy = value;
     }
-    
+
    /**
      * @return geographical location where the photo has been taken
      */
     public HierarchicalCompoundString getLocation() {
         return a_location;
     }
-    
+
     /**
      * @param value
      */
@@ -184,7 +184,7 @@ public class PhotoIndexData {
      * @param author
      */
     public void setAuthor(final String author) {
-    	a_author = author;
+        a_author = author;
     }
     /**
      * @return number of copies to print
@@ -192,83 +192,83 @@ public class PhotoIndexData {
     public int getCopies() {
         return a_copies;
     }
-    
+
     /**
      * @param copies
      */
     public void setCopies(final int copies) {
         a_copies = copies;
     }
-    
+
     /**
      * @return zoom factor
      */
     public float getZoom() {
-    	return a_zoom;
+        return a_zoom;
     }
-    
+
     /**
      * @param zoom
      */
     public void setZoom(final float zoom) {
-    	a_zoom = zoom;
+        a_zoom = zoom;
     }
-    
+
     /**
      * @return focus X
      */
     public float getFocusX() {
-    	return a_focus_x;
+        return a_focus_x;
     }
-    
+
     /**
      * @param focusX
      */
     public void setFocusX(final float focusX) {
-    	a_focus_x = focusX;
+        a_focus_x = focusX;
     }
-    
+
     /**
      * @return focus Y
      */
     public float getFocusY() {
-    	return a_focus_y;
+        return a_focus_y;
     }
-    
+
     /**
      * @param focusY
      */
     public void setFocusY(final float focusY) {
-    	a_focus_y = focusY;
+        a_focus_y = focusY;
     }
-    
-    
+
+
     /**
      * @return rotation
      */
     public float getRotation() {
-    	return a_rotation;
+        return a_rotation;
     }
-    
+
     /**
      * @param rotation
      */
     public void setRotation(final float rotation) {
-    	a_rotation = rotation;
+        a_rotation = rotation;
     }
 
     /**
      * @param panorama
      */
     public void setPanorama(final String panorama) {
-    	a_panorama = panorama;
+        a_panorama = panorama;
     }
 
     /**
      * @param panoramaFirst
      */
     public void setPanoramaFirst(final String panoramaFirst) {
-    	a_panoramaFirst = panoramaFirst;
+        a_panoramaFirst = panoramaFirst;
     }
 
 }

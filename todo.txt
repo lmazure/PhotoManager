@@ -1,3 +1,3 @@
-- recompiler et exécuter
-- résoudre problème license Google
-- réparer affichage IGN
+- corriger affichage Google (failed to locate template "resources/googleMapsTemplate.html")
+- rÃ©soudre problÃ¨me license Google
+- rÃ©parer affichage IGN

@@ -15,26 +15,26 @@ import org.jdesktop.swingx.JXTreeTable;
  */
 public class GPSTreeTable extends JXTreeTable {
 
-	/**
-	 * @param database
-	 */
-	GPSTreeTable(final GPSDatabase database) {
-		
-		super(database);
-		
-		final TableColumnModel colModel = getColumnModel();
-		
-		colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setCellRenderer(new GPSDataDisplayMapCellRenderer());
-		colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setCellEditor(new GPSDataDisplayMapCellEditor());
-		colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setCellRenderer(new GPSDataDeleteCellRenderer());
-		colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setCellEditor(new GPSDataDeleteCellEditor());
+    /**
+     * @param database
+     */
+    GPSTreeTable(final GPSDatabase database) {
 
-		getColumnModel().getColumn(GPSDatabase.PARAM_LOCATION).setPreferredWidth(500);
-		getColumnModel().getColumn(GPSDatabase.PARAM_LATITUDE_MIN).setPreferredWidth(120);
-		getColumnModel().getColumn(GPSDatabase.PARAM_LATITUDE_MAX).setPreferredWidth(120);
-		getColumnModel().getColumn(GPSDatabase.PARAM_LONGITUDE_MIN).setPreferredWidth(120);
-		getColumnModel().getColumn(GPSDatabase.PARAM_LONGITUDE_MAX).setPreferredWidth(120);
-		getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setPreferredWidth(200);
-		getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setPreferredWidth(200);
-	}
+        super(database);
+
+        final TableColumnModel colModel = getColumnModel();
+
+        colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setCellRenderer(new GPSDataDisplayMapCellRenderer());
+        colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setCellEditor(new GPSDataDisplayMapCellEditor());
+        colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setCellRenderer(new GPSDataDeleteCellRenderer());
+        colModel.getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setCellEditor(new GPSDataDeleteCellEditor());
+
+        getColumnModel().getColumn(GPSDatabase.PARAM_LOCATION).setPreferredWidth(500);
+        getColumnModel().getColumn(GPSDatabase.PARAM_LATITUDE_MIN).setPreferredWidth(120);
+        getColumnModel().getColumn(GPSDatabase.PARAM_LATITUDE_MAX).setPreferredWidth(120);
+        getColumnModel().getColumn(GPSDatabase.PARAM_LONGITUDE_MIN).setPreferredWidth(120);
+        getColumnModel().getColumn(GPSDatabase.PARAM_LONGITUDE_MAX).setPreferredWidth(120);
+        getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_MAPPING).setPreferredWidth(200);
+        getColumnModel().getColumn(GPSDatabase.PARAM_GPS_DATA_FOR_DELETING).setPreferredWidth(200);
+    }
 }

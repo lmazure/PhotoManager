@@ -10,75 +10,80 @@ import java.awt.event.WindowListener;
  */
 public class WindowClosingListener implements WindowListener {
 
-	/**
-	 *
-	 */
-	public interface Callback {
-		/**
-		 * 
-		 */
-		void windowClosing();
-	}
-	
-	private Callback a_callback;
-	
-	/**
-	 * @param window
-	 * @param callback
-	 */
-	public WindowClosingListener(final Window window,
-			                     final Callback callback) {
-		window.addWindowListener(this);
-		a_callback = callback;
-	}
-	
-	/**
-	 * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
-	 */
-	@Override
-	public void windowActivated(WindowEvent arg0) {
-	}
+    /**
+     *
+     */
+    public interface Callback {
+        /**
+         *
+         */
+        void windowClosing();
+    }
 
-	/**
-	 * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
-	 */
-	@Override
-	public void windowClosed(WindowEvent arg0) {
-	}
+    private Callback a_callback;
 
-	/**
-	 * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
-	 */
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		a_callback.windowClosing();
-	}
+    /**
+     * @param window
+     * @param callback
+     */
+    public WindowClosingListener(final Window window,
+                                 final Callback callback) {
+        window.addWindowListener(this);
+        this.a_callback = callback;
+    }
 
-	/**
-	 * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
-	 */
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-	}
+    /**
+     * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
+     */
+    @Override
+    public void windowActivated(WindowEvent arg0) {
+    	// do nothing
+    }
 
-	/**
-	 * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
-	 */
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-	}
+    /**
+     * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
+     */
+    @Override
+    public void windowClosed(WindowEvent arg0) {
+    }
 
-	/**
-	 * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
-	 */
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-	}
+    /**
+     * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
+     */
+    @Override
+    public void windowClosing(WindowEvent arg0) {
+        this.a_callback.windowClosing();
+    }
 
-	/**
-	 * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
-	 */
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-	}
+    /**
+     * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
+     */
+    @Override
+    public void windowDeactivated(WindowEvent arg0) {
+    	// do nothing
+    }
+
+    /**
+     * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
+     */
+    @Override
+    public void windowDeiconified(WindowEvent arg0) {
+    	// do nothing
+    }
+
+    /**
+     * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
+     */
+    @Override
+    public void windowIconified(WindowEvent arg0) {
+    	// do nothing
+    }
+
+    /**
+     * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
+     */
+    @Override
+    public void windowOpened(WindowEvent arg0) {
+    	// do nothing
+    }
 }

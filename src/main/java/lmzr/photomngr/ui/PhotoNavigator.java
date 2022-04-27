@@ -43,9 +43,9 @@ import lmzr.photomngr.ui.player.PlayerFactory;
  * @author Laurent Mazuré
  *
  */
-public class PhotoNavigator extends JFrame 
+public class PhotoNavigator extends JFrame
                             implements ListSelectionListener, TableModelListener, PhotoListMetaDataListener, PhotoProvider {
-	
+
     final private static DateFormat s_dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
     final private static DateFormat s_timeFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
 
@@ -63,15 +63,15 @@ public class PhotoNavigator extends JFrame
     final private JButton[] a_play;
     private int[] a_previousSelection;
 
-	
+
     /**
      * @param photoList
      * @param GPSDatabase
      * @param selection
      */
     public PhotoNavigator(final PhotoList photoList,
-    		              final GPSDatabase GPSDatabase,
-    		              final ListSelectionManager selection) {
+                          final GPSDatabase GPSDatabase,
+                          final ListSelectionManager selection) {
         super();
         a_photoList = photoList;
         a_GPSDatabase = GPSDatabase;
@@ -83,9 +83,9 @@ public class PhotoNavigator extends JFrame
 
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		add(panel);
+        add(panel);
 
-		a_folder = new JComboBox<String>();
+        a_folder = new JComboBox<String>();
         a_folder.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_folder.getPreferredSize().height));
         updateFolderList();
         panel.add(a_folder);
@@ -94,29 +94,29 @@ public class PhotoNavigator extends JFrame
         a_folder.addActionListener(
                 new ActionListener() {
                     @Override
-					public void actionPerformed(final ActionEvent e) {
+                    public void actionPerformed(final ActionEvent e) {
                         if (a_folderIsDisabled) return;
                         for (int i=0; i<a_photoList.getRowCount(); i++) {
                             final String f = a_photoList.getPhoto(i).getFolder();
                             if (f.equals(a_folder.getSelectedItem())) {
-                            	final int v [] = new int[1];
-                            	v[0] = i;
+                                final int v [] = new int[1];
+                                v[0] = i;
                                 a_selection.setSelection(v);
                                 return;
                             }}}});
-        
+
         final JPanel navigator = new JPanel();
         a_file = new JLabel();
         a_nextPhoto = new JButton("next");
         a_nextPhoto.addActionListener(
-                new ActionListener() { 
+                new ActionListener() {
                     @Override
-					public void actionPerformed(final ActionEvent e) { a_selection.next(1);}});
+                    public void actionPerformed(final ActionEvent e) { a_selection.next(1);}});
         a_previousPhoto = new JButton("prev.");
         a_previousPhoto.addActionListener(
                 new ActionListener() {
                     @Override
-					public void actionPerformed( final ActionEvent e) { a_selection.previous(1);}});
+                    public void actionPerformed( final ActionEvent e) { a_selection.previous(1);}});
         navigator.add(a_file);
         navigator.add(a_previousPhoto);
         navigator.add(a_nextPhoto);
@@ -128,49 +128,49 @@ public class PhotoNavigator extends JFrame
         a_dateTime.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(a_dateTime);
         a_dateTime.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+
         final JPanel viewerButtons = new JPanel();
 
         final PlayerFactory playerFactory = new PlayerFactory();
         final Player[] players = playerFactory.getPlayers();
         a_play = new JButton[players.length];
         for (int i=0; i<players.length; i++) {
-	        a_play[i] = new JButton(new StartPlayerAction( players[i].getName(),
-	        		                                       KeyEvent.CHAR_UNDEFINED,
-	        		                                       null,
-	        		                                       "start "+players[i].getName(),
-	        		                                       this,
-	        		                                       players[i]));
-	        viewerButtons.add(a_play[i]);
-	        a_play[i].setAlignmentX(Component.LEFT_ALIGNMENT);
+            a_play[i] = new JButton(new StartPlayerAction( players[i].getName(),
+                                                           KeyEvent.CHAR_UNDEFINED,
+                                                           null,
+                                                           "start "+players[i].getName(),
+                                                           this,
+                                                           players[i]));
+            viewerButtons.add(a_play[i]);
+            a_play[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }
         viewerButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
         viewerButtons.setBorder(BorderFactory.createTitledBorder("external viewers"));
         viewerButtons.setMaximumSize(new Dimension(Integer.MAX_VALUE,viewerButtons.getPreferredSize().height));
 
         panel.add(viewerButtons);
-        
+
         final JPanel mapFull = new JPanel();
         mapFull.setLayout(new BoxLayout(mapFull, BoxLayout.Y_AXIS));
 
         a_map = new JLabel();
         mapFull.add(a_map);
-        
+
         final JPanel mapButtons = new JPanel();
         final MapURICreatorFactory mapURICreatorFactory = new MapURICreatorFactory();
         final MapURICreator[] mapURICreators = mapURICreatorFactory.getMapDisplayers();
         a_mapDisplayers = new JButton[mapURICreators.length];
         for (int i=0; i<mapURICreators.length; i++) {
-        	final String siteName = mapURICreators[i].getName();
-        	a_mapDisplayers[i] = new JButton(new DisplayMapAction(siteName,
-	        		                                              KeyEvent.CHAR_UNDEFINED,
-	        		                                              null,
-	        		                                              "display " + siteName + " map",
-	        		                                              a_GPSDatabase,
-	        		                                              a_photoList,
-	        		                                              a_selection,
-	        		                                              mapURICreators[i]));
-	        mapButtons.add(a_mapDisplayers[i]);
+            final String siteName = mapURICreators[i].getName();
+            a_mapDisplayers[i] = new JButton(new DisplayMapAction(siteName,
+                                                                  KeyEvent.CHAR_UNDEFINED,
+                                                                  null,
+                                                                  "display " + siteName + " map",
+                                                                  a_GPSDatabase,
+                                                                  a_photoList,
+                                                                  a_selection,
+                                                                  mapURICreators[i]));
+            mapButtons.add(a_mapDisplayers[i]);
         }
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
         mapButtons.setMaximumSize(new Dimension(Integer.MAX_VALUE,mapButtons.getPreferredSize().height));
@@ -179,40 +179,40 @@ public class PhotoNavigator extends JFrame
         mapButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
         mapFull.setBorder(BorderFactory.createTitledBorder("map"));
         panel.add(mapFull);
-        
+
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         update();
-        
+
         pack();
     }
 
     /**
-     * 
+     *
      */
     private void update() {
-        
-    	final int selection[] = a_selection.getSelection();
-    	if (Arrays.equals(a_previousSelection,selection)) return;
-        a_previousSelection = selection;        
-        
-    	// buttons to start external player
-    	for (int i=0; i<a_play.length; i++) {
-    		final StartPlayerAction action = (StartPlayerAction)a_play[i].getAction();
-    		action.setEnabled( (selection.length==1) &&
-    				           action.getPlayer().isFormatSupported(a_photoList.getPhoto(selection[0]).getFormat()) );
-    	}
 
-    	// name of current photo
+        final int selection[] = a_selection.getSelection();
+        if (Arrays.equals(a_previousSelection,selection)) return;
+        a_previousSelection = selection;
+
+        // buttons to start external player
+        for (int i=0; i<a_play.length; i++) {
+            final StartPlayerAction action = (StartPlayerAction)a_play[i].getAction();
+            action.setEnabled( (selection.length==1) &&
+                               action.getPlayer().isFormatSupported(a_photoList.getPhoto(selection[0]).getFormat()) );
+        }
+
+        // name of current photo
         if ( selection.length == 1 ) {
             a_file.setText(a_photoList.getPhoto(selection[0]).getFilename());
         } else {
-            a_file.setText(" ");                
+            a_file.setText(" ");
         }
-            	
-    	// buttons next/previous
+
+        // buttons next/previous
         if ( selection.length == 0 ) {
             // no image selected
             // -> disable the next and previous buttons
@@ -227,42 +227,42 @@ public class PhotoNavigator extends JFrame
 
         // folder list
         if ( selection.length == 0 ) {
-        	a_folder.setVisible(false);
+            a_folder.setVisible(false);
         } else {
-	        final String firstFolder = a_photoList.getPhoto(selection[0]).getFolder();
-	        boolean allInSameFolder = true;
-	    	for (int i=1;
-	    	     (i<a_selection.getSelection().length) && allInSameFolder;
-	    	     i++) {
-	            final String folder = a_photoList.getPhoto(selection[i]).getFolder();
-	            allInSameFolder &= folder.equals(firstFolder);
-	    	}
-	    	if (allInSameFolder) {
-	            a_folderIsDisabled = true;
-	            a_folder.setSelectedItem(firstFolder);
-	            a_folderIsDisabled = false;
-	    		a_folder.setVisible(true);
-	    	} else {
-	    		a_folder.setVisible(false);    		
-	    	}
+            final String firstFolder = a_photoList.getPhoto(selection[0]).getFolder();
+            boolean allInSameFolder = true;
+            for (int i=1;
+                 (i<a_selection.getSelection().length) && allInSameFolder;
+                 i++) {
+                final String folder = a_photoList.getPhoto(selection[i]).getFolder();
+                allInSameFolder &= folder.equals(firstFolder);
+            }
+            if (allInSameFolder) {
+                a_folderIsDisabled = true;
+                a_folder.setSelectedItem(firstFolder);
+                a_folderIsDisabled = false;
+                a_folder.setVisible(true);
+            } else {
+                a_folder.setVisible(false);
+            }
         }
-        
-        
+
+
         if ( selection.length!=1 ) {
             // zero or more than one image is selected
-            // -> empty the text fields and disable all the fields (except previous and next if at least one 
+            // -> empty the text fields and disable all the fields (except previous and next if at least one
             a_map.setText("");
             for ( JButton b: a_mapDisplayers) b.setEnabled(false);
             a_dateTime.setText("");
             pack();
             return;
         }
-        
-            
+
+
         final Photo photo = a_photoList.getPhoto(selection[0]);
         final Date date = photo.getHeaderData().getDate();
         if (date != null ) {
-            final String d = s_dateFormat.format(date); 
+            final String d = s_dateFormat.format(date);
             final String t = s_timeFormat.format(date);
             a_dateTime.setText(d+" - "+t);
         } else {
@@ -270,28 +270,28 @@ public class PhotoNavigator extends JFrame
         }
         //TODO the code below is stupid and broken
         final String location = photo.getIndexData().getLocation().toLongString();
-    	final GPSRecord gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
-    	if (location!=null) {
-	    	if ( gps != null && gps.getGPSData().isComplete() ) {
-	    		a_map.setText("map "+gps.getLocation().toString());
-	            for ( JButton b: a_mapDisplayers) b.setEnabled(true);
-	    	} else {
-	    		a_map.setText("no map for "+location);
-	            for ( JButton b: a_mapDisplayers) b.setEnabled(false);
-	    	}
-    	} else {
-    		a_map.setText("map");
+        final GPSRecord gps = a_GPSDatabase.getGPSData(photo.getIndexData().getLocation());
+        if (location!=null) {
+            if ( gps != null && gps.getGPSData().isComplete() ) {
+                a_map.setText("map "+gps.getLocation().toString());
+                for ( JButton b: a_mapDisplayers) b.setEnabled(true);
+            } else {
+                a_map.setText("no map for "+location);
+                for ( JButton b: a_mapDisplayers) b.setEnabled(false);
+            }
+        } else {
+            a_map.setText("map");
             for ( JButton b: a_mapDisplayers) b.setEnabled(false);
-    	}
-    	
-    	pack();
+        }
+
+        pack();
     }
 
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     @Override
-	public void valueChanged(final ListSelectionEvent e) {
+    public void valueChanged(final ListSelectionEvent e) {
 
         if (e.getValueIsAdjusting()) {
             // event compression -> only the last one is taken into account
@@ -305,47 +305,47 @@ public class PhotoNavigator extends JFrame
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
      */
     @Override
-	public void tableChanged(final TableModelEvent e) {
-    	if ( e.getType()==TableModelEvent.INSERT || e.getType()==TableModelEvent.DELETE ) {
-    		updateFolderList();
-    	}
+    public void tableChanged(final TableModelEvent e) {
+        if ( e.getType()==TableModelEvent.INSERT || e.getType()==TableModelEvent.DELETE ) {
+            updateFolderList();
+        }
         update();
     }
 
     /**
-     * 
+     *
      */
     private void updateFolderList() {
-    	a_folderIsDisabled = true;
-    	a_folder.removeAllItems();
-    	final Vector<String> folderList = new Vector<String>();
-    	for (int i=0; i<a_photoList.getRowCount(); i++) {
-    		if ( !folderList.contains(a_photoList.getPhoto(i).getFolder()))
-    			folderList.add(a_photoList.getPhoto(i).getFolder());
-    	}
-    	for (Iterator<String> i=folderList.iterator(); i.hasNext(); ) {
-    		final String f = i.next();
-    		a_folder.addItem(f);
-    	}
-    	a_folderIsDisabled = false;
+        a_folderIsDisabled = true;
+        a_folder.removeAllItems();
+        final Vector<String> folderList = new Vector<String>();
+        for (int i=0; i<a_photoList.getRowCount(); i++) {
+            if ( !folderList.contains(a_photoList.getPhoto(i).getFolder()))
+                folderList.add(a_photoList.getPhoto(i).getFolder());
+        }
+        for (Iterator<String> i=folderList.iterator(); i.hasNext(); ) {
+            final String f = i.next();
+            a_folder.addItem(f);
+        }
+        a_folderIsDisabled = false;
     }
-    
-	/**
-	 * @see lmzr.photomngr.data.PhotoListMetaDataListener#photoListMetaDataChanged(lmzr.photomngr.data.PhotoListMetaDataEvent)
-	 */
-	@Override
-	public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
-		if (e.getChange()==PhotoListMetaDataEvent.FILTER_HAS_CHANGED) updateFolderList();
-	}
+
+    /**
+     * @see lmzr.photomngr.data.PhotoListMetaDataListener#photoListMetaDataChanged(lmzr.photomngr.data.PhotoListMetaDataEvent)
+     */
+    @Override
+    public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
+        if (e.getChange()==PhotoListMetaDataEvent.FILTER_HAS_CHANGED) updateFolderList();
+    }
 
     /**
      * @see java.awt.Window#dispose()
      */
     @Override
-	public void dispose() {
-    	
-    	super.dispose();
-    	
+    public void dispose() {
+
+        super.dispose();
+
         a_photoList.removeTableModelListener(this);
         a_selection.removeListener(this);
         a_photoList.removeMetaListener(this);
@@ -356,8 +356,8 @@ public class PhotoNavigator extends JFrame
      * @return photo currently displayed
      */
     @Override
-	public Photo getPhoto()
+    public Photo getPhoto()
     {
-    	return a_photoList.getPhoto(a_selection.getSelection()[0]);
+        return a_photoList.getPhoto(a_selection.getSelection()[0]);
     }
 }

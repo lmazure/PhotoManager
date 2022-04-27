@@ -35,7 +35,7 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
  */
 public class ConcretePhotoList extends Object
                                implements PhotoList, SaveableModel {
-    
+
     final private Vector<Photo> a_listOfPhotos;
     final private Vector<TableModelListener> a_listOfListeners;
     final private Vector<PhotoListMetaDataListener> a_listOfMetaDataListeners;
@@ -47,34 +47,34 @@ public class ConcretePhotoList extends Object
     final private Scheduler a_scheduler;
     final private PhotoHeaderDataCache a_photoHeaderDataCache;
     private boolean a_isSaved;
-	static private final DataFormatFactory s_formatFactory = new DataFormatFactory();
+    static private final DataFormatFactory s_formatFactory = new DataFormatFactory();
 
-    
-    
+
+
     /**
      * @param excelFilename
      * @param rootDirPhoto
      * @param cacheDir
-     * @param scheduler 
+     * @param scheduler
      */
     public ConcretePhotoList(final String excelFilename,
                              final String rootDirPhoto,
                              final String cacheDir,
                              final Scheduler scheduler) {
-        
-        a_listOfListeners = new Vector<TableModelListener>();
-        a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
-        a_listOfSaveListeners = new Vector<SaveListener>();
-        a_locationFactory = new HierarchicalCompoundStringFactory();
-        a_subjectFactory = new MultiHierarchicalCompoundStringFactory();
-        a_authorFactory = new AuthorFactory(); 
-        a_excelFilename = excelFilename;
-        a_scheduler = scheduler;
-        a_isSaved = true;
-        a_listOfPhotos = new Vector<Photo>();
-        a_photoHeaderDataCache = new PhotoHeaderDataCache(rootDirPhoto, cacheDir, scheduler);
-        Photo.initializeByDirtyHack(rootDirPhoto, a_photoHeaderDataCache);
-        
+
+        this.a_listOfListeners = new Vector<>();
+        this.a_listOfMetaDataListeners = new Vector<>();
+        this.a_listOfSaveListeners = new Vector<>();
+        this.a_locationFactory = new HierarchicalCompoundStringFactory();
+        this.a_subjectFactory = new MultiHierarchicalCompoundStringFactory();
+        this.a_authorFactory = new AuthorFactory();
+        this.a_excelFilename = excelFilename;
+        this.a_scheduler = scheduler;
+        this.a_isSaved = true;
+        this.a_listOfPhotos = new Vector<>();
+        this.a_photoHeaderDataCache = new PhotoHeaderDataCache(rootDirPhoto, cacheDir, scheduler);
+        Photo.initializeByDirtyHack(rootDirPhoto, this.a_photoHeaderDataCache);
+
         // load the data
         String data[][] = null;
         try {
@@ -84,11 +84,11 @@ public class ConcretePhotoList extends Object
             e.printStackTrace();
             System.exit(1);
         } catch (final IOException e) {
-			System.err.println("Cannot read file " + excelFilename);
+            System.err.println("Cannot read file " + excelFilename);
             e.printStackTrace();
             data = new String[0][0];
         }
-        
+
         // quick check that the data is not corrupted
         for (int i=1; i<data.length; i++) {
             if (data[i][0]=="") {
@@ -100,33 +100,33 @@ public class ConcretePhotoList extends Object
                 System.exit(1);
             }
         }
-        
+
         // update the list of files relatively to the content of the file system
         String previousFolderName = "";
-        Vector<String> currentFolderContent = new Vector<String>();
-        final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto); 
+        Vector<String> currentFolderContent = new Vector<>();
+        final Vector<String> folderListOnDisk = getFolderListOnDisk(rootDirPhoto);
         for (int i=1; i<data.length; i++) {
             final String folderName = data[i][0];
             if ( ! previousFolderName.equals(folderName) ) {
                 if ( folderListOnDisk.contains(folderName)) {
                     folderListOnDisk.remove(folderName);
-                } else { 
+                } else {
                     System.err.println("folder \""+folderName+"\" does not exists on the disk");
                 }
                 sortFolderContentByDateTime(rootDirPhoto,previousFolderName,currentFolderContent);
                 for (int j=0; j<currentFolderContent.size(); j++) {
-                    final String fileName = currentFolderContent.get(j);                    
-                    final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
-                    a_listOfPhotos.add(photo);
-                    System.err.println(photo.getFullPath()+" is missing from the index");                    
+                    final String fileName = currentFolderContent.get(j);
+                    final Photo photo = new Photo(previousFolderName,fileName,this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
+                    this.a_listOfPhotos.add(photo);
+                    System.err.println(photo.getFullPath()+" is missing from the index");
                     setAsUnsaved();
                 }
                 currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
                 previousFolderName = folderName;
             }
             final String fileName = data[i][1];
-            final Photo photo = new Photo(data[i],a_locationFactory,a_subjectFactory,a_authorFactory);
-            a_listOfPhotos.add(photo);
+            final Photo photo = new Photo(data[i],this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
+            this.a_listOfPhotos.add(photo);
             if ( currentFolderContent.contains(fileName) ) {
                 currentFolderContent.remove(fileName);
             } else {
@@ -135,57 +135,57 @@ public class ConcretePhotoList extends Object
         }
         sortFolderContentByDateTime(rootDirPhoto,previousFolderName,currentFolderContent);
         for (int j=0; j<currentFolderContent.size(); j++) {
-            final String fileName = currentFolderContent.get(j);                    
-            final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
-            a_listOfPhotos.add(photo);
+            final String fileName = currentFolderContent.get(j);
+            final Photo photo = new Photo(previousFolderName,fileName,this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
+            this.a_listOfPhotos.add(photo);
             System.err.println(photo.getFullPath()+" is missing from the index");
             setAsUnsaved();
         }
         for (int i=0; i<folderListOnDisk.size(); i++) {
-            final String folderName = folderListOnDisk.get(i);                    
-            System.err.println("folder \""+folderName+"\" is missing from the index");                    
+            final String folderName = folderListOnDisk.get(i);
+            System.err.println("folder \""+folderName+"\" is missing from the index");
             currentFolderContent = getFolderContentOnDisk(rootDirPhoto, folderName);
             sortFolderContentByDateTime(rootDirPhoto,folderName,currentFolderContent);
             for (int j=0; j<currentFolderContent.size(); j++) {
-                final String fileName = currentFolderContent.get(j);                    
-                final Photo photo = new Photo(folderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
-                a_listOfPhotos.add(photo);
-                System.err.println(photo.getFullPath()+" is missing from the index");                    
+                final String fileName = currentFolderContent.get(j);
+                final Photo photo = new Photo(folderName,fileName,this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
+                this.a_listOfPhotos.add(photo);
+                System.err.println(photo.getFullPath()+" is missing from the index");
             }
             setAsUnsaved();
         }
-                
+
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#getRowCount()
      */
     @Override
-	public int getRowCount() {
-        
-        final int rowCount = a_listOfPhotos.size();
-        
+    public int getRowCount() {
+
+        final int rowCount = this.a_listOfPhotos.size();
+
         return rowCount;
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     @Override
-	public int getColumnCount() {
+    public int getColumnCount() {
         return NB_PARAM;
     }
 
-    
+
     /**
      * @param rowIndex
      * @return photo
      */
     @Override
-	public Photo getPhoto(final int rowIndex) {
+    public Photo getPhoto(final int rowIndex) {
 
-        final Photo photo = a_listOfPhotos.get(rowIndex);
-        
+        final Photo photo = this.a_listOfPhotos.get(rowIndex);
+
         return photo;
     }
 
@@ -193,23 +193,23 @@ public class ConcretePhotoList extends Object
      * @return flag indicating if the current values are saved
      */
     @Override
-	public boolean isSaved() {
+    public boolean isSaved() {
 
-        final boolean isSaved = a_isSaved;
-        
+        final boolean isSaved = this.a_isSaved;
+
         return isSaved;
     }
-    
+
     /**
      * record and notify that the data saved on disk is obsolete<BR/>
      * <B>the write lock must be owned by the calling routine</B>
      */
     private void setAsUnsaved() {
 
-        if (a_isSaved) {
-            a_isSaved = false;
+        if (this.a_isSaved) {
+            this.a_isSaved = false;
             final SaveEvent f = new SaveEvent(this, false);
-            for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
+            for (SaveListener l : this.a_listOfSaveListeners) l.saveChanged(f);
         }
 
     }
@@ -219,17 +219,17 @@ public class ConcretePhotoList extends Object
      */
     private void setAsSaved() {
 
-        a_isSaved = true;
-        
+        this.a_isSaved = true;
+
         final SaveEvent f = new SaveEvent(this, true);
-        for (SaveListener l : a_listOfSaveListeners) l.saveChanged(f);
+        for (SaveListener l : this.a_listOfSaveListeners) l.saveChanged(f);
     }
 
     /**
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     @Override
-	public String getColumnName(final int columnIndex) {
+    public String getColumnName(final int columnIndex) {
         switch (columnIndex) {
         case PARAM_FOLDER:
             return "folder";
@@ -278,7 +278,7 @@ public class ConcretePhotoList extends Object
         case PARAM_FLASH:
             return "flash (header)";
         case PARAM_FOCAL_LENGTH:
-            return "focal lenght (header)";
+            return "focal length (header)";
         case PARAM_SELF_TIMER_MODE:
             return "Self timer mode (header)";
         case PARAM_CANON_SELF_TIMER_DELAY:
@@ -303,12 +303,12 @@ public class ConcretePhotoList extends Object
 
         return null;
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     @Override
-	public Class<?> getColumnClass(final int columnIndex) {
+    public Class<?> getColumnClass(final int columnIndex) {
         switch (columnIndex) {
         case PARAM_FOLDER:
         case PARAM_FILENAME:
@@ -341,7 +341,7 @@ public class ConcretePhotoList extends Object
         case PARAM_LOCATION:
             return HierarchicalCompoundString.class;
         case PARAM_SUBJECT:
-        	return MultiHierarchicalCompoundString.class;
+            return MultiHierarchicalCompoundString.class;
         case PARAM_ORIENTATION:
         case PARAM_HEIGHT:
         case PARAM_WITDH:
@@ -361,13 +361,13 @@ public class ConcretePhotoList extends Object
         }
         return null;
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
     @Override
-	public boolean isCellEditable(final int rowIndex,
-    		                      final int columnIndex) {
+    public boolean isCellEditable(final int rowIndex,
+                                  final int columnIndex) {
         switch (columnIndex) {
         case PARAM_PRIVACY:
         case PARAM_QUALITY:
@@ -408,15 +408,15 @@ public class ConcretePhotoList extends Object
         }
         return false;
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     @Override
-	public Object getValueAt(final int rowIndex,
+    public Object getValueAt(final int rowIndex,
                              final int columnIndex) {
         Object value = null;
-        
+
         switch (columnIndex) {
         case PARAM_FOLDER:
             value = getPhoto(rowIndex).getFolder();
@@ -488,7 +488,7 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getHeaderData().getFlash();
             break;
         case PARAM_FOCAL_LENGTH:
-        	final PhotoHeaderData d = getPhoto(rowIndex).getHeaderData();
+            final PhotoHeaderData d = getPhoto(rowIndex).getHeaderData();
             value = Double.valueOf(d.getFocalLength());
             break;
         case PARAM_SELF_TIMER_MODE:
@@ -522,285 +522,285 @@ public class ConcretePhotoList extends Object
             value = getPhoto(rowIndex).getFormat();
             break;
         }
-        
+
         return value;
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
     @Override
-	public void setValueAt(final Object value,
+    public void setValueAt(final Object value,
                            final int rowIndex,
                            final int columnIndex) {
-    	
-    	final NumberFormat format = NumberFormat.getInstance();
-    	
+
+        final NumberFormat format = NumberFormat.getInstance();
+
         switch (columnIndex) {
         case PARAM_FOLDER: {
-        	final String v = (String)value;
-        	getPhoto(rowIndex).overrideFolder(v);
-        	break;
+            final String v = (String)value;
+            getPhoto(rowIndex).overrideFolder(v);
+            break;
         }
         case PARAM_FILENAME: {
-        	final String v = (String)value;
-        	getPhoto(rowIndex).overrideFilename(v);
-        	break;
+            final String v = (String)value;
+            getPhoto(rowIndex).overrideFilename(v);
+            break;
         }
         case PARAM_SUBJECT: {
-        	MultiHierarchicalCompoundString subject; 
-        	if ( value instanceof MultiHierarchicalCompoundString ) {
-        		subject = (MultiHierarchicalCompoundString)value;
-        	} else {
-                subject = a_subjectFactory.create((String)value);
-        	}
+            MultiHierarchicalCompoundString subject;
+            if ( value instanceof MultiHierarchicalCompoundString ) {
+                subject = (MultiHierarchicalCompoundString)value;
+            } else {
+                subject = this.a_subjectFactory.create((String)value);
+            }
             if ( !subject.equals(getPhoto(rowIndex).getIndexData().getSubject()) ) {
                 getPhoto(rowIndex).getIndexData().setSubject(subject);
             }
             break; }
         case PARAM_LOCATION: {
-        	HierarchicalCompoundString location; 
-        	if ( value instanceof HierarchicalCompoundString ) {
-        		location = (HierarchicalCompoundString)value;
-        	} else {
-        		location = a_locationFactory.create((String)value);
-        	}
+            HierarchicalCompoundString location;
+            if ( value instanceof HierarchicalCompoundString ) {
+                location = (HierarchicalCompoundString)value;
+            } else {
+                location = this.a_locationFactory.create((String)value);
+            }
             if ( location!=getPhoto(rowIndex).getIndexData().getLocation() ) {
-                getPhoto(rowIndex).getIndexData().setLocation(location);                
+                getPhoto(rowIndex).getIndexData().setLocation(location);
             }
             break; }
         case PARAM_AUTHOR: {
             final String v = (String)value;
-            final String vv = a_authorFactory.create(v);
+            final String vv = this.a_authorFactory.create(v);
             if ( vv!=getPhoto(rowIndex).getIndexData().getAuthor() ) {
-                getPhoto(rowIndex).getIndexData().setAuthor(v);                
+                getPhoto(rowIndex).getIndexData().setAuthor(v);
             }
             break; }
         case PARAM_QUALITY: {
             PhotoQuality quality;
-        	if ( value instanceof PhotoQuality ) {
+            if ( value instanceof PhotoQuality ) {
                 quality = (PhotoQuality)value;
-        	} else {
-        		quality = PhotoQuality.parse((String)value);
-        	}
+            } else {
+                quality = PhotoQuality.parse((String)value);
+            }
             if ( !quality.equals(getPhoto(rowIndex).getIndexData().getQuality()) ) {
-                getPhoto(rowIndex).getIndexData().setQuality(quality);                
+                getPhoto(rowIndex).getIndexData().setQuality(quality);
             }
             break; }
         case PARAM_ORIGINALITY: {
             PhotoOriginality originality;
-        	if ( value instanceof PhotoOriginality ) {
+            if ( value instanceof PhotoOriginality ) {
                 originality = (PhotoOriginality)value;
-        	} else {
-        		originality = PhotoOriginality.parse((String)value);
-        	}
+            } else {
+                originality = PhotoOriginality.parse((String)value);
+            }
             if ( !originality.equals(getPhoto(rowIndex).getIndexData().getOriginality()) ) {
-                getPhoto(rowIndex).getIndexData().setOriginality(originality);                
+                getPhoto(rowIndex).getIndexData().setOriginality(originality);
             }
             break; }
         case PARAM_PRIVACY: {
             PhotoPrivacy privacy;
-        	if ( value instanceof PhotoPrivacy ) {
+            if ( value instanceof PhotoPrivacy ) {
                 privacy = (PhotoPrivacy)value;
-        	} else {
-        		privacy = PhotoPrivacy.parse((String)value);
-        	}
+            } else {
+                privacy = PhotoPrivacy.parse((String)value);
+            }
             if ( !privacy.equals(getPhoto(rowIndex).getIndexData().getPrivacy()) ) {
-                getPhoto(rowIndex).getIndexData().setPrivacy(privacy);                
+                getPhoto(rowIndex).getIndexData().setPrivacy(privacy);
             }
             break; }
         case PARAM_COPIES: {
             Integer copies;
-        	if ( value instanceof Integer ) {
-        		copies = (Integer)value;
-        	} else {
-        		try {
-					copies = format.parse((String)value).intValue();
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-					return;
-				}
-        	}
+            if ( value instanceof Integer ) {
+                copies = (Integer)value;
+            } else {
+                try {
+                    copies = format.parse((String)value).intValue();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+            }
             if ( copies.intValue() != getPhoto(rowIndex).getIndexData().getCopies() ) {
-                getPhoto(rowIndex).getIndexData().setCopies(copies.intValue());                
+                getPhoto(rowIndex).getIndexData().setCopies(copies.intValue());
             }
             break; }
         case PARAM_ZOOM: {
             Float zoom;
-        	if ( value instanceof Float ) {
-        		zoom = (Float)value;
-        	} else {
-        		try {
-					zoom = format.parse((String)value).floatValue();
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-					return;
-				}
-        	}
+            if ( value instanceof Float ) {
+                zoom = (Float)value;
+            } else {
+                try {
+                    zoom = format.parse((String)value).floatValue();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+            }
             if ( zoom.floatValue() != getPhoto(rowIndex).getIndexData().getZoom() ) {
-                getPhoto(rowIndex).getIndexData().setZoom(zoom.floatValue());                
+                getPhoto(rowIndex).getIndexData().setZoom(zoom.floatValue());
             }
             break; }
         case PARAM_FOCUS_X: {
             Float focusX;
-        	if ( value instanceof Float ) {
-        		focusX = (Float)value;
-        	} else {
-        		try {
-					focusX = format.parse((String)value).floatValue();
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-					return;
-				}
-        	}
+            if ( value instanceof Float ) {
+                focusX = (Float)value;
+            } else {
+                try {
+                    focusX = format.parse((String)value).floatValue();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+            }
             if ( focusX.floatValue() != getPhoto(rowIndex).getIndexData().getFocusX() ) {
                 getPhoto(rowIndex).getIndexData().setFocusX(focusX.floatValue());
             }
             break; }
         case PARAM_FOCUS_Y: {
             Float focusY;
-        	if ( value instanceof Float ) {
-        		focusY = (Float)value;
-        	} else {
-        		try {
-					focusY = format.parse((String)value).floatValue();
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-					return;
-				}
-        	}
+            if ( value instanceof Float ) {
+                focusY = (Float)value;
+            } else {
+                try {
+                    focusY = format.parse((String)value).floatValue();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+            }
             if ( focusY.floatValue() != getPhoto(rowIndex).getIndexData().getFocusY() ) {
                 getPhoto(rowIndex).getIndexData().setFocusY(focusY.floatValue());
-                
+
             }
             break; }
         case PARAM_ROTATION: {
             Float rotation;
-        	if ( value instanceof Float ) {
-        		rotation = (Float)value;
-        	} else {
-        		try {
-        			rotation = format.parse((String)value).floatValue();
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-					return;
-				}
-        	}
+            if ( value instanceof Float ) {
+                rotation = (Float)value;
+            } else {
+                try {
+                    rotation = format.parse((String)value).floatValue();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+            }
             float vnorm = rotation.floatValue();
             vnorm = vnorm % 360;
             if (vnorm>180) vnorm -= 360;
             if (vnorm<=-180) vnorm += 360;
             if ( vnorm != getPhoto(rowIndex).getIndexData().getRotation() ) {
-                getPhoto(rowIndex).getIndexData().setRotation(vnorm);                
+                getPhoto(rowIndex).getIndexData().setRotation(vnorm);
             }
             break; }
         case PARAM_PANORAMA: {
             final String v = (String)value;
             if ( v != getPhoto(rowIndex).getIndexData().getPanorama() ) {
-                getPhoto(rowIndex).getIndexData().setPanorama(v);                
+                getPhoto(rowIndex).getIndexData().setPanorama(v);
             }
             break; }
         case PARAM_PANORAMA_FIRST: {
             final String v = (String)value;
             if ( v != getPhoto(rowIndex).getIndexData().getPanoramaFirst() ) {
-                getPhoto(rowIndex).getIndexData().setPanoramaFirst(v);                
+                getPhoto(rowIndex).getIndexData().setPanoramaFirst(v);
             }
             break; }
         default:
             return;
         }
-        
+
         final TableModelEvent e = new TableModelEvent(this, rowIndex, rowIndex, columnIndex);
-        for (TableModelListener l : a_listOfListeners) l.tableChanged(e);
-        
+        for (TableModelListener l : this.a_listOfListeners) l.tableChanged(e);
+
         setAsUnsaved();
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#addTableModelListener(javax.swing.event.TableModelListener)
      */
     @Override
-	public void addTableModelListener(final TableModelListener l) {
-        a_listOfListeners.add(l);
+    public void addTableModelListener(final TableModelListener l) {
+        this.a_listOfListeners.add(l);
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#removeTableModelListener(javax.swing.event.TableModelListener)
      */
     @Override
-	public void removeTableModelListener(final TableModelListener l) {
-        a_listOfListeners.remove(l);
+    public void removeTableModelListener(final TableModelListener l) {
+        this.a_listOfListeners.remove(l);
     }
-    
+
     /**
      * @param l
      */
     @Override
-	public void addMetaListener(final PhotoListMetaDataListener l) {
-        a_listOfMetaDataListeners.add(l);
+    public void addMetaListener(final PhotoListMetaDataListener l) {
+        this.a_listOfMetaDataListeners.add(l);
     }
-    
+
     /**
      * @param l
      */
     @Override
-	public void removeMetaListener(final PhotoListMetaDataListener l) {
-        a_listOfMetaDataListeners.remove(l);
+    public void removeMetaListener(final PhotoListMetaDataListener l) {
+        this.a_listOfMetaDataListeners.remove(l);
     }
 
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#addSaveListener(lmzr.photomngr.data.SaveListener)
-	 */
-	@Override
-	public void addSaveListener(final SaveListener l) {
-        a_listOfSaveListeners.add(l);
-	}
+    /**
+     * @see lmzr.photomngr.data.PhotoList#addSaveListener(lmzr.photomngr.data.SaveListener)
+     */
+    @Override
+    public void addSaveListener(final SaveListener l) {
+        this.a_listOfSaveListeners.add(l);
+    }
 
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#removeSaveListener(lmzr.photomngr.data.SaveListener)
-	 */
-	@Override
-	public void removeSaveListener(final SaveListener l) {
-        a_listOfSaveListeners.remove(l);
-	}
+    /**
+     * @see lmzr.photomngr.data.PhotoList#removeSaveListener(lmzr.photomngr.data.SaveListener)
+     */
+    @Override
+    public void removeSaveListener(final SaveListener l) {
+        this.a_listOfSaveListeners.remove(l);
+    }
 
     /**
      * @return location factory
      */
     @Override
-	public HierarchicalCompoundStringFactory getLocationFactory() {
-        return a_locationFactory;
+    public HierarchicalCompoundStringFactory getLocationFactory() {
+        return this.a_locationFactory;
     }
 
     /**
      * @return subject factory
      */
     @Override
-	public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
-        return a_subjectFactory;
+    public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
+        return this.a_subjectFactory;
     }
 
     /**
      * @return author factory
      */
     @Override
-	public AuthorFactory getAuthorFactory() {
-        return a_authorFactory;
+    public AuthorFactory getAuthorFactory() {
+        return this.a_authorFactory;
     }
-    
+
     /**
      * @throws IOException
      */
     @Override
-	public void save() throws IOException {
-    	
+    public void save() throws IOException {
+
         // check that the data is not already saved
-    	if (a_isSaved) {
-    	    return;
-    	}
-    	
-    	// prepare the data
-        final String data[][] = new String[a_listOfPhotos.size()+1][];
+        if (this.a_isSaved) {
+            return;
+        }
+
+        // prepare the data
+        final String data[][] = new String[this.a_listOfPhotos.size()+1][];
         data[0] = new String[15];
         data[0][0] = "directory";
         data[0][1] = "photo";
@@ -817,7 +817,7 @@ public class ConcretePhotoList extends Object
         data[0][12] = "focus X";
         data[0][13] = "focus Y";
         data[0][14] = "rotation";
-        for (int i=0; i<a_listOfPhotos.size(); i++) {
+        for (int i=0; i<this.a_listOfPhotos.size(); i++) {
             data[i+1] = new String[15];
             final Photo photo = getPhoto(i);
             final PhotoIndexData indexData = photo.getIndexData();
@@ -828,7 +828,7 @@ public class ConcretePhotoList extends Object
             data[i+1][4] = indexData.getQuality().toString();
             data[i+1][5] = indexData.getOriginality().toString();
             data[i+1][6] = indexData.getPrivacy().toString();
-            
+
             data[i+1][7] = (indexData.getPanorama()==null) ? "" : indexData.getPanorama();
             data[i+1][8] = (indexData.getPanoramaFirst()==null) ? "" : indexData.getPanoramaFirst();
             data[i+1][9] = (indexData.getAuthor()==null) ? "" : indexData.getAuthor();
@@ -838,73 +838,73 @@ public class ConcretePhotoList extends Object
             data[i+1][13] = Float.toString(indexData.getFocusY());
             data[i+1][14] = Float.toString(indexData.getRotation());
         }
-        
-        a_scheduler.submitIO("save index file",
+
+        this.a_scheduler.submitIO("save index file",
                              new Runnable() { @Override public void run() { save(data); } });
-        
+
         // notify the SaveListerners
         setAsSaved(); //TODO this is not correct if the saving fails
     }
-    
+
     /**
      * @param data
      */
     private void save(final String data[][]) {
-        
+
         try {
             // keep a copy of the old file
-    		final Calendar now = Calendar.getInstance();
+            final Calendar now = Calendar.getInstance();
             final NumberFormat f2 = new DecimalFormat("00");
             final NumberFormat f3 = new DecimalFormat("000");
-            final String backupName = Integer.toString(now.get(Calendar.YEAR)) + 
-    		                          "_" + f2.format(now.get(Calendar.MONTH)+1)+ 
-    		                          "_" + f2.format(now.get(Calendar.DAY_OF_MONTH)) +
-    		                          "_" + f2.format(now.get(Calendar.HOUR_OF_DAY)) +
-    		                          "_" + f2.format(now.get(Calendar.MINUTE)) +
-    		                          "_" + f2.format(now.get(Calendar.SECOND)) +
+            final String backupName = Integer.toString(now.get(Calendar.YEAR)) +
+                                      "_" + f2.format(now.get(Calendar.MONTH)+1)+
+                                      "_" + f2.format(now.get(Calendar.DAY_OF_MONTH)) +
+                                      "_" + f2.format(now.get(Calendar.HOUR_OF_DAY)) +
+                                      "_" + f2.format(now.get(Calendar.MINUTE)) +
+                                      "_" + f2.format(now.get(Calendar.SECOND)) +
                                       "_" + f3.format(now.get(Calendar.MILLISECOND));
-            final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
-            final File file = new File(a_excelFilename);
+            final String name = this.a_excelFilename.replace(".txt","_"+backupName+".txt");
+            final File file = new File(this.a_excelFilename);
             final File file2 = new File(name);
             if (!file.renameTo(file2)) {
-            	System.err.println("Failed to rename "+a_excelFilename+" into "+name);
+                System.err.println("Failed to rename "+this.a_excelFilename+" into "+name);
             }
-            
+
             // create the new file
-            StringTableFromToExcel.save(a_excelFilename,data);
+            StringTableFromToExcel.save(this.a_excelFilename,data);
         } catch (final IOException e) {
             System.err.println("failed to save index file");
             e.printStackTrace();
         }
     }
-    
+
     /**
      * @param rootDir
      * @return list of folders on the disk
      */
     private static Vector<String> getFolderListOnDisk(final String rootDir) {
         final File folder = new File(rootDir);
-        final Vector<String> content = new Vector<String>();
+        final Vector<String> content = new Vector<>();
         final File list[] = folder.listFiles();
         if ( list == null ) {
-        	System.err.println("Cannot find the root directory \""+rootDir+"\"");
+            System.err.println("Cannot find the root directory \""+rootDir+"\"");
         } else {
-	        for (int i=0; i<list.length; i++) {
-	            if (list[i].isDirectory()) {
-	                // workaround the fact that MacOS returns filenames as decomposed Unicode strings
-	                final String name = Normalizer.normalize(list[i].getName(),Normalizer.Form.NFC);
-	                content.add(name);
-	            }
-	        }
+            for (int i=0; i<list.length; i++) {
+                if (list[i].isDirectory()) {
+                    // workaround the fact that MacOS returns filenames as decomposed Unicode strings
+                    final String name = Normalizer.normalize(list[i].getName(),Normalizer.Form.NFC);
+                    content.add(name);
+                }
+            }
         }
-        
+
         return content;
     }
-    
+
     /**
      * get the list of media files contained in the folder <i>folderName</i>
      * the order of the files is unspecified
-     * 
+     *
      * @param rootDir
      * @param folderName
      * @return content of the folder on the disk
@@ -912,81 +912,81 @@ public class ConcretePhotoList extends Object
     private static Vector<String> getFolderContentOnDisk(final String rootDir,
                                                          final String folderName) {
         final File folder = new File(rootDir + File.separator + folderName);
-        final Vector<String> content = new Vector<String>();
+        final Vector<String> content = new Vector<>();
         final String list[] = folder.list();
-        
+
         if (list==null) return content;
 
         for ( String str: list)
-        	if ( s_formatFactory.createFormat(folder.getAbsolutePath() + File.separator + str) != null )
+            if ( s_formatFactory.createFormat(folder.getAbsolutePath() + File.separator + str) != null )
                 content.add(str);
-        
+
         return content;
     }
 
     /**
      * sort the files listed in <i>content</i> (which must be in folder <i>folderName</i>) by increasing date/time
-     * 
+     *
      * @param rootDir
      * @param folderName
      * @param content
      */
     private static void sortFolderContentByDateTime(final String rootDir,
-    		                                        final String folderName,
-    		                                        final Vector<String> content) {
+                                                    final String folderName,
+                                                    final Vector<String> content) {
 
         final File folder = new File(rootDir + File.separator + folderName);
-        final HashMap<String, Long> modificationDateTimes = new HashMap<String, Long>();
-        
+        final HashMap<String, Long> modificationDateTimes = new HashMap<>();
+
         for (String s : content) {
-    		final File f = new File(folder + File.separator + s);
-    		final long modificationDateTime = f.lastModified();
-        	modificationDateTimes.put(s, Long.valueOf(modificationDateTime));
+            final File f = new File(folder + File.separator + s);
+            final long modificationDateTime = f.lastModified();
+            modificationDateTimes.put(s, Long.valueOf(modificationDateTime));
         }
 
         Collections.sort(content, new Comparator<String>() {
-        	@Override
-			public int compare(final String s1, final String s2) {
-        		final Long lastModified1 = modificationDateTimes.get(s1);
-        		final Long lastModified2 = modificationDateTimes.get(s2);
-        		return lastModified1.compareTo(lastModified2);
-        	}
-        }); 
+            @Override
+            public int compare(final String s1, final String s2) {
+                final Long lastModified1 = modificationDateTimes.get(s1);
+                final Long lastModified2 = modificationDateTimes.get(s2);
+                return lastModified1.compareTo(lastModified2);
+            }
+        });
     }
-    
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
-	 */
-	@Override
-	public void performSubjectMapTranslation(final Map<String, String> map) {
 
-        for (int i=0; i<a_listOfPhotos.size(); i++) {
-        	final MultiHierarchicalCompoundString oldSubjects = getPhoto(i).getIndexData().getSubject();
-        	final HierarchicalCompoundString[] oldParts = oldSubjects.getParts();
-        	String newSubjectsAsString = "";
-        	for (int j=0; j<oldParts.length; j++) {
-        		final String oldPartAsString = oldParts[j].toLongString();
-        		if (map.containsKey(oldPartAsString)) {
-        			newSubjectsAsString += "\n"+ map.get(oldPartAsString);
-        		} else {
-        			newSubjectsAsString += "\n" + oldPartAsString;
-        		}
-        	}
-    		setValueAt(newSubjectsAsString.substring(1), i, PARAM_SUBJECT);
-        }
-	}
-	
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
-	 */
-	@Override
-	public void performLocationMapTranslation(final Map<String, String> map) {
+    /**
+     * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
+     */
+    @Override
+    public void performSubjectMapTranslation(final Map<String, String> map) {
 
-        for (int i=0; i<a_listOfPhotos.size(); i++) {
-        	final String location = getPhoto(i).getIndexData().getLocation().toLongString();
-        	if (map.containsKey(location)) {
-        		setValueAt(map.get(location),i,PARAM_LOCATION);
-        	}
+        for (int i=0; i<this.a_listOfPhotos.size(); i++) {
+            final MultiHierarchicalCompoundString oldSubjects = getPhoto(i).getIndexData().getSubject();
+            final HierarchicalCompoundString[] oldParts = oldSubjects.getParts();
+            String newSubjectsAsString = "";
+            for (int j=0; j<oldParts.length; j++) {
+                final String oldPartAsString = oldParts[j].toLongString();
+                if (map.containsKey(oldPartAsString)) {
+                    newSubjectsAsString += "\n"+ map.get(oldPartAsString);
+                } else {
+                    newSubjectsAsString += "\n" + oldPartAsString;
+                }
+            }
+            setValueAt(newSubjectsAsString.substring(1), i, PARAM_SUBJECT);
         }
-	}
+    }
+
+    /**
+     * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
+     */
+    @Override
+    public void performLocationMapTranslation(final Map<String, String> map) {
+
+        for (int i=0; i<this.a_listOfPhotos.size(); i++) {
+            final String location = getPhoto(i).getIndexData().getLocation().toLongString();
+            if (map.containsKey(location)) {
+                setValueAt(map.get(location),i,PARAM_LOCATION);
+            }
+        }
+    }
 }

@@ -9,25 +9,25 @@ import lmzr.photomngr.data.PhotoList;
  */
 public class FilterOnAuthor extends FilterBase {
 
-    final private HashSet<String> a_filteredAuthors; 
-    
+    final private HashSet<String> a_filteredAuthors;
+
     /**
      * creates a filter accepting all authors
      */
     public FilterOnAuthor() {
-    	super(false);
-        a_filteredAuthors = null;
+        super(false);
+        this.a_filteredAuthors = null;
     }
 
     /**
      * creates a filter filtering the specified authors
-     * @param isEnabled 
+     * @param isEnabled
      * @param filteredAuthors
      */
     public FilterOnAuthor(final boolean isEnabled,
-    		              final HashSet<String> filteredAuthors) {
-    	super(isEnabled);
-        a_filteredAuthors = filteredAuthors;             
+                          final HashSet<String> filteredAuthors) {
+        super(isEnabled);
+        this.a_filteredAuthors = filteredAuthors;
     }
 
     /**
@@ -38,15 +38,15 @@ public class FilterOnAuthor extends FilterBase {
      */
     public boolean filter(final PhotoList list,
                           final int index) {
-        
+
         final String author = (String)list.getValueAt(index,PhotoList.PARAM_AUTHOR);
-        return a_filteredAuthors.contains(author);
+        return this.a_filteredAuthors.contains(author);
     }
-    
+
     /**
      * @return formats handled by this filter
      */
     public HashSet<String> getFilteredAuthors() {
-        return a_filteredAuthors;
+        return this.a_filteredAuthors;
     }
 }

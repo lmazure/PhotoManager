@@ -46,150 +46,153 @@ public class LocationCellEditor extends JComponent
     private InternalLocationCellEditor a_internal;
     final private HierarchicalCompoundStringFactory a_factory;
     private String a_keptValue;
-    
+
     private class InternalLocationCellEditor extends JDialog {
 
-    	final private JTextField a_text;
+        final private JTextField a_text;
         final private TreeSelectioner a_tree;
-    	
-    	InternalLocationCellEditor(final HierarchicalCompoundStringFactory factory,
-    			                   final Frame parent){
-    		
+
+        InternalLocationCellEditor(final HierarchicalCompoundStringFactory factory,
+                                   final Frame parent){
+
             super(parent,"location",true);
-            
+
             final Container c = getContentPane();
             setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
-            
+
             a_text = new JTextField(60);
             a_text.setDocument(LocationCellEditor.this.a_textfield.getDocument());
             c.add(a_text);
-            
+
             a_tree = new TreeSelectioner("location", factory, TreeSelectioner.MODE_MONO_SELECTION);
             c.add(new JScrollPane(a_tree));
             a_tree.getTreeTableModel().addTreeModelListener(
-            		new TreeModelListener() {
-						@Override
-						public void treeNodesChanged(final TreeModelEvent e) {
-							final HierarchicalCompoundString string = (HierarchicalCompoundString)e.getChildren()[0];
-							final Boolean value = (Boolean)a_tree.getTreeTableModel().getValueAt(string, DatabaseForTreeSelectioner.PARAM_SELECTED); 
-							if ( value.booleanValue() ) {
-								a_text.setText(string.toLongString());
-							}
-						}
+                    new TreeModelListener() {
+                        @Override
+                        public void treeNodesChanged(final TreeModelEvent e) {
+                            final HierarchicalCompoundString string = (HierarchicalCompoundString)e.getChildren()[0];
+                            final Boolean value = (Boolean)a_tree.getTreeTableModel().getValueAt(string, DatabaseForTreeSelectioner.PARAM_SELECTED);
+                            if ( value.booleanValue() ) {
+                                a_text.setText(string.toLongString());
+                            }
+                        }
 
-						@Override
-						public void treeNodesInserted(final TreeModelEvent e) {
-						}
+                        @Override
+                        public void treeNodesInserted(final TreeModelEvent e) {
+                        	// do nothing
+                        }
 
-						@Override
-						public void treeNodesRemoved(final TreeModelEvent e) {
-						}
+                        @Override
+                        public void treeNodesRemoved(final TreeModelEvent e) {
+                        	// do nothing
+                        }
 
-						@Override
-						public void treeStructureChanged(final TreeModelEvent e) {
-						}});
+                        @Override
+                        public void treeStructureChanged(final TreeModelEvent e) {
+                        	// do nothing
+                        }});
 
-    		final JPanel buttonsPane = new JPanel(new GridLayout(1,2));
-    		c.add(buttonsPane);
-    		final JButton bOk = new JButton("OK");
-    		final JButton bCancel = new JButton("Cancel");
-    		buttonsPane.add(bOk);
-    		buttonsPane.add(bCancel);
-    		getRootPane().setDefaultButton(bOk);
-    		bOk.addActionListener(new ActionListener() {
-    				@Override
-					public void actionPerformed(final ActionEvent e) {
-    					close();
-    				}
-    		});
-    		bCancel.addActionListener(new ActionListener() {
-    					@Override
-						public void actionPerformed(final ActionEvent e) {
-    						a_text.setText(a_keptValue);
-    						close();
-    					}
-    		});
-    		pack();
-    		setVisible(false);
-    	}
-    	
-    	private void open(final String value) {
-    		
-    		a_keptValue = value;
-    		a_text.setText(value);
-    		
+            final JPanel buttonsPane = new JPanel(new GridLayout(1,2));
+            c.add(buttonsPane);
+            final JButton bOk = new JButton("OK");
+            final JButton bCancel = new JButton("Cancel");
+            buttonsPane.add(bOk);
+            buttonsPane.add(bCancel);
+            getRootPane().setDefaultButton(bOk);
+            bOk.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(final ActionEvent e) {
+                        close();
+                    }
+            });
+            bCancel.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(final ActionEvent e) {
+                            a_text.setText(a_keptValue);
+                            close();
+                        }
+            });
+            pack();
+            setVisible(false);
+        }
+
+        private void open(final String value) {
+
+            a_keptValue = value;
+            a_text.setText(value);
+
             if ( !value.equals("") ) {
-            	final HierarchicalCompoundString v = LocationCellEditor.this.a_factory.create(value);
-	            final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>();
-	            selection.add(v);
-	            a_tree.setSelection(selection);
+                final HierarchicalCompoundString v = LocationCellEditor.this.a_factory.create(value);
+                final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>();
+                selection.add(v);
+                a_tree.setSelection(selection);
             } else {
-            	a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
+                a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
             }
 
             setVisible(true);
-    	}
-    	
-    	/**
-    	 * 
-    	 */
-    	private void close() {
-    		setVisible(false);
-    		dispose();		
-    	}
+        }
+
+        /**
+         *
+         */
+        private void close() {
+            setVisible(false);
+            dispose();
+        }
 
     }
-    
+
     /**
-     * @param factory 
+     * @param factory
      * @param parent
-    * 
+    *
      */
     public LocationCellEditor(final HierarchicalCompoundStringFactory factory,
                               final Frame parent) {
 
-    	super();
+        super();
 
-    	a_factory = factory;
+        a_factory = factory;
         setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 
         a_textfield = new JTextField();
         add(a_textfield);
-        
+
         a_button= new JButton("\u2193");
         add(a_button);
         a_button.addActionListener(
-                new ActionListener() { 
+                new ActionListener() {
                     @Override
-					public void actionPerformed(final ActionEvent e) {
-                    	a_internal.open(a_textfield.getText());}});
-        
+                    public void actionPerformed(final ActionEvent e) {
+                        a_internal.open(a_textfield.getText());}});
+
         a_internal = new InternalLocationCellEditor(a_factory, parent);
 
-        a_listenerList = new Vector<CellEditorListener>();
+        a_listenerList = new Vector<>();
     }
-    
+
     /**
-     * 
+     *
      */
     protected void fireEditingStopped() {
         final ChangeEvent e = new ChangeEvent(this);
         for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingStopped(e);
-    } 
+    }
 
     /**
-     * 
+     *
      */
     protected void fireEditingCanceled() {
         final ChangeEvent e = new ChangeEvent(this);
         for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingCanceled(e);
-    } 
-    
+    }
+
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
     @Override
-	public Component getTableCellEditorComponent(final JTable table,
+    public Component getTableCellEditorComponent(final JTable table,
                                                  final Object value,
                                                  final boolean isSelected,
                                                  final int row,
@@ -214,7 +217,7 @@ public class LocationCellEditor extends JComponent
      * @see javax.swing.CellEditor#getCellEditorValue()
      */
     @Override
-	public Object getCellEditorValue() {
+    public Object getCellEditorValue() {
         return a_textfield.getText();
     }
 
@@ -222,7 +225,7 @@ public class LocationCellEditor extends JComponent
      * @see javax.swing.CellEditor#shouldSelectCell(java.util.EventObject)
      */
     @Override
-	public boolean shouldSelectCell(final EventObject e) {
+    public boolean shouldSelectCell(final EventObject e) {
         return true;
     }
 
@@ -230,7 +233,7 @@ public class LocationCellEditor extends JComponent
      * @see javax.swing.CellEditor#stopCellEditing()
      */
     @Override
-	public boolean stopCellEditing() {
+    public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
     }
@@ -239,7 +242,7 @@ public class LocationCellEditor extends JComponent
      * @see javax.swing.CellEditor#cancelCellEditing()
      */
     @Override
-	public void cancelCellEditing() {
+    public void cancelCellEditing() {
         fireEditingCanceled();
     }
 
@@ -247,7 +250,7 @@ public class LocationCellEditor extends JComponent
      * @see javax.swing.CellEditor#addCellEditorListener(javax.swing.event.CellEditorListener)
      */
     @Override
-	public void addCellEditorListener(final CellEditorListener l) {
+    public void addCellEditorListener(final CellEditorListener l) {
         a_listenerList.add(l);
     }
 
@@ -255,15 +258,15 @@ public class LocationCellEditor extends JComponent
      * @see javax.swing.CellEditor#removeCellEditorListener(javax.swing.event.CellEditorListener)
      */
     @Override
-	public void removeCellEditorListener(final CellEditorListener l) {
+    public void removeCellEditorListener(final CellEditorListener l) {
         a_listenerList.remove(l);
     }
-    
+
     /**
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
     @Override
-	public boolean isCellEditable(final EventObject event) {
+    public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programmatically edited
             return true;
@@ -273,39 +276,39 @@ public class LocationCellEditor extends JComponent
             if ( e.getClickCount()!=2 ) return false;
             return true;
         } else if  ( event instanceof KeyEvent ) {
-        	final KeyEvent e = (KeyEvent)event;
-        	if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
+            final KeyEvent e = (KeyEvent)event;
+            if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
      * @param value
      */
     public void setText(final String value) {
-    	a_textfield.setText(value);
+        a_textfield.setText(value);
     }
-    
+
     /**
      * @return current value of the cell
      */
     public String getText() {
-    	return a_textfield.getText();
+        return a_textfield.getText();
     }
-    
+
     /**
      * @param l
      */
     public void addTextFocusListener(final FocusListener l) {
-    	a_textfield.addFocusListener(l);
+        a_textfield.addFocusListener(l);
     }
 
     /**
      * @param l
      */
     public void removeTextFocusListener(final FocusListener l) {
-    	a_textfield.removeFocusListener(l);
+        a_textfield.removeFocusListener(l);
     }
 }

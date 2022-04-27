@@ -5,8 +5,8 @@ package lmzr.photomngr.data;
  */
 public interface PhotoProvider {
 
-	/**
-	 * @return photo
-	 */
-	public Photo getPhoto();
+    /**
+     * @return photo
+     */
+    public Photo getPhoto();
 }

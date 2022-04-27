@@ -16,37 +16,37 @@ import lmzr.photomngr.data.PhotoList;
  *
  */
 public class PhotoParametersDisplay extends JFrame {
-	
-	final PhotoParametersTableModel a_tableModel;
-	
-	/**
-	 * @param photoList
-	 * @param selection
-	 */
-	public PhotoParametersDisplay(final PhotoList photoList,
+
+    final PhotoParametersTableModel a_tableModel;
+
+    /**
+     * @param photoList
+     * @param selection
+     */
+    public PhotoParametersDisplay(final PhotoList photoList,
                                   final ListSelectionManager selection) {
-		super();
+        super();
 
-	
-		a_tableModel = new PhotoParametersTableModel(photoList,selection);
-		final JTable table = new JTable(a_tableModel);
 
-		final Container pane = getContentPane();
-		pane.setLayout(new BorderLayout());
-		final JScrollPane scrollPane = new JScrollPane(table);
-		pane.add(scrollPane, BorderLayout.CENTER);
-		
+        a_tableModel = new PhotoParametersTableModel(photoList,selection);
+        final JTable table = new JTable(a_tableModel);
+
+        final Container pane = getContentPane();
+        pane.setLayout(new BorderLayout());
+        final JScrollPane scrollPane = new JScrollPane(table);
+        pane.add(scrollPane, BorderLayout.CENTER);
+
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        
+
         pack();
-	}
-	
-	/**
-	 * @see java.awt.Window#dispose()
-	 */
-	@Override
-	public void dispose() {
-		a_tableModel.dispose();
-		super.dispose();
-	}
+    }
+
+    /**
+     * @see java.awt.Window#dispose()
+     */
+    @Override
+    public void dispose() {
+        a_tableModel.dispose();
+        super.dispose();
+    }
 }

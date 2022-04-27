@@ -7,11 +7,11 @@ import lmzr.photomngr.scheduler.Scheduler.Priority;
 *
 */
 public class PriorityRunnable implements Runnable {
-   
+
    private final Category a_category;
    private final Priority a_priority;
    private final double a_subpriority;
-   private final Runnable a_runnable; 
+   private final Runnable a_runnable;
 
    /**
     * @param category
@@ -28,7 +28,7 @@ public class PriorityRunnable implements Runnable {
        a_subpriority = subpriority;
        a_runnable = runnable;
    }
-   
+
    /**
     * @return category of the Runnable
     */

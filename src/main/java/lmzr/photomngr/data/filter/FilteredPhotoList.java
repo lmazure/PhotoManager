@@ -37,375 +37,375 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     private PhotoListFilter a_filter;
 
     private interface Task {
-    	void perform();
+        void perform();
     }
-    
+
     /**
      * @param list
      */
     public FilteredPhotoList(final PhotoList list) {
-        a_list = list;
-        final int n = a_list.getRowCount();
-        a_indexFromSource = new int[n];
-        a_indexToSource = new int[n];
-        a_listOfListeners = new Vector<TableModelListener>();
-        a_listOfMetaDataListeners = new Vector<PhotoListMetaDataListener>();
-        a_listOfSaveListeners = new Vector<SaveListener>();
-        a_list.addMetaListener(this);
-        a_list.addSaveListener(this);
-        a_list.addTableModelListener(this);
-	    final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(PhotoOriginality.getTraits(),PhotoList.PARAM_ORIGINALITY);
-	    final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(PhotoPrivacy.getTraits(),PhotoList.PARAM_PRIVACY);
-	    final FilterOnPhotoTrait filterOnQuality = new FilterOnPhotoTrait(PhotoQuality.getTraits(),PhotoList.PARAM_QUALITY);
-	    final FilterOnHierarchicalCompoundString filterOnLocation = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_LOCATION);
-	    final FilterOnHierarchicalCompoundString filterOnSubject1 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
-	    final FilterOnHierarchicalCompoundString filterOnSubject2 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
-	    final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
-	    final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
-	    final FilterOnFormat filterOnFormat = new FilterOnFormat(DataFormat.getAllFormats());
-	    final FilterOnAuthor filterOnAuthor = new FilterOnAuthor();
-	    final FilterOnCopies filterOnCopies = new FilterOnCopies();
+        this.a_list = list;
+        final int n = this.a_list.getRowCount();
+        this.a_indexFromSource = new int[n];
+        this.a_indexToSource = new int[n];
+        this.a_listOfListeners = new Vector<>();
+        this.a_listOfMetaDataListeners = new Vector<>();
+        this.a_listOfSaveListeners = new Vector<>();
+        this.a_list.addMetaListener(this);
+        this.a_list.addSaveListener(this);
+        this.a_list.addTableModelListener(this);
+        final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(PhotoOriginality.getTraits(),PhotoList.PARAM_ORIGINALITY);
+        final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(PhotoPrivacy.getTraits(),PhotoList.PARAM_PRIVACY);
+        final FilterOnPhotoTrait filterOnQuality = new FilterOnPhotoTrait(PhotoQuality.getTraits(),PhotoList.PARAM_QUALITY);
+        final FilterOnHierarchicalCompoundString filterOnLocation = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_LOCATION);
+        final FilterOnHierarchicalCompoundString filterOnSubject1 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
+        final FilterOnHierarchicalCompoundString filterOnSubject2 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
+        final FilterOnHierarchicalCompoundString filterOnSubject3 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
+        final FilterOnHierarchicalCompoundString filterOnSubject4 = new FilterOnHierarchicalCompoundString(PhotoList.PARAM_SUBJECT);
+        final FilterOnFormat filterOnFormat = new FilterOnFormat(DataFormat.getAllFormats());
+        final FilterOnAuthor filterOnAuthor = new FilterOnAuthor();
+        final FilterOnCopies filterOnCopies = new FilterOnCopies();
         setFilter(new PhotoListFilter(filterOnOriginality,
-        		                        filterOnPrivacy,
-        		                        filterOnQuality,
-        		                        filterOnLocation,
-        		                        filterOnSubject1,
-        		                        filterOnSubject2,
-        		                        filterOnSubject3,
-        		                        filterOnSubject4,
-        		                        filterOnFormat,
-        		                        filterOnAuthor,
-        		                        filterOnCopies));
+                                        filterOnPrivacy,
+                                        filterOnQuality,
+                                        filterOnLocation,
+                                        filterOnSubject1,
+                                        filterOnSubject2,
+                                        filterOnSubject3,
+                                        filterOnSubject4,
+                                        filterOnFormat,
+                                        filterOnAuthor,
+                                        filterOnCopies));
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getRowCount()
      */
     @Override
-	public int getRowCount() {
-        return a_rowCount;
+    public int getRowCount() {
+        return this.a_rowCount;
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getColumnCount()
      */
     @Override
-	public int getColumnCount() {
-        return a_list.getColumnCount();
+    public int getColumnCount() {
+        return this.a_list.getColumnCount();
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getPhoto(int)
      */
     @Override
-	public Photo getPhoto(final int index) {
-        return a_list.getPhoto(a_indexFromSource[index]);
+    public Photo getPhoto(final int index) {
+        return this.a_list.getPhoto(this.a_indexFromSource[index]);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#isSaved()
      */
     @Override
-	public boolean isSaved() {
-        return a_list.isSaved();
+    public boolean isSaved() {
+        return this.a_list.isSaved();
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getColumnName(int)
      */
     @Override
-	public String getColumnName(final int columnIndex) {
-        return a_list.getColumnName(columnIndex);
+    public String getColumnName(final int columnIndex) {
+        return this.a_list.getColumnName(columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getColumnClass(int)
      */
     @Override
-	public Class<?> getColumnClass(final int columnIndex) {
-        return a_list.getColumnClass(columnIndex);
+    public Class<?> getColumnClass(final int columnIndex) {
+        return this.a_list.getColumnClass(columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#isCellEditable(int, int)
      */
     @Override
-	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
-        return a_list.isCellEditable(a_indexFromSource[rowIndex],columnIndex);
+    public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+        return this.a_list.isCellEditable(this.a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#getValueAt(int, int)
      */
     @Override
-	public Object getValueAt(final int rowIndex, final int columnIndex) {
-        return a_list.getValueAt(a_indexFromSource[rowIndex],columnIndex);
+    public Object getValueAt(final int rowIndex, final int columnIndex) {
+        return this.a_list.getValueAt(this.a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#setValueAt(java.lang.Object, int, int)
      */
     @Override
-	public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
-        a_list.setValueAt(value,a_indexFromSource[rowIndex],columnIndex);
+    public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
+        this.a_list.setValueAt(value,this.a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
      * @see javax.swing.table.TableModel#addTableModelListener(javax.swing.event.TableModelListener)
      */
     @Override
-	public void addTableModelListener(final TableModelListener l) {
-        a_listOfListeners.add(l);
+    public void addTableModelListener(final TableModelListener l) {
+        this.a_listOfListeners.add(l);
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#removeTableModelListener(javax.swing.event.TableModelListener)
      */
     @Override
-	public void removeTableModelListener(final TableModelListener l) {
-        a_listOfListeners.remove(l);
+    public void removeTableModelListener(final TableModelListener l) {
+        this.a_listOfListeners.remove(l);
     }
-    
+
     /**
      * @param l
      */
     @Override
-	public void addMetaListener(final PhotoListMetaDataListener l) {
-        a_listOfMetaDataListeners.add(l);
+    public void addMetaListener(final PhotoListMetaDataListener l) {
+        this.a_listOfMetaDataListeners.add(l);
     }
-    
+
     /**
      * @param l
      */
     @Override
-	public void removeMetaListener(final PhotoListMetaDataListener l) {
-        a_listOfMetaDataListeners.remove(l);
+    public void removeMetaListener(final PhotoListMetaDataListener l) {
+        this.a_listOfMetaDataListeners.remove(l);
     }
 
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#addSaveListener(lmzr.photomngr.data.SaveListener)
-	 */
-	@Override
-	public void addSaveListener(final SaveListener l) {
-		a_listOfSaveListeners.add(l);
-	}
+    /**
+     * @see lmzr.photomngr.data.PhotoList#addSaveListener(lmzr.photomngr.data.SaveListener)
+     */
+    @Override
+    public void addSaveListener(final SaveListener l) {
+        this.a_listOfSaveListeners.add(l);
+    }
 
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#removeSaveListener(lmzr.photomngr.data.SaveListener)
-	 */
-	@Override
-	public void removeSaveListener(final SaveListener l) {
-		a_listOfSaveListeners.remove(l);
-	}
+    /**
+     * @see lmzr.photomngr.data.PhotoList#removeSaveListener(lmzr.photomngr.data.SaveListener)
+     */
+    @Override
+    public void removeSaveListener(final SaveListener l) {
+        this.a_listOfSaveListeners.remove(l);
+    }
 
     /**
      * @see lmzr.photomngr.data.PhotoList#save()
      */
     @Override
-	public void save() throws IOException {
-        a_list.save();
+    public void save() throws IOException {
+        this.a_list.save();
     }
 
     /**
      * @see lmzr.photomngr.data.PhotoListMetaDataListener#photoListMetaDataChanged(lmzr.photomngr.data.PhotoListMetaDataEvent)
      */
     @Override
-	public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
+    public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
         final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this,e.getChange());
-        for (PhotoListMetaDataListener l: a_listOfMetaDataListeners) l.photoListMetaDataChanged(f);
+        for (PhotoListMetaDataListener l: this.a_listOfMetaDataListeners) l.photoListMetaDataChanged(f);
     }
 
     /**
      * @see lmzr.photomngr.data.SaveListener#saveChanged(lmzr.photomngr.data.SaveEvent)
      */
     @Override
-	public void saveChanged(final SaveEvent e) {
+    public void saveChanged(final SaveEvent e) {
         final SaveEvent f = new SaveEvent(this,e.isSaved());
-        for (SaveListener l: a_listOfSaveListeners) l.saveChanged(f);
+        for (SaveListener l: this.a_listOfSaveListeners) l.saveChanged(f);
     }
 
     /**
      * @return location factory
      */
     @Override
-	public HierarchicalCompoundStringFactory getLocationFactory() {
-        return a_list.getLocationFactory();
+    public HierarchicalCompoundStringFactory getLocationFactory() {
+        return this.a_list.getLocationFactory();
     }
 
     /**
      * @return subject factory
      */
     @Override
-	public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
-        return a_list.getSubjectFactory();
+    public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
+        return this.a_list.getSubjectFactory();
     }
 
     /**
      * @return author factory
      */
     @Override
-	public AuthorFactory getAuthorFactory() {
-        return a_list.getAuthorFactory();
+    public AuthorFactory getAuthorFactory() {
+        return this.a_list.getAuthorFactory();
     }
-    
-    
+
+
     /**
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
      */
     @Override
-	public void tableChanged(final TableModelEvent e) {
+    public void tableChanged(final TableModelEvent e) {
 
-    	if ( e.getType()==TableModelEvent.UPDATE && e.getLastRow()!=Integer.MAX_VALUE ) {
-    		 
-	    	final int inFirstRow = e.getFirstRow();
-	        final int inLastRow = (e.getLastRow()==Integer.MAX_VALUE) ? (a_list.getRowCount()-1)
-	                                                                  : e.getLastRow();
-	    	
-	        int outFirstRow = -1;
-	        int outLastRow = -1;
-	        for (int i=inFirstRow; i<=inLastRow; i++) {
-	            final int index = a_indexToSource[i]; 
-	            if (index!=-1) {
-	                if (outFirstRow==-1) outFirstRow = index;
-	                outLastRow = index;
-	            }
-	        }
-    		for (TableModelListener l : a_listOfListeners) l.tableChanged(new TableModelEvent(this, outFirstRow, outLastRow));
-    		
-    	} else if ( e.getType()==TableModelEvent.INSERT ) {
-    	    
-            final int n = a_list.getRowCount();
-            a_indexFromSource = new int[n];
-            a_indexToSource = new int[n];
+        if ( e.getType()==TableModelEvent.UPDATE && e.getLastRow()!=Integer.MAX_VALUE ) {
 
-    	    applyFilter();
-    	    
-    	    int firstFilteredRow = -1;
+            final int inFirstRow = e.getFirstRow();
+            final int inLastRow = (e.getLastRow()==Integer.MAX_VALUE) ? (this.a_list.getRowCount()-1)
+                                                                      : e.getLastRow();
+
+            int outFirstRow = -1;
+            int outLastRow = -1;
+            for (int i=inFirstRow; i<=inLastRow; i++) {
+                final int index = this.a_indexToSource[i];
+                if (index!=-1) {
+                    if (outFirstRow==-1) outFirstRow = index;
+                    outLastRow = index;
+                }
+            }
+            for (TableModelListener l : this.a_listOfListeners) l.tableChanged(new TableModelEvent(this, outFirstRow, outLastRow));
+
+        } else if ( e.getType()==TableModelEvent.INSERT ) {
+
+            final int n = this.a_list.getRowCount();
+            this.a_indexFromSource = new int[n];
+            this.a_indexToSource = new int[n];
+
+            applyFilter();
+
+            int firstFilteredRow = -1;
             int lastFilteredRow = -1;
-    	    
-    	    for (int i=e.getFirstRow(); i<=e.getLastRow(); i++) {
-    	           final int index = a_indexToSource[i];
-    	            if ( index!=-1 ){
-    	                if ( firstFilteredRow==-1 ) firstFilteredRow=index;
-    	                lastFilteredRow = index;
-    	            }
-    	    }
-    	    
-    	    if ( firstFilteredRow!=-1) {
-    	        final TableModelEvent ne = new TableModelEvent(this,
-    	                                                       firstFilteredRow,
-    	                                                       lastFilteredRow,
-    	                                                       TableModelEvent.ALL_COLUMNS,
-    	                                                       TableModelEvent.INSERT);
-                for (TableModelListener l : a_listOfListeners) l.tableChanged(ne);
-    	    }
-    	    
-    	} else {
-    		for (TableModelListener l : a_listOfListeners) l.tableChanged(new TableModelEvent(this));
-    	}
+
+            for (int i=e.getFirstRow(); i<=e.getLastRow(); i++) {
+                   final int index = this.a_indexToSource[i];
+                    if ( index!=-1 ){
+                        if ( firstFilteredRow==-1 ) firstFilteredRow=index;
+                        lastFilteredRow = index;
+                    }
+            }
+
+            if ( firstFilteredRow!=-1) {
+                final TableModelEvent ne = new TableModelEvent(this,
+                                                               firstFilteredRow,
+                                                               lastFilteredRow,
+                                                               TableModelEvent.ALL_COLUMNS,
+                                                               TableModelEvent.INSERT);
+                for (TableModelListener l : this.a_listOfListeners) l.tableChanged(ne);
+            }
+
+        } else {
+            for (TableModelListener l : this.a_listOfListeners) l.tableChanged(new TableModelEvent(this));
+        }
     }
 
     /**
      * @param filter
-     * @param selection 
+     * @param selection
      */
     public void setFilter(final PhotoListFilter filter,
-    		              final ListSelectionManager selection) {
-    	
-		doTask(new Task() {@Override public void perform() { a_filter = filter; }},
-				   selection);
+                          final ListSelectionManager selection) {
+
+        doTask(new Task() {@Override public void perform() { FilteredPhotoList.this.a_filter = filter; }},
+                   selection);
     }
-    
+
     /**
      * @return current filter
      */
     public PhotoListFilter getFilter() {
-        return a_filter;
+        return this.a_filter;
     }
-    
+
     /**
      * @param filter
      */
     private void setFilter(final PhotoListFilter filter) {
-    	a_filter = filter;
-    	applyFilter();
+        this.a_filter = filter;
+        applyFilter();
     }
-    
+
     /**
-     * 
+     *
      */
     private void applyFilter() {
-        final int n = a_list.getRowCount();
-        a_rowCount = 0;
+        final int n = this.a_list.getRowCount();
+        this.a_rowCount = 0;
         for (int i=0; i<n; i++) {
-            if (a_filter.filter(a_list,i)) {
-                a_indexFromSource[a_rowCount] = i;
-                a_indexToSource[i] = a_rowCount;
-                a_rowCount++;
+            if (this.a_filter.filter(this.a_list,i)) {
+                this.a_indexFromSource[this.a_rowCount] = i;
+                this.a_indexToSource[i] = this.a_rowCount;
+                this.a_rowCount++;
             } else {
-                a_indexToSource[i] = -1;                
+                this.a_indexToSource[i] = -1;
             }
         }
 
     }
 
-	/**
-	 * @param map
-	 * @param selection
-	 */
-	public void performSubjectMapTranslation(final Map<String, String> map,
-	                                         final ListSelectionManager selection) {
+    /**
+     * @param map
+     * @param selection
+     */
+    public void performSubjectMapTranslation(final Map<String, String> map,
+                                             final ListSelectionManager selection) {
 
-		doTask(new Task() {@Override public void perform() { performSubjectMapTranslation(map); }},
-			   selection);
-	}
+        doTask(new Task() {@Override public void perform() { performSubjectMapTranslation(map); }},
+               selection);
+    }
 
 
-	/**
-	 * @param map
-	 * @param selection
-	 */
-	public void performLocationMapTranslation(final Map<String, String> map,
-	                                          final ListSelectionManager selection) {
+    /**
+     * @param map
+     * @param selection
+     */
+    public void performLocationMapTranslation(final Map<String, String> map,
+                                              final ListSelectionManager selection) {
 
-		doTask(new Task() {@Override public void perform() { performLocationMapTranslation(map); }},
-			   selection);
-	}
+        doTask(new Task() {@Override public void perform() { performLocationMapTranslation(map); }},
+               selection);
+    }
 
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
-	 */
-	@Override
-	public void performSubjectMapTranslation(final Map<String, String> map) {
-		a_list.performSubjectMapTranslation(map);
-	}
+    /**
+     * @see lmzr.photomngr.data.PhotoList#performSubjectMapTranslation(java.util.Map)
+     */
+    @Override
+    public void performSubjectMapTranslation(final Map<String, String> map) {
+        this.a_list.performSubjectMapTranslation(map);
+    }
 
-	/**
-	 * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
-	 */
-	@Override
-	public void performLocationMapTranslation(final Map<String, String> map) {
-		a_list.performLocationMapTranslation(map);
-	}
+    /**
+     * @see lmzr.photomngr.data.PhotoList#performLocationMapTranslation(java.util.Map)
+     */
+    @Override
+    public void performLocationMapTranslation(final Map<String, String> map) {
+        this.a_list.performLocationMapTranslation(map);
+    }
 
-	/**
-	 * @param task
-	 * @param selection
-	 */
-	private void doTask(final Task task,
+    /**
+     * @param task
+     * @param selection
+     */
+    private void doTask(final Task task,
                         final ListSelectionManager selection) {
-		
-    	// record the current selection
-    	final int select[] = selection.getSelection();
-    	final int fromSelect[] = new int[select.length];
-    	for (int i=0; i<select.length; i++) fromSelect[i] = a_indexFromSource[select[i]];
 
-    	// perform the task
-		task.perform();
+        // record the current selection
+        final int select[] = selection.getSelection();
+        final int fromSelect[] = new int[select.length];
+        for (int i=0; i<select.length; i++) fromSelect[i] = this.a_indexFromSource[select[i]];
 
-    	// reapply the filter
+        // perform the task
+        task.perform();
+
+        // reapply the filter
         applyFilter();
-               
+
         // send events
         final TableModelEvent e = new TableModelEvent(this);
         tableChanged(e);
@@ -415,18 +415,18 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         // update selection
         final int toSelect[] = new int[ (select.length>0) ? select.length : 1 ];
         int toSelectLength = 0;
-    	for (int i=0; i<select.length; i++) { 
-    		final int index = a_indexToSource[fromSelect[i]];
-    		if ( index!=-1 ){
-        		toSelect[toSelectLength++] = index;    			
-    		}
-    	}
-    	if ( toSelectLength==0 && a_rowCount>0 ){
-    		toSelect[0] = a_rowCount-1;
-    		toSelectLength = 1;
-    	}
+        for (int i=0; i<select.length; i++) {
+            final int index = this.a_indexToSource[fromSelect[i]];
+            if ( index!=-1 ){
+                toSelect[toSelectLength++] = index;
+            }
+        }
+        if ( toSelectLength==0 && this.a_rowCount>0 ){
+            toSelect[0] = this.a_rowCount-1;
+            toSelectLength = 1;
+        }
         int finalSelect[] = new int[toSelectLength];
         for (int i=0; i<toSelectLength; i++) finalSelect[i] = toSelect[i];
         selection.setSelection(finalSelect);
-	}
+    }
 }

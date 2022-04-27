@@ -3,12 +3,12 @@ package lmzr.photomngr.data;
 import java.io.IOException;
 
 /**
- * @author Laurent 
+ * @author Laurent
  */
 public interface SaveableModel {
 
-	/**
-	 * @throws IOException
-	 */
-	public void save() throws IOException;
+    /**
+     * @throws IOException
+     */
+    public void save() throws IOException;
 }

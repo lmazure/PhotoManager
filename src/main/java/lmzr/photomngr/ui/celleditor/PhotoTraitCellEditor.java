@@ -11,8 +11,8 @@ import lmzr.photomngr.data.phototrait.PhotoTrait;
  * @author Laurent Mazuré
  */
 public class PhotoTraitCellEditor extends ComboBoxCellEditor {
-    
-    
+
+
     /**
      * @param traits
      */
@@ -20,12 +20,12 @@ public class PhotoTraitCellEditor extends ComboBoxCellEditor {
         super();
         for (int i=0; i<traits.length; i++) addItem(traits[i]);
     }
-    
+
     /**
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
     @Override
-	public boolean isCellEditable(final EventObject event) {
+    public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programmatically edited
             return true;
@@ -35,8 +35,8 @@ public class PhotoTraitCellEditor extends ComboBoxCellEditor {
             if ( e.getClickCount()!=2 ) return false;
             return true;
         } else if  ( event instanceof KeyEvent ) {
-           	final KeyEvent e = (KeyEvent)event;
-        	if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
+               final KeyEvent e = (KeyEvent)event;
+            if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
             return true;
         } else {
             return false;

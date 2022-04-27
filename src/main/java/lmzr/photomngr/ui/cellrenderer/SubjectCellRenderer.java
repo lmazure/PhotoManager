@@ -17,17 +17,17 @@ public class SubjectCellRenderer extends JTextArea
                                  implements TableCellRenderer {
 
     /**
-     * 
+     *
      */
     public SubjectCellRenderer() {
         super();
     }
-    
+
     /**
      * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
      */
     @Override
-	public Component getTableCellRendererComponent(final JTable table,
+    public Component getTableCellRendererComponent(final JTable table,
                                                    final Object value,
                                                    final boolean isSelected,
                                                    final boolean hasFocus,
@@ -43,31 +43,31 @@ public class SubjectCellRenderer extends JTextArea
         setText(value.toString());
         final int preferredheight = getPreferredSize().height;
         if ( table.getRowHeight(row) < preferredheight ) {
-        	table.setRowHeight(row,preferredheight);
+            table.setRowHeight(row,preferredheight);
         }
         if (hasFocus) {
-        	Border border = null;
-        	if (isSelected) {
-        		border = UIManager.getBorder("Table.focusSelectedCellHighlightBorder");
-        	}
-        	if (border == null) {
-        		border = UIManager.getBorder("Table.focusCellHighlightBorder");
-        	}
-        	setBorder(border);
+            Border border = null;
+            if (isSelected) {
+                border = UIManager.getBorder("Table.focusSelectedCellHighlightBorder");
+            }
+            if (border == null) {
+                border = UIManager.getBorder("Table.focusCellHighlightBorder");
+            }
+            setBorder(border);
 
-        	if (!isSelected && table.isCellEditable(row, column)) {
-        		Color col;
-        		col = UIManager.getColor("Table.focusCellForeground");
-        		if (col != null) {
-        			super.setForeground(col);
-        		}
-        		col = UIManager.getColor("Table.focusCellBackground");
-        		if (col != null) {
-        			super.setBackground(col);
-        		}
-        	}
+            if (!isSelected && table.isCellEditable(row, column)) {
+                Color col;
+                col = UIManager.getColor("Table.focusCellForeground");
+                if (col != null) {
+                    super.setForeground(col);
+                }
+                col = UIManager.getColor("Table.focusCellBackground");
+                if (col != null) {
+                    super.setBackground(col);
+                }
+            }
         } else {
-        	setBorder(new EmptyBorder(1, 1, 1, 1));
+            setBorder(new EmptyBorder(1, 1, 1, 1));
         }
         return this;
     }

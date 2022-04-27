@@ -13,19 +13,19 @@ import java.util.EventObject;
 public class CopiesCellEditor extends ComboBoxCellEditor {
 
     /**
-     * 
+     *
      */
     public CopiesCellEditor() {
         super();
         setEditable(true);
         for (int i=0; i<=5; i++) addItem(Integer.valueOf(i));
     }
-    
+
     /**
      * @see javax.swing.CellEditor#isCellEditable(java.util.EventObject)
      */
     @Override
-	public boolean isCellEditable(final EventObject event) {
+    public boolean isCellEditable(final EventObject event) {
         if (event == null) {
             // the cell is programmatically edited
             return true;
@@ -35,8 +35,8 @@ public class CopiesCellEditor extends ComboBoxCellEditor {
             if ( e.getClickCount()!=2 ) return false;
             return true;
         } else if  ( event instanceof KeyEvent ) {
-           	final KeyEvent e = (KeyEvent)event;
-        	if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
+               final KeyEvent e = (KeyEvent)event;
+            if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
             return true;
         } else {
             return false;
