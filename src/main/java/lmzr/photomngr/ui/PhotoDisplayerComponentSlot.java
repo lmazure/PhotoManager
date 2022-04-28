@@ -80,8 +80,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
         this.a_display = new JPanel();
         this.a_display.setLayout(new BoxLayout(this.a_display, BoxLayout.Y_AXIS));
         this.a_display.setOpaque(false);
-        final PlayerFactory playerFactory = new PlayerFactory();
-        final Player[] players = playerFactory.getPlayers();
+        final Player[] players = PlayerFactory.getPlayers();
         this.a_play = new JButton[players.length];
         for (int i=0; i<players.length; i++) {
             this.a_play[i] = new JButton(new StartPlayerAction( players[i].getName(),

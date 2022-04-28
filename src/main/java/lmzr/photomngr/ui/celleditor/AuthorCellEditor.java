@@ -23,7 +23,7 @@ public class AuthorCellEditor extends ComboBoxCellEditor {
      */
     public AuthorCellEditor(final AuthorFactory factory) {
         super();
-        a_factory = factory;
+        this.a_factory = factory;
         setEditable(true);
     }
 
@@ -64,7 +64,7 @@ public class AuthorCellEditor extends ComboBoxCellEditor {
                                                  final int row,
                                                  final int column) {
         removeAllItems();
-        final String authors[] = a_factory.getAuthors();
+        final String authors[] = this.a_factory.getAuthors();
         for (int i=0; i<authors.length; i++) addItem(authors[i]);
         return this;
     }

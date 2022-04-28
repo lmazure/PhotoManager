@@ -60,20 +60,20 @@ public class LocationCellEditor extends JComponent
             final Container c = getContentPane();
             setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
 
-            a_text = new JTextField(60);
-            a_text.setDocument(LocationCellEditor.this.a_textfield.getDocument());
-            c.add(a_text);
+            this.a_text = new JTextField(60);
+            this.a_text.setDocument(LocationCellEditor.this.a_textfield.getDocument());
+            c.add(this.a_text);
 
-            a_tree = new TreeSelectioner("location", factory, TreeSelectioner.MODE_MONO_SELECTION);
-            c.add(new JScrollPane(a_tree));
-            a_tree.getTreeTableModel().addTreeModelListener(
+            this.a_tree = new TreeSelectioner("location", factory, TreeSelectioner.MODE_MONO_SELECTION);
+            c.add(new JScrollPane(this.a_tree));
+            this.a_tree.getTreeTableModel().addTreeModelListener(
                     new TreeModelListener() {
                         @Override
                         public void treeNodesChanged(final TreeModelEvent e) {
                             final HierarchicalCompoundString string = (HierarchicalCompoundString)e.getChildren()[0];
-                            final Boolean value = (Boolean)a_tree.getTreeTableModel().getValueAt(string, DatabaseForTreeSelectioner.PARAM_SELECTED);
+                            final Boolean value = (Boolean)InternalLocationCellEditor.this.a_tree.getTreeTableModel().getValueAt(string, DatabaseForTreeSelectioner.PARAM_SELECTED);
                             if ( value.booleanValue() ) {
-                                a_text.setText(string.toLongString());
+                                InternalLocationCellEditor.this.a_text.setText(string.toLongString());
                             }
                         }
 
@@ -108,7 +108,7 @@ public class LocationCellEditor extends JComponent
             bCancel.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(final ActionEvent e) {
-                            a_text.setText(a_keptValue);
+                            InternalLocationCellEditor.this.a_text.setText(LocationCellEditor.this.a_keptValue);
                             close();
                         }
             });
@@ -118,16 +118,16 @@ public class LocationCellEditor extends JComponent
 
         private void open(final String value) {
 
-            a_keptValue = value;
-            a_text.setText(value);
+            LocationCellEditor.this.a_keptValue = value;
+            this.a_text.setText(value);
 
             if ( !value.equals("") ) {
                 final HierarchicalCompoundString v = LocationCellEditor.this.a_factory.create(value);
-                final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>();
+                final Set<HierarchicalCompoundString> selection = new HashSet<>();
                 selection.add(v);
-                a_tree.setSelection(selection);
+                this.a_tree.setSelection(selection);
             } else {
-                a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
+                this.a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
             }
 
             setVisible(true);
@@ -153,23 +153,23 @@ public class LocationCellEditor extends JComponent
 
         super();
 
-        a_factory = factory;
+        this.a_factory = factory;
         setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 
-        a_textfield = new JTextField();
-        add(a_textfield);
+        this.a_textfield = new JTextField();
+        add(this.a_textfield);
 
-        a_button= new JButton("\u2193");
-        add(a_button);
-        a_button.addActionListener(
+        this.a_button= new JButton("\u2193");
+        add(this.a_button);
+        this.a_button.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(final ActionEvent e) {
-                        a_internal.open(a_textfield.getText());}});
+                        LocationCellEditor.this.a_internal.open(LocationCellEditor.this.a_textfield.getText());}});
 
-        a_internal = new InternalLocationCellEditor(a_factory, parent);
+        this.a_internal = new InternalLocationCellEditor(this.a_factory, parent);
 
-        a_listenerList = new Vector<>();
+        this.a_listenerList = new Vector<>();
     }
 
     /**
@@ -177,7 +177,7 @@ public class LocationCellEditor extends JComponent
      */
     protected void fireEditingStopped() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingStopped(e);
+        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingStopped(e);
     }
 
     /**
@@ -185,7 +185,7 @@ public class LocationCellEditor extends JComponent
      */
     protected void fireEditingCanceled() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingCanceled(e);
+        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingCanceled(e);
     }
 
     /**
@@ -218,7 +218,7 @@ public class LocationCellEditor extends JComponent
      */
     @Override
     public Object getCellEditorValue() {
-        return a_textfield.getText();
+        return this.a_textfield.getText();
     }
 
     /**
@@ -251,7 +251,7 @@ public class LocationCellEditor extends JComponent
      */
     @Override
     public void addCellEditorListener(final CellEditorListener l) {
-        a_listenerList.add(l);
+        this.a_listenerList.add(l);
     }
 
     /**
@@ -259,7 +259,7 @@ public class LocationCellEditor extends JComponent
      */
     @Override
     public void removeCellEditorListener(final CellEditorListener l) {
-        a_listenerList.remove(l);
+        this.a_listenerList.remove(l);
     }
 
     /**
@@ -288,27 +288,27 @@ public class LocationCellEditor extends JComponent
      * @param value
      */
     public void setText(final String value) {
-        a_textfield.setText(value);
+        this.a_textfield.setText(value);
     }
 
     /**
      * @return current value of the cell
      */
     public String getText() {
-        return a_textfield.getText();
+        return this.a_textfield.getText();
     }
 
     /**
      * @param l
      */
     public void addTextFocusListener(final FocusListener l) {
-        a_textfield.addFocusListener(l);
+        this.a_textfield.addFocusListener(l);
     }
 
     /**
      * @param l
      */
     public void removeTextFocusListener(final FocusListener l) {
-        a_textfield.removeFocusListener(l);
+        this.a_textfield.removeFocusListener(l);
     }
 }

@@ -128,9 +128,9 @@ public class ImageComputationManager {
         Computer(final Photo photo,
                  final ImageComputationParameters params,
                  final ImageComputationConsumer consumer) {
-            a_photo = photo;
-            a_params = params;
-            a_consumer = consumer;
+            this.a_photo = photo;
+            this.a_params = params;
+            this.a_consumer = consumer;
         }
 
         /**
@@ -139,23 +139,23 @@ public class ImageComputationManager {
         @Override
         public void run() {
             try {
-                final SubsampledImage image = a_subsampler.getImage(a_photo, a_params, 1.0);
+                final SubsampledImage image = ImageComputationManager.this.a_subsampler.getImage(this.a_photo, this.a_params, 1.0);
                 if ( image.getImage() == null ) {
-                    a_consumer.consumeImageComputation(a_photo,a_params,null);
+                    this.a_consumer.consumeImageComputation(this.a_photo,this.a_params,null);
                     return;
                 }
 
-                final AffineTransform zoom = getAffineTransform(a_photo, a_params, image.getSubsampling());
+                final AffineTransform zoom = getAffineTransform(this.a_photo, this.a_params, image.getSubsampling());
                 final AffineTransformOp op = new AffineTransformOp(zoom,AffineTransformOp.TYPE_BICUBIC);
-                final BufferedImage img = new BufferedImage(a_params.getWidth(),
-                                                            a_params.getHeight(),
+                final BufferedImage img = new BufferedImage(this.a_params.getWidth(),
+                                                            this.a_params.getHeight(),
                                                             image.getImage().getType());
                 final BufferedImage im = op.filter(image.getImage(),img);
 
-                a_cache.record(a_photo, a_params, im);
+                ImageComputationManager.this.a_cache.record(this.a_photo, this.a_params, im);
 
                 SwingUtilities.invokeLater(new Runnable() {
-                    @Override public void run() { a_consumer.consumeImageComputation(a_photo,a_params,im); }
+                    @Override public void run() { Computer.this.a_consumer.consumeImageComputation(Computer.this.a_photo,Computer.this.a_params,im); }
                 });
 
             } catch (final Throwable ex) {
@@ -171,9 +171,9 @@ public class ImageComputationManager {
      */
     public ImageComputationManager(final Scheduler scheduler,
                                    final SubsampledImageCachedManager subsampler) {
-        a_cache = new ImageComputationCacheSoftRef();
-        a_subsampler = subsampler;
-        a_scheduler = scheduler;
+        this.a_cache = new ImageComputationCacheSoftRef();
+        this.a_subsampler = subsampler;
+        this.a_scheduler = scheduler;
     }
 
     /**
@@ -189,7 +189,7 @@ public class ImageComputationManager {
                              final ImageComputationConsumer consumer,
                              final boolean forDisplay) {
 
-        final BufferedImage i = a_cache.get(photo, params);
+        final BufferedImage i = this.a_cache.get(photo, params);
         if (i!=null) {
             // the image to compute is already in the cache
             consumer.consumeImageComputation(photo,params,i);
@@ -197,7 +197,7 @@ public class ImageComputationManager {
         }
 
         // the image to compute is not in the cache
-        return a_scheduler.submitCPU("compute image \""+photo.getFilename()+"\" for " + (forDisplay ? "display" : "prefetch"),
+        return this.a_scheduler.submitCPU("compute image \""+photo.getFilename()+"\" for " + (forDisplay ? "display" : "prefetch"),
                                      (forDisplay ? Scheduler.Category.CATEGORY_NOW : Scheduler.Category.CATEGORY_FUTURE),
                                      (forDisplay ? Scheduler.Priority.PRIORITY_VERY_HIGH : Scheduler.Priority.PRIORITY_VERY_HIGH),
                                      1.0,

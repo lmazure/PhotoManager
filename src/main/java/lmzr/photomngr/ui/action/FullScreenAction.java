@@ -29,7 +29,7 @@ public class FullScreenAction extends PhotoManagerAction {
                              final String tooltipText,
                              final PhotoDisplayer photoDisplayer) {
         super(text, mnemonic, accelerator, tooltipText);
-        a_photoDisplayer = photoDisplayer;
+        this.a_photoDisplayer = photoDisplayer;
     }
 
 
@@ -38,6 +38,6 @@ public class FullScreenAction extends PhotoManagerAction {
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        a_photoDisplayer.setFullScreen(!a_photoDisplayer.getFullScreen());
+        this.a_photoDisplayer.setFullScreen(!this.a_photoDisplayer.getFullScreen());
     }
 }

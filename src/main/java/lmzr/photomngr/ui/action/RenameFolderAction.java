@@ -40,9 +40,9 @@ public class RenameFolderAction extends PhotoManagerAction {
                               final PhotoList photoList,
                               final ListSelectionManager selection) {
         super(text, mnemonic, accelerator, tooltipText);
-        a_photoListDisplay = photoListDisplay;
-        a_photoList = photoList;
-        a_selection = selection;
+        this.a_photoListDisplay = photoListDisplay;
+        this.a_photoList = photoList;
+        this.a_selection = selection;
     }
 
 
@@ -52,17 +52,17 @@ public class RenameFolderAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        if (!a_photoList.isSaved()) {
-            JOptionPane.showMessageDialog(a_photoListDisplay,
+        if (!this.a_photoList.isSaved()) {
+            JOptionPane.showMessageDialog(this.a_photoListDisplay,
                     "Cannot rename a file if the current data is not saved",
                     "Rename error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        final Photo photo = a_photoList.getPhoto(a_selection.getSelection()[0]);
+        final Photo photo = this.a_photoList.getPhoto(this.a_selection.getSelection()[0]);
         final String oldFolderName = photo.getFolder();
-        final String newFolderName = JOptionPane.showInputDialog(a_photoListDisplay,
+        final String newFolderName = JOptionPane.showInputDialog(this.a_photoListDisplay,
                 "new folder name?",
                 oldFolderName);
         if (newFolderName == null) return;  // user clicked cancel
@@ -72,7 +72,7 @@ public class RenameFolderAction extends PhotoManagerAction {
         final File oldFolderFile = photoFile.getParentFile();
         final File newFolderFile = new File(oldFolderFile.getParentFile(),newFolderName);
         if (!oldFolderFile.renameTo(newFolderFile)) {
-            JOptionPane.showMessageDialog(a_photoListDisplay,
+            JOptionPane.showMessageDialog(this.a_photoListDisplay,
                     "Failed to rename \""+oldFolderFile+"\" into \""+newFolderFile+"\"",
                     "Rename error",
                     JOptionPane.ERROR_MESSAGE);
@@ -80,15 +80,15 @@ public class RenameFolderAction extends PhotoManagerAction {
         }
 
         // update the data recorded in the list
-        for (int i=0; i<a_photoList.getRowCount(); i++) {
-            if ( ((String)a_photoList.getValueAt(i, PhotoList.PARAM_FOLDER)).equals(oldFolderName) ) {
-                a_photoList.setValueAt(newFolderName, i, PhotoList.PARAM_FOLDER);
+        for (int i=0; i<this.a_photoList.getRowCount(); i++) {
+            if ( ((String)this.a_photoList.getValueAt(i, PhotoList.PARAM_FOLDER)).equals(oldFolderName) ) {
+                this.a_photoList.setValueAt(newFolderName, i, PhotoList.PARAM_FOLDER);
             }
         }
 
         // save
         try {
-            a_photoList.save();
+            this.a_photoList.save();
         } catch (final IOException e1) {
             System.err.println("failed to save data");
             e1.printStackTrace();

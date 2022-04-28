@@ -35,7 +35,7 @@ public abstract class ExportAction extends PhotoManagerAction {
                         final String tooltipText,
                         final JFrame frame) {
         super(text, mnemonic, accelerator, tooltipText);
-        a_frame = frame;
+        this.a_frame = frame;
     }
 
     private void dump(final BufferedWriter out,
@@ -46,7 +46,7 @@ public abstract class ExportAction extends PhotoManagerAction {
         } catch (IOException e1) {
             System.err.println("failed to export subjects");
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(a_frame,
+            JOptionPane.showMessageDialog(this.a_frame,
                     "Failed to export subjects\n"+e1.toString(),
                     "Save error",
                     JOptionPane.ERROR_MESSAGE);
@@ -59,7 +59,7 @@ public abstract class ExportAction extends PhotoManagerAction {
      */
     protected void dumpRoot(final HierarchicalCompoundString root) {
         final JFileChooser fc = new JFileChooser((File)null);
-        fc.showSaveDialog(a_frame);
+        fc.showSaveDialog(this.a_frame);
         final File f = fc.getSelectedFile();
         if ( f == null ) return;
         try {
@@ -69,7 +69,7 @@ public abstract class ExportAction extends PhotoManagerAction {
         } catch (final IOException e1) {
             System.err.println("failed to export subjects");
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(a_frame,
+            JOptionPane.showMessageDialog(this.a_frame,
                     "Failed to export subjects\n"+e1.toString(),
                     "Save error",
                     JOptionPane.ERROR_MESSAGE);

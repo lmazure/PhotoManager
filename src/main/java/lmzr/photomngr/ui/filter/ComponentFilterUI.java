@@ -29,22 +29,22 @@ public class ComponentFilterUI extends JPanel {
 
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
-        a_title = new JCheckBox(label);
-        add(a_title);
+        this.a_title = new JCheckBox(label);
+        add(this.a_title);
 
-        a_pane = new JPanel();
-        a_pane.setLayout(new BoxLayout(a_pane,BoxLayout.Y_AXIS));
-        a_pane.setBorder(BorderFactory.createLineBorder(Color.black));
+        this.a_pane = new JPanel();
+        this.a_pane.setLayout(new BoxLayout(this.a_pane,BoxLayout.Y_AXIS));
+        this.a_pane.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        add(a_pane);
+        add(this.a_pane);
 
         final ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                final boolean b = a_title.isSelected();
-                a_pane.setVisible(b);
+                final boolean b = ComponentFilterUI.this.a_title.isSelected();
+                ComponentFilterUI.this.a_pane.setVisible(b);
                 filter.setEnabled(b);}};
-        a_title.addActionListener(listener);
+        this.a_title.addActionListener(listener);
 
         setFilterEnabled(filter.isEnabled());
     }
@@ -53,22 +53,22 @@ public class ComponentFilterUI extends JPanel {
      * @return the pane
      */
     JPanel getPane() {
-        return a_pane;
+        return this.a_pane;
     }
 
     /**
      * @param isFilterEnabled
      */
     void setFilterEnabled(final boolean isFilterEnabled) {
-        a_title.setSelected(isFilterEnabled);
-        a_pane.setVisible(isFilterEnabled);
+        this.a_title.setSelected(isFilterEnabled);
+        this.a_pane.setVisible(isFilterEnabled);
     }
 
     /**
      * @return true if the filer is active, false otherwise
      */
     public boolean isActive() {
-        return a_title.isSelected();
+        return this.a_title.isSelected();
     }
 }
 

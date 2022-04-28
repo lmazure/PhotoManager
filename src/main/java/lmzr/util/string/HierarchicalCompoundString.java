@@ -19,24 +19,24 @@ public class HierarchicalCompoundString {
      */
     HierarchicalCompoundString(final HierarchicalCompoundString parent,
                                final String string) {
-         a_string = string;
-         a_parent = parent;
+         this.a_string = string;
+         this.a_parent = parent;
          if (parent!=null) parent.addChild(this);
-         a_children = new HierarchicalCompoundString[0];
+         this.a_children = new HierarchicalCompoundString[0];
     }
 
     /**
      * @return the children
      */
     public HierarchicalCompoundString[] getChildren() {
-        return a_children;
+        return this.a_children;
     }
 
     /**
      * @return the parent
      */
     public HierarchicalCompoundString getParent() {
-        return a_parent;
+        return this.a_parent;
     }
 
     /**
@@ -44,7 +44,7 @@ public class HierarchicalCompoundString {
      */
     public String toLongString() {
         if (getParent()==null) return "";
-        final String string = a_parent.toLongString();
+        final String string = this.a_parent.toLongString();
         return (string=="") ? toShortString() : (string + '>' + toShortString());
     }
 
@@ -52,7 +52,7 @@ public class HierarchicalCompoundString {
      * @return as a short string, null is this is a root HierarchicalCoumpoundString
      */
     public String toShortString() {
-        return a_string;
+        return this.a_string;
     }
 
     /**
@@ -87,17 +87,17 @@ public class HierarchicalCompoundString {
      * @param child
      */
     private void addChild(final HierarchicalCompoundString child) {
-        final HierarchicalCompoundString children[] = new HierarchicalCompoundString[a_children.length+1];
+        final HierarchicalCompoundString children[] = new HierarchicalCompoundString[this.a_children.length+1];
         final Collator collator = Collator.getInstance();
         int i;
-        for (i=0; i<a_children.length; i++) {
-            if ( collator.compare(child.toShortString(),a_children[i].toShortString()) < 0 ) break;
-            children[i]=a_children[i];
+        for (i=0; i<this.a_children.length; i++) {
+            if ( collator.compare(child.toShortString(),this.a_children[i].toShortString()) < 0 ) break;
+            children[i]=this.a_children[i];
         }
         children[i] = child;
-        for (; i<a_children.length; i++) {
-            children[i+1]=a_children[i];
+        for (; i<this.a_children.length; i++) {
+            children[i+1]=this.a_children[i];
         }
-        a_children = children;
+        this.a_children = children;
     }
 }

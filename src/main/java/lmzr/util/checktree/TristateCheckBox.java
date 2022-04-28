@@ -94,7 +94,7 @@ public TristateCheckBox() {
 
   /** No one may add mouse listeners, not even Swing! */
   @Override
-public void addMouseListener(MouseListener l) {
+public synchronized void addMouseListener(MouseListener l) {
   	// do nothing
 	  
   }

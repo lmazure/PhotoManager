@@ -21,7 +21,7 @@ public class MapURICreatorFactory {
     /**
      * @return array of available players
      */
-    public MapURICreator[] getMapDisplayers()
+    public static MapURICreator[] getMapDisplayers()
     {
         return s_mapDisplayers;
     }

@@ -32,10 +32,10 @@ public class ChangeTraitAction extends PhotoManagerAction {
                              final PhotoList photoList,
                                final ListSelectionManager selection) {
         super(value.toString(), 0, null, "set " + name + " to " + value.toString());
-        a_value = value;
-        a_parameter = parameter;
-        a_photoList = photoList;
-        a_selection = selection;
+        this.a_value = value;
+        this.a_parameter = parameter;
+        this.a_photoList = photoList;
+        this.a_selection = selection;
     }
 
 
@@ -44,9 +44,9 @@ public class ChangeTraitAction extends PhotoManagerAction {
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        final int select[] = a_selection.getSelection();
+        final int select[] = this.a_selection.getSelection();
         for (int i=0; i<select.length; i++) {
-            a_photoList.setValueAt(a_value,select[i],a_parameter);
+            this.a_photoList.setValueAt(this.a_value,select[i],this.a_parameter);
         }
     }
 }

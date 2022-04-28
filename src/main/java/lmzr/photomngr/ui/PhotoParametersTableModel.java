@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,11 +19,8 @@ import javax.swing.table.TableModel;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
-import com.drew.imaging.jpeg.JpegMetadataReader;
-import com.drew.imaging.jpeg.JpegProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.MetadataException;
 import com.drew.metadata.Tag;
 
 import lmzr.photomngr.data.ListSelectionManager;
@@ -50,10 +46,10 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     public PhotoParametersTableModel(final PhotoList photoList,
                                      final ListSelectionManager selection) {
-        a_photoList = photoList;
-        a_selection = selection;
-        a_selection.addListener(this);
-        a_listOfListeners = new Vector<>();
+        this.a_photoList = photoList;
+        this.a_selection = selection;
+        this.a_selection.addListener(this);
+        this.a_listOfListeners = new Vector<>();
         updateData();
     }
 
@@ -61,7 +57,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      *
      */
     public void dispose() {
-        a_selection.removeListener(this);
+        this.a_selection.removeListener(this);
     }
 
     /**
@@ -69,7 +65,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public void addTableModelListener(final TableModelListener l) {
-        a_listOfListeners.add(l);
+        this.a_listOfListeners.add(l);
     }
 
     /**
@@ -77,7 +73,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public void removeTableModelListener(final TableModelListener l) {
-        a_listOfListeners.add(l);
+        this.a_listOfListeners.add(l);
     }
 
     /**
@@ -93,7 +89,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public int getColumnCount() {
-        return a_selection.getSelection().length+1;
+        return this.a_selection.getSelection().length+1;
     }
 
     /**
@@ -104,8 +100,8 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 
         if ( columnIndex == 0 ) return "";
 
-        final int selection[] = a_selection.getSelection();
-        final Photo photo = a_photoList.getPhoto(selection[columnIndex-1]);
+        final int selection[] = this.a_selection.getSelection();
+        final Photo photo = this.a_photoList.getPhoto(selection[columnIndex-1]);
         final String folder = photo.getFolder();
         final String filename = photo.getFilename();
 
@@ -117,7 +113,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public int getRowCount() {
-        return a_tags.size();
+        return this.a_tags.size();
     }
 
     /**
@@ -127,13 +123,13 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
     public Object getValueAt(final int rowIndex,
                              final int columnIndex) {
 
-        final String tag = a_tags.get(rowIndex);
+        final String tag = this.a_tags.get(rowIndex);
 
         if ( columnIndex == 0) {
             return tag;
         }
 
-        return a_maps.get(columnIndex-1).get(tag);
+        return this.a_maps.get(columnIndex-1).get(tag);
     }
 
 
@@ -164,32 +160,32 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
     public void valueChanged(final ListSelectionEvent e) {
         updateData();
         final TableModelEvent event = new TableModelEvent(this, TableModelEvent.HEADER_ROW);
-        for (TableModelListener l : a_listOfListeners) l.tableChanged(event);
+        for (TableModelListener l : this.a_listOfListeners) l.tableChanged(event);
     }
 
     private void updateData() {
 
-        final int selection[] = a_selection.getSelection();
-        a_maps = new ArrayList<Map<String,String>>();
-        Set<String> tags = new HashSet<String>();
-        a_tags = new ArrayList<String>();
+        final int selection[] = this.a_selection.getSelection();
+        this.a_maps = new ArrayList<>();
+        Set<String> tags = new HashSet<>();
+        this.a_tags = new ArrayList<>();
 
         for ( final int index : selection ) {
-            final String filename = a_photoList.getPhoto(index).getFullPath();
+            final String filename = this.a_photoList.getPhoto(index).getFullPath();
             final Map<String,String> map = getTags(filename);
-            a_maps.add(map);
+            this.a_maps.add(map);
             tags.addAll(map.keySet());
         }
 
-        a_tags = new ArrayList<String>(tags);
-        Collections.sort(a_tags, String.CASE_INSENSITIVE_ORDER);
+        this.a_tags = new ArrayList<>(tags);
+        Collections.sort(this.a_tags, String.CASE_INSENSITIVE_ORDER);
     }
 
     /**
      * @return a set containing the EXIF tags of the file
      *         if the file was not properly parsed, an empty set is returned
      */
-    private Map<String,String> getTags(final String filename) {
+    private static Map<String,String> getTags(final String filename) {
 
         final Map<String,String> map = new HashMap<>();
 

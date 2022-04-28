@@ -34,7 +34,7 @@ import lmzr.util.string.MultiHierarchicalCompoundStringFactory;
  * @author Laurent Mazuré
  */
 public class ConcretePhotoList extends Object
-                               implements PhotoList, SaveableModel {
+                               implements PhotoList {
 
     final private Vector<Photo> a_listOfPhotos;
     final private Vector<TableModelListener> a_listOfListeners;
@@ -47,9 +47,6 @@ public class ConcretePhotoList extends Object
     final private Scheduler a_scheduler;
     final private PhotoHeaderDataCache a_photoHeaderDataCache;
     private boolean a_isSaved;
-    static private final DataFormatFactory s_formatFactory = new DataFormatFactory();
-
-
 
     /**
      * @param excelFilename
@@ -918,7 +915,7 @@ public class ConcretePhotoList extends Object
         if (list==null) return content;
 
         for ( String str: list)
-            if ( s_formatFactory.createFormat(folder.getAbsolutePath() + File.separator + str) != null )
+            if ( DataFormatFactory.createFormat(folder.getAbsolutePath() + File.separator + str) != null )
                 content.add(str);
 
         return content;

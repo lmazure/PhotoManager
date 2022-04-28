@@ -21,7 +21,7 @@ public class FilterOnHierarchicalCompoundString extends FilterBase {
      */
     public FilterOnHierarchicalCompoundString(final int parameter) {
         super(false);
-        this.a_values = new HashSet<HierarchicalCompoundString>();
+        this.a_values = new HashSet<>();
         this.a_parameter = parameter;
     }
 

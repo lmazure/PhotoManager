@@ -23,29 +23,29 @@ public class PriorityRunnable implements Runnable {
                            final Priority priority,
                            final double subpriority,
                            final Runnable runnable) {
-       a_category = category;
-       a_priority = priority;
-       a_subpriority = subpriority;
-       a_runnable = runnable;
+       this.a_category = category;
+       this.a_priority = priority;
+       this.a_subpriority = subpriority;
+       this.a_runnable = runnable;
    }
 
    /**
     * @return category of the Runnable
     */
    public Category getCategory() {
-       return a_category;
+       return this.a_category;
    }
    /**
     * @return priority of the Runnable
     */
    public Priority getPriority() {
-       return a_priority;
+       return this.a_priority;
    }
    /**
     * @return subpriority of the Runnable
     */
    public double getSubpriority() {
-       return a_subpriority;
+       return this.a_subpriority;
    }
 
    /**
@@ -53,7 +53,7 @@ public class PriorityRunnable implements Runnable {
     */
    @Override
    public void run() {
-       a_runnable.run();
+       this.a_runnable.run();
    }
 
 }

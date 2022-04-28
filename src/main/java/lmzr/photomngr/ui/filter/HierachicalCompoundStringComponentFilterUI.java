@@ -26,10 +26,10 @@ public class HierachicalCompoundStringComponentFilterUI extends ComponentFilterU
                                                       final HierarchicalCompoundStringFactory factory,
                                                       final FilterOnHierarchicalCompoundString filter) {
        super(title, filter);
-       a_tree = new TreeSelectioner(title, factory, TreeSelectioner.MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN);
-       final JScrollPane scrollpane = new JScrollPane(a_tree);
+       this.a_tree = new TreeSelectioner(title, factory, TreeSelectioner.MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN);
+       final JScrollPane scrollpane = new JScrollPane(this.a_tree);
        getPane().add(scrollpane);
-       a_tree.setSelection(filter.getValues());
+       this.a_tree.setSelection(filter.getValues());
     }
 
     /**
@@ -41,17 +41,17 @@ public class HierachicalCompoundStringComponentFilterUI extends ComponentFilterU
                                                       final MultiHierarchicalCompoundStringFactory factory,
                                                       final FilterOnHierarchicalCompoundString filter) {
        super(title, filter);
-       a_tree = new TreeSelectioner(title, factory.getHierarchicalCompoundStringFactory(), TreeSelectioner.MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN);
-       final JScrollPane scrollpane = new JScrollPane(a_tree);
+       this.a_tree = new TreeSelectioner(title, factory.getHierarchicalCompoundStringFactory(), TreeSelectioner.MODE_MULTI_SELECTION_WITH_SELECT_ALL_COLUMN);
+       final JScrollPane scrollpane = new JScrollPane(this.a_tree);
        getPane().add(scrollpane);
        setFilterEnabled(filter.isEnabled());
-       a_tree.setSelection(filter.getValues());
+       this.a_tree.setSelection(filter.getValues());
      }
 
     /**
      * @return selected subjects
      */
     public Set<HierarchicalCompoundString> getValues() {
-        return a_tree.getSelection();
+        return this.a_tree.getSelection();
     }
 }

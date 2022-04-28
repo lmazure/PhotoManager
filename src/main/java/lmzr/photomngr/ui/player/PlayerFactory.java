@@ -21,7 +21,7 @@ public class PlayerFactory {
     /**
      * @return array of supported players
      */
-    public Player[] getPlayers()
+    public static Player[] getPlayers()
     {
         return s_player;
     }

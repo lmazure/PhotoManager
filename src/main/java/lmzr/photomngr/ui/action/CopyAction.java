@@ -39,7 +39,7 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
                       final JTable table) {
         super(text, mnemonic, accelerator, tooltipText);
 
-        a_table = table;
+        this.a_table = table;
     }
 
 
@@ -49,13 +49,13 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final ListSelectionModel selection = a_table.getSelectionModel();
+        final ListSelectionModel selection = this.a_table.getSelectionModel();
         if ( selection.getMinSelectionIndex() == -1 ) return;
 
-        final int selectedColumn = a_table.getSelectedColumn();
+        final int selectedColumn = this.a_table.getSelectedColumn();
         if ( selectedColumn == -1) return;
 
-        Object value = a_table.getValueAt(selection.getMinSelectionIndex(),selectedColumn);
+        Object value = this.a_table.getValueAt(selection.getMinSelectionIndex(),selectedColumn);
         String str;
         if (value instanceof String) {
             str = (String)value;
@@ -66,9 +66,9 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
         } else if (value instanceof PhotoTrait) {
             str = ((PhotoTrait)value).toString();
         } else if (value instanceof Integer) {
-            str = NumberFormat.getInstance().format((Integer)value);
+            str = NumberFormat.getInstance().format(value);
         } else if (value instanceof Float) {
-            str = NumberFormat.getInstance().format((Float)value);
+            str = NumberFormat.getInstance().format(value);
         } else {
             throw new IllegalArgumentException("Unsupported type");
         }

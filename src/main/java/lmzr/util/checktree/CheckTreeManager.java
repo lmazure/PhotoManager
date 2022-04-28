@@ -27,17 +27,17 @@ public class CheckTreeManager extends MouseAdapter
      */
     public CheckTreeManager(JTree tree){
         this._tree = tree;
-        selectionModel = new CheckTreeSelectionModel(tree.getModel());
-        tree.setCellRenderer(new CheckTreeCellRenderer(tree.getCellRenderer(), selectionModel));
+        this.selectionModel = new CheckTreeSelectionModel(tree.getModel());
+        tree.setCellRenderer(new CheckTreeCellRenderer(tree.getCellRenderer(), this.selectionModel));
         tree.addMouseListener(this);
-        selectionModel.addTreeSelectionListener(this);
+        this.selectionModel.addTreeSelectionListener(this);
     }
 
     /**
      * @return the tree
      */
     public JTree getTree() {
-        return _tree;
+        return this._tree;
     }
 
     /**
@@ -46,23 +46,23 @@ public class CheckTreeManager extends MouseAdapter
     @Override
     public void mouseClicked(MouseEvent me){
         if (me.getClickCount()!=1) return;
-        TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
+        TreePath path = this._tree.getPathForLocation(me.getX(), me.getY());
         if(path==null)
             return;
-        if(me.getX()>_tree.getPathBounds(path).x+_hotspot)
+        if(me.getX()>this._tree.getPathBounds(path).x+this._hotspot)
             return;
 
-        boolean selected = selectionModel.isPathSelected(path, true);
-        selectionModel.removeTreeSelectionListener(this);
+        boolean selected = this.selectionModel.isPathSelected(path, true);
+        this.selectionModel.removeTreeSelectionListener(this);
 
         try{
             if(selected)
-                selectionModel.removeSelectionPath(path);
+                this.selectionModel.removeSelectionPath(path);
             else
-                selectionModel.addSelectionPath(path);
+                this.selectionModel.addSelectionPath(path);
         } finally{
-            selectionModel.addTreeSelectionListener(this);
-            _tree.treeDidChange();
+            this.selectionModel.addTreeSelectionListener(this);
+            this._tree.treeDidChange();
         }
     }
 
@@ -70,7 +70,7 @@ public class CheckTreeManager extends MouseAdapter
      * @return selection model
      */
     public CheckTreeSelectionModel getSelectionModel(){
-        return selectionModel;
+        return this.selectionModel;
     }
 
     /**
@@ -78,6 +78,6 @@ public class CheckTreeManager extends MouseAdapter
      */
     @Override
     public void valueChanged(final TreeSelectionEvent e){
-        _tree.treeDidChange();
+        this._tree.treeDidChange();
     }
 }

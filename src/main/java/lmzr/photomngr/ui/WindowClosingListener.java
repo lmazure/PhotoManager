@@ -36,7 +36,7 @@ public class WindowClosingListener implements WindowListener {
      * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowActivated(WindowEvent arg0) {
+    public void windowActivated(final WindowEvent arg0) {
     	// do nothing
     }
 
@@ -44,14 +44,15 @@ public class WindowClosingListener implements WindowListener {
      * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowClosed(WindowEvent arg0) {
+    public void windowClosed(final WindowEvent arg0) {
+    	// do noting
     }
 
     /**
      * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowClosing(WindowEvent arg0) {
+    public void windowClosing(final WindowEvent arg0) {
         this.a_callback.windowClosing();
     }
 
@@ -59,7 +60,7 @@ public class WindowClosingListener implements WindowListener {
      * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowDeactivated(WindowEvent arg0) {
+    public void windowDeactivated(final WindowEvent arg0) {
     	// do nothing
     }
 
@@ -67,7 +68,7 @@ public class WindowClosingListener implements WindowListener {
      * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowDeiconified(WindowEvent arg0) {
+    public void windowDeiconified(final WindowEvent arg0) {
     	// do nothing
     }
 
@@ -75,7 +76,7 @@ public class WindowClosingListener implements WindowListener {
      * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowIconified(WindowEvent arg0) {
+    public void windowIconified(final WindowEvent arg0) {
     	// do nothing
     }
 
@@ -83,7 +84,7 @@ public class WindowClosingListener implements WindowListener {
      * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowOpened(WindowEvent arg0) {
+    public void windowOpened(final WindowEvent arg0) {
     	// do nothing
     }
 }

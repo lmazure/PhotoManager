@@ -31,7 +31,7 @@ public class Exporter {
      * @param parent
      */
     public Exporter(final Component parent) {
-        a_parent = parent;
+        this.a_parent = parent;
     }
 
     /**
@@ -42,13 +42,13 @@ public class Exporter {
         BufferedWriter index = null;
         final JFileChooser fc = new JFileChooser((File)null);
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        fc.showSaveDialog(a_parent);
+        fc.showSaveDialog(this.a_parent);
         final File f = fc.getSelectedFile();
         if ( f == null ) return;
         final boolean success = f.mkdir();
         if (!success) {
             System.err.println("failed to create directory "+f.getPath());
-            JOptionPane.showMessageDialog(a_parent,
+            JOptionPane.showMessageDialog(this.a_parent,
                                           "failed to create directory "+f.getPath(),
                                           "Copy error",
                                           JOptionPane.ERROR_MESSAGE);
@@ -60,7 +60,7 @@ public class Exporter {
         } catch (final IOException e1) {
             System.err.println("failed to export subjects");
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(a_parent,
+            JOptionPane.showMessageDialog(this.a_parent,
                                           "Failed to open index file\n"+e1.toString(),
                                           "Save error",
                                           JOptionPane.ERROR_MESSAGE);
@@ -102,7 +102,7 @@ public class Exporter {
                 } catch (final IOException e1) {
                     System.err.println("failed to copy file");
                     e1.printStackTrace();
-                    JOptionPane.showMessageDialog(a_parent,
+                    JOptionPane.showMessageDialog(this.a_parent,
                                                   "Failed to copy file "+photo.getFilename()+"\n"+e1.toString(),
                                                   "Copy error",
                                                   JOptionPane.ERROR_MESSAGE);
@@ -115,7 +115,7 @@ public class Exporter {
         } catch (final IOException e1) {
             System.err.println("failed to export subjects");
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(a_parent,
+            JOptionPane.showMessageDialog(this.a_parent,
                                           "Failed to close index file\n"+e1.toString(),
                                           "Save error",
                                           JOptionPane.ERROR_MESSAGE);

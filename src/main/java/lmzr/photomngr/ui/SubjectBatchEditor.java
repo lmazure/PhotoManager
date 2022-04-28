@@ -42,8 +42,8 @@ public class SubjectBatchEditor extends JDialog {
             final JButton propagate,
             final JTextField edited) {
 
-            a_edit = edit;
-            a_edit.addActionListener(
+            this.a_edit = edit;
+            this.a_edit.addActionListener(
                     new ActionListener() {
                         @Override
                         public void actionPerformed(final ActionEvent e) {
@@ -56,47 +56,47 @@ public class SubjectBatchEditor extends JDialog {
                             }
                             }});
 
-            a_initial = initial;
+            this.a_initial = initial;
 
-            a_propagate = propagate;
-            a_propagate.addActionListener(
+            this.a_propagate = propagate;
+            this.a_propagate.addActionListener(
                     new ActionListener() {
                         @Override
                         public void actionPerformed(final ActionEvent e) {
-                            int i = a_position;
-                            while ( i<a_rows.size() && a_rows.get(i).getInitialText().startsWith(a_initial.getText()) ) {
-                                final String initialText = a_rows.get(i).getInitialText();
-                                final String editedText = a_edited.getText() + initialText.substring(a_initial.getText().length());
-                                a_rows.get(i).setEditedText(editedText);
-                                a_rows.get(i).setEdited(true);
+                            int i = Row.this.a_position;
+                            while ( i<SubjectBatchEditor.this.a_rows.size() && SubjectBatchEditor.this.a_rows.get(i).getInitialText().startsWith(Row.this.a_initial.getText()) ) {
+                                final String initialText = SubjectBatchEditor.this.a_rows.get(i).getInitialText();
+                                final String editedText = Row.this.a_edited.getText() + initialText.substring(Row.this.a_initial.getText().length());
+                                SubjectBatchEditor.this.a_rows.get(i).setEditedText(editedText);
+                                SubjectBatchEditor.this.a_rows.get(i).setEdited(true);
                                 i++;
                             }
                         }});
 
-            a_edited = edited;
+            this.a_edited = edited;
 
-            a_position = a_rows.size();
+            this.a_position = SubjectBatchEditor.this.a_rows.size();
         }
 
         String getInitialText() {
-            return a_initial.getText();
+            return this.a_initial.getText();
         }
 
         String getEditedText() {
-            return a_edited.getText();
+            return this.a_edited.getText();
         }
 
         private void setEditedText(final String string) {
-            a_edited.setText(string);
+            this.a_edited.setText(string);
         }
 
         private void setEdited(final boolean value) {
-            a_edit.setSelected(value);
-            a_edited.setEditable(value);
+            this.a_edit.setSelected(value);
+            this.a_edited.setEditable(value);
         }
 
         boolean isEdited() {
-            return a_edit.isSelected();
+            return this.a_edit.isSelected();
         }
     }
 
@@ -113,7 +113,7 @@ public class SubjectBatchEditor extends JDialog {
 
         super(frame,true);
 
-        a_rows = new Vector<Row>();
+        this.a_rows = new Vector<>();
 
         final Container pane = getContentPane();
 
@@ -168,7 +168,7 @@ public class SubjectBatchEditor extends JDialog {
 
         GridBagConstraints c = new GridBagConstraints();
 
-        final int rowNumber = a_rows.size();
+        final int rowNumber = this.a_rows.size();
         c.gridy = rowNumber;
         c.anchor = GridBagConstraints.LINE_START;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -196,14 +196,14 @@ public class SubjectBatchEditor extends JDialog {
         c.weightx = 1.0;
         panel.add(edited,c);
 
-        a_rows.add(new Row(edit, initial, propagate, edited));
+        this.a_rows.add(new Row(edit, initial, propagate, edited));
 
         for (HierarchicalCompoundString s: string.getChildren()) buildContent(panel, s);
     }
 
     private Map<String, String> getTranslationMap() {
         final Map<String,String> map = new HashMap<>();
-        for (Row r : a_rows) {
+        for (Row r : this.a_rows) {
             if (r.isEdited()) {
                 map.put(r.getInitialText(),r.getEditedText());
             }

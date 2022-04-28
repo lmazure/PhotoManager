@@ -28,7 +28,7 @@ public class PreviousPhotoAction extends PhotoManagerAction {
                                final String tooltipText,
                                final ListSelectionManager selection) {
         super(text, mnemonic, accelerator, tooltipText);
-        a_selection = selection;
+        this.a_selection = selection;
     }
 
 
@@ -37,7 +37,7 @@ public class PreviousPhotoAction extends PhotoManagerAction {
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        a_selection.previous(1);
+        this.a_selection.previous(1);
     }
 }
 

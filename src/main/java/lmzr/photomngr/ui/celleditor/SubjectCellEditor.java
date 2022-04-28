@@ -70,8 +70,8 @@ public class SubjectCellEditor extends JComponent
          */
         public SubjectEditListener(final JTextField edit,
                                    final JButton propositions[]) {
-            a_edit = edit;
-            a_propositions = propositions;
+            this.a_edit = edit;
+            this.a_propositions = propositions;
         }
 
         /**
@@ -101,16 +101,16 @@ public class SubjectCellEditor extends JComponent
         /**
          */
         private void update() {
-            if ( a_edit.getText().length()<2 ) {
-                for (int i=0; i<a_propositions.length; i++) a_propositions[i].setText("");
+            if ( this.a_edit.getText().length()<2 ) {
+                for (int i=0; i<this.a_propositions.length; i++) this.a_propositions[i].setText("");
                 return;
             }
 
 
-            final String str = a_edit.getText();
-            final HashMap<String,Integer> record = new HashMap<String,Integer>();
-            for (int i=0; i<a_photoList.getRowCount(); i++) {
-                final MultiHierarchicalCompoundString subjets = (MultiHierarchicalCompoundString)a_photoList.getValueAt(i, PhotoList.PARAM_SUBJECT);
+            final String str = this.a_edit.getText();
+            final HashMap<String,Integer> record = new HashMap<>();
+            for (int i=0; i<SubjectCellEditor.this.a_photoList.getRowCount(); i++) {
+                final MultiHierarchicalCompoundString subjets = (MultiHierarchicalCompoundString)SubjectCellEditor.this.a_photoList.getValueAt(i, PhotoList.PARAM_SUBJECT);
                 final HierarchicalCompoundString s[] = subjets.getParts();
                 for ( int j=0; j<s.length;  j++) {
                     final String ss = s[j].toLongString();
@@ -125,7 +125,7 @@ public class SubjectCellEditor extends JComponent
                 }
             }
 
-            final Vector<Map.Entry<String, Integer>> list = new Vector<Map.Entry<String, Integer>>(record.entrySet());
+            final Vector<Map.Entry<String, Integer>> list = new Vector<>(record.entrySet());
             Collections.sort(list, new Comparator<Map.Entry<String, Integer>>(){
                 @Override
                 public int compare(Map.Entry<String, Integer> entry, Map.Entry<String, Integer> entry1)
@@ -134,11 +134,11 @@ public class SubjectCellEditor extends JComponent
                 }
             });
 
-            for (int i=0; i<a_propositions.length; i++) {
+            for (int i=0; i<this.a_propositions.length; i++) {
                 if ( i<list.size()) {
-                    a_propositions[i].setText(list.get(i).getKey());
+                    this.a_propositions[i].setText(list.get(i).getKey());
                 } else {
-                    a_propositions[i].setText("");
+                    this.a_propositions[i].setText("");
                 }
             }
         }
@@ -161,23 +161,23 @@ public class SubjectCellEditor extends JComponent
             c.setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
             c.setMinimumSize(new Dimension(600,600));
 
-            a_edit = new JTextField(80);
-            c.add(a_edit);
-            a_edit.setAlignmentX(0.f);
-            a_edit.addActionListener(new ActionListener() {
+            this.a_edit = new JTextField(80);
+            c.add(this.a_edit);
+            this.a_edit.setAlignmentX(0.f);
+            this.a_edit.addActionListener(new ActionListener() {
                 // ceci est un copier/coller de ci-dessous
                 @Override
                 public void actionPerformed(ActionEvent event) {
-                    transferPropositionButtonTextToTextfield(a_propositions[0]);
+                    transferPropositionButtonTextToTextfield(InternalSubjectCellEditor.this.a_propositions[0]);
                 }
             });
 
-            a_propositions =  new JButton[10];
-            for (int i=0; i<a_propositions.length; i++) {
-                a_propositions[i] = new JButton();
-                c.add(a_propositions[i]);
-                a_propositions[i].setAlignmentX(0.f);
-                a_propositions[i].addActionListener(
+            this.a_propositions =  new JButton[10];
+            for (int i=0; i<this.a_propositions.length; i++) {
+                this.a_propositions[i] = new JButton();
+                c.add(this.a_propositions[i]);
+                this.a_propositions[i].setAlignmentX(0.f);
+                this.a_propositions[i].addActionListener(
                         new ActionListener() {
                             @Override
                             public void actionPerformed(final ActionEvent e) {
@@ -186,23 +186,23 @@ public class SubjectCellEditor extends JComponent
 
             }
 
-            final SubjectEditListener listener = new SubjectEditListener(a_edit,a_propositions);
-            a_edit.getDocument().addDocumentListener(listener);
+            final SubjectEditListener listener = new SubjectEditListener(this.a_edit,this.a_propositions);
+            this.a_edit.getDocument().addDocumentListener(listener);
 
-            a_text = new JTextArea();
-            a_text.setDocument(SubjectCellEditor.this.a_textfield.getDocument());
-            c.add(a_text);
-            a_text.setAlignmentX(0.f);
+            this.a_text = new JTextArea();
+            this.a_text.setDocument(SubjectCellEditor.this.a_textfield.getDocument());
+            c.add(this.a_text);
+            this.a_text.setAlignmentX(0.f);
 
-            a_tree = new TreeSelectioner("subject", factory.getHierarchicalCompoundStringFactory(), TreeSelectioner.MODE_MULTI_SELECTION_WITHOUT_SELECT_ALL_COLUMN);
-            final JScrollPane j = new JScrollPane(a_tree);
+            this.a_tree = new TreeSelectioner("subject", factory.getHierarchicalCompoundStringFactory(), TreeSelectioner.MODE_MULTI_SELECTION_WITHOUT_SELECT_ALL_COLUMN);
+            final JScrollPane j = new JScrollPane(this.a_tree);
             c.add(j);
-            a_tree.getTreeTableModel().addTreeModelListener(
+            this.a_tree.getTreeTableModel().addTreeModelListener(
                     new TreeModelListener() {
                         @Override
                         public void treeNodesChanged(final TreeModelEvent e) {
                             final StringBuilder s = new StringBuilder();
-                            final Set<HierarchicalCompoundString> selection = a_tree.getSelection();
+                            final Set<HierarchicalCompoundString> selection = InternalSubjectCellEditor.this.a_tree.getSelection();
                             boolean b = false;
                             for (HierarchicalCompoundString h: selection ) {
                                 if (b) {
@@ -211,19 +211,22 @@ public class SubjectCellEditor extends JComponent
                                 s.append(h.toLongString());
                                 b = true;
                             }
-                            a_text.setText(s.toString());
+                            InternalSubjectCellEditor.this.a_text.setText(s.toString());
                         }
 
                         @Override
                         public void treeNodesInserted(final TreeModelEvent e) {
+                        	// do noting
                         }
 
                         @Override
                         public void treeNodesRemoved(final TreeModelEvent e) {
+                        	// do noting
                         }
 
                         @Override
                         public void treeStructureChanged(final TreeModelEvent e) {
+                        	// do noting
                         }});
             j.setAlignmentX(0.f);
             final JPanel buttonsPane = new JPanel(new GridLayout(1,2));
@@ -243,7 +246,7 @@ public class SubjectCellEditor extends JComponent
             bCancel.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(final ActionEvent e) {
-                            a_text.setText(a_keptValue);
+                            InternalSubjectCellEditor.this.a_text.setText(InternalSubjectCellEditor.this.a_keptValue);
                             close();
                         }
             });
@@ -256,14 +259,14 @@ public class SubjectCellEditor extends JComponent
          */
         private void setText(final String value) {
 
-            a_text.setText(value);
+            this.a_text.setText(value);
 
             if ( value.length()>0 ) {
-                final MultiHierarchicalCompoundString v = a_photoList.getSubjectFactory().create(value);
-                final Set<HierarchicalCompoundString> selection = new HashSet<HierarchicalCompoundString>(Arrays.asList(v.getParts()));
-                a_tree.setSelection(selection);
+                final MultiHierarchicalCompoundString v = SubjectCellEditor.this.a_photoList.getSubjectFactory().create(value);
+                final Set<HierarchicalCompoundString> selection = new HashSet<>(Arrays.asList(v.getParts()));
+                this.a_tree.setSelection(selection);
             } else {
-                a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
+                this.a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
             }
 
         }
@@ -273,10 +276,10 @@ public class SubjectCellEditor extends JComponent
          */
         private void open(final String value) {
 
-            a_keptValue = value;
+            this.a_keptValue = value;
             setText(value);
 
-            a_edit.requestFocusInWindow();
+            this.a_edit.requestFocusInWindow();
 
             setVisible(true);
         }
@@ -297,7 +300,7 @@ public class SubjectCellEditor extends JComponent
             final String sSource = b.getText();
             if ( sSource.length()==0 ) return;
 
-            final String sOldValue = a_text.getText();
+            final String sOldValue = this.a_text.getText();
             String sNewValue;
             if ( sOldValue.length()==0 ) {
                 sNewValue = b.getText();
@@ -305,9 +308,9 @@ public class SubjectCellEditor extends JComponent
                 sNewValue = sOldValue + "\n" + sSource;
             }
             setText(sNewValue);
-            a_edit.setText("");
-            for (int j=0; j<a_propositions.length; j++) a_propositions[j].setText("");
-            a_edit.requestFocusInWindow();
+            this.a_edit.setText("");
+            for (int j=0; j<this.a_propositions.length; j++) this.a_propositions[j].setText("");
+            this.a_edit.requestFocusInWindow();
         }
     }
 
@@ -321,23 +324,23 @@ public class SubjectCellEditor extends JComponent
 
         super();
 
-        a_photoList = filteredList;
+        this.a_photoList = filteredList;
         setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 
-        a_textfield = new JTextArea();
-        add(a_textfield);
+        this.a_textfield = new JTextArea();
+        add(this.a_textfield);
 
-        a_button= new JButton("\u2193");
-        add(a_button);
-        a_button.addActionListener(
+        this.a_button= new JButton("\u2193");
+        add(this.a_button);
+        this.a_button.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(final ActionEvent e) {
-                        a_internal.open(a_textfield.getText());}});
+                        SubjectCellEditor.this.a_internal.open(SubjectCellEditor.this.a_textfield.getText());}});
 
-        a_internal = new InternalSubjectCellEditor(a_photoList.getSubjectFactory(), parent);
+        this.a_internal = new InternalSubjectCellEditor(this.a_photoList.getSubjectFactory(), parent);
 
-        a_listenerList = new Vector<>();
+        this.a_listenerList = new Vector<>();
     }
 
     /**
@@ -345,7 +348,7 @@ public class SubjectCellEditor extends JComponent
      */
     protected void fireEditingStopped() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingStopped(e);
+        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingStopped(e);
     }
 
     /**
@@ -353,7 +356,7 @@ public class SubjectCellEditor extends JComponent
      */
     protected void fireEditingCanceled() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingCanceled(e);
+        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingCanceled(e);
     }
 
     /**
@@ -386,7 +389,7 @@ public class SubjectCellEditor extends JComponent
      */
     @Override
     public Object getCellEditorValue() {
-        return a_textfield.getText();
+        return this.a_textfield.getText();
     }
 
     /**
@@ -419,7 +422,7 @@ public class SubjectCellEditor extends JComponent
      */
     @Override
     public void addCellEditorListener(final CellEditorListener l) {
-        a_listenerList.add(l);
+        this.a_listenerList.add(l);
     }
 
     /**
@@ -427,7 +430,7 @@ public class SubjectCellEditor extends JComponent
      */
     @Override
     public void removeCellEditorListener(final CellEditorListener l) {
-        a_listenerList.remove(l);
+        this.a_listenerList.remove(l);
     }
 
     /**
@@ -456,27 +459,27 @@ public class SubjectCellEditor extends JComponent
      * @param value
      */
     public void setText(final String value) {
-        a_textfield.setText(value);
+        this.a_textfield.setText(value);
     }
 
     /**
      * @return current value of the cell
      */
     public String getText() {
-        return a_textfield.getText();
+        return this.a_textfield.getText();
     }
 
     /**
      * @param l
      */
     public void addTextFocusListener(final FocusListener l) {
-        a_textfield.addFocusListener(l);
+        this.a_textfield.addFocusListener(l);
     }
 
     /**
      * @param l
      */
     public void removeTextFocusListener(final FocusListener l) {
-        a_textfield.removeFocusListener(l);
+        this.a_textfield.removeFocusListener(l);
     }
 }

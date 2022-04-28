@@ -31,7 +31,7 @@ public class ExportSubjectsAction extends ExportAction {
                                 final JFrame frame,
                                 final  FilteredPhotoList photoList) {
         super(text, mnemonic, accelerator, tooltipText, frame);
-        a_photoList = photoList;
+        this.a_photoList = photoList;
     }
 
     /**
@@ -39,6 +39,6 @@ public class ExportSubjectsAction extends ExportAction {
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        dumpRoot(a_photoList.getSubjectFactory().getRootAsHierarchicalCompoundString());
+        dumpRoot(this.a_photoList.getSubjectFactory().getRootAsHierarchicalCompoundString());
     }
 }

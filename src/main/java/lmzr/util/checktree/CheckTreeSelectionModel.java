@@ -19,7 +19,7 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
      * @param model
      */
     public CheckTreeSelectionModel(final TreeModel model){
-        a_model = model;
+        this.a_model = model;
         setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
     }
 
@@ -133,9 +133,9 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
         Object node = path.getLastPathComponent();
         Object parentNode = parent.getLastPathComponent();
 
-        int childCount = a_model.getChildCount(parentNode);
+        int childCount = this.a_model.getChildCount(parentNode);
         for(int i = 0; i<childCount; i++){
-            Object childNode = a_model.getChild(parentNode, i);
+            Object childNode = this.a_model.getChild(parentNode, i);
             if(childNode==node)
                 continue;
             if(!isPathSelected(parent.pathByAddingChild(childNode)))
@@ -180,9 +180,9 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
             TreePath peekPath = stack.isEmpty() ? path : stack.peek();
             Object node = temp.getLastPathComponent();
             Object peekNode = peekPath.getLastPathComponent();
-            int childCount = a_model.getChildCount(node);
+            int childCount = this.a_model.getChildCount(node);
             for(int i = 0; i<childCount; i++){
-                Object childNode = a_model.getChild(node, i);
+                Object childNode = this.a_model.getChild(node, i);
                 if(childNode!=peekNode)
                     super.addSelectionPaths(new TreePath[]{temp.pathByAddingChild(childNode)});
             }

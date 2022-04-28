@@ -26,28 +26,28 @@ public class ImageComputationCacheSoftRef {
         Record(final Photo photo,
                final ImageComputationParameters params,
                final BufferedImage image) {
-            a_photo = photo;
-            a_params = params;
-            a_image = image;
+            this.a_photo = photo;
+            this.a_params = params;
+            this.a_image = image;
         }
 
         /**
          * @return Returns the image.
          */
         BufferedImage getImage() {
-            return a_image;
+            return this.a_image;
         }
         /**
          * @return Returns the params.
          */
         ImageComputationParameters getParams() {
-            return a_params;
+            return this.a_params;
         }
         /**
          * @return Returns the photo.
          */
         Photo getPhoto() {
-            return a_photo;
+            return this.a_photo;
         }
     }
 
@@ -57,7 +57,7 @@ public class ImageComputationCacheSoftRef {
      *
      */
     ImageComputationCacheSoftRef() {
-        a_list = new LinkedList<>();
+        this.a_list = new LinkedList<>();
     }
 
     /**
@@ -85,14 +85,14 @@ public class ImageComputationCacheSoftRef {
                              final BufferedImage image) {
         final SoftReference<Record> r = get(photo);
         if (r!=null) remove(r);
-        add(new SoftReference<Record>(new Record(photo,params,image)));
+        add(new SoftReference<>(new Record(photo,params,image)));
     }
 
     private SoftReference<Record> get(final Photo photo) {
-        for (Iterator<SoftReference<Record>> it=a_list.iterator(); it.hasNext(); ) {
+        for (Iterator<SoftReference<Record>> it=this.a_list.iterator(); it.hasNext(); ) {
             final SoftReference<Record> e = it.next();
             if ( e.get() == null ) {
-                a_list.remove(e);
+                this.a_list.remove(e);
                 return null;
             }
             if ( e.get().getPhoto() == photo ) return e;
@@ -101,11 +101,11 @@ public class ImageComputationCacheSoftRef {
     }
 
     private void remove(final SoftReference<Record> r) {
-        a_list.remove(r);
+        this.a_list.remove(r);
     }
 
     private void add(final SoftReference<Record> r) {
-        a_list.add(0,r);
+        this.a_list.add(0,r);
     }
 
 }

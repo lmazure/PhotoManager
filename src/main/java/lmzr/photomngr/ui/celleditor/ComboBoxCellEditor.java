@@ -28,7 +28,7 @@ public class ComboBoxCellEditor extends JComboBox
      */
     public ComboBoxCellEditor() {
         super();
-        a_listenerList = new Vector<>();
+        this.a_listenerList = new Vector<>();
 
         addActionListener(new ActionListener() {
             @Override
@@ -41,7 +41,7 @@ public class ComboBoxCellEditor extends JComboBox
      */
     @Override
     public void addCellEditorListener(final CellEditorListener listener) {
-        a_listenerList.add(listener);
+        this.a_listenerList.add(listener);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ComboBoxCellEditor extends JComboBox
      */
     @Override
     public void removeCellEditorListener(final CellEditorListener listener) {
-        a_listenerList.remove(listener);
+        this.a_listenerList.remove(listener);
     }
 
     /**
@@ -57,7 +57,7 @@ public class ComboBoxCellEditor extends JComboBox
      */
     protected void fireEditingStopped() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingStopped(e);
+        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingStopped(e);
     }
 
     /**
@@ -65,7 +65,7 @@ public class ComboBoxCellEditor extends JComboBox
      */
     protected void fireEditingCanceled() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = a_listenerList.size()-1; i>=0; i--) a_listenerList.get(i).editingCanceled(e);
+        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingCanceled(e);
     }
 
     /**

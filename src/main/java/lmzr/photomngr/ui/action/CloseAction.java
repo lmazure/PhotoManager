@@ -27,7 +27,7 @@ public class CloseAction extends PhotoManagerAction {
                        final String tooltipText,
                        final JFrame frame) {
         super(text, mnemonic, accelerator, tooltipText);
-        a_frame = frame;
+        this.a_frame = frame;
     }
 
 
@@ -36,6 +36,6 @@ public class CloseAction extends PhotoManagerAction {
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        a_frame.dispose();
+        this.a_frame.dispose();
     }
 }

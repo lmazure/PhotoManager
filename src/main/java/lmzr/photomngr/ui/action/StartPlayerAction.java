@@ -36,8 +36,8 @@ public class StartPlayerAction extends PhotoManagerAction {
 
         super(text, mnemonic, accelerator, tooltipText);
 
-        a_photoProvider = photoProvider;
-        a_player = player;
+        this.a_photoProvider = photoProvider;
+        this.a_player = player;
     }
 
 
@@ -47,17 +47,17 @@ public class StartPlayerAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        if ( a_player.getExecutable()==null ) {
+        if ( this.a_player.getExecutable()==null ) {
             JOptionPane.showMessageDialog(null,
-                                          "Unable to find executable of \n"+a_player.getName(),
+                                          "Unable to find executable of \n"+this.a_player.getName(),
                                           "Launch error",
                                           JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
-            final String[] commandLine = { a_player.getExecutable().getAbsolutePath(),
-                                           a_photoProvider.getPhoto().getFullPath() };
+            final String[] commandLine = { this.a_player.getExecutable().getAbsolutePath(),
+                                           this.a_photoProvider.getPhoto().getFullPath() };
             final Process p = Runtime.getRuntime().exec(commandLine);
             // the two next lines are necessary to get VLC running correctly
             p.getInputStream().close();
@@ -71,7 +71,7 @@ public class StartPlayerAction extends PhotoManagerAction {
      * @return return the player launched by the action
      */
     public Player getPlayer() {
-        return a_player;
+        return this.a_player;
     }
 
 }

@@ -32,9 +32,9 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
                                                 final PhotoList photoList,
                                                 final ListSelectionManager selection) {
             super(text, mnemonic, accelerator, tooltipText);
-            a_photoList = photoList;
-            a_selection = selection;
-            a_PhotoGeometryEditor = null;
+            this.a_photoList = photoList;
+            this.a_selection = selection;
+            this.a_PhotoGeometryEditor = null;
         }
 
 
@@ -44,10 +44,10 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
         @Override
         public void actionPerformed(final ActionEvent e) {
 
-            if (a_PhotoGeometryEditor==null)
-                a_PhotoGeometryEditor = new PhotoGeometryEditor(a_photoList, a_selection);
+            if (this.a_PhotoGeometryEditor==null)
+                this.a_PhotoGeometryEditor = new PhotoGeometryEditor(this.a_photoList, this.a_selection);
 
-            a_PhotoGeometryEditor.setVisible(true);
+            this.a_PhotoGeometryEditor.setVisible(true);
         }
 
 }

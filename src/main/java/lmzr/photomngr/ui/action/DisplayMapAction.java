@@ -43,10 +43,10 @@ public class DisplayMapAction extends PhotoManagerAction {
                             final ListSelectionManager selection,
                             final MapURICreator mapURICreator) {
         super(text, mnemonic, accelerator, tooltipText);
-        a_GPSDatabase = GPSDatabase;
-        a_photoList = photoList;
-        a_selection = selection;
-        a_uriCreator = mapURICreator;
+        this.a_GPSDatabase = GPSDatabase;
+        this.a_photoList = photoList;
+        this.a_selection = selection;
+        this.a_uriCreator = mapURICreator;
     }
 
     /**
@@ -55,12 +55,12 @@ public class DisplayMapAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final HierarchicalCompoundString location = (HierarchicalCompoundString)(a_photoList.getValueAt(a_selection.getSelection()[0],
+        final HierarchicalCompoundString location = (HierarchicalCompoundString)(this.a_photoList.getValueAt(this.a_selection.getSelection()[0],
                                                                                  PhotoList.PARAM_LOCATION));
-        final GPSRecord data = a_GPSDatabase.getGPSData(location);
+        final GPSRecord data = this.a_GPSDatabase.getGPSData(location);
 
         try {
-            Desktop.getDesktop().browse(a_uriCreator.createMapURIFromGPSData(data));
+            Desktop.getDesktop().browse(this.a_uriCreator.createMapURIFromGPSData(data));
         } catch (final HeadlessException ex) {
             System.err.println("failed to start a browser to display the map of "+location.toString());
             ex.printStackTrace();

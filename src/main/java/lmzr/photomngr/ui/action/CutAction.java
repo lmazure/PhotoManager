@@ -37,7 +37,7 @@ public class CutAction extends PhotoManagerAction implements ClipboardOwner {
                      final JTable table) {
         super(text, mnemonic, accelerator, tooltipText);
 
-        a_table = table;
+        this.a_table = table;
     }
 
 
@@ -47,30 +47,30 @@ public class CutAction extends PhotoManagerAction implements ClipboardOwner {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final ListSelectionModel selection = a_table.getSelectionModel();
+        final ListSelectionModel selection = this.a_table.getSelectionModel();
         final int selectedRow = selection.getMinSelectionIndex();
         if ( selectedRow == -1 ) return;
 
-        final int selectedColumn = a_table.getSelectedColumn();
+        final int selectedColumn = this.a_table.getSelectedColumn();
         if ( selectedColumn == -1) return;
 
         // do not cut non-editable cell
-        if ( !a_table.isCellEditable(selectedRow,selectedColumn) ) return;
+        if ( !this.a_table.isCellEditable(selectedRow,selectedColumn) ) return;
 
         // do not cut non-emptiable cell
-        final Class<?> columnClass = a_table.getColumnClass(selectedColumn);
+        final Class<?> columnClass = this.a_table.getColumnClass(selectedColumn);
         if ( (columnClass != String.class ) &&
              (columnClass != HierarchicalCompoundString.class ) &&
              (columnClass != MultiHierarchicalCompoundString.class ) ) return;
 
         // do not cut empty cell
-        final String string = a_table.getValueAt(selectedRow,selectedColumn).toString();
+        final String string = this.a_table.getValueAt(selectedRow,selectedColumn).toString();
         if ( string.length()==0 ) return;
 
         final StringSelection fieldContent = new StringSelection(string);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);
 
-        a_table.setValueAt("",selectedRow,selectedColumn);
+        this.a_table.setValueAt("",selectedRow,selectedColumn);
     }
 
     /**

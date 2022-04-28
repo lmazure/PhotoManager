@@ -45,10 +45,10 @@ public class EditLocationsAction extends PhotoManagerAction
                                final GPSDatabase GPSDatabase) {
 
         super(text, mnemonic, accelerator, tooltipText);
-        a_frame = frame;
-        a_photoList = photoList;
-        a_GPSDatabase = GPSDatabase;
-        a_selection = selection;
+        this.a_frame = frame;
+        this.a_photoList = photoList;
+        this.a_GPSDatabase = GPSDatabase;
+        this.a_selection = selection;
     }
 
     /**
@@ -56,8 +56,8 @@ public class EditLocationsAction extends PhotoManagerAction
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        final SubjectBatchEditor editor = new SubjectBatchEditor(a_frame,
-                                                                 a_photoList.getLocationFactory().getRootAsHierarchicalCompoundString(),
+        final SubjectBatchEditor editor = new SubjectBatchEditor(this.a_frame,
+                                                                 this.a_photoList.getLocationFactory().getRootAsHierarchicalCompoundString(),
                                                                  this);
         editor.setVisible(true);
     }
@@ -67,7 +67,7 @@ public class EditLocationsAction extends PhotoManagerAction
      */
     @Override
     public void performMapTranslation(final Map<String,String> map) {
-        a_photoList.performLocationMapTranslation(map,a_selection);
-        a_GPSDatabase.performLocationMapTranslation(map);
+        this.a_photoList.performLocationMapTranslation(map,this.a_selection);
+        this.a_GPSDatabase.performLocationMapTranslation(map);
     }
 }

@@ -56,7 +56,7 @@ public class PriorityExecutor extends ThreadPoolExecutor {
                             final T result) {
             super(runnable, result);
 
-            a_prio = computePriority(category,priority,subpriority);
+            this.a_prio = computePriority(category,priority,subpriority);
         }
 
         /**
@@ -64,7 +64,7 @@ public class PriorityExecutor extends ThreadPoolExecutor {
          */
         @Override
         public int compareTo(final PriorityTask<T> o) {
-            final double diff = o.a_prio - a_prio;
+            final double diff = o.a_prio - this.a_prio;
             if (diff<0) return -1;
             if (diff>0) return 1;
             return 0;

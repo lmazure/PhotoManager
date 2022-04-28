@@ -63,7 +63,7 @@ public class PhotoListTable extends EnhancedJTable {
         getColumnModel().getColumn(PhotoList.PARAM_ROTATION).setCellEditor(new RotationCellEditor());
         getColumnModel().getColumn(PhotoList.PARAM_AUTHOR).setCellEditor(new AuthorCellEditor(filteredPhotoList.getAuthorFactory()));
 
-        a_setVisibility = true;
+        this.a_setVisibility = true;
     }
 
     /**
@@ -71,9 +71,9 @@ public class PhotoListTable extends EnhancedJTable {
      */
     @Override
     protected void processEvent(final AWTEvent e) {
-        a_setVisibility = false;
+        this.a_setVisibility = false;
         super.processEvent(e);
-        a_setVisibility = true;
+        this.a_setVisibility = true;
     }
 
     /**
@@ -85,7 +85,7 @@ public class PhotoListTable extends EnhancedJTable {
         super.valueChanged(e);
         repaint(new Rectangle());
 
-        if ( !a_setVisibility ) {
+        if ( !this.a_setVisibility ) {
             // the user is manipulating the table itself -> we do not override its scrolling
             return;
         }

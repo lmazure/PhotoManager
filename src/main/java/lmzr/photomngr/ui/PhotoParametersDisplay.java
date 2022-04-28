@@ -28,8 +28,8 @@ public class PhotoParametersDisplay extends JFrame {
         super();
 
 
-        a_tableModel = new PhotoParametersTableModel(photoList,selection);
-        final JTable table = new JTable(a_tableModel);
+        this.a_tableModel = new PhotoParametersTableModel(photoList,selection);
+        final JTable table = new JTable(this.a_tableModel);
 
         final Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
@@ -46,7 +46,7 @@ public class PhotoParametersDisplay extends JFrame {
      */
     @Override
     public void dispose() {
-        a_tableModel.dispose();
+        this.a_tableModel.dispose();
         super.dispose();
     }
 }

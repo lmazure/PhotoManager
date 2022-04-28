@@ -26,7 +26,7 @@ public class Chrono {
     static public final int EVENT = 3;
 
     private static long s_startTime;
-    final private static HashMap<String, Long> s_records =  new HashMap<String, Long>();
+    final private static HashMap<String, Long> s_records =  new HashMap<>();
 
     /**
      *

@@ -36,8 +36,8 @@ public class PhotoGeometryEditor extends JFrame {
         super();
 
 
-        a_photoList = photoList;
-        a_selection = selection;
+        this.a_photoList = photoList;
+        this.a_selection = selection;
 
         final JPanel display = new JPanel();
         display.setLayout(new BoxLayout(display, BoxLayout.Y_AXIS));
@@ -47,9 +47,9 @@ public class PhotoGeometryEditor extends JFrame {
         final JPanel rotation = new JPanel();
         rotation.setLayout(new GridLayout(rotateFactors.length,2));
         for (float r: rotateFactors) {
-            final JButton rotateLeft = new JButton(new RotateAction("↺ "+r+"°", KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, -r));
+            final JButton rotateLeft = new JButton(new RotateAction("↺ "+r+"°", KeyEvent.CHAR_UNDEFINED, null, null, this.a_photoList, this.a_selection, -r));
             rotation.add(rotateLeft);
-            final JButton rotateRight = new JButton(new RotateAction("↻ "+r+"°", KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, r));
+            final JButton rotateRight = new JButton(new RotateAction("↻ "+r+"°", KeyEvent.CHAR_UNDEFINED, null, null, this.a_photoList, this.a_selection, r));
             rotation.add(rotateRight);
         }
 
@@ -59,9 +59,9 @@ public class PhotoGeometryEditor extends JFrame {
         final JPanel zoom = new JPanel();
         zoom.setLayout(new GridLayout(zoomFactors.length,2));
         for (float f: zoomFactors) {
-            final JButton multiply = new JButton(new ZoomAction("× "+f, KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, f));
+            final JButton multiply = new JButton(new ZoomAction("× "+f, KeyEvent.CHAR_UNDEFINED, null, null, this.a_photoList, this.a_selection, f));
             zoom.add(multiply);
-            final JButton divide = new JButton(new ZoomAction("÷ "+f, KeyEvent.CHAR_UNDEFINED, null, null, a_photoList, a_selection, 1.0f/f));
+            final JButton divide = new JButton(new ZoomAction("÷ "+f, KeyEvent.CHAR_UNDEFINED, null, null, this.a_photoList, this.a_selection, 1.0f/f));
             zoom.add(divide);
         }
 
@@ -70,7 +70,7 @@ public class PhotoGeometryEditor extends JFrame {
 
         JButton resetGeometry = new JButton("reset");
         display.add(resetGeometry);
-        resetGeometry.addActionListener(new ResetGeometryAction(a_photoList, a_selection));
+        resetGeometry.addActionListener(new ResetGeometryAction(this.a_photoList, this.a_selection));
         resetGeometry.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

@@ -44,11 +44,11 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
                                          final HierarchicalCompoundStringFactory compoundStringFactory,
                                          final int mode) {
 
-        a_support = new TreeModelSupport(this);
-        a_dataDescription = dataDescription;
-        a_CompoundStringFactory = compoundStringFactory;
-        a_selection = new HashSet<>();
-        a_mode = mode;
+        this.a_support = new TreeModelSupport(this);
+        this.a_dataDescription = dataDescription;
+        this.a_CompoundStringFactory = compoundStringFactory;
+        this.a_selection = new HashSet<>();
+        this.a_mode = mode;
     }
 
     /**
@@ -83,7 +83,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
     public String getColumnName(final int columnIndex) {
         switch (columnIndex) {
         case PARAM_VALUE:
-            return a_dataDescription;
+            return this.a_dataDescription;
         case PARAM_SELECTED:
             return "(un)select";
         case PARAM_SELECT_ALL:
@@ -114,7 +114,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
         case PARAM_VALUE:
             return string.toShortString();
         case PARAM_SELECTED:
-            return a_selection.contains(string);
+            return this.a_selection.contains(string);
         case PARAM_SELECT_ALL:
             return Boolean.valueOf(isSubtreeSelected(string));
         }
@@ -155,15 +155,15 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
         case PARAM_SELECTED: {
             final Boolean b = (Boolean)value;
             if ( b.booleanValue()) {
-                if ( (a_mode == TreeSelectioner.MODE_MONO_SELECTION) &&
-                     (a_selection.size() > 0 ) ) {
+                if ( (this.a_mode == TreeSelectioner.MODE_MONO_SELECTION) &&
+                     (this.a_selection.size() > 0 ) ) {
                     // unselect the current selection
-                    final HierarchicalCompoundString s = a_selection.iterator().next();
+                    final HierarchicalCompoundString s = this.a_selection.iterator().next();
                     setValueAt(Boolean.valueOf(false), s, PARAM_SELECTED);
                 }
-                a_selection.add(string);
+                this.a_selection.add(string);
             } else {
-                a_selection.remove(string);
+                this.a_selection.remove(string);
             }
             notifyNode(string);
             notifyUpperNodes(string);
@@ -183,8 +183,8 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     private void notifyNode(final HierarchicalCompoundString string) {
 
-        a_support.fireChildChanged(HierarchicalCompoundStringFactory.getPath(string.getParent()),
-                                   a_CompoundStringFactory.getIndexOfChild(string.getParent(),string),
+        this.a_support.fireChildChanged(HierarchicalCompoundStringFactory.getPath(string.getParent()),
+                                   this.a_CompoundStringFactory.getIndexOfChild(string.getParent(),string),
                                    string);
     }
 
@@ -195,7 +195,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
 
         HierarchicalCompoundString s = string;
 
-        while ( (s = s.getParent()) != a_CompoundStringFactory.getRootAsHierarchicalCompoundString() ) {
+        while ( (s = s.getParent()) != this.a_CompoundStringFactory.getRootAsHierarchicalCompoundString() ) {
             notifyNode(s);
         }
     }
@@ -207,21 +207,21 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
     private void selectAndNotifySubtree(final HierarchicalCompoundString string,
                                         final boolean b) {
         if ( b ) {
-            if ( !a_selection.contains(string) ) {
-                a_selection.add(string);
+            if ( !this.a_selection.contains(string) ) {
+                this.a_selection.add(string);
                 notifyNode(string);
             }
         } else {
-            if ( a_selection.contains(string) ) {
-                a_selection.remove(string);
+            if ( this.a_selection.contains(string) ) {
+                this.a_selection.remove(string);
                 notifyNode(string);
             }
         }
 
-        final int n = a_CompoundStringFactory.getChildCount(string);
+        final int n = this.a_CompoundStringFactory.getChildCount(string);
 
         for (int i=0; i<n; i++) {
-            selectAndNotifySubtree((HierarchicalCompoundString)a_CompoundStringFactory.getChild(string,i),b);
+            selectAndNotifySubtree((HierarchicalCompoundString)this.a_CompoundStringFactory.getChild(string,i),b);
         }
     }
 
@@ -231,12 +231,12 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     private boolean isSubtreeSelected(final HierarchicalCompoundString string) {
 
-        if ( !a_selection.contains(string) ) return false;
+        if ( !this.a_selection.contains(string) ) return false;
 
-        final int n = a_CompoundStringFactory.getChildCount(string);
+        final int n = this.a_CompoundStringFactory.getChildCount(string);
 
         for (int i=0; i<n; i++) {
-            if ( !isSubtreeSelected((HierarchicalCompoundString)a_CompoundStringFactory.getChild(string,i)) ) return false;
+            if ( !isSubtreeSelected((HierarchicalCompoundString)this.a_CompoundStringFactory.getChild(string,i)) ) return false;
         }
 
         return true;
@@ -248,7 +248,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
     @Override
     public Object getChild(final Object o,
                            final int index) {
-        return a_CompoundStringFactory.getChild(o, index);
+        return this.a_CompoundStringFactory.getChild(o, index);
     }
 
     /**
@@ -256,7 +256,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     @Override
     public int getChildCount(final Object o) {
-        return a_CompoundStringFactory.getChildCount(o);
+        return this.a_CompoundStringFactory.getChildCount(o);
     }
 
     /**
@@ -265,7 +265,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
     @Override
     public int getIndexOfChild(final Object o,
                                final Object c) {
-        return a_CompoundStringFactory.getIndexOfChild(o, c);
+        return this.a_CompoundStringFactory.getIndexOfChild(o, c);
     }
 
     /**
@@ -273,7 +273,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     @Override
     public Object getRoot() {
-        return a_CompoundStringFactory.getRoot();
+        return this.a_CompoundStringFactory.getRoot();
     }
 
     /**
@@ -281,7 +281,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     @Override
     public boolean isLeaf(final Object o) {
-        return a_CompoundStringFactory.isLeaf(o);
+        return this.a_CompoundStringFactory.isLeaf(o);
     }
 
     /**
@@ -289,8 +289,8 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     @Override
     public void addTreeModelListener(final TreeModelListener listener) {
-        a_CompoundStringFactory.addTreeModelListener(listener);
-        a_support.addTreeModelListener(listener);
+        this.a_CompoundStringFactory.addTreeModelListener(listener);
+        this.a_support.addTreeModelListener(listener);
     }
 
    /**
@@ -298,8 +298,8 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     @Override
     public void removeTreeModelListener(final TreeModelListener listener) {
-        a_CompoundStringFactory.removeTreeModelListener(listener);
-        a_support.removeTreeModelListener(listener);
+        this.a_CompoundStringFactory.removeTreeModelListener(listener);
+        this.a_support.removeTreeModelListener(listener);
     }
 
     /**
@@ -315,7 +315,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      * @return
      */
     final protected Set<HierarchicalCompoundString> getSelection() {
-        return a_selection;
+        return this.a_selection;
     }
 
     /**
@@ -323,7 +323,7 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
      */
     final protected void setSelection(final Set<HierarchicalCompoundString> selection) {
 
-        final HashSet<HierarchicalCompoundString> oldSelection = new HashSet<>(a_selection);
+        final HashSet<HierarchicalCompoundString> oldSelection = new HashSet<>(this.a_selection);
 
         for (HierarchicalCompoundString h : oldSelection ) {
             setValueAt(Boolean.valueOf(false), h, PARAM_SELECTED);

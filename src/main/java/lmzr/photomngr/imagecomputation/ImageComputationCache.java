@@ -25,34 +25,34 @@ public class ImageComputationCache {
         Record(final Photo photo,
                final ImageComputationParameters params,
                final BufferedImage image) {
-            a_photo = photo;
-            a_params = params;
-            a_image = image;
+            this.a_photo = photo;
+            this.a_params = params;
+            this.a_image = image;
         }
 
         /**
          * @return Returns the image.
          */
         BufferedImage getImage() {
-            return a_image;
+            return this.a_image;
         }
         /**
          * @return Returns the params.
          */
         ImageComputationParameters getParams() {
-            return a_params;
+            return this.a_params;
         }
         /**
          * @return Returns the photo.
          */
         Photo getPhoto() {
-            return a_photo;
+            return this.a_photo;
         }
         /**
          * @return Returns the params.
          */
         int getSize() {
-            return a_params.getHeight()*a_params.getWidth();
+            return this.a_params.getHeight()*this.a_params.getWidth();
         }
     }
 
@@ -64,8 +64,8 @@ public class ImageComputationCache {
      *
      */
     ImageComputationCache() {
-        a_list = new LinkedList<Record>();
-        a_size = 0;
+        this.a_list = new LinkedList<>();
+        this.a_size = 0;
     }
 
     /**
@@ -94,13 +94,13 @@ public class ImageComputationCache {
         final Record r = get(photo);
         if (r!=null) remove(r);
         add(new Record(photo,params,image));
-        while ( a_size > s_maxSize ) {
-            remove(a_list.getLast());
+        while ( this.a_size > s_maxSize ) {
+            remove(this.a_list.getLast());
         }
     }
 
     private Record get(final Photo photo) {
-        for (Iterator<Record> it=a_list.iterator(); it.hasNext(); ) {
+        for (Iterator<Record> it=this.a_list.iterator(); it.hasNext(); ) {
             final Record e = it.next();
             if (e.getPhoto() == photo) return e;
         }
@@ -108,13 +108,13 @@ public class ImageComputationCache {
     }
 
     private void remove(final Record r) {
-        a_list.remove(r);
-        a_size -= r.getSize();
+        this.a_list.remove(r);
+        this.a_size -= r.getSize();
     }
 
     private void add(final Record r) {
-        a_list.add(0,r);
-        a_size += r.getSize();
+        this.a_list.add(0,r);
+        this.a_size += r.getSize();
     }
 
 }

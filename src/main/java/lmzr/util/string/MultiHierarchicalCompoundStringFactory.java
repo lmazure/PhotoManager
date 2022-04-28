@@ -11,14 +11,14 @@ public class MultiHierarchicalCompoundStringFactory {
      *
      */
     public MultiHierarchicalCompoundStringFactory() {
-        a_partsFactory = new HierarchicalCompoundStringFactory();
+        this.a_partsFactory = new HierarchicalCompoundStringFactory();
     }
 
     /**
      * @return
      */
     public HierarchicalCompoundStringFactory getHierarchicalCompoundStringFactory() {
-        return a_partsFactory;
+        return this.a_partsFactory;
     }
 
     //TODO supprimer tous les appels aux méthodes ci-dessous et les remplacer par un appel à la méthode ci dessus
@@ -28,14 +28,14 @@ public class MultiHierarchicalCompoundStringFactory {
      * @see javax.swing.tree.TreeModel#getRoot()
      */
     public Object getRoot() {
-        return a_partsFactory.getRoot();
+        return this.a_partsFactory.getRoot();
     }
 
     /**
      * @return root
      */
     public HierarchicalCompoundString getRootAsHierarchicalCompoundString() {
-        return a_partsFactory.getRootAsHierarchicalCompoundString();
+        return this.a_partsFactory.getRootAsHierarchicalCompoundString();
     }
 
     /**
@@ -46,7 +46,7 @@ public class MultiHierarchicalCompoundStringFactory {
         final String s[] = string.split("\n");
         final HierarchicalCompoundString parts[] = new HierarchicalCompoundString[s.length];
         for (int i=0; i<s.length; i++) {
-            parts[i] = a_partsFactory.create(s[i]);
+            parts[i] = this.a_partsFactory.create(s[i]);
         }
         return new MultiHierarchicalCompoundString(parts);
     }
