@@ -461,11 +461,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         final File file = new File(this.a_excelFilename);
         final File file2 = new File(name);
         if (!file.renameTo(file2)) {
-            System.err.println("Failed to rename "+this.a_excelFilename+" into "+name);
+            System.err.println("Failed to rename " + this.a_excelFilename + " into " + name);
         }
 
         // create the new file
-        StringTableFromToExcel.save(this.a_excelFilename,data);
+        StringTableFromToExcel.save(this.a_excelFilename, data);
 
         // notify the SaveListerners
         setAsSaved();

@@ -180,8 +180,8 @@ public class PhotoHeaderData {
 
             final Metadata metadata = ImageMetadataReader.readMetadata(file);
 
-            for (Directory directory : metadata.getDirectories()) {
-                for (Tag tag : directory.getTags()) {
+            for (final Directory directory : metadata.getDirectories()) {
+                for (final Tag tag : directory.getTags()) {
 
                     /*
                     try {
@@ -190,34 +190,38 @@ public class PhotoHeaderData {
                         System.out.println("directory name="+tag.getDirectoryName());
                         System.out.println("value="+tag.getDescription());
                         System.out.println("--------------------------------");
-                    } catch (Exception e) {
+                    } catch (@SuppressWarnings("unused") final Exception e) {
+                    	// do nothing
                     }
                     */
                     try {
-                        if (tag.getDirectoryName().equals("Jpeg")) {
+                        if (tag.getDirectoryName().equals("JPEG")) {
                             if (tag.getTagType() == 0x0001) {
                                 height = directory.getInt(tag.getTagType());
                             } else if (tag.getTagType() == 0x0003) {
                                 width = directory.getInt(tag.getTagType());
                             }
-                        } else if (tag.getDirectoryName().equals("Exif")) {
-                            if (tag.getTagType() == ExifDirectoryBase .TAG_ORIENTATION) {
+                        } else if (tag.getDirectoryName().equals("Exif IFD0")) {
+                            if (tag.getTagType() == ExifDirectoryBase.TAG_ORIENTATION) {
+                            	System.out.println(directory.getDescription(tag.getTagType()));
+                            	System.out.println(directory.getInt(tag.getTagType()));
+                            	System.out.println("---------------------------------------------------");
                                 orientation = directory.getInt(tag.getTagType());
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_DATETIME) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_DATETIME) {
                                 date = directory.getDate(tag.getTagType());
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_MAKE) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_MAKE) {
                                 manufacturer = s_pool.replace(directory.getDescription(tag.getTagType()));
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_MODEL) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_MODEL) {
                                 model = s_pool.replace(directory.getDescription(tag.getTagType()));
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_EXPOSURE_TIME) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_EXPOSURE_TIME) {
                                 exposure_time = s_pool.replace(directory.getDescription(tag.getTagType()));
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_SHUTTER_SPEED) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_SHUTTER_SPEED) {
                                 shutter_speed = s_pool.replace(directory.getDescription(tag.getTagType()));
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_APERTURE) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_APERTURE) {
                                 aperture_value = s_pool.replace(directory.getDescription(tag.getTagType()));
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_FLASH) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_FLASH) {
                                 flash = s_pool.replace(directory.getDescription(tag.getTagType()));
-                            } else if (tag.getTagType() == ExifDirectoryBase .TAG_FOCAL_LENGTH) {
+                            } else if (tag.getTagType() == ExifDirectoryBase.TAG_FOCAL_LENGTH) {
                                 try {
                                     final String value = directory.getDescription(tag.getTagType()).replace(" mm","").replace(",",".");
                                     focal_length = Double.parseDouble(value);
@@ -228,7 +232,7 @@ public class PhotoHeaderData {
                             } else if (tag.getTagType() == ExifDirectoryBase.TAG_SELF_TIMER_MODE_TIFF_EP ) {
                                 self_timer_mode = s_pool.replace(directory.getDescription(tag.getTagType()));
                             }
-                        }     else if (tag.getDirectoryName().equals("Canon Makernote")) {
+                        }     else if (tag.getDirectoryName().equals("Canon Makernote")) { // TODO add management of "Nikon Makernote"
                             if (tag.getTagType() == CanonMakernoteDirectory.CameraSettings.TAG_SELF_TIMER_DELAY) {
                                 canon_self_timer_delay = s_pool.replace(directory.getDescription(tag.getTagType()));
                             } else if (tag.getTagType() == CanonMakernoteDirectory.CameraSettings.TAG_FLASH_MODE) {
@@ -599,7 +603,7 @@ public class PhotoHeaderData {
      * @return focal length (tag 0x920A)
      */
     public Double getFocalLength() {
-        return this.a_focal_length;
+        return Double.valueOf(this.a_focal_length);
     }
 
     /**
@@ -742,8 +746,8 @@ public class PhotoHeaderData {
      * @return altitude if this one is correctly defined
      * null otherwise
      */
-    private Double parseAltitude(final String altitude,
-                                 final String altitudeRef)
+    private static Double parseAltitude(final String altitude,
+                                        final String altitudeRef)
     {
         if (altitude==null) return null;
         if (altitudeRef==null) return null;

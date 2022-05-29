@@ -1,7 +1,7 @@
 # PhotoManager
 
-The software I used to manage my pictures.  
-This is a real cesspit: no test, code poorly formatter, architecture messy and overcomplex, AWT…  
+The software I use to manage my photos.  
+This is a real cesspit: no test, code poorly formatted, architecture messy and overcomplex, AWT…  
 After not touching it for 10 years, I decided to migrate it from my Subversion repo to GitHub.  
 The aim is to learn about GitHub, clean up the mess and improve the features. The road will be very long!  
 

@@ -24,7 +24,7 @@ public class Main {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         Chrono.setBeginningOfTime();
 
         if (args.length != 2) {
@@ -58,11 +58,11 @@ public class Main {
         final Scheduler scheduler = new Scheduler();
 
         final File rootDir = new File(root);
-        if ( !rootDir.exists() ) {
+        if (!rootDir.exists()) {
             System.err.println("directory \"" + root + "\" does not exist");
             return;
         }
-        if ( !rootDir.canRead() ) {
+        if (!rootDir.canRead()) {
             System.err.println("directory \"" + root + "\" is not readable");
             return;
         }
@@ -91,12 +91,12 @@ public class Main {
                                               cache);
 
         final int i = a_list.getRowCount() - 1;
-        a_listDisplay.getLineSelectionListModel().setSelectionInterval(i,i);
+        a_listDisplay.getLineSelectionListModel().setSelectionInterval(i, i);
 
-        a_listDisplay.setBounds(new Rectangle(0,0,1280,300));
+        a_listDisplay.setBounds(new Rectangle(0, 0, 1280, 300));
         a_listDisplay.setVisible(true);
 
-        this.a_displayer.setBounds(new Rectangle(100,300,1000,720));
+        this.a_displayer.setBounds(new Rectangle(100, 300, 1000, 720));
         this.a_displayer.setVisible(true);
 
         Chrono.getTime(Chrono.EVENT, "end of start");
