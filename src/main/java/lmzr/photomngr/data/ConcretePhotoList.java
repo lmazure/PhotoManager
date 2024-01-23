@@ -303,9 +303,9 @@ public class ConcretePhotoList extends Object
             return "Width (header)";
         case PARAM_FORMAT:
             return "Format";
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -362,8 +362,9 @@ public class ConcretePhotoList extends Object
             return Integer.class;
         case PARAM_FORMAT:
             return DataFormat.class;
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-        return null;
     }
 
     /**
@@ -409,8 +410,9 @@ public class ConcretePhotoList extends Object
         case PARAM_WITDH:
         case PARAM_FORMAT:
             return false;
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-        return false;
     }
 
     /**
@@ -525,6 +527,8 @@ public class ConcretePhotoList extends Object
         case PARAM_FORMAT:
             value = getPhoto(rowIndex).getFormat();
             break;
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
 
         return value;
@@ -711,7 +715,7 @@ public class ConcretePhotoList extends Object
             }
             break; }
         default:
-            return;
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
 
         final TableModelEvent e = new TableModelEvent(this, rowIndex, rowIndex, columnIndex);
