@@ -35,7 +35,7 @@ public class PasteAction extends PhotoManagerAction {
 
         super(text, mnemonic, accelerator, tooltipText);
 
-        a_table = table;
+        this.a_table = table;
     }
 
 
@@ -62,15 +62,15 @@ public class PasteAction extends PhotoManagerAction {
             return;
         }
 
-        final ListSelectionModel selection = a_table.getSelectionModel();
+        final ListSelectionModel selection = this.a_table.getSelectionModel();
         if ( selection.getMinSelectionIndex() == -1 ) return;
 
-        int selectedColumn = a_table.getSelectedColumn();
+        int selectedColumn = this.a_table.getSelectedColumn();
         if ( selectedColumn == -1) return;
 
         for (int i=selection.getMinSelectionIndex(); i<=selection.getMaxSelectionIndex(); i++) {
-            if ( selection.isSelectedIndex(i) &&  a_table.isCellEditable(i,selectedColumn) ) {
-                a_table.setValueAt(text,i,selectedColumn);
+            if ( selection.isSelectedIndex(i) &&  this.a_table.isCellEditable(i,selectedColumn) ) {
+                this.a_table.setValueAt(text,i,selectedColumn);
             }
         }
     }

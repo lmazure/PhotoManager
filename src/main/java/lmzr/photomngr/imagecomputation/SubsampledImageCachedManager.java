@@ -30,22 +30,22 @@ public class SubsampledImageCachedManager {
          */
         private SubsampledImage(final BufferedImage image,
                                 final double subsampling) {
-            a_image = image;
-            a_subsampling = subsampling;
+            this.a_image = image;
+            this.a_subsampling = subsampling;
         }
 
         /**
          * @return subsampling
          */
         public double getSubsampling() {
-            return a_subsampling;
+            return this.a_subsampling;
         }
 
         /**
          * @return image
          */
         public BufferedImage getImage() {
-            return a_image;
+            return this.a_image;
         }
     }
 
@@ -58,7 +58,7 @@ public class SubsampledImageCachedManager {
      * @param cacheDirectory directory where will be stored the cached files
      */
     public SubsampledImageCachedManager(final String cacheDirectory) {
-        a_cacheDirectory = cacheDirectory;
+        this.a_cacheDirectory = cacheDirectory;
     }
 
     /**
@@ -119,18 +119,18 @@ public class SubsampledImageCachedManager {
         double ff = f;
         double zz = 1.0;
 
-        while ( ( ff < subsamplingFactor/reductionFactor ) &&
-                ( headerHeight*zz > minSize ) &&
-                ( headerWidth*zz > minSize ) ) {
-            ff *= reductionFactor;
-            zz /= reductionFactor;
+        while ( ( ff < subsamplingFactor/this.reductionFactor ) &&
+                ( headerHeight*zz > this.minSize ) &&
+                ( headerWidth*zz > this.minSize ) ) {
+            ff *= this.reductionFactor;
+            zz /= this.reductionFactor;
             i++;
         }
 
         // no subsampling required
         if (i==0) return new SubsampledImage(photo.getImage(),1.0);
 
-        final File file = new File(a_cacheDirectory +
+        final File file = new File(this.a_cacheDirectory +
                                    File.separator +
                                    photo.getFolder() +
                                    File.separator +
