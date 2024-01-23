@@ -50,7 +50,7 @@ public class StringTableFromToExcel {
 
     /**
      * @param filename
-     * @return the data contained in the Excel sheet as an arrays od arrays of strings
+     * @return the data contained in the Excel sheet as an arrays of arrays of strings
      * @throws IOException (maybe a FileNotFoundException)
      * @throws ProtocolException
      */

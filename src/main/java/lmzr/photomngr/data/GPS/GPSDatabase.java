@@ -2,6 +2,8 @@ package lmzr.photomngr.data.GPS;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
@@ -113,6 +115,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         this.a_data = new HashMap<>();
         this.a_listOfSaveListeners = new Vector<>();
         setAsSaved();
+
+        if (!Files.exists(Paths.get(excelFilename))) {
+            System.err.println("GPS database file (" + excelFilename + ") does not exist.");
+            return;
+        }
 
         String data[][] = null;
         try {
