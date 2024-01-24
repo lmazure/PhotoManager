@@ -25,9 +25,7 @@ public class StringTableFromToExcel {
     static public void save(final String filename,
                             final String[][] data) throws IOException {
 
-        final BufferedOutputStream file = new BufferedOutputStream(new FileOutputStream(filename));
-
-        try {
+        try (final BufferedOutputStream file = new BufferedOutputStream(new FileOutputStream(filename))) {
             for (int j = 0; j < data.length; j++) {
                 final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 final OutputStreamWriter stream = new OutputStreamWriter(buffer,"Cp1252");
@@ -43,14 +41,12 @@ public class StringTableFromToExcel {
                 file.write('\r');
                 file.write('\n');
             }
-        } finally {
-            file.close();
         }
     }
 
     /**
      * @param filename
-     * @return the data contained in the Excel sheet as an arrays od arrays of strings
+     * @return the data contained in the Excel sheet as an arrays of arrays of strings
      * @throws IOException (maybe a FileNotFoundException)
      * @throws ProtocolException
      */

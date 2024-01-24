@@ -266,7 +266,7 @@ public class SubjectCellEditor extends JComponent
                 final Set<HierarchicalCompoundString> selection = new HashSet<>(Arrays.asList(v.getParts()));
                 this.a_tree.setSelection(selection);
             } else {
-                this.a_tree.setSelection(new HashSet<HierarchicalCompoundString>());
+                this.a_tree.setSelection(new HashSet<>());
             }
 
         }

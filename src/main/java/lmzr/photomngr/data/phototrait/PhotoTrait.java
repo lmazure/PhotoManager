@@ -22,19 +22,19 @@ public class PhotoTrait {
      * @param value
      */
     protected PhotoTrait(final int value) {
-        a_value = value;
+        this.a_value = value;
     }
 
     @Override
     public int hashCode() {
-        return a_value;
+        return this.a_value;
     }
 
     /**
      * @return value
      */
     public int getValue() {
-        return a_value;
+        return this.a_value;
     }
 
     /**
@@ -42,8 +42,8 @@ public class PhotoTrait {
      * @return String encoding the PhotoTrait
      */
     protected String toString(final String[] encoding) {
-        if ( a_value==UNDEFINED_TRAIT_VALUE ) return UNDEFINED_TRAIT_STRING;
-        return encoding[a_value];
+        if ( this.a_value==UNDEFINED_TRAIT_VALUE ) return UNDEFINED_TRAIT_STRING;
+        return encoding[this.a_value];
     }
 
 }

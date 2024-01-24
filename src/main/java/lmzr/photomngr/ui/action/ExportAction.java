@@ -62,8 +62,7 @@ public abstract class ExportAction extends PhotoManagerAction {
         fc.showSaveDialog(this.a_frame);
         final File f = fc.getSelectedFile();
         if ( f == null ) return;
-        try {
-            final BufferedWriter out = new BufferedWriter(new FileWriter(f));
+        try (final BufferedWriter out = new BufferedWriter(new FileWriter(f))) {
             for (HierarchicalCompoundString s: root.getChildren()) dump(out,s);
             out.close();
         } catch (final IOException e1) {

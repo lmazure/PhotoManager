@@ -15,7 +15,7 @@ public class FilterBase {
     }
 
     /**
-     * @return true if the filter is enable, false otherwise
+     * @return true if the filter is enabled, false otherwise
      */
     public boolean isEnabled() {
         return this.a_isEnabled;

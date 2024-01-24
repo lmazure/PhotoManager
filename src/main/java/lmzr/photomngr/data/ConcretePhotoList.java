@@ -5,6 +5,8 @@ package lmzr.photomngr.data;
 import java.io.File;
 import java.io.IOException;
 import java.net.ProtocolException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -72,18 +74,23 @@ public class ConcretePhotoList extends Object
         this.a_photoHeaderDataCache = new PhotoHeaderDataCache(rootDirPhoto, cacheDir, scheduler);
         Photo.initializeByDirtyHack(rootDirPhoto, this.a_photoHeaderDataCache);
 
-        // load the data
         String data[][] = null;
-        try {
-            data = StringTableFromToExcel.read(excelFilename);
-        } catch (final ProtocolException e) {
-            System.err.println("Cannot parse file " + excelFilename);
-            e.printStackTrace();
-            System.exit(1);
-        } catch (final IOException e) {
-            System.err.println("Cannot read file " + excelFilename);
-            e.printStackTrace();
+        if (!Files.exists(Paths.get(excelFilename))) {
+            System.err.println("Database file (" + excelFilename + ") does not exist.");
             data = new String[0][0];
+        } else {
+            // load the data
+            try {
+                data = StringTableFromToExcel.read(excelFilename);
+            } catch (final ProtocolException e) {
+                System.err.println("Cannot parse file " + excelFilename);
+                e.printStackTrace();
+                System.exit(1);
+            } catch (final IOException e) {
+                System.err.println("Cannot read file " + excelFilename);
+                e.printStackTrace();
+                data = new String[0][0];
+            }
         }
 
         // quick check that the data is not corrupted
@@ -296,9 +303,9 @@ public class ConcretePhotoList extends Object
             return "Width (header)";
         case PARAM_FORMAT:
             return "Format";
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -355,8 +362,9 @@ public class ConcretePhotoList extends Object
             return Integer.class;
         case PARAM_FORMAT:
             return DataFormat.class;
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-        return null;
     }
 
     /**
@@ -402,8 +410,9 @@ public class ConcretePhotoList extends Object
         case PARAM_WITDH:
         case PARAM_FORMAT:
             return false;
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-        return false;
     }
 
     /**
@@ -518,6 +527,8 @@ public class ConcretePhotoList extends Object
         case PARAM_FORMAT:
             value = getPhoto(rowIndex).getFormat();
             break;
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
 
         return value;
@@ -704,7 +715,7 @@ public class ConcretePhotoList extends Object
             }
             break; }
         default:
-            return;
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
 
         final TableModelEvent e = new TableModelEvent(this, rowIndex, rowIndex, columnIndex);

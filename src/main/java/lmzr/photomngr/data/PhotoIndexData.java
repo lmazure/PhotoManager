@@ -37,25 +37,25 @@ public class PhotoIndexData {
                           final HierarchicalCompoundStringFactory locationFactory,
                           final MultiHierarchicalCompoundStringFactory subjectFactory,
                           final AuthorFactory authorFactory) {
-        a_location = locationFactory.create(data[2]);
-        a_subject = subjectFactory.create(data[3]);
-        a_quality = PhotoQuality.parse(data[4]);
-        a_originality = PhotoOriginality.parse(data[5]);
-        a_privacy = PhotoPrivacy.parse(data[6]);
-        a_panorama = data[7];
-        a_panoramaFirst = data[8];
-        a_author = authorFactory.create(data[9]);
-        a_copies = 0;
-        a_zoom = 1.f;
-        a_focus_x = 0.f;
-        a_focus_y = 0.f;
-        a_rotation = 0.f;
+        this.a_location = locationFactory.create(data[2]);
+        this.a_subject = subjectFactory.create(data[3]);
+        this.a_quality = PhotoQuality.parse(data[4]);
+        this.a_originality = PhotoOriginality.parse(data[5]);
+        this.a_privacy = PhotoPrivacy.parse(data[6]);
+        this.a_panorama = data[7];
+        this.a_panoramaFirst = data[8];
+        this.a_author = authorFactory.create(data[9]);
+        this.a_copies = 0;
+        this.a_zoom = 1.f;
+        this.a_focus_x = 0.f;
+        this.a_focus_y = 0.f;
+        this.a_rotation = 0.f;
         try {
-            a_copies = Integer.parseInt(data[10]);
-            a_zoom = Float.parseFloat(data[11]);
-            a_focus_x = Float.parseFloat(data[12]);
-            a_focus_y = Float.parseFloat(data[13]);
-            a_rotation = Float.parseFloat(data[14]);
+            this.a_copies = Integer.parseInt(data[10]);
+            this.a_zoom = Float.parseFloat(data[11]);
+            this.a_focus_x = Float.parseFloat(data[12]);
+            this.a_focus_y = Float.parseFloat(data[13]);
+            this.a_rotation = Float.parseFloat(data[14]);
         } catch (final NumberFormatException e) {
             System.err.println("failed to parse data");
             e.printStackTrace();
@@ -70,33 +70,33 @@ public class PhotoIndexData {
     public PhotoIndexData(final HierarchicalCompoundStringFactory locationFactory,
                           final MultiHierarchicalCompoundStringFactory subjectFactory,
                           final AuthorFactory authorFactory) {
-        a_location = locationFactory.create("");
-        a_subject = subjectFactory.create("");
-        a_quality = PhotoQuality.parse("");
-        a_originality = PhotoOriginality.parse("");
-        a_privacy = PhotoPrivacy.parse("");
-        a_panorama = "";
-        a_panoramaFirst = "";
-        a_author = authorFactory.create("");
-        a_copies = 0;
-        a_zoom = 1.f;
-        a_focus_x = 0.f;
-        a_focus_y = 0.f;
-        a_rotation = 0.f;
+        this.a_location = locationFactory.create("");
+        this.a_subject = subjectFactory.create("");
+        this.a_quality = PhotoQuality.parse("");
+        this.a_originality = PhotoOriginality.parse("");
+        this.a_privacy = PhotoPrivacy.parse("");
+        this.a_panorama = "";
+        this.a_panoramaFirst = "";
+        this.a_author = authorFactory.create("");
+        this.a_copies = 0;
+        this.a_zoom = 1.f;
+        this.a_focus_x = 0.f;
+        this.a_focus_y = 0.f;
+        this.a_rotation = 0.f;
     }
 
     /**
      * @return subject
      */
     public MultiHierarchicalCompoundString getSubject() {
-        return a_subject;
+        return this.a_subject;
     }
 
     /**
      * @param value
      */
     public void setSubject(final MultiHierarchicalCompoundString value) {
-        a_subject = value;
+        this.a_subject = value;
     }
 
     /**
@@ -104,7 +104,7 @@ public class PhotoIndexData {
      * @return quality
      */
     public PhotoQuality getQuality() {
-        return a_quality;
+        return this.a_quality;
     }
 
     /**
@@ -112,7 +112,7 @@ public class PhotoIndexData {
      * @return originality
      */
     public PhotoOriginality getOriginality() {
-        return a_originality;
+        return this.a_originality;
     }
 
     /**
@@ -120,7 +120,7 @@ public class PhotoIndexData {
      * @return privacy
      */
     public PhotoPrivacy getPrivacy() {
-        return a_privacy;
+        return this.a_privacy;
     }
 
 
@@ -128,118 +128,118 @@ public class PhotoIndexData {
      * @param value
      */
     public void setQuality(final PhotoQuality value) {
-        a_quality = value;
+        this.a_quality = value;
     }
 
     /**
      * @param value
      */
     public void setOriginality(final PhotoOriginality value) {
-        a_originality = value;
+        this.a_originality = value;
     }
 
     /**
      * @param value
      */
     public void setPrivacy(final PhotoPrivacy value) {
-        a_privacy = value;
+        this.a_privacy = value;
     }
 
    /**
      * @return geographical location where the photo has been taken
      */
     public HierarchicalCompoundString getLocation() {
-        return a_location;
+        return this.a_location;
     }
 
     /**
      * @param value
      */
     public void setLocation(final HierarchicalCompoundString value) {
-        a_location = value;
+        this.a_location = value;
     }
 
     /**
      * @return the position in the list of photos of the panorama
      */
     public String getPanorama() {
-        return a_panorama;
+        return this.a_panorama;
     }
 
     /**
      * @return the first photo of the list of photos of the panorama
      */
     public String getPanoramaFirst() {
-        return a_panoramaFirst;
+        return this.a_panoramaFirst;
     }
 
     /**
      * @return author
      */
     public String getAuthor() {
-        return a_author;
+        return this.a_author;
     }
 
     /**
      * @param author
      */
     public void setAuthor(final String author) {
-        a_author = author;
+        this.a_author = author;
     }
     /**
      * @return number of copies to print
      */
     public int getCopies() {
-        return a_copies;
+        return this.a_copies;
     }
 
     /**
      * @param copies
      */
     public void setCopies(final int copies) {
-        a_copies = copies;
+        this.a_copies = copies;
     }
 
     /**
      * @return zoom factor
      */
     public float getZoom() {
-        return a_zoom;
+        return this.a_zoom;
     }
 
     /**
      * @param zoom
      */
     public void setZoom(final float zoom) {
-        a_zoom = zoom;
+        this.a_zoom = zoom;
     }
 
     /**
      * @return focus X
      */
     public float getFocusX() {
-        return a_focus_x;
+        return this.a_focus_x;
     }
 
     /**
      * @param focusX
      */
     public void setFocusX(final float focusX) {
-        a_focus_x = focusX;
+        this.a_focus_x = focusX;
     }
 
     /**
      * @return focus Y
      */
     public float getFocusY() {
-        return a_focus_y;
+        return this.a_focus_y;
     }
 
     /**
      * @param focusY
      */
     public void setFocusY(final float focusY) {
-        a_focus_y = focusY;
+        this.a_focus_y = focusY;
     }
 
 
@@ -247,28 +247,28 @@ public class PhotoIndexData {
      * @return rotation
      */
     public float getRotation() {
-        return a_rotation;
+        return this.a_rotation;
     }
 
     /**
      * @param rotation
      */
     public void setRotation(final float rotation) {
-        a_rotation = rotation;
+        this.a_rotation = rotation;
     }
 
     /**
      * @param panorama
      */
     public void setPanorama(final String panorama) {
-        a_panorama = panorama;
+        this.a_panorama = panorama;
     }
 
     /**
      * @param panoramaFirst
      */
     public void setPanoramaFirst(final String panoramaFirst) {
-        a_panoramaFirst = panoramaFirst;
+        this.a_panoramaFirst = panoramaFirst;
     }
 
 }

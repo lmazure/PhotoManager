@@ -2,6 +2,8 @@ package lmzr.photomngr.data.GPS;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
@@ -114,6 +116,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         this.a_listOfSaveListeners = new Vector<>();
         setAsSaved();
 
+        if (!Files.exists(Paths.get(excelFilename))) {
+            System.err.println("GPS database file (" + excelFilename + ") does not exist.");
+            return;
+        }
+
         String data[][] = null;
         try {
             data = StringTableFromToExcel.read(excelFilename);
@@ -162,9 +169,9 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         case PARAM_GPS_DATA_FOR_MAPPING:
         case PARAM_GPS_DATA_FOR_DELETING:
             return GPSRecord.class;
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -195,9 +202,9 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
             return "Geoportail";
         case PARAM_GPS_DATA_FOR_DELETING:
             return "delete";
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -240,9 +247,9 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         case PARAM_GPS_DATA_FOR_MAPPING:
         case PARAM_GPS_DATA_FOR_DELETING:
             return new GPSRecord(location,data);
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -262,9 +269,9 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         case PARAM_GPS_DATA_FOR_MAPPING:
         case PARAM_GPS_DATA_FOR_DELETING:
             return true; // necessary because the column contains buttons and clicks are handled by the CellEditor
+        default:
+            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
         }
-
-        return false;
     }
 
     /**
@@ -314,7 +321,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                 data.setLongitudeMin(str);
                 break;
             case PARAM_LONGITUDE_MAX:
-                if ( str!=null && str.length()==0 ) str = null;
+                if ( str!=null && str.length() == 0) str = null;
                 if ( str == null ) {
                     if ( data.getLongitudeMax() == null ) return;
                 } else {
@@ -325,6 +332,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
             case PARAM_GPS_DATA_FOR_MAPPING:
             case PARAM_GPS_DATA_FOR_DELETING:
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown column index: " + columnIndex);
             }
             if ( data.isEmpty() ) {
                 this.a_data.remove(location);
