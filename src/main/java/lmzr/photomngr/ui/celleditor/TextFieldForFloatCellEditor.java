@@ -25,8 +25,7 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      *
      */
     TextFieldForFloatCellEditor() {
-        super();
-        this.a_listenerList = new Vector<>();
+        a_listenerList = new Vector<>();
     }
 
     /**
@@ -34,7 +33,7 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      */
     @Override
     public void addCellEditorListener(final CellEditorListener listener) {
-        this.a_listenerList.add(listener);
+        a_listenerList.add(listener);
     }
 
     /**
@@ -42,7 +41,7 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      */
     @Override
     public void removeCellEditorListener(final CellEditorListener listener) {
-        this.a_listenerList.remove(listener);
+        a_listenerList.remove(listener);
     }
 
     /**
@@ -50,7 +49,9 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      */
     protected void fireEditingStopped() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingStopped(e);
+        for (int i = a_listenerList.size()-1; i>=0; i--) {
+            a_listenerList.get(i).editingStopped(e);
+        }
     }
 
     /**
@@ -58,7 +59,9 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
      */
     protected void fireEditingCanceled() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingCanceled(e);
+        for (int i = a_listenerList.size()-1; i>=0; i--) {
+            a_listenerList.get(i).editingCanceled(e);
+        }
     }
 
     /**
@@ -87,14 +90,19 @@ public class TextFieldForFloatCellEditor extends JTextField implements TableCell
         if (event == null) {
             // the cell is programaticaly edited
             return true;
-        } else if ( event instanceof MouseEvent ) {
-            final MouseEvent e = (MouseEvent)event;
-            if ( e.getModifiersEx()!=InputEvent.BUTTON1_DOWN_MASK ) return false;
-            if ( e.getClickCount()!=2 ) return false;
+        }
+        if ( event instanceof final MouseEvent e ) {
+            if ( e.getModifiersEx()!=InputEvent.BUTTON1_DOWN_MASK ) {
+                return false;
+            }
+            if ( e.getClickCount()!=2 ) {
+                return false;
+            }
             return true;
-        } else if  ( event instanceof KeyEvent ) {
-               final KeyEvent e = (KeyEvent)event;
-            if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
+        } else if  ( event instanceof final KeyEvent e ) {
+               if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) {
+                return false;
+            }
             return true;
         } else {
             return false;

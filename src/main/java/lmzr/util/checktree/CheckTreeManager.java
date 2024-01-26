@@ -18,51 +18,56 @@ import javax.swing.tree.TreePath;
 public class CheckTreeManager extends MouseAdapter
                               implements TreeSelectionListener {
 
-    private CheckTreeSelectionModel selectionModel;
+    private final CheckTreeSelectionModel selectionModel;
     private JTree _tree = new JTree();
     int _hotspot = new JCheckBox().getPreferredSize().width;
 
     /**
      * @param tree
      */
-    public CheckTreeManager(JTree tree){
-        this._tree = tree;
-        this.selectionModel = new CheckTreeSelectionModel(tree.getModel());
-        tree.setCellRenderer(new CheckTreeCellRenderer(tree.getCellRenderer(), this.selectionModel));
+    public CheckTreeManager(final JTree tree){
+        _tree = tree;
+        selectionModel = new CheckTreeSelectionModel(tree.getModel());
+        tree.setCellRenderer(new CheckTreeCellRenderer(tree.getCellRenderer(), selectionModel));
         tree.addMouseListener(this);
-        this.selectionModel.addTreeSelectionListener(this);
+        selectionModel.addTreeSelectionListener(this);
     }
 
     /**
      * @return the tree
      */
     public JTree getTree() {
-        return this._tree;
+        return _tree;
     }
 
     /**
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     @Override
-    public void mouseClicked(MouseEvent me){
-        if (me.getClickCount()!=1) return;
-        TreePath path = this._tree.getPathForLocation(me.getX(), me.getY());
-        if(path==null)
+    public void mouseClicked(final MouseEvent me){
+        if (me.getClickCount()!=1) {
             return;
-        if(me.getX()>this._tree.getPathBounds(path).x+this._hotspot)
+        }
+        final TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
+        if(path==null) {
             return;
+        }
+        if(me.getX()>_tree.getPathBounds(path).x+_hotspot) {
+            return;
+        }
 
-        boolean selected = this.selectionModel.isPathSelected(path, true);
-        this.selectionModel.removeTreeSelectionListener(this);
+        final boolean selected = selectionModel.isPathSelected(path, true);
+        selectionModel.removeTreeSelectionListener(this);
 
         try{
-            if(selected)
-                this.selectionModel.removeSelectionPath(path);
-            else
-                this.selectionModel.addSelectionPath(path);
+            if(selected) {
+                selectionModel.removeSelectionPath(path);
+            } else {
+                selectionModel.addSelectionPath(path);
+            }
         } finally{
-            this.selectionModel.addTreeSelectionListener(this);
-            this._tree.treeDidChange();
+            selectionModel.addTreeSelectionListener(this);
+            _tree.treeDidChange();
         }
     }
 
@@ -70,7 +75,7 @@ public class CheckTreeManager extends MouseAdapter
      * @return selection model
      */
     public CheckTreeSelectionModel getSelectionModel(){
-        return this.selectionModel;
+        return selectionModel;
     }
 
     /**
@@ -78,6 +83,6 @@ public class CheckTreeManager extends MouseAdapter
      */
     @Override
     public void valueChanged(final TreeSelectionEvent e){
-        this._tree.treeDidChange();
+        _tree.treeDidChange();
     }
 }

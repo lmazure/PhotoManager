@@ -34,8 +34,8 @@ public class CreateCopiesForPrintingAction extends PhotoManagerAction {
                                          final JFrame frame,
                                          final  FilteredPhotoList photoList) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_frame = frame;
-        this.a_photoList = photoList;
+        a_frame = frame;
+        a_photoList = photoList;
     }
 
 
@@ -45,7 +45,7 @@ public class CreateCopiesForPrintingAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final Exporter exporter = new Exporter(this.a_frame);
-        exporter.export(this.a_photoList);
+        final Exporter exporter = new Exporter(a_frame);
+        exporter.export(a_photoList);
     }
 }

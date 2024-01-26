@@ -32,27 +32,27 @@ public class PhotoHeaderDataCache {
         private boolean a_isDirty;
 
         public FolderCache(final String folderName) {
-            this.a_folderName = folderName;
-            this.a_fileCache = new HashMap<>();
-            this.a_isDirty = false;
+            a_folderName = folderName;
+            a_fileCache = new HashMap<>();
+            a_isDirty = false;
             loadFromDisk();
         }
 
         public PhotoHeaderData getHeaderData(final String filename,
                                              final DataFormat format) {
 
-            final PhotoHeaderData headerData = this.a_fileCache.get(filename);
+            final PhotoHeaderData headerData = a_fileCache.get(filename);
 
             if ( headerData != null ) {
                 return headerData;
             }
 
-            final PhotoHeaderData newHeaderData = new PhotoHeaderData(PhotoHeaderDataCache.this.a_photoDirectory, this.a_folderName, filename, format);
+            final PhotoHeaderData newHeaderData = new PhotoHeaderData(a_photoDirectory, a_folderName, filename, format);
 
-            synchronized(this.a_fileCache) {
-                this.a_fileCache.put(filename, newHeaderData);
+            synchronized(a_fileCache) {
+                a_fileCache.put(filename, newHeaderData);
             }
-            this.a_isDirty = true;
+            a_isDirty = true;
 
             return newHeaderData;
         }
@@ -66,48 +66,50 @@ public class PhotoHeaderDataCache {
                 return;
             }
 
-            for (String row[] : data) {
+            for (final String row[] : data) {
                 final PhotoHeaderData newHeaderData = new PhotoHeaderData(row);
-                this.a_fileCache.put(row[0],newHeaderData);
+                a_fileCache.put(row[0],newHeaderData);
             }
         }
 
         private void saveToDisk() {
 
-            if ( !this.a_isDirty ) return;
+            if ( !a_isDirty ) {
+                return;
+            }
 
             final String data[][];
             int i=0;
 
-            synchronized (this.a_fileCache) {
-                data = new String[this.a_fileCache.size()][];
-                for (PhotoHeaderData headerData: this.a_fileCache.values()) {
+            synchronized (a_fileCache) {
+                data = new String[a_fileCache.size()][];
+                for (final PhotoHeaderData headerData: a_fileCache.values()) {
                     if ( headerData.isCorrectlyParsed() ) {
                         data[i++] = headerData.getStringArray();
                     }
                 }
             }
             final int size = i;
-            this.a_isDirty = false;
+            a_isDirty = false;
 
             // create the folder cache if necessary
             final File directory = new File(getFoldername());
             directory.mkdir();
 
-            PhotoHeaderDataCache.this.a_scheduler.submitIO("save header data cache of \""+this.a_folderName+"\"",
-                new Runnable() { @Override public void run() {
+            a_scheduler.submitIO("save header data cache of \""+a_folderName+"\"",
+                () -> {
                     try {
                         StringTableFromToExcel.save(getFilename(),Arrays.copyOf(data, size));
                     } catch (final IOException e) {
                         System.err.println("failed to save header data cache in \""+getFilename()+"\"");
                         return;
                     }
-                }});
+                });
 
         }
 
         private String getFoldername() {
-            return PhotoHeaderDataCache.this.a_cacheDirectory + File.separator + this.a_folderName;
+            return a_cacheDirectory + File.separator + a_folderName;
         }
 
         private String getFilename() {
@@ -131,12 +133,12 @@ public class PhotoHeaderDataCache {
                                 final String cacheDirectory,
                                 final Scheduler scheduler) {
 
-        this.a_photoDirectory = photoDirectory;
-        this.a_cacheDirectory = cacheDirectory;
-        this.a_scheduler = scheduler;
-        this.a_folderCache = new HashMap<>();
-        this.a_timerForPeriodicSaves = new Timer();
-        this.a_timerForPeriodicSaves.scheduleAtFixedRate(new TimerTask() {
+        a_photoDirectory = photoDirectory;
+        a_cacheDirectory = cacheDirectory;
+        a_scheduler = scheduler;
+        a_folderCache = new HashMap<>();
+        a_timerForPeriodicSaves = new Timer();
+        a_timerForPeriodicSaves.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 save();
@@ -154,12 +156,12 @@ public class PhotoHeaderDataCache {
                                          final String filename,
                                          final DataFormat format) {
 
-        FolderCache folderCache = this.a_folderCache.get(folderName);
+        FolderCache folderCache = a_folderCache.get(folderName);
 
         if  ( folderCache == null ) {
             folderCache = new FolderCache(folderName);
-            synchronized(this.a_folderCache) {
-                this.a_folderCache.put(folderName, folderCache);
+            synchronized(a_folderCache) {
+                a_folderCache.put(folderName, folderCache);
             }
         }
 
@@ -171,8 +173,8 @@ public class PhotoHeaderDataCache {
      */
     private void save() {
 
-        synchronized(this.a_folderCache) {
-            for ( FolderCache folderCache : this.a_folderCache.values() ) {
+        synchronized(a_folderCache) {
+            for ( final FolderCache folderCache : a_folderCache.values() ) {
                 folderCache.saveToDisk();
             }
         }

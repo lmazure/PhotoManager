@@ -18,9 +18,11 @@ public class FilterOnFormat extends FilterBase {
      */
     public FilterOnFormat(final DataFormat formats[]) {
         super(false);
-        this.a_formats = formats;
-        this.a_values = new boolean[formats.length];
-        for (int i=0; i<formats.length; i++) this.a_values[i]=true;
+        a_formats = formats;
+        a_values = new boolean[formats.length];
+        for (int i=0; i<formats.length; i++) {
+            a_values[i]=true;
+        }
     }
 
     /**
@@ -33,9 +35,11 @@ public class FilterOnFormat extends FilterBase {
                           final DataFormat formats[],
                           final boolean values[]) {
         super(isEnabled);
-        if (formats.length!=values.length) throw new AssertionError("filter on format is corrupted");
-        this.a_formats = formats;
-        this.a_values = values;
+        if (formats.length!=values.length) {
+            throw new AssertionError("filter on format is corrupted");
+        }
+        a_formats = formats;
+        a_values = values;
     }
 
     /**
@@ -47,21 +51,23 @@ public class FilterOnFormat extends FilterBase {
     public boolean filter(final PhotoList list, final int index) {
         final DataFormat format = (DataFormat)list.getValueAt(index,PhotoList.PARAM_FORMAT);
         int i = 0;
-        while ( format != this.a_formats[i] ) i++;
-        return this.a_values[i];
+        while ( format != a_formats[i] ) {
+            i++;
+        }
+        return a_values[i];
     }
 
     /**
      * @return formats handled by this filter
      */
     public DataFormat[] getFormats() {
-        return this.a_formats;
+        return a_formats;
     }
 
     /**
      * @return values of the filter
      */
     public boolean[] getValues() {
-        return this.a_values;
+        return a_values;
     }
 }

@@ -37,9 +37,9 @@ public class QuitAction extends PhotoManagerAction {
                       final GPSDatabase GPSDatabase,
                       final Scheduler scheduler) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_photoList = list;
-        this.a_GPSDatabase = GPSDatabase;
-        this.a_scheduler = scheduler;
+        a_photoList = list;
+        a_GPSDatabase = GPSDatabase;
+        a_scheduler = scheduler;
     }
 
 
@@ -55,22 +55,22 @@ public class QuitAction extends PhotoManagerAction {
      *
      */
     public void controlledExit() {
-        if ( this.a_photoList.isSaved() && this.a_GPSDatabase.isSaved() ) {
-            this.a_scheduler.submitIO("exit",
-                    new Runnable() { @Override public void run() { System.exit(0); } });
+        if ( a_photoList.isSaved() && a_GPSDatabase.isSaved() ) {
+            a_scheduler.submitIO("exit",
+                    () -> System.exit(0));
         } else {
             String message = "Do you really want to exit without saving ";
-            if ( !this.a_photoList.isSaved() && !this.a_GPSDatabase.isSaved() ) {
+            if ( !a_photoList.isSaved() && !a_GPSDatabase.isSaved() ) {
                 message += "the photo data and the GPS data?";
-            } else if ( !this.a_photoList.isSaved() ) {
+            } else if ( !a_photoList.isSaved() ) {
                 message += "the photo data?";
             } else {
                 message += "the GPS data?";
             }
             final int a = JOptionPane.showConfirmDialog(null,message,"Exit",JOptionPane.OK_CANCEL_OPTION);
             if ( a == JOptionPane.OK_OPTION ) {
-                this.a_scheduler.submitIO("exit",
-                        new Runnable() { @Override public void run() { System.exit(0); } });
+                a_scheduler.submitIO("exit",
+                        () -> System.exit(0));
             }
         }
     }

@@ -63,8 +63,8 @@ public class DataFormat {
      */
     private DataFormat(final String format,
                        final String extensions[]) {
-        this.a_format = format;
-        this.a_extensions = extensions;
+        a_format = format;
+        a_extensions = extensions;
     }
 
     /**
@@ -72,7 +72,7 @@ public class DataFormat {
      */
     @Override
     public String toString() {
-        return this.a_format;
+        return a_format;
     }
 
     /**
@@ -83,8 +83,10 @@ public class DataFormat {
 
         final String f = filename.toLowerCase();
 
-        for (final String e : this.a_extensions) {
-            if (f.endsWith("."+e)) return true;
+        for (final String e : a_extensions) {
+            if (f.endsWith("."+e)) {
+                return true;
+            }
         }
 
         return false;
@@ -94,7 +96,7 @@ public class DataFormat {
      * @return list of all formats
      */
     static public DataFormat[] getAllFormats() {
-        final DataFormat all[] = { DataFormat.JPEG,
+        return new DataFormat[] { DataFormat.JPEG,
                                    DataFormat.MPEG,
                                    DataFormat.WAV,
                                    DataFormat.MP3,
@@ -106,6 +108,5 @@ public class DataFormat {
                                    DataFormat.WMV,
                                    DataFormat.MTS,
                                    DataFormat.MP4};
-        return all;
     }
 }

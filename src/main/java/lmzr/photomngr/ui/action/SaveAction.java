@@ -30,7 +30,7 @@ public class SaveAction extends PhotoManagerAction {
                       final String tooltipText,
                       final SaveableModel list) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_model = list;
+        a_model = list;
     }
 
 
@@ -40,7 +40,7 @@ public class SaveAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
         try {
-            this.a_model.save();
+            a_model.save();
         } catch (final IOException e1) {
             System.err.println("failed to save data");
             e1.printStackTrace();

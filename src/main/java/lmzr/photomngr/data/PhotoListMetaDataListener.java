@@ -10,5 +10,5 @@ public interface PhotoListMetaDataListener extends EventListener {
     /**
      * @param e
      */
-    public void photoListMetaDataChanged(final PhotoListMetaDataEvent e);
+    void photoListMetaDataChanged(final PhotoListMetaDataEvent e);
 }

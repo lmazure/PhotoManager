@@ -22,13 +22,13 @@ public class PhotoListMetaDataEvent extends EventObject {
     public PhotoListMetaDataEvent(final Object src,
                                   final int change) {
         super(src);
-        this.a_change = change;
+        a_change = change;
     }
 
     /**
      * @return the metadata that has changed
      */
     public int getChange() {
-        return this.a_change;
+        return a_change;
     }
 }

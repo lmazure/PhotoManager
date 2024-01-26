@@ -26,11 +26,11 @@ public class TraitDisplayComponentFilterUI extends ComponentFilterUI {
         final PhotoTrait[] traits = filter.getTraits();
         final boolean[] values = filter.getValues();
 
-        this.a_check = new JCheckBox[filter.getTraits().length];
+        a_check = new JCheckBox[filter.getTraits().length];
         for (int i=0; i<traits.length; i++) {
-            this.a_check[i] = new JCheckBox(traits[i].toString());
-            this.a_check[i].setSelected((filter==null)?true:values[i]);
-            getPane().add(this.a_check[i]);
+            a_check[i] = new JCheckBox(traits[i].toString());
+            a_check[i].setSelected((filter==null)?true:values[i]);
+            getPane().add(a_check[i]);
         }
     }
 
@@ -38,8 +38,10 @@ public class TraitDisplayComponentFilterUI extends ComponentFilterUI {
      * @return null if the field is not enabled, the values of the filter otherwise
      */
     public boolean[] getValues() {
-        final boolean[] values = new boolean[this.a_check.length];
-        for (int i=0; i<this.a_check.length; i++) values[i] = this.a_check[i].isSelected();
+        final boolean[] values = new boolean[a_check.length];
+        for (int i=0; i<a_check.length; i++) {
+            values[i] = a_check[i].isSelected();
+        }
         return values;
     }
 }

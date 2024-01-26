@@ -24,7 +24,6 @@ public class GPSDataDeleteCellEditor extends JButton
      *
      */
     public GPSDataDeleteCellEditor() {
-        super();
     }
 
     /**
@@ -58,7 +57,7 @@ public class GPSDataDeleteCellEditor extends JButton
      */
     @Override
     public void cancelCellEditing() {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -98,7 +97,7 @@ public class GPSDataDeleteCellEditor extends JButton
      */
     @Override
     public void addCellEditorListener(final CellEditorListener l) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -106,6 +105,6 @@ public class GPSDataDeleteCellEditor extends JButton
      */
     @Override
     public void removeCellEditorListener(final CellEditorListener l) {
-    	// do nothing
+        // do nothing
     }
 }

@@ -46,10 +46,10 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     public PhotoParametersTableModel(final PhotoList photoList,
                                      final ListSelectionManager selection) {
-        this.a_photoList = photoList;
-        this.a_selection = selection;
-        this.a_selection.addListener(this);
-        this.a_listOfListeners = new Vector<>();
+        a_photoList = photoList;
+        a_selection = selection;
+        a_selection.addListener(this);
+        a_listOfListeners = new Vector<>();
         updateData();
     }
 
@@ -57,7 +57,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      *
      */
     public void dispose() {
-        this.a_selection.removeListener(this);
+        a_selection.removeListener(this);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public void addTableModelListener(final TableModelListener l) {
-        this.a_listOfListeners.add(l);
+        a_listOfListeners.add(l);
     }
 
     /**
@@ -73,14 +73,14 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public void removeTableModelListener(final TableModelListener l) {
-        this.a_listOfListeners.add(l);
+        a_listOfListeners.add(l);
     }
 
     /**
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     @Override
-    public Class<?> getColumnClass(int columnIndex) {
+    public Class<?> getColumnClass(final int columnIndex) {
         return String.class;
     }
 
@@ -89,7 +89,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public int getColumnCount() {
-        return this.a_selection.getSelection().length+1;
+        return a_selection.getSelection().length+1;
     }
 
     /**
@@ -98,10 +98,12 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
     @Override
     public String getColumnName(final int columnIndex) {
 
-        if ( columnIndex == 0 ) return "";
+        if ( columnIndex == 0 ) {
+            return "";
+        }
 
-        final int selection[] = this.a_selection.getSelection();
-        final Photo photo = this.a_photoList.getPhoto(selection[columnIndex-1]);
+        final int selection[] = a_selection.getSelection();
+        final Photo photo = a_photoList.getPhoto(selection[columnIndex-1]);
         final String folder = photo.getFolder();
         final String filename = photo.getFilename();
 
@@ -113,7 +115,7 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
      */
     @Override
     public int getRowCount() {
-        return this.a_tags.size();
+        return a_tags.size();
     }
 
     /**
@@ -123,13 +125,13 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
     public Object getValueAt(final int rowIndex,
                              final int columnIndex) {
 
-        final String tag = this.a_tags.get(rowIndex);
+        final String tag = a_tags.get(rowIndex);
 
         if ( columnIndex == 0) {
             return tag;
         }
 
-        return this.a_maps.get(columnIndex-1).get(tag);
+        return a_maps.get(columnIndex-1).get(tag);
     }
 
 
@@ -160,25 +162,27 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
     public void valueChanged(final ListSelectionEvent e) {
         updateData();
         final TableModelEvent event = new TableModelEvent(this, TableModelEvent.HEADER_ROW);
-        for (TableModelListener l : this.a_listOfListeners) l.tableChanged(event);
+        for (final TableModelListener l : a_listOfListeners) {
+            l.tableChanged(event);
+        }
     }
 
     private void updateData() {
 
-        final int selection[] = this.a_selection.getSelection();
-        this.a_maps = new ArrayList<>();
-        Set<String> tags = new HashSet<>();
-        this.a_tags = new ArrayList<>();
+        final int selection[] = a_selection.getSelection();
+        a_maps = new ArrayList<>();
+        final Set<String> tags = new HashSet<>();
+        a_tags = new ArrayList<>();
 
         for ( final int index : selection ) {
-            final String filename = this.a_photoList.getPhoto(index).getFullPath();
+            final String filename = a_photoList.getPhoto(index).getFullPath();
             final Map<String,String> map = getTags(filename);
-            this.a_maps.add(map);
+            a_maps.add(map);
             tags.addAll(map.keySet());
         }
 
-        this.a_tags = new ArrayList<>(tags);
-        Collections.sort(this.a_tags, String.CASE_INSENSITIVE_ORDER);
+        a_tags = new ArrayList<>(tags);
+        Collections.sort(a_tags, String.CASE_INSENSITIVE_ORDER);
     }
 
     /**
@@ -192,8 +196,8 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
 
         try {
             final Metadata metadata = ImageMetadataReader.readMetadata(new File(filename));
-            for (Directory directory : metadata.getDirectories()) {
-                for (Tag tag : directory.getTags()) {
+            for (final Directory directory : metadata.getDirectories()) {
+                for (final Tag tag : directory.getTags()) {
                     map.put( tag.getDirectoryName() + " / " + tag.getTagName(), directory.getDescription(tag.getTagType()) );
                 }
             }

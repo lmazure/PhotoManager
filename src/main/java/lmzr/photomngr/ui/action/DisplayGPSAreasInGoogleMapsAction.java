@@ -56,14 +56,14 @@ public class DisplayGPSAreasInGoogleMapsAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final HierarchicalCompoundString location = (HierarchicalCompoundString)(this.photoList.getValueAt(this.selection.getSelection()[0],
+        final HierarchicalCompoundString location = (HierarchicalCompoundString)(photoList.getValueAt(selection.getSelection()[0],
                                                                                                            PhotoList.PARAM_LOCATION));
 
-        final String folder = (String)this.photoList.getValueAt(this.selection.getSelection()[0], PhotoList.PARAM_FOLDER);
+        final String folder = (String)photoList.getValueAt(selection.getSelection()[0], PhotoList.PARAM_FOLDER);
         final String filename = "displayGPSAreasInGoogleMaps_" + escape(location.toLongString()) + ".html";
 
         try {
-            final File file = GoogleMapsURICreator.createMapURIForGPSDebug(this.cacheDirectory, folder, filename, this.photoList, location, this.gpsDatabase);
+            final File file = GoogleMapsURICreator.createMapURIForGPSDebug(cacheDirectory, folder, filename, photoList, location, gpsDatabase);
             Desktop.getDesktop().browse(file.toURI());
         } catch (final IOException ex) {
             System.err.println("failed to generate file for debugging GPS");

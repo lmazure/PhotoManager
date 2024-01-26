@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class PhotoPrivacy extends PhotoTrait {
 
-    static final private String[] g_encoding = new String[] {"anyone", "knowledgeable", "friends", "familly", "personal"};
+    static final private String[] g_encoding = {"anyone", "knowledgeable", "friends", "familly", "personal"};
     static final private HashMap<String, PhotoPrivacy> g_pool = new HashMap<>();
     static final private PhotoPrivacy g_undefined = new PhotoPrivacy(UNDEFINED_TRAIT_VALUE);
 

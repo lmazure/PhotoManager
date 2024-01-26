@@ -6,8 +6,6 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -19,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
 import lmzr.util.string.HierarchicalCompoundString;
 
 /**
@@ -31,9 +30,9 @@ public class SubjectBatchEditor extends JDialog {
      */
     private class Row {
 
-        private JCheckBox a_edit;
-        private JTextField a_initial;
-        private JButton a_propagate;
+        private final JCheckBox a_edit;
+        private final JTextField a_initial;
+        private final JButton a_propagate;
         private JTextField a_edited;
         private int a_position;
 
@@ -42,61 +41,57 @@ public class SubjectBatchEditor extends JDialog {
             final JButton propagate,
             final JTextField edited) {
 
-            this.a_edit = edit;
-            this.a_edit.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(final ActionEvent e) {
-                            if ( edit.isSelected()) {
-                                edited.setEditable(true);
-                                setEditedText(initial.getText());
-                            } else {
-                                edited.setEditable(false);
-                                setEditedText("");
-                            }
-                            }});
+            a_edit = edit;
+            a_edit.addActionListener(
+                    e -> {
+                        if ( edit.isSelected()) {
+                            edited.setEditable(true);
+                            setEditedText(initial.getText());
+                        } else {
+                            edited.setEditable(false);
+                            setEditedText("");
+                        }
+                        });
 
-            this.a_initial = initial;
+            a_initial = initial;
 
-            this.a_propagate = propagate;
-            this.a_propagate.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(final ActionEvent e) {
-                            int i = Row.this.a_position;
-                            while ( i<SubjectBatchEditor.this.a_rows.size() && SubjectBatchEditor.this.a_rows.get(i).getInitialText().startsWith(Row.this.a_initial.getText()) ) {
-                                final String initialText = SubjectBatchEditor.this.a_rows.get(i).getInitialText();
-                                final String editedText = Row.this.a_edited.getText() + initialText.substring(Row.this.a_initial.getText().length());
-                                SubjectBatchEditor.this.a_rows.get(i).setEditedText(editedText);
-                                SubjectBatchEditor.this.a_rows.get(i).setEdited(true);
-                                i++;
-                            }
-                        }});
+            a_propagate = propagate;
+            a_propagate.addActionListener(
+                    e -> {
+                        int i = a_position;
+                        while ( i<a_rows.size() && a_rows.get(i).getInitialText().startsWith(a_initial.getText()) ) {
+                            final String initialText = a_rows.get(i).getInitialText();
+                            final String editedText = a_edited.getText() + initialText.substring(a_initial.getText().length());
+                            a_rows.get(i).setEditedText(editedText);
+                            a_rows.get(i).setEdited(true);
+                            i++;
+                        }
+                    });
 
-            this.a_edited = edited;
+            a_edited = edited;
 
-            this.a_position = SubjectBatchEditor.this.a_rows.size();
+            a_position = a_rows.size();
         }
 
         String getInitialText() {
-            return this.a_initial.getText();
+            return a_initial.getText();
         }
 
         String getEditedText() {
-            return this.a_edited.getText();
+            return a_edited.getText();
         }
 
         private void setEditedText(final String string) {
-            this.a_edited.setText(string);
+            a_edited.setText(string);
         }
 
         private void setEdited(final boolean value) {
-            this.a_edit.setSelected(value);
-            this.a_edited.setEditable(value);
+            a_edit.setSelected(value);
+            a_edited.setEditable(value);
         }
 
         boolean isEdited() {
-            return this.a_edit.isSelected();
+            return a_edit.isSelected();
         }
     }
 
@@ -113,7 +108,7 @@ public class SubjectBatchEditor extends JDialog {
 
         super(frame,true);
 
-        this.a_rows = new Vector<>();
+        a_rows = new Vector<>();
 
         final Container pane = getContentPane();
 
@@ -132,19 +127,11 @@ public class SubjectBatchEditor extends JDialog {
         buttonsPane.add(bOk);
         buttonsPane.add(bCancel);
         getRootPane().setDefaultButton(bCancel);
-        bOk.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(final ActionEvent e) {
-                    performer.performMapTranslation(getTranslationMap());
-                    close();
-                }
+        bOk.addActionListener(e -> {
+            performer.performMapTranslation(getTranslationMap());
+            close();
         });
-        bCancel.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        close();
-                    }
-        });
+        bCancel.addActionListener(e -> close());
         pack();
         setSize(1000,700);
     }
@@ -166,9 +153,9 @@ public class SubjectBatchEditor extends JDialog {
     private void buildContent(final JPanel panel,
                               final HierarchicalCompoundString string) {
 
-        GridBagConstraints c = new GridBagConstraints();
+        final GridBagConstraints c = new GridBagConstraints();
 
-        final int rowNumber = this.a_rows.size();
+        final int rowNumber = a_rows.size();
         c.gridy = rowNumber;
         c.anchor = GridBagConstraints.LINE_START;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -196,14 +183,16 @@ public class SubjectBatchEditor extends JDialog {
         c.weightx = 1.0;
         panel.add(edited,c);
 
-        this.a_rows.add(new Row(edit, initial, propagate, edited));
+        a_rows.add(new Row(edit, initial, propagate, edited));
 
-        for (HierarchicalCompoundString s: string.getChildren()) buildContent(panel, s);
+        for (final HierarchicalCompoundString s: string.getChildren()) {
+            buildContent(panel, s);
+        }
     }
 
     private Map<String, String> getTranslationMap() {
         final Map<String,String> map = new HashMap<>();
-        for (Row r : this.a_rows) {
+        for (final Row r : a_rows) {
             if (r.isEdited()) {
                 map.put(r.getInitialText(),r.getEditedText());
             }

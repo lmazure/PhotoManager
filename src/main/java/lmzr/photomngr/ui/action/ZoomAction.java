@@ -34,17 +34,17 @@ public class ZoomAction extends PhotoManagerAction {
                           final ListSelectionManager selection,
                           final float value) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_value = value;
-        this.a_photoList = photoList;
-        this.a_selection = selection;
+        a_value = value;
+        a_photoList = photoList;
+        a_selection = selection;
     }
 
     @Override
     public void actionPerformed(final ActionEvent arg0) {
-        for (int i=0; i<this.a_selection.getSelection().length; i++) {
-            final float z = ((Float)(this.a_photoList.getValueAt(this.a_selection.getSelection()[i],PhotoList.PARAM_ZOOM))).floatValue();
-            this.a_photoList.setValueAt(Float.valueOf(z*this.a_value),
-                                   this.a_selection.getSelection()[i],
+        for (int i=0; i<a_selection.getSelection().length; i++) {
+            final float z = ((Float)(a_photoList.getValueAt(a_selection.getSelection()[i],PhotoList.PARAM_ZOOM))).floatValue();
+            a_photoList.setValueAt(Float.valueOf(z*a_value),
+                                   a_selection.getSelection()[i],
                                    PhotoList.PARAM_ZOOM);
          }
     }

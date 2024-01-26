@@ -41,9 +41,9 @@ public class EditSubjectsAction extends PhotoManagerAction
                               final ListSelectionManager selection) {
 
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_frame = frame;
-        this.a_photoList = photoList;
-        this.a_selection = selection;
+        a_frame = frame;
+        a_photoList = photoList;
+        a_selection = selection;
     }
 
     /**
@@ -52,8 +52,8 @@ public class EditSubjectsAction extends PhotoManagerAction
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final SubjectBatchEditor editor = new SubjectBatchEditor(this.a_frame,
-                                                                 this.a_photoList.getSubjectFactory().getRootAsHierarchicalCompoundString(),
+        final SubjectBatchEditor editor = new SubjectBatchEditor(a_frame,
+                                                                 a_photoList.getSubjectFactory().getRootAsHierarchicalCompoundString(),
                                                                  this);
         editor.setVisible(true);
     }
@@ -63,6 +63,6 @@ public class EditSubjectsAction extends PhotoManagerAction
      */
     @Override
     public void performMapTranslation(final Map<String,String> map) {
-        this.a_photoList.performSubjectMapTranslation(map,this.a_selection);
+        a_photoList.performSubjectMapTranslation(map,a_selection);
     }
 }

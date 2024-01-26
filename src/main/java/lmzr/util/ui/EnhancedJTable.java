@@ -97,12 +97,16 @@ public class EnhancedJTable extends JTable {
         // TODO le tooltip devrait aussi s'afficher quand la derni�re colonne est partiellement cach�e
         final int row = rowAtPoint(event.getPoint());
         final int col = columnAtPoint(event.getPoint());
-        if ( (row == -1) || (col == -1) ) return null;
+        if ( (row == -1) || (col == -1) ) {
+            return null;
+        }
 
         final Object obj = getValueAt(row,col);
         final TableCellRenderer tcr = getDefaultRenderer(getModel().getColumnClass(convertColumnIndexToModel(col)));
         final Component c = tcr.getTableCellRendererComponent(this,obj,false,false,row,col);
-        if (c.getPreferredSize().width < getCellRect(row, col, true).width) return null;
+        if (c.getPreferredSize().width < getCellRect(row, col, true).width) {
+            return null;
+        }
 
         final String tooltipText = (c instanceof JLabel) ? ((JLabel)c).getText() : obj.toString();
 

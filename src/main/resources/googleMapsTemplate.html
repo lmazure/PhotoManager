@@ -13,87 +13,87 @@
 <script type="text/javascript">
 function initialize() {
 
-	var myLatLng = new google.maps.LatLng(__PLACEHOLDER_MAPCENTER__);
+    var myLatLng = new google.maps.LatLng(__PLACEHOLDER_MAPCENTER__);
 
-	var myOptions = {
-		zoom: __PLACEHOLDER_ZOOM__,
-		center: myLatLng,
-		mapTypeId: google.maps.MapTypeId.SATELLITE 
-	};
-	 
-	function GPSPoint(path, lat, lng, character, color) {
-		this.path = path;
-		this.lat = lat;
-		this.lng = lng;
-		this.character = character;
-		this.color = color;
-	}
+    var myOptions = {
+        zoom: __PLACEHOLDER_ZOOM__,
+        center: myLatLng,
+        mapTypeId: google.maps.MapTypeId.SATELLITE 
+    };
+     
+    function GPSPoint(path, lat, lng, character, color) {
+        this.path = path;
+        this.lat = lat;
+        this.lng = lng;
+        this.character = character;
+        this.color = color;
+    }
 
-	function GPSRectangle(name,latMin, latMax, lngMin, lngMax, color) {
-		this.name = name;
-		this.latMin = latMin;
-		this.latMax = latMax;
-		this.lngMin = lngMin;
-		this.lngMax = lngMax;
-		this.color = color;
-	}
+    function GPSRectangle(name,latMin, latMax, lngMin, lngMax, color) {
+        this.name = name;
+        this.latMin = latMin;
+        this.latMax = latMax;
+        this.lngMin = lngMin;
+        this.lngMax = lngMax;
+        this.color = color;
+    }
 
-	var pointList = new Array (
-		__PLACEHOLDER_POINTLIST__
-	);
+    var pointList = new Array (
+        __PLACEHOLDER_POINTLIST__
+    );
 
-	var rectangleList = new Array (
-		__PLACEHOLDER_AREALIST__
-	);
+    var rectangleList = new Array (
+        __PLACEHOLDER_AREALIST__
+    );
 
-	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-	for (var i=0; i<pointList.length; i++) {
-	    var p = pointList[i];
-	    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + p.character + "|" + p.color,
-        	new google.maps.Size(21, 34),
-        	new google.maps.Point(0,0),
-        	new google.maps.Point(10, 34));
-    	var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-        	new google.maps.Size(40, 37),
-        	new google.maps.Point(0, 0),
-        	new google.maps.Point(12, 35));
-	    var marker = new google.maps.Marker({
+    for (var i=0; i<pointList.length; i++) {
+        var p = pointList[i];
+        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + p.character + "|" + p.color,
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0,0),
+            new google.maps.Point(10, 34));
+        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+            new google.maps.Size(40, 37),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(12, 35));
+        var marker = new google.maps.Marker({
             position: new google.maps.LatLng(p.lat, p.lng),
             map: map,
             icon: pinImage,
             shadow: pinShadow, 
             title: p.path
             });
-	}
-	
-	for (var i=0; i<rectangleList.length; i++) {
-		var r = rectangleList[i];
-		var coordinates = [
-			new google.maps.LatLng(r.latMin, r.lngMin),
-			new google.maps.LatLng(r.latMin, r.lngMax),
-			new google.maps.LatLng(r.latMax, r.lngMax),
-			new google.maps.LatLng(r.latMax, r.lngMin),
-			new google.maps.LatLng(r.latMin, r.lngMin),
-		];
-		var path = new google.maps.Polyline({
-			path: coordinates,
-			strokeColor: r.color,
-			strokeOpacity: 1.0,
-			strokeWeight: 2,
-			fillOpacity: 0.0
-		 });
-		path.setMap(map);
-		function createClickListener(name) {
-			return (function(event){
-				infowindow = new google.maps.InfoWindow();
-				infowindow.setContent(name);
-				infowindow.setPosition(event.latLng);
-				infowindow.open(map);
-			});
-		}
-		google.maps.event.addListener(path, 'click', createClickListener(r.name));
-	}
+    }
+    
+    for (var i=0; i<rectangleList.length; i++) {
+        var r = rectangleList[i];
+        var coordinates = [
+            new google.maps.LatLng(r.latMin, r.lngMin),
+            new google.maps.LatLng(r.latMin, r.lngMax),
+            new google.maps.LatLng(r.latMax, r.lngMax),
+            new google.maps.LatLng(r.latMax, r.lngMin),
+            new google.maps.LatLng(r.latMin, r.lngMin),
+        ];
+        var path = new google.maps.Polyline({
+            path: coordinates,
+            strokeColor: r.color,
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+            fillOpacity: 0.0
+         });
+        path.setMap(map);
+        function createClickListener(name) {
+            return (function(event){
+                infowindow = new google.maps.InfoWindow();
+                infowindow.setContent(name);
+                infowindow.setPosition(event.latLng);
+                infowindow.open(map);
+            });
+        }
+        google.maps.event.addListener(path, 'click', createClickListener(r.name));
+    }
 
 }
 </script>

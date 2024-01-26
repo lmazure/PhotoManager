@@ -12,7 +12,7 @@ public interface MapDisplayer {
      * @param location
      * @param GPSData
      */
-    public void displayMap(final HierarchicalCompoundString location,
+    void displayMap(final HierarchicalCompoundString location,
                            final GPSData GPSData);
 
 }

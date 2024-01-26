@@ -2,6 +2,7 @@ package lmzr.photomngr.ui.cellrenderer;
 
 import java.text.DateFormat;
 import java.util.Date;
+
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -15,7 +16,6 @@ public class DateCellRenderer extends DefaultTableCellRenderer {
      *
      */
     public DateCellRenderer() {
-        super();
     }
 
     /**
@@ -23,7 +23,7 @@ public class DateCellRenderer extends DefaultTableCellRenderer {
      */
     @Override
     public void setValue(final Object value) {
-        Date date = (Date)value;
+        final Date date = (Date)value;
         if (date!=null) {
             super.setValue(format.format(date));
         } else {

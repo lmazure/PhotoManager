@@ -8,5 +8,5 @@ public interface PhotoProvider {
     /**
      * @return photo
      */
-    public Photo getPhoto();
+    Photo getPhoto();
 }

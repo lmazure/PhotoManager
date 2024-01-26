@@ -25,40 +25,40 @@ public abstract class Player {
                      final String[] possiblePaths,
                      final DataFormat[] supportedFormats) {
 
-        this.a_name = name;
+        a_name = name;
 
-        this.a_supportedFormats = new HashSet<>(Arrays.asList(supportedFormats));
+        a_supportedFormats = new HashSet<>(Arrays.asList(supportedFormats));
 
-        for ( String p : possiblePaths) {
+        for ( final String p : possiblePaths) {
             final File f = new File(p);
             if ( f.canExecute() ) {
-                this.a_path = f;
+                a_path = f;
                 return;
             }
         }
 
-        this.a_path = null;
+        a_path = null;
     }
 
     /**
      * @return name of the player
      */
     public String getName() {
-        return this.a_name;
+        return a_name;
     }
 
      /**
      * @return executable file
      */
     public File getExecutable() {
-        return this.a_path;
+        return a_path;
     }
 
     /**
      * @param format
      * @return true is the format is supported, false otherwise
      */
-    public boolean isFormatSupported(DataFormat format) {
-        return this.a_supportedFormats.contains(format);
+    public boolean isFormatSupported(final DataFormat format) {
+        return a_supportedFormats.contains(format);
     }
 }

@@ -30,15 +30,15 @@ public class AuthorComponentFilterUI extends ComponentFilterUI {
         final String[] authors = authorFactory.getAuthors();
         final HashSet<String> filteredAuthors = filter.getFilteredAuthors();
 
-        this.a_check = new JCheckBox[authors.length];
+        a_check = new JCheckBox[authors.length];
         for (int i=0; i<authors.length; i++) {
-            this.a_check[i] = new JCheckBox(authors[i]);
+            a_check[i] = new JCheckBox(authors[i]);
             if (filter.isEnabled()) {
-                this.a_check[i].setSelected(filteredAuthors.contains(authors[i]));
+                a_check[i].setSelected(filteredAuthors.contains(authors[i]));
             } else {
-                this.a_check[i].setSelected(true);
+                a_check[i].setSelected(true);
             }
-            getPane().add(this.a_check[i]);
+            getPane().add(a_check[i]);
         }
     }
 
@@ -47,9 +47,9 @@ public class AuthorComponentFilterUI extends ComponentFilterUI {
      */
     public HashSet<String> getValues() {
         final HashSet<String> filteredAuthors = new HashSet<>();
-        for (int i=0; i<this.a_check.length; i++) {
-            if ( this.a_check[i].isSelected() ) {
-                filteredAuthors.add(this.a_check[i].getText());
+        for (final JCheckBox element : a_check) {
+            if ( element.isSelected() ) {
+                filteredAuthors.add(element.getText());
             }
         }
         return filteredAuthors;

@@ -13,7 +13,7 @@ public class StringPool {
      *
      */
     public StringPool() {
-        this.a_pool = new HashMap<>();
+        a_pool = new HashMap<>();
     }
 
     /**
@@ -22,13 +22,13 @@ public class StringPool {
      */
     public String replace(final String str) {
 
-        final String s = this.a_pool.get(str);
+        final String s = a_pool.get(str);
 
         if ( s!=null ) {
             return s;
         }
 
-        this.a_pool.put(str,str);
+        a_pool.put(str,str);
         return str;
     }
 

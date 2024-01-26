@@ -44,8 +44,8 @@ public class Scheduler {
      *
      */
     public Scheduler() {
-        this.a_executorCPU = new PriorityExecutor(4);
-        this.a_executorIO = Executors.newSingleThreadExecutor();
+        a_executorCPU = new PriorityExecutor(4);
+        a_executorIO = Executors.newSingleThreadExecutor();
     }
 
     /**
@@ -64,7 +64,7 @@ public class Scheduler {
 
         System.out.println("added CPU task: " + description);
         final PriorityRunnable prunnable = new PriorityRunnable(category,priority,subpriority,task);
-        return this.a_executorCPU.submit(prunnable);
+        return a_executorCPU.submit(prunnable);
     }
 
     /**
@@ -76,6 +76,6 @@ public class Scheduler {
                                  final Runnable task) {
 
         System.out.println("added IO task: " + description);
-        return this.a_executorIO.submit(task);
+        return a_executorIO.submit(task);
     }
 }

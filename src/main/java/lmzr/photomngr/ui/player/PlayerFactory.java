@@ -5,7 +5,7 @@ package lmzr.photomngr.ui.player;
  */
 public class PlayerFactory {
 
-    final static private Player[] s_player = new Player[] {
+    final static private Player[] s_player = {
         new Player_VideoLAN(),
         new Player_WindowsMediaPlayer(),
         new Player_QuickTime()

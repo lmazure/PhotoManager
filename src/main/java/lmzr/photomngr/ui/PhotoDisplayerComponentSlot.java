@@ -49,7 +49,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
     private BufferedImage a_image;
     private boolean a_imageIsComputed;
     private Future<?> a_computation;
-    private JPanel a_display;
+    private final JPanel a_display;
     final private JButton a_play[];
 
     /**
@@ -60,9 +60,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
     public PhotoDisplayerComponentSlot(final Scheduler scheduler,
                                        final SubsampledImageCachedManager subsampler,
                                        final ImageComputationManager computationManager) {
-        super();
-
-        this.a_computationManager = computationManager;
+        a_computationManager = computationManager;
 
         final GridBagLayout gridbag = new GridBagLayout();
         final GridBagConstraints constraints = new GridBagConstraints();
@@ -71,30 +69,30 @@ public class PhotoDisplayerComponentSlot extends JComponent
         setLayout(gridbag);
 
         addComponentListener(this);
-        this.a_photo = null;
-        this.a_params = null;
-        this.a_image = null;
-        this.a_imageIsComputed = false;
-        this.a_computation = null;
+        a_photo = null;
+        a_params = null;
+        a_image = null;
+        a_imageIsComputed = false;
+        a_computation = null;
 
-        this.a_display = new JPanel();
-        this.a_display.setLayout(new BoxLayout(this.a_display, BoxLayout.Y_AXIS));
-        this.a_display.setOpaque(false);
+        a_display = new JPanel();
+        a_display.setLayout(new BoxLayout(a_display, BoxLayout.Y_AXIS));
+        a_display.setOpaque(false);
         final Player[] players = PlayerFactory.getPlayers();
-        this.a_play = new JButton[players.length];
+        a_play = new JButton[players.length];
         for (int i=0; i<players.length; i++) {
-            this.a_play[i] = new JButton(new StartPlayerAction( players[i].getName(),
+            a_play[i] = new JButton(new StartPlayerAction( players[i].getName(),
                                                            KeyEvent.CHAR_UNDEFINED,
                                                            null,
                                                            "start "+players[i].getName(),
                                                            this,
                                                            players[i]));
-            this.a_play[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-            this.a_play[i].setAlignmentY(Component.CENTER_ALIGNMENT);
-            this.a_display.add(this.a_play[i]);
+            a_play[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+            a_play[i].setAlignmentY(Component.CENTER_ALIGNMENT);
+            a_display.add(a_play[i]);
         }
-        this.a_display.setMaximumSize(this.a_display.getPreferredSize());
-        add(this.a_display);
+        a_display.setMaximumSize(a_display.getPreferredSize());
+        add(a_display);
     }
 
     /**
@@ -103,40 +101,42 @@ public class PhotoDisplayerComponentSlot extends JComponent
     public void setPhoto(final Photo photo) {
 
         // cancel the current computation if required
-        if ( this.a_computation != null ) {
-            this.a_computation.cancel(false);
-            this.a_computation = null;
+        if ( a_computation != null ) {
+            a_computation.cancel(false);
+            a_computation = null;
         }
 
-        this.a_photo = photo;
-        this.a_image = null;
-        this.a_imageIsComputed = false;
+        a_photo = photo;
+        a_image = null;
+        a_imageIsComputed = false;
 
-        if (this.a_photo==null ) {
+        if (a_photo==null ) {
             // the slot does not display anything -> repaint the slot as empty
-            this.a_display.setVisible(false);
+            a_display.setVisible(false);
             repaint();
             return;
         }
 
-        final DataFormat format = this.a_photo.getFormat();
+        final DataFormat format = a_photo.getFormat();
 
         if (!(new Player_myself()).isFormatSupported(format)) {
-            for (int i=0; i<this.a_play.length; i++) {
-                final StartPlayerAction action = (StartPlayerAction)this.a_play[i].getAction();
-                action.setEnabled( (this.a_photo!=null) && action.getPlayer().isFormatSupported(format) );
+            for (final JButton element : a_play) {
+                final StartPlayerAction action = (StartPlayerAction)element.getAction();
+                action.setEnabled( (a_photo!=null) && action.getPlayer().isFormatSupported(format) );
             }
-            this.a_display.setVisible(true);
+            a_display.setVisible(true);
         } else {
-            this.a_display.setVisible(false);
+            a_display.setVisible(false);
         }
 
-        if (this.a_photo==null) {
+        if (a_photo==null) {
             // unsupported format
             repaint();
         } else {
             // display a photo
-            if (getWidth()>0 && getHeight()>0) callImageComputation();
+            if (getWidth()>0 && getHeight()>0) {
+                callImageComputation();
+            }
         }
     }
 
@@ -145,7 +145,9 @@ public class PhotoDisplayerComponentSlot extends JComponent
      */
     public void update() {
 
-        if ( this.a_photo!=null && this.a_photo.getFormat()==DataFormat.JPEG ) callImageComputation();
+        if ( a_photo!=null && a_photo.getFormat()==DataFormat.JPEG ) {
+            callImageComputation();
+        }
     }
 
     /**
@@ -157,25 +159,27 @@ public class PhotoDisplayerComponentSlot extends JComponent
         final Graphics2D g2 = (Graphics2D)g;
         g2.setBackground(Color.BLACK);
 
-        if ( this.a_photo == null ) {
+        if ( a_photo == null ) {
             // no data is attached to this slot
             g2.clearRect(0,0,getWidth(),getHeight());
             return;
         }
 
-        if ( this.a_imageIsComputed ) {
+        if ( a_imageIsComputed ) {
             repaintImage(g2);
         } else  {
             final Font font = a_fontManager.getMessageFont(getSize());
-            if (font ==null) return;
+            if (font ==null) {
+                return;
+            }
             g2.setFont(font);
             final FontMetrics metrics = g2.getFontMetrics();
             g2.setColor(Color.BLACK);
             String str;
-            if ((new Player_myself()).isFormatSupported(this.a_photo.getFormat())) {
+            if ((new Player_myself()).isFormatSupported(a_photo.getFormat())) {
                 str = "Loading...";
             } else {
-                str = this.a_photo.getFormat().toString()+" is not supported";
+                str = a_photo.getFormat().toString()+" is not supported";
             }
             final int width = metrics.stringWidth(str);
             g2.drawString(str, getSize().width/2-width/2, getSize().height/2+metrics.getAscent() );
@@ -205,14 +209,16 @@ public class PhotoDisplayerComponentSlot extends JComponent
 
         g.setBackground(Color.BLACK);
 
-        if ( this.a_image != null ) {
+        if ( a_image != null ) {
 
             //TODO see how to handle deleted files (JPEG or other)
 
-            g.drawImage(this.a_image, 0, 0, this);
+            g.drawImage(a_image, 0, 0, this);
 
             final Font font = a_fontManager.getAnnotationFont(getSize());
-            if ( font == null ) return;
+            if ( font == null ) {
+                return;
+            }
 
             g.setFont(font);
             g.setColor(Color.RED);
@@ -220,13 +226,13 @@ public class PhotoDisplayerComponentSlot extends JComponent
             final FontMetrics metrics = g.getFontMetrics();
             final int height = metrics.getHeight();
 
-            final String location = this.a_photo.getIndexData().getLocation().toLongString();
+            final String location = a_photo.getIndexData().getLocation().toLongString();
             if (location!=null) {
                 final int widthLocation = metrics.stringWidth(location);
-                g.drawString( this.a_photo.getIndexData().getLocation().toLongString(), getSize().width/2-widthLocation/2, 1+metrics.getAscent() );
+                g.drawString( a_photo.getIndexData().getLocation().toLongString(), getSize().width/2-widthLocation/2, 1+metrics.getAscent() );
             }
 
-            final Date date = this.a_photo.getHeaderData().getDate();
+            final Date date = a_photo.getHeaderData().getDate();
             if ( date != null ) {
                 final String str = s_dateFormat.format(date);
                 final int widthDate = metrics.stringWidth(str);
@@ -244,11 +250,13 @@ public class PhotoDisplayerComponentSlot extends JComponent
                                         final BufferedImage image) {
 
         // check that this is the up-to-date answer
-        if ( photo!=this.a_photo || params!=this.a_params ) return;
+        if ( photo!=a_photo || params!=a_params ) {
+            return;
+        }
 
-        this.a_image = image;
-        this.a_imageIsComputed = true;
-        this.a_computation = null;
+        a_image = image;
+        a_imageIsComputed = true;
+        a_computation = null;
         repaint();
     }
 
@@ -257,19 +265,19 @@ public class PhotoDisplayerComponentSlot extends JComponent
      */
     private void callImageComputation() {
 
-        if ( this.a_photo!=null ) {
+        if ( a_photo!=null ) {
             final ImageComputationParameters params = new ImageComputationParameters(getSize().width,
                                                                                         getSize().height,
-                                                                                     this.a_photo.getIndexData().getZoom(),
-                                                                                     this.a_photo.getIndexData().getRotation(),
-                                                                                     this.a_photo.getIndexData().getFocusX(),
-                                                                                     this.a_photo.getIndexData().getFocusY());
-            if ( this.a_params!=params ) {
-                if ( this.a_computation!=null ) {
-                    this.a_computation.cancel(false);
+                                                                                     a_photo.getIndexData().getZoom(),
+                                                                                     a_photo.getIndexData().getRotation(),
+                                                                                     a_photo.getIndexData().getFocusX(),
+                                                                                     a_photo.getIndexData().getFocusY());
+            if ( a_params!=params ) {
+                if ( a_computation!=null ) {
+                    a_computation.cancel(false);
                 }
-                this.a_params = params;
-                this.a_computation = this.a_computationManager.compute(this.a_photo,this.a_params,this,true);
+                a_params = params;
+                a_computation = a_computationManager.compute(a_photo,a_params,this,true);
             }
         }
 
@@ -289,16 +297,16 @@ public class PhotoDisplayerComponentSlot extends JComponent
      */
     @Override
     public void componentMoved(final ComponentEvent e) {
-    	// do nothing
+        // do nothing
     }
 
     /**
      * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
-    	// do nothing
+        // do nothing
      */
     @Override
     public void componentShown(final ComponentEvent e) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -306,7 +314,7 @@ public class PhotoDisplayerComponentSlot extends JComponent
      */
     @Override
     public void componentHidden(final ComponentEvent e) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -316,6 +324,6 @@ public class PhotoDisplayerComponentSlot extends JComponent
     @Override
     public Photo getPhoto()
     {
-        return this.a_photo;
+        return a_photo;
     }
 }

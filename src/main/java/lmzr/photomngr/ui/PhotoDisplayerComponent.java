@@ -61,30 +61,29 @@ public class PhotoDisplayerComponent extends JComponent
                                    final SubsampledImageCachedManager subsampler,
                                    final ListSelectionManager selection,
                                    final ImageComputationManager computationManager) {
-        super();
         addMouseListener(this);
         addMouseWheelListener(this);
         addMouseMotionListener(this);
-        this.a_selection = selection;
-        this.a_selection.addListener(this);
-        this.a_subsampler = subsampler;
-        this.a_photoList = photoList;
-        this.a_photoList.addTableModelListener(this);
-        this.a_computationManager = computationManager;
+        a_selection = selection;
+        a_selection.addListener(this);
+        a_subsampler = subsampler;
+        a_photoList = photoList;
+        a_photoList.addTableModelListener(this);
+        a_computationManager = computationManager;
 
         setLayout(new GridLayout(1,1));
-        this.a_slots = new PhotoDisplayerComponentSlot[1];
-        this.a_slots[0] = new PhotoDisplayerComponentSlot(scheduler,this.a_subsampler,this.a_computationManager);
-        this.a_slots[0].setName("initial slot");
-        add(this.a_slots[0]);
-        this.a_photoIndex = new int[1];
-        this.a_photoIndex[0] = -1;
-        this.a_scheduler = scheduler;
+        a_slots = new PhotoDisplayerComponentSlot[1];
+        a_slots[0] = new PhotoDisplayerComponentSlot(scheduler,a_subsampler,a_computationManager);
+        a_slots[0].setName("initial slot");
+        add(a_slots[0]);
+        a_photoIndex = new int[1];
+        a_photoIndex[0] = -1;
+        a_scheduler = scheduler;
 
-        this.a_nextPrefetchFuture = null;
-        this.a_nextPrefetchPhoto = null;
-        this.a_previousPrefetchFuture = null;
-        this.a_previousPrefetchPhoto = null;
+        a_nextPrefetchFuture = null;
+        a_nextPrefetchPhoto = null;
+        a_previousPrefetchFuture = null;
+        a_previousPrefetchPhoto = null;
     }
 
     /**
@@ -98,7 +97,7 @@ public class PhotoDisplayerComponent extends JComponent
             return;
         }
 
-        final int selection[] = this.a_selection.getSelection();
+        final int selection[] = a_selection.getSelection();
 
         final Dimension dim = computeFormat(selection.length);
         final GridLayout layout = (GridLayout)getLayout();
@@ -107,40 +106,42 @@ public class PhotoDisplayerComponent extends JComponent
         }
 
         for (int i=0; i<selection.length; i++) {
-            this.a_slots[i].setPhoto(this.a_photoList.getPhoto(selection[i]));
-            this.a_photoIndex[i] = selection[i];
+            a_slots[i].setPhoto(a_photoList.getPhoto(selection[i]));
+            a_photoIndex[i] = selection[i];
         }
-        for (int i=selection.length; i<this.a_slots.length; i++) {
-            this.a_slots[i].setPhoto(null);
-            this.a_photoIndex[i] = -1;
-        }
-
-        if ( this.a_previousPrefetchFuture != null ) {
-            this.a_previousPrefetchFuture.cancel(false);
-            this.a_previousPrefetchFuture = null;
-            this.a_previousPrefetchPhoto = null;
+        for (int i=selection.length; i<a_slots.length; i++) {
+            a_slots[i].setPhoto(null);
+            a_photoIndex[i] = -1;
         }
 
-        if ( this.a_nextPrefetchFuture != null ) {
-            this.a_nextPrefetchFuture.cancel(false);
-            this.a_nextPrefetchFuture = null;
-            this.a_nextPrefetchPhoto = null;
+        if ( a_previousPrefetchFuture != null ) {
+            a_previousPrefetchFuture.cancel(false);
+            a_previousPrefetchFuture = null;
+            a_previousPrefetchPhoto = null;
+        }
+
+        if ( a_nextPrefetchFuture != null ) {
+            a_nextPrefetchFuture.cancel(false);
+            a_nextPrefetchFuture = null;
+            a_nextPrefetchPhoto = null;
         }
 
         if ( selection.length==1 ) {
-            int previous = (selection[0]>0) ? (selection[0]-1) : (this.a_photoList.getRowCount()-1);
-            this.a_previousPrefetchPhoto = this.a_photoList.getPhoto(previous);
-            this.a_previousPrefetchFuture = prefetch(this.a_previousPrefetchPhoto);
+            final int previous = (selection[0]>0) ? (selection[0]-1) : (a_photoList.getRowCount()-1);
+            a_previousPrefetchPhoto = a_photoList.getPhoto(previous);
+            a_previousPrefetchFuture = prefetch(a_previousPrefetchPhoto);
 
-            int next = (selection[selection.length-1]<(this.a_photoList.getRowCount()-1)) ? (selection[selection.length-1]+1) : 0;
-            this.a_nextPrefetchPhoto = this.a_photoList.getPhoto(next);
-            this.a_nextPrefetchFuture = prefetch(this.a_nextPrefetchPhoto);
+            final int next = (selection[selection.length-1]<(a_photoList.getRowCount()-1)) ? (selection[selection.length-1]+1) : 0;
+            a_nextPrefetchPhoto = a_photoList.getPhoto(next);
+            a_nextPrefetchFuture = prefetch(a_nextPrefetchPhoto);
         }
     }
 
     private Future<?> prefetch(final Photo photo)
     {
-        if ( (getSize().width==0) || (getSize().height==0) ) return null;
+        if ( (getSize().width==0) || (getSize().height==0) ) {
+            return null;
+        }
 
         final ImageComputationParameters params = new ImageComputationParameters(getSize().width,
                                                                                    getSize().height,
@@ -148,7 +149,7 @@ public class PhotoDisplayerComponent extends JComponent
                                                                                  photo.getIndexData().getRotation(),
                                                                                  photo.getIndexData().getFocusX(),
                                                                                  photo.getIndexData().getFocusY());
-        return this.a_computationManager.compute(photo,params,this,false);
+        return a_computationManager.compute(photo,params,this,false);
     }
 
     /**
@@ -186,11 +187,12 @@ public class PhotoDisplayerComponent extends JComponent
             if ( (xx+1)*yy >= numberOfImages ) {
                 x = xx+1;
                 y = yy;
-            } else if ( xx*(yy+1) >= numberOfImages ) {
-                    x = xx;
-                    y = yy+1;
             } else {
-                x = xx+1;
+                if ( xx*(yy+1) >= numberOfImages ) {
+                        x = xx;
+                } else {
+                    x = xx+1;
+                }
                 y = yy+1;
             }
 
@@ -207,30 +209,37 @@ public class PhotoDisplayerComponent extends JComponent
         layout.setRows(dim.height);
         layout.setColumns(dim.width);
 
-        for (int i =0; i<this.a_slots.length; i++) {
-            remove(this.a_slots[i]);
+        for (final PhotoDisplayerComponentSlot a_slot : a_slots) {
+            remove(a_slot);
         }
 
         final int n = dim.height * dim.width;
 
-        if ( n > this.a_slots.length ) {
+        if ( n > a_slots.length ) {
             final PhotoDisplayerComponentSlot slots[] = new PhotoDisplayerComponentSlot[n];
-            for (int i =0; i<this.a_slots.length; i++) slots[i] = this.a_slots[i];
-            for (int i=this.a_slots.length; i<n; i++) slots[i] = new PhotoDisplayerComponentSlot(this.a_scheduler,this.a_subsampler,this.a_computationManager);
-            this.a_slots = slots;
-            this.a_photoIndex = new int[n];
-        } else if ( n < this.a_slots.length ) {
+            for (int i =0; i<a_slots.length; i++) {
+                slots[i] = a_slots[i];
+            }
+            for (int i=a_slots.length; i<n; i++) {
+                slots[i] = new PhotoDisplayerComponentSlot(a_scheduler,a_subsampler,a_computationManager);
+            }
+            a_slots = slots;
+            a_photoIndex = new int[n];
+        } else if ( n < a_slots.length ) {
             final PhotoDisplayerComponentSlot slots[] = new PhotoDisplayerComponentSlot[n];
-            for (int i=0; i<n; i++) slots[i]=this.a_slots[i];
-            for (int i=n; i<this.a_slots.length; i++)
-                this.a_slots[i].setPhoto(null);
-            this.a_slots = slots;
-            this.a_photoIndex = new int[n];
+            for (int i=0; i<n; i++) {
+                slots[i]=a_slots[i];
+            }
+            for (int i=n; i<a_slots.length; i++) {
+                a_slots[i].setPhoto(null);
+            }
+            a_slots = slots;
+            a_photoIndex = new int[n];
         }
 
-        for (int i =0; i<this.a_slots.length; i++) {
-            this.a_slots[i].setName("slot_"+Integer.toString(i%dim.width)+"_"+Integer.toString(i/dim.width));
-            add(this.a_slots[i]);
+        for (int i =0; i<a_slots.length; i++) {
+            a_slots[i].setName("slot_"+Integer.toString(i%dim.width)+"_"+Integer.toString(i/dim.width));
+            add(a_slots[i]);
         }
 
         validate();
@@ -242,17 +251,19 @@ public class PhotoDisplayerComponent extends JComponent
     @Override
     public void mouseDragged(final MouseEvent e) {
 
-        if ( e.getModifiersEx()!=InputEvent.BUTTON1_DOWN_MASK) return;
+        if ( e.getModifiersEx()!=InputEvent.BUTTON1_DOWN_MASK) {
+            return;
+        }
 
-        final int transX = e.getX() - this.a_startX;
-        final int transY = e.getY() - this.a_startY;
-        this.a_startX = e.getX();
-        this.a_startY = e.getY();
-        final int selection[] = this.a_selection.getSelection();
+        final int transX = e.getX() - a_startX;
+        final int transY = e.getY() - a_startY;
+        a_startX = e.getX();
+        a_startY = e.getY();
+        final int selection[] = a_selection.getSelection();
         for (int i=0; i<selection.length; i++) {
-            final Photo photo = this.a_photoList.getPhoto(selection[i]);
-            final ImageComputationParameters params = new ImageComputationParameters(this.a_slots[i].getSize().width,
-                                                                                     this.a_slots[i].getSize().height,
+            final Photo photo = a_photoList.getPhoto(selection[i]);
+            final ImageComputationParameters params = new ImageComputationParameters(a_slots[i].getSize().width,
+                                                                                     a_slots[i].getSize().height,
                                                                                      photo.getIndexData().getZoom(),
                                                                                      photo.getIndexData().getRotation(),
                                                                                      photo.getIndexData().getFocusX(),
@@ -263,8 +274,8 @@ public class PhotoDisplayerComponent extends JComponent
                 final Point2D res = transform.deltaTransform(orig, null);
                 final float newFocusX = (float) (photo.getIndexData().getFocusX() - 2 * res.getX()/photo.getHeaderData().getWidth());
                 final float newFocusY = (float) (photo.getIndexData().getFocusY() - 2 * res.getY()/photo.getHeaderData().getHeight());
-                this.a_photoList.setValueAt(Float.valueOf(newFocusX), selection[i],PhotoList.PARAM_FOCUS_X);
-                this.a_photoList.setValueAt(Float.valueOf(newFocusY), selection[i],PhotoList.PARAM_FOCUS_Y);
+                a_photoList.setValueAt(Float.valueOf(newFocusX), selection[i],PhotoList.PARAM_FOCUS_X);
+                a_photoList.setValueAt(Float.valueOf(newFocusY), selection[i],PhotoList.PARAM_FOCUS_Y);
             } catch (final NoninvertibleTransformException e1) {
                 e1.printStackTrace();
             }
@@ -292,8 +303,8 @@ public class PhotoDisplayerComponent extends JComponent
      */
     @Override
     public void mousePressed(final MouseEvent e) {
-        this.a_startX = e.getX();
-        this.a_startY = e.getY();
+        a_startX = e.getX();
+        a_startY = e.getY();
     }
 
     /**
@@ -326,35 +337,39 @@ public class PhotoDisplayerComponent extends JComponent
     @Override
     public void mouseWheelMoved(final MouseWheelEvent e) {
 
-        if ( this.a_photoList.getRowCount()==0 ) {
+        if ( a_photoList.getRowCount()==0 ) {
             // to avoid a crash with e.getWheelRotation() % a_photoList.getRowCount()
             return;
         }
 
         if (e.getModifiersEx()==0) {
-            final int incr = e.getWheelRotation() % this.a_photoList.getRowCount();
+            final int incr = e.getWheelRotation() % a_photoList.getRowCount();
             if (incr > 0) {
-                this.a_selection.next(incr);
+                a_selection.next(incr);
             } else {
-                this.a_selection.previous(-incr);
+                a_selection.previous(-incr);
             }
         } else if (e.getModifiersEx()==InputEvent.CTRL_DOWN_MASK) {
             final float incr = (float)Math.pow(1.1,e.getWheelRotation());
-            final int selection[] = this.a_selection.getSelection();
-            for (int i=0; i<selection.length; i++) {
-                final float oldZoom = this.a_photoList.getPhoto(selection[i]).getIndexData().getZoom();
+            final int selection[] = a_selection.getSelection();
+            for (final int element : selection) {
+                final float oldZoom = a_photoList.getPhoto(element).getIndexData().getZoom();
                 final float newZoom = oldZoom * incr;
-                this.a_photoList.setValueAt(Float.valueOf(newZoom),selection[i],PhotoList.PARAM_ZOOM);
+                a_photoList.setValueAt(Float.valueOf(newZoom),element,PhotoList.PARAM_ZOOM);
             }
         } else if (e.getModifiersEx()==InputEvent.ALT_DOWN_MASK) {
             final float incr = e.getWheelRotation();
-            final int selection[] = this.a_selection.getSelection();
-            for (int i=0; i<selection.length; i++) {
-                final float oldRot = this.a_photoList.getPhoto(selection[i]).getIndexData().getRotation();
+            final int selection[] = a_selection.getSelection();
+            for (final int element : selection) {
+                final float oldRot = a_photoList.getPhoto(element).getIndexData().getRotation();
                 float newRot = oldRot + incr;
-                if ( newRot>180 ) newRot -= 360;
-                if ( newRot<=180 ) newRot += 360;
-                this.a_photoList.setValueAt(Float.valueOf(newRot),selection[i],PhotoList.PARAM_ROTATION);
+                if ( newRot>180 ) {
+                    newRot -= 360;
+                }
+                if ( newRot<=180 ) {
+                    newRot += 360;
+                }
+                a_photoList.setValueAt(Float.valueOf(newRot),element,PhotoList.PARAM_ROTATION);
             }
         }
     }
@@ -366,11 +381,13 @@ public class PhotoDisplayerComponent extends JComponent
     public void tableChanged(final TableModelEvent e) {
 
         final int firstRow = e.getFirstRow();
-        final int lastRow = (e.getLastRow()==Integer.MAX_VALUE) ? (this.a_photoList.getRowCount()-1)
+        final int lastRow = (e.getLastRow()==Integer.MAX_VALUE) ? (a_photoList.getRowCount()-1)
                                                                 : e.getLastRow();
-        for (int i =0; i<this.a_slots.length; i++) {
-            final int index = this.a_photoIndex[i];
-            if (  index>=firstRow && index<=lastRow) this.a_slots[i].update();
+        for (int i =0; i<a_slots.length; i++) {
+            final int index = a_photoIndex[i];
+            if (  index>=firstRow && index<=lastRow) {
+                a_slots[i].update();
+            }
         }
     }
 
@@ -383,14 +400,14 @@ public class PhotoDisplayerComponent extends JComponent
     public void consumeImageComputation(final Photo photo,
                                         final ImageComputationParameters params,
                                         final BufferedImage image) {
-        if (photo==this.a_nextPrefetchPhoto) {
-            this.a_nextPrefetchFuture = null;
-            this.a_nextPrefetchPhoto = null;
+        if (photo==a_nextPrefetchPhoto) {
+            a_nextPrefetchFuture = null;
+            a_nextPrefetchPhoto = null;
         }
 
-        if (photo==this.a_previousPrefetchPhoto) {
-            this.a_previousPrefetchFuture = null;
-            this.a_previousPrefetchPhoto = null;
+        if (photo==a_previousPrefetchPhoto) {
+            a_previousPrefetchFuture = null;
+            a_previousPrefetchPhoto = null;
         }
     }
 

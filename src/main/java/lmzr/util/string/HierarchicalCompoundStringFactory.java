@@ -30,10 +30,10 @@ public class HierarchicalCompoundStringFactory implements TreeModel {
      * create a factory of HierarchicalCoumpountStrings
      */
     public HierarchicalCompoundStringFactory() {
-        this.a_root = new HierarchicalCompoundString(null,"#");
-        this.a_listOfListeners = new Vector<>();
+        a_root = new HierarchicalCompoundString(null,"#");
+        a_listOfListeners = new Vector<>();
         final Hashtable<String,HierarchicalCompoundString> cache = new Hashtable<>();
-        this.a_cacheSoftRef = new SoftReference<>(cache);
+        a_cacheSoftRef = new SoftReference<>(cache);
     }
 
     /**
@@ -42,35 +42,40 @@ public class HierarchicalCompoundStringFactory implements TreeModel {
      */
     public HierarchicalCompoundString create(final String string) {
 
-        if (string.length()==0) return this.a_root;
+        if (string.length()==0) {
+            return a_root;
+        }
 
-        Hashtable<String,HierarchicalCompoundString> cache = this.a_cacheSoftRef.get();
+        Hashtable<String,HierarchicalCompoundString> cache = a_cacheSoftRef.get();
         if ( cache != null ) {
             final HierarchicalCompoundString cached = cache.get(string);
-            if ( cached != null ) return cached;
+            if ( cached != null ) {
+                return cached;
+            }
         } else {
             cache = new Hashtable<>();
-            this.a_cacheSoftRef = new SoftReference<>(cache);
+            a_cacheSoftRef = new SoftReference<>(cache);
         }
 
         final int index = string.lastIndexOf('>');
-        final HierarchicalCompoundString parent = (index==-1) ? this.a_root : create(string.substring(0,index));
+        final HierarchicalCompoundString parent = (index==-1) ? a_root : create(string.substring(0,index));
         final String endString = string.substring(index+1);
 
         final HierarchicalCompoundString[] parentsChildren = parent.getChildren();
-        for (int i=0; i<parentsChildren.length; i++) {
-            final HierarchicalCompoundString child = parentsChildren[i];
-            if (child.toShortString().equals(endString)) return child;
+        for (final HierarchicalCompoundString child : parentsChildren) {
+            if (child.toShortString().equals(endString)) {
+                return child;
+            }
         }
 
         final HierarchicalCompoundString newString = new HierarchicalCompoundString(parent,endString);
 
-        if ( this.a_listOfListeners.size()>0 ) {
+        if ( a_listOfListeners.size()>0 ) {
             final TreeModelEvent event = new TreeModelEvent(this,
                                                             getPath(parent),
                                                             new int[] { getIndexOfChild(parent,newString) },
                                                             new Object[] { newString });
-            for ( TreeModelListener l: this.a_listOfListeners) {
+            for ( final TreeModelListener l: a_listOfListeners) {
                 l.treeNodesInserted(event);
             }
         }
@@ -85,14 +90,14 @@ public class HierarchicalCompoundStringFactory implements TreeModel {
      */
     @Override
     public Object getRoot() {
-        return this.a_root;
+        return a_root;
     }
 
     /**
      * @return the root of the factory as a HierarchicalCompoundString
      */
     public HierarchicalCompoundString getRootAsHierarchicalCompoundString() {
-        return this.a_root;
+        return a_root;
     }
 
     /**
@@ -145,7 +150,9 @@ public class HierarchicalCompoundStringFactory implements TreeModel {
         final HierarchicalCompoundString[] children = string.getChildren();
 
         for (int i=0; i<children.length; i++) {
-            if (child==children[i]) return i;
+            if (child==children[i]) {
+                return i;
+            }
         }
 
         return -1;
@@ -156,7 +163,7 @@ public class HierarchicalCompoundStringFactory implements TreeModel {
      */
     @Override
     public void addTreeModelListener(final TreeModelListener l) {
-        this.a_listOfListeners.add(l);
+        a_listOfListeners.add(l);
     }
 
     /**
@@ -164,7 +171,7 @@ public class HierarchicalCompoundStringFactory implements TreeModel {
      */
     @Override
     public void removeTreeModelListener(final TreeModelListener l) {
-        this.a_listOfListeners.remove(l);
+        a_listOfListeners.remove(l);
     }
 
     /**

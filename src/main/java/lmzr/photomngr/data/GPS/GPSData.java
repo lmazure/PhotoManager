@@ -63,12 +63,13 @@ public class GPSData implements Cloneable {
      */
     @Override
     public boolean equals(final Object other) {
-        if ( ! (other instanceof GPSData) ) return false;
-        final GPSData o = (GPSData)other;
-        return ( areCoordinatesEqual(this.a_latitudeMin, o.a_latitudeMin) &&
-                 areCoordinatesEqual(this.a_latitudeMax, o.a_latitudeMax) &&
-                 areCoordinatesEqual(this.a_longitudeMin, o.a_longitudeMin) &&
-                 areCoordinatesEqual(this.a_longitudeMax, o.a_longitudeMax) );
+        if ( ! (other instanceof final GPSData o) ) {
+            return false;
+        }
+        return ( areCoordinatesEqual(a_latitudeMin, o.a_latitudeMin) &&
+                 areCoordinatesEqual(a_latitudeMax, o.a_latitudeMax) &&
+                 areCoordinatesEqual(a_longitudeMin, o.a_longitudeMin) &&
+                 areCoordinatesEqual(a_longitudeMax, o.a_longitudeMax) );
     }
 
     /**
@@ -81,10 +82,16 @@ public class GPSData implements Cloneable {
         final boolean c1IsNaN = Double.isNaN(c1);
         final boolean c2IsNaN = Double.isNaN(c2);
 
-        if ( c1IsNaN && !c2IsNaN ) return false;
-        if ( !c1IsNaN && c2IsNaN ) return false;
+        if ( c1IsNaN && !c2IsNaN ) {
+            return false;
+        }
+        if ( !c1IsNaN && c2IsNaN ) {
+            return false;
+        }
 
-        if (Math.abs(c1-c2)>MAX_COORDINATE_DIFF) return false;
+        if (Math.abs(c1-c2)>MAX_COORDINATE_DIFF) {
+            return false;
+        }
 
         return true;
     }
@@ -94,20 +101,28 @@ public class GPSData implements Cloneable {
      */
     @Override
     public int hashCode() {
-        return (Double.valueOf(this.a_latitudeMin)).hashCode()
-                ^ (Double.valueOf(this.a_latitudeMax)).hashCode()
-                ^ (Double.valueOf(this.a_longitudeMin)).hashCode()
-                ^ (Double.valueOf(this.a_longitudeMax)).hashCode();
+        return (Double.valueOf(a_latitudeMin)).hashCode()
+                ^ (Double.valueOf(a_latitudeMax)).hashCode()
+                ^ (Double.valueOf(a_longitudeMin)).hashCode()
+                ^ (Double.valueOf(a_longitudeMax)).hashCode();
     }
 
     /**
      * @return true if the GPS coordinates are fully defined, false otherwise
      */
     public boolean isComplete() {
-        if (Double.isNaN(this.a_latitudeMin)) return false;
-        if (Double.isNaN(this.a_latitudeMax)) return false;
-        if (Double.isNaN(this.a_longitudeMin)) return false;
-        if (Double.isNaN(this.a_longitudeMax)) return false;
+        if (Double.isNaN(a_latitudeMin)) {
+            return false;
+        }
+        if (Double.isNaN(a_latitudeMax)) {
+            return false;
+        }
+        if (Double.isNaN(a_longitudeMin)) {
+            return false;
+        }
+        if (Double.isNaN(a_longitudeMax)) {
+            return false;
+        }
         return true;
     }
 
@@ -115,10 +130,18 @@ public class GPSData implements Cloneable {
      * @return true if at least no GPS coordinates is defined, false otherwise
      */
     public boolean isEmpty() {
-        if (!Double.isNaN(this.a_latitudeMin)) return false;
-        if (!Double.isNaN(this.a_latitudeMax)) return false;
-        if (!Double.isNaN(this.a_longitudeMin)) return false;
-        if (!Double.isNaN(this.a_longitudeMax)) return false;
+        if (!Double.isNaN(a_latitudeMin)) {
+            return false;
+        }
+        if (!Double.isNaN(a_latitudeMax)) {
+            return false;
+        }
+        if (!Double.isNaN(a_longitudeMin)) {
+            return false;
+        }
+        if (!Double.isNaN(a_longitudeMax)) {
+            return false;
+        }
         return true;
     }
 
@@ -130,9 +153,9 @@ public class GPSData implements Cloneable {
      */
     public void setLongitudeMin(final String longitudeMin) {
         if ( longitudeMin != null ) {
-            this.a_longitudeMin = parseLongitude(longitudeMin);
+            a_longitudeMin = parseLongitude(longitudeMin);
         } else {
-            this.a_longitudeMin = Double.NaN;
+            a_longitudeMin = Double.NaN;
         }
     }
 
@@ -144,9 +167,9 @@ public class GPSData implements Cloneable {
      */
     public void setLongitudeMax(final String longitudeMax) {
         if ( longitudeMax != null ) {
-            this.a_longitudeMax = parseLongitude(longitudeMax);
+            a_longitudeMax = parseLongitude(longitudeMax);
         } else {
-            this.a_longitudeMax = Double.NaN;
+            a_longitudeMax = Double.NaN;
         }
     }
 
@@ -158,9 +181,9 @@ public class GPSData implements Cloneable {
      */
     public void setLatitudeMin(final String latitudeMin) {
         if ( latitudeMin != null ) {
-            this.a_latitudeMin = parseLatitude(latitudeMin);
+            a_latitudeMin = parseLatitude(latitudeMin);
         } else {
-            this.a_latitudeMin = Double.NaN;
+            a_latitudeMin = Double.NaN;
         }
     }
 
@@ -172,9 +195,9 @@ public class GPSData implements Cloneable {
      */
     public void setLatitudeMax(final String latitudeMax) {
         if ( latitudeMax != null ) {
-            this.a_latitudeMax = parseLatitude(latitudeMax);
+            a_latitudeMax = parseLatitude(latitudeMax);
         } else {
-            this.a_latitudeMax = Double.NaN;
+            a_latitudeMax = Double.NaN;
         }
     }
 
@@ -183,9 +206,13 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLatitudeAsDouble() {
-        if (Double.isNaN(this.a_latitudeMin)) return null;
-        if (Double.isNaN(this.a_latitudeMax)) return null;
-        return Double.valueOf((this.a_latitudeMin+this.a_latitudeMax)/2);
+        if (Double.isNaN(a_latitudeMin)) {
+            return null;
+        }
+        if (Double.isNaN(a_latitudeMax)) {
+            return null;
+        }
+        return Double.valueOf((a_latitudeMin+a_latitudeMax)/2);
     }
 
    /**
@@ -193,8 +220,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLatitudeMinAsDouble() {
-        if (Double.isNaN(this.a_latitudeMin)) return null;
-        return Double.valueOf(this.a_latitudeMin);
+        if (Double.isNaN(a_latitudeMin)) {
+            return null;
+        }
+        return Double.valueOf(a_latitudeMin);
     }
 
    /**
@@ -202,8 +231,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public String getLatitudeMin() {
-        if (Double.isNaN(this.a_latitudeMin)) return null;
-        return formatLatitude(this.a_latitudeMin);
+        if (Double.isNaN(a_latitudeMin)) {
+            return null;
+        }
+        return formatLatitude(a_latitudeMin);
     }
 
    /**
@@ -211,8 +242,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLatitudeMaxAsDouble() {
-        if (Double.isNaN(this.a_latitudeMax)) return null;
-        return Double.valueOf(this.a_latitudeMax);
+        if (Double.isNaN(a_latitudeMax)) {
+            return null;
+        }
+        return Double.valueOf(a_latitudeMax);
     }
 
    /**
@@ -220,8 +253,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public String getLatitudeMax() {
-        if (Double.isNaN(this.a_latitudeMax)) return null;
-        return formatLatitude(this.a_latitudeMax);
+        if (Double.isNaN(a_latitudeMax)) {
+            return null;
+        }
+        return formatLatitude(a_latitudeMax);
     }
 
     /**
@@ -229,9 +264,13 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLatitudeRangeAsDouble() {
-        if (Double.isNaN(this.a_latitudeMin)) return null;
-        if (Double.isNaN(this.a_latitudeMax)) return null;
-        return Double.valueOf(Math.abs(this.a_latitudeMax-this.a_latitudeMin));
+        if (Double.isNaN(a_latitudeMin)) {
+            return null;
+        }
+        if (Double.isNaN(a_latitudeMax)) {
+            return null;
+        }
+        return Double.valueOf(Math.abs(a_latitudeMax-a_latitudeMin));
     }
 
     /**
@@ -239,9 +278,13 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLongitudeAsDouble() {
-        if (Double.isNaN(this.a_longitudeMin)) return null;
-        if (Double.isNaN(this.a_longitudeMax)) return null;
-        return Double.valueOf((this.a_longitudeMin+this.a_longitudeMax)/2);
+        if (Double.isNaN(a_longitudeMin)) {
+            return null;
+        }
+        if (Double.isNaN(a_longitudeMax)) {
+            return null;
+        }
+        return Double.valueOf((a_longitudeMin+a_longitudeMax)/2);
     }
 
    /**
@@ -249,8 +292,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLongitudeMinAsDouble() {
-        if (Double.isNaN(this.a_longitudeMin)) return null;
-        return Double.valueOf(this.a_longitudeMin);
+        if (Double.isNaN(a_longitudeMin)) {
+            return null;
+        }
+        return Double.valueOf(a_longitudeMin);
     }
 
    /**
@@ -258,8 +303,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public String getLongitudeMin() {
-        if (Double.isNaN(this.a_longitudeMin)) return null;
-        return formatLongitude(this.a_longitudeMin);
+        if (Double.isNaN(a_longitudeMin)) {
+            return null;
+        }
+        return formatLongitude(a_longitudeMin);
     }
 
    /**
@@ -267,8 +314,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public String getLongitudeMax() {
-        if (Double.isNaN(this.a_longitudeMax)) return null;
-        return formatLongitude(this.a_longitudeMax);
+        if (Double.isNaN(a_longitudeMax)) {
+            return null;
+        }
+        return formatLongitude(a_longitudeMax);
     }
 
     /**
@@ -276,8 +325,10 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLongitudeMaxAsDouble() {
-        if (Double.isNaN(this.a_longitudeMax)) return null;
-        return Double.valueOf(this.a_longitudeMax);
+        if (Double.isNaN(a_longitudeMax)) {
+            return null;
+        }
+        return Double.valueOf(a_longitudeMax);
     }
 
     /**
@@ -285,9 +336,13 @@ public class GPSData implements Cloneable {
      *         null if undefined
      */
     public Double getLongitudeRangeAsDouble() {
-        if (Double.isNaN(this.a_longitudeMin)) return null;
-        if (Double.isNaN(this.a_longitudeMax)) return null;
-        return Double.valueOf(Math.abs(this.a_longitudeMax-this.a_longitudeMin));
+        if (Double.isNaN(a_longitudeMin)) {
+            return null;
+        }
+        if (Double.isNaN(a_longitudeMax)) {
+            return null;
+        }
+        return Double.valueOf(Math.abs(a_longitudeMax-a_longitudeMin));
     }
 
     /**
@@ -326,7 +381,9 @@ public class GPSData implements Cloneable {
                                                  negativeLetter +
                                                  "]) *(\\d{1,2})° *(\\d{1,2})['′] *(\\d{1,2})(['′]['′]|″) *(\\d{0,3})");
         final Matcher matcher = pattern.matcher(str);
-        if ( !matcher.matches() ) throw new IllegalArgumentException("\""+str+"\" cannot be parsed into a longitude/latitude");
+        if ( !matcher.matches() ) {
+            throw new IllegalArgumentException("\""+str+"\" cannot be parsed into a longitude/latitude");
+        }
         final String s1 = matcher.group(1);
         double value = Integer.parseInt(matcher.group(2))
                        + Integer.parseInt(matcher.group(3))/60.0
@@ -374,7 +431,7 @@ public class GPSData implements Cloneable {
         final int seconds = (int)Math.floor(secondsF);
         final int decimals = (int)Math.floor((secondsF-seconds)*1000);
 
-        NumberFormat nf=NumberFormat.getInstance();
+        final NumberFormat nf=NumberFormat.getInstance();
         nf.setMinimumIntegerDigits(3);
         nf.setMaximumIntegerDigits(3);
 

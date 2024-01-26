@@ -32,9 +32,9 @@ public class DisplayPhotoEditorAction extends PhotoManagerAction {
                                     final PhotoList photoList,
                                     final ListSelectionManager selection) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_photoList = photoList;
-        this.a_selection = selection;
-        this.a_PhotoEditor = null;
+        a_photoList = photoList;
+        a_selection = selection;
+        a_PhotoEditor = null;
     }
 
 
@@ -44,9 +44,10 @@ public class DisplayPhotoEditorAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        if (this.a_PhotoEditor==null)
-            this.a_PhotoEditor = new PhotoEditor(this.a_photoList, this.a_selection);
+        if (a_PhotoEditor==null) {
+            a_PhotoEditor = new PhotoEditor(a_photoList, a_selection);
+        }
 
-        this.a_PhotoEditor.setVisible(true);
+        a_PhotoEditor.setVisible(true);
     }
 }

@@ -29,7 +29,6 @@ public class GPSDataDisplayMapCellEditor extends JButton
      *
      */
     public GPSDataDisplayMapCellEditor() {
-        super();
     }
 
     /**
@@ -49,9 +48,6 @@ public class GPSDataDisplayMapCellEditor extends JButton
         if ( GPSData != null) {
             try {
                 Desktop.getDesktop().browse(s_mapURICreator.createMapURIFromGPSData(record));
-            } catch (final HeadlessException ex) {
-                System.err.println("failed to start a browser to display the map of "+location.toString());
-                ex.printStackTrace();
             } catch (final UnsupportedOperationException ex) {
                 System.err.println("failed to start a browser to display the map of "+location.toString());
                 ex.printStackTrace();
@@ -72,7 +68,7 @@ public class GPSDataDisplayMapCellEditor extends JButton
      */
     @Override
     public void cancelCellEditing() {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -112,7 +108,7 @@ public class GPSDataDisplayMapCellEditor extends JButton
      */
     @Override
     public void addCellEditorListener(final CellEditorListener l) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -120,6 +116,6 @@ public class GPSDataDisplayMapCellEditor extends JButton
      */
     @Override
     public void removeCellEditorListener(final CellEditorListener l) {
-    	// do nothing
+        // do nothing
     }
 }

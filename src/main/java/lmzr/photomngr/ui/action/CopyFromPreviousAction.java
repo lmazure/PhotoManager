@@ -29,7 +29,7 @@ public class CopyFromPreviousAction extends PhotoManagerAction {
                                   final JTable table) {
         super(text, mnemonic, accelerator, tooltipText);
 
-        this.a_table = table;
+        a_table = table;
     }
 
 
@@ -39,19 +39,25 @@ public class CopyFromPreviousAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final ListSelectionModel selection = this.a_table.getSelectionModel();
-        if ( selection.getMinSelectionIndex() == -1 ) return;
+        final ListSelectionModel selection = a_table.getSelectionModel();
+        if ( selection.getMinSelectionIndex() == -1 ) {
+            return;
+        }
 
-        if (selection.getMinSelectionIndex()==0) return;
+        if (selection.getMinSelectionIndex()==0) {
+            return;
+        }
 
-        int selectedColumn = this.a_table.getSelectedColumn();
-        if ( selectedColumn == -1) return;
+        final int selectedColumn = a_table.getSelectedColumn();
+        if ( selectedColumn == -1) {
+            return;
+        }
 
-        final Object value = this.a_table.getValueAt(selection.getMinSelectionIndex()-1,selectedColumn);
+        final Object value = a_table.getValueAt(selection.getMinSelectionIndex()-1,selectedColumn);
 
         for (int i=selection.getMinSelectionIndex(); i<=selection.getMaxSelectionIndex(); i++) {
-            if ( selection.isSelectedIndex(i) &&  this.a_table.isCellEditable(i,selectedColumn) ) {
-                this.a_table.setValueAt(value,i,selectedColumn);
+            if ( selection.isSelectedIndex(i) &&  a_table.isCellEditable(i,selectedColumn) ) {
+                a_table.setValueAt(value,i,selectedColumn);
             }
         }
     }

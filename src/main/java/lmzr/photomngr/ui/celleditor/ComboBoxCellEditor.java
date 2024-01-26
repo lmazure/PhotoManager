@@ -1,8 +1,6 @@
 package lmzr.photomngr.ui.celleditor;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -27,13 +25,9 @@ public class ComboBoxCellEditor extends JComboBox
      *
      */
     public ComboBoxCellEditor() {
-        super();
-        this.a_listenerList = new Vector<>();
+        a_listenerList = new Vector<>();
 
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) { fireEditingStopped(); }
-        });
+        addActionListener(event -> fireEditingStopped());
     }
 
     /**
@@ -41,7 +35,7 @@ public class ComboBoxCellEditor extends JComboBox
      */
     @Override
     public void addCellEditorListener(final CellEditorListener listener) {
-        this.a_listenerList.add(listener);
+        a_listenerList.add(listener);
     }
 
     /**
@@ -49,7 +43,7 @@ public class ComboBoxCellEditor extends JComboBox
      */
     @Override
     public void removeCellEditorListener(final CellEditorListener listener) {
-        this.a_listenerList.remove(listener);
+        a_listenerList.remove(listener);
     }
 
     /**
@@ -57,7 +51,9 @@ public class ComboBoxCellEditor extends JComboBox
      */
     protected void fireEditingStopped() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingStopped(e);
+        for (int i = a_listenerList.size()-1; i>=0; i--) {
+            a_listenerList.get(i).editingStopped(e);
+        }
     }
 
     /**
@@ -65,7 +61,9 @@ public class ComboBoxCellEditor extends JComboBox
      */
     protected void fireEditingCanceled() {
         final ChangeEvent e = new ChangeEvent(this);
-        for (int i = this.a_listenerList.size()-1; i>=0; i--) this.a_listenerList.get(i).editingCanceled(e);
+        for (int i = a_listenerList.size()-1; i>=0; i--) {
+            a_listenerList.get(i).editingCanceled(e);
+        }
     }
 
     /**
@@ -94,14 +92,19 @@ public class ComboBoxCellEditor extends JComboBox
         if (event == null) {
             // the cell is programaticaly edited
             return true;
-        } else if ( event instanceof MouseEvent ) {
-            final MouseEvent e = (MouseEvent)event;
-            if ( e.getModifiersEx()!=InputEvent.BUTTON1_DOWN_MASK ) return false;
-            if ( e.getClickCount()!=2 ) return false;
+        }
+        if ( event instanceof final MouseEvent e ) {
+            if ( e.getModifiersEx()!=InputEvent.BUTTON1_DOWN_MASK ) {
+                return false;
+            }
+            if ( e.getClickCount()!=2 ) {
+                return false;
+            }
             return true;
-        } else if  ( event instanceof KeyEvent ) {
-               final KeyEvent e = (KeyEvent)event;
-            if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) return false;
+        } else if  ( event instanceof final KeyEvent e ) {
+               if ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ) {
+                return false;
+            }
             return true;
         } else {
             return false;

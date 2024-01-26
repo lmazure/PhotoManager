@@ -16,13 +16,13 @@ public class SaveEvent extends EventObject {
     public SaveEvent(final Object src,
                      final boolean isSaved) {
         super(src);
-        this.a_isSaved = isSaved;
+        a_isSaved = isSaved;
     }
 
     /**
      * @return indicate if the event correspond to the fact that the data is now saved or unsaved
      */
     public boolean isSaved() {
-        return this.a_isSaved;
+        return a_isSaved;
     }
 }

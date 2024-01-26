@@ -25,27 +25,27 @@ public class CopiesComponentFilterUI extends ComponentFilterUI {
 
 
         getPane().add(new JLabel("min"));
-        this.a_min = new JFormattedTextField(NumberFormat.getIntegerInstance());
-        getPane().add(this.a_min);
-        this.a_min.setValue(filter.getMin());
+        a_min = new JFormattedTextField(NumberFormat.getIntegerInstance());
+        getPane().add(a_min);
+        a_min.setValue(filter.getMin());
 
         getPane().add(new JLabel("max"));
-        this.a_max = new JFormattedTextField(NumberFormat.getIntegerInstance());
-        getPane().add(this.a_max);
-        this.a_max.setValue(filter.getMax());
+        a_max = new JFormattedTextField(NumberFormat.getIntegerInstance());
+        getPane().add(a_max);
+        a_max.setValue(filter.getMax());
     }
 
     /**
      * @return min value
      */
     public long getMin() {
-        return (Long)this.a_min.getValue();
+        return (Long)a_min.getValue();
     }
 
     /**
      * @return max value
      */
     public long getMax() {
-        return (Long)this.a_max.getValue();
+        return (Long)a_max.getValue();
     }
 }

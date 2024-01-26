@@ -19,7 +19,6 @@ public class LocationCellRenderer extends JTextField
      *
      */
     public LocationCellRenderer() {
-        super();
         setBorder(null);
     }
 

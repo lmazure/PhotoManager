@@ -2,8 +2,6 @@ package lmzr.photomngr.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -57,15 +55,13 @@ public class PhotoEditor extends JFrame
      */
     public PhotoEditor(final PhotoList photoList,
                        final ListSelectionManager selection) {
-        super();
+        a_isAdjusting = false;
 
-        this.a_isAdjusting = false;
+        a_photoList = photoList;
+        a_selection = selection;
 
-        this.a_photoList = photoList;
-        this.a_selection = selection;
-
-        this.a_photoList.addTableModelListener(this);
-        this.a_selection.addListener(this);
+        a_photoList.addTableModelListener(this);
+        a_selection.addListener(this);
 
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -73,139 +69,143 @@ public class PhotoEditor extends JFrame
 
         //TODO half of this class simply does not work... to be finished
 
-        this.a_location = new LocationCellEditor(photoList.getLocationFactory(),this);
-        this.a_location.setBorder(BorderFactory.createTitledBorder("location"));
-        this.a_location.setMaximumSize(new Dimension(Integer.MAX_VALUE,this.a_location.getPreferredSize().height));
-        panel.add(this.a_location);
-        this.a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.a_location.addTextFocusListener (
+        a_location = new LocationCellEditor(photoList.getLocationFactory(),this);
+        a_location.setBorder(BorderFactory.createTitledBorder("location"));
+        a_location.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_location.getPreferredSize().height));
+        panel.add(a_location);
+        a_location.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_location.addTextFocusListener (
                 new FocusListener() {
                     @Override
                     public void focusLost(final FocusEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_location.getText(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
+                        if (a_isAdjusting) {
+                            return;
+                        }
+                        a_photoList.setValueAt(a_location.getText(),
+                                               a_selection.getSelection()[0],
                                                PhotoList.PARAM_LOCATION);}
                     @Override
                     public void focusGained(final FocusEvent e) {
-                    	// do noting
+                        // do noting
                     }
                 });
-        this.a_subject = new SubjectCellEditor(photoList, this);
-        this.a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,this.a_subject.getPreferredSize().height));
-        this.a_subject.setBorder(BorderFactory.createTitledBorder("subject"));
-        this.a_subject.addTextFocusListener (
+        a_subject = new SubjectCellEditor(photoList, this);
+        a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
+        a_subject.setBorder(BorderFactory.createTitledBorder("subject"));
+        a_subject.addTextFocusListener (
                 new FocusListener() {
                     @Override
                     public void focusLost(final FocusEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_subject.getText(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
+                        if (a_isAdjusting) {
+                            return;
+                        }
+                        a_photoList.setValueAt(a_subject.getText(),
+                                               a_selection.getSelection()[0],
                                                PhotoList.PARAM_SUBJECT);}
                     @Override
                     public void focusGained(final FocusEvent e) {
-                    	// do noting
+                        // do noting
                     }
                 });
-        panel.add(this.a_subject);
-        this.a_subject.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(a_subject);
+        a_subject.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        this.a_quality = new PhotoTraitCellEditor(PhotoQuality.getTraits());
-        this.a_quality.setBorder(BorderFactory.createTitledBorder("quality"));
-        this.a_quality.setMaximumSize(this.a_quality.getPreferredSize());
-        this.a_quality.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(final ActionEvent e) {
-                    if (PhotoEditor.this.a_isAdjusting) return;
-                    PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_quality.getSelectedItem(),
-                                           PhotoEditor.this.a_selection.getSelection()[0],
-                                           PhotoList.PARAM_QUALITY);}});
-        panel.add(this.a_quality);
-        this.a_quality.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_quality = new PhotoTraitCellEditor(PhotoQuality.getTraits());
+        a_quality.setBorder(BorderFactory.createTitledBorder("quality"));
+        a_quality.setMaximumSize(a_quality.getPreferredSize());
+        a_quality.addActionListener(
+            e -> {
+                if (a_isAdjusting) {
+                    return;
+                }
+                a_photoList.setValueAt(a_quality.getSelectedItem(),
+                                       a_selection.getSelection()[0],
+                                       PhotoList.PARAM_QUALITY);});
+        panel.add(a_quality);
+        a_quality.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        this.a_originality = new PhotoTraitCellEditor(PhotoOriginality.getTraits());
-        this.a_originality.setBorder(BorderFactory.createTitledBorder("originality"));
-        this.a_originality.setMaximumSize(this.a_originality.getPreferredSize());
-        this.a_originality.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_originality.getSelectedItem(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
-                                               PhotoList.PARAM_ORIGINALITY);}});
-        panel.add(this.a_originality);
-        this.a_originality.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_originality = new PhotoTraitCellEditor(PhotoOriginality.getTraits());
+        a_originality.setBorder(BorderFactory.createTitledBorder("originality"));
+        a_originality.setMaximumSize(a_originality.getPreferredSize());
+        a_originality.addActionListener(
+                e -> {
+                    if (a_isAdjusting) {
+                        return;
+                    }
+                    a_photoList.setValueAt(a_originality.getSelectedItem(),
+                                           a_selection.getSelection()[0],
+                                           PhotoList.PARAM_ORIGINALITY);});
+        panel.add(a_originality);
+        a_originality.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        this.a_privacy = new PhotoTraitCellEditor(PhotoPrivacy.getTraits());
-        this.a_privacy.setBorder(BorderFactory.createTitledBorder("privacy"));
-        this.a_privacy.setMaximumSize(this.a_privacy.getPreferredSize());
-        this.a_privacy.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_privacy.getSelectedItem(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
-                                               PhotoList.PARAM_PRIVACY);}});
-        panel.add(this.a_privacy);
-        this.a_privacy.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_privacy = new PhotoTraitCellEditor(PhotoPrivacy.getTraits());
+        a_privacy.setBorder(BorderFactory.createTitledBorder("privacy"));
+        a_privacy.setMaximumSize(a_privacy.getPreferredSize());
+        a_privacy.addActionListener(
+                e -> {
+                    if (a_isAdjusting) {
+                        return;
+                    }
+                    a_photoList.setValueAt(a_privacy.getSelectedItem(),
+                                           a_selection.getSelection()[0],
+                                           PhotoList.PARAM_PRIVACY);});
+        panel.add(a_privacy);
+        a_privacy.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        this.a_author = new AuthorCellEditor(photoList.getAuthorFactory());
-        this.a_author.setBorder(BorderFactory.createTitledBorder("author"));
-        this.a_author.setMaximumSize(this.a_author.getPreferredSize());
-        panel.add(this.a_author);
-        this.a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.a_author.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_author.getSelectedItem(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
-                                               PhotoList.PARAM_AUTHOR);}});
+        a_author = new AuthorCellEditor(photoList.getAuthorFactory());
+        a_author.setBorder(BorderFactory.createTitledBorder("author"));
+        a_author.setMaximumSize(a_author.getPreferredSize());
+        panel.add(a_author);
+        a_author.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_author.addActionListener(
+                e -> {
+                    if (a_isAdjusting) {
+                        return;
+                    }
+                    a_photoList.setValueAt(a_author.getSelectedItem(),
+                                           a_selection.getSelection()[0],
+                                           PhotoList.PARAM_AUTHOR);});
 
-        this.a_panorama = new JTextField();
-        this.a_panorama.setBorder(BorderFactory.createTitledBorder("panorama"));
-        this.a_panorama.setMaximumSize(new Dimension(Integer.MAX_VALUE,this.a_panorama.getPreferredSize().height));
-        panel.add(this.a_panorama);
-        this.a_panorama.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.a_panorama.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_panorama.getText(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
-                                               PhotoList.PARAM_PANORAMA);}});
-        this.a_panoramaFirst = new JTextField();
-        this.a_panoramaFirst.setBorder(BorderFactory.createTitledBorder("panorama first"));
-        this.a_panoramaFirst.setMaximumSize(new Dimension(Integer.MAX_VALUE,this.a_panoramaFirst.getPreferredSize().height));
-        panel.add(this.a_panoramaFirst);
-        this.a_panoramaFirst.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.a_panoramaFirst.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_panoramaFirst.getText(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
-                                               PhotoList.PARAM_PANORAMA_FIRST);}});
+        a_panorama = new JTextField();
+        a_panorama.setBorder(BorderFactory.createTitledBorder("panorama"));
+        a_panorama.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_panorama.getPreferredSize().height));
+        panel.add(a_panorama);
+        a_panorama.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_panorama.addActionListener(
+                e -> {
+                    if (a_isAdjusting) {
+                        return;
+                    }
+                    a_photoList.setValueAt(a_panorama.getText(),
+                                           a_selection.getSelection()[0],
+                                           PhotoList.PARAM_PANORAMA);});
+        a_panoramaFirst = new JTextField();
+        a_panoramaFirst.setBorder(BorderFactory.createTitledBorder("panorama first"));
+        a_panoramaFirst.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_panoramaFirst.getPreferredSize().height));
+        panel.add(a_panoramaFirst);
+        a_panoramaFirst.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_panoramaFirst.addActionListener(
+                e -> {
+                    if (a_isAdjusting) {
+                        return;
+                    }
+                    a_photoList.setValueAt(a_panoramaFirst.getText(),
+                                           a_selection.getSelection()[0],
+                                           PhotoList.PARAM_PANORAMA_FIRST);});
 
-        this.a_copies = new CopiesCellEditor();
-        this.a_copies.setBorder(BorderFactory.createTitledBorder("copies"));
-        this.a_copies.setMaximumSize(this.a_copies.getPreferredSize());
-        panel.add(this.a_copies);
-        this.a_copies.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.a_copies.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        if (PhotoEditor.this.a_isAdjusting) return;
-                        PhotoEditor.this.a_photoList.setValueAt(PhotoEditor.this.a_copies.getSelectedItem(),
-                                               PhotoEditor.this.a_selection.getSelection()[0],
-                                               PhotoList.PARAM_COPIES);}});
+        a_copies = new CopiesCellEditor();
+        a_copies.setBorder(BorderFactory.createTitledBorder("copies"));
+        a_copies.setMaximumSize(a_copies.getPreferredSize());
+        panel.add(a_copies);
+        a_copies.setAlignmentX(Component.LEFT_ALIGNMENT);
+        a_copies.addActionListener(
+                e -> {
+                    if (a_isAdjusting) {
+                        return;
+                    }
+                    a_photoList.setValueAt(a_copies.getSelectedItem(),
+                                           a_selection.getSelection()[0],
+                                           PhotoList.PARAM_COPIES);});
 
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
@@ -219,9 +219,9 @@ public class PhotoEditor extends JFrame
      */
     private void update() {
 
-        final int selection[] = this.a_selection.getSelection();
+        final int selection[] = a_selection.getSelection();
 
-        this.a_isAdjusting = true;
+        a_isAdjusting = true;
 
 
 
@@ -229,40 +229,40 @@ public class PhotoEditor extends JFrame
             // zero or more than one image is selected
             // -> empty the text fields and disable all the fields (except previous and next if at least one
             setEnabledAll(false);
-            this.a_location.setText(" ");
-            this.a_subject.setText(" ");
-            this.a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,this.a_subject.getPreferredSize().height));
-            this.a_panorama.setText(" ");
-            this.a_panoramaFirst.setText(" ");
-            this.a_copies.setSelectedItem(Integer.valueOf(0));
-            this.a_author.setSelectedItem("");
-            this.a_isAdjusting = false;
+            a_location.setText(" ");
+            a_subject.setText(" ");
+            a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
+            a_panorama.setText(" ");
+            a_panoramaFirst.setText(" ");
+            a_copies.setSelectedItem(Integer.valueOf(0));
+            a_author.setSelectedItem("");
+            a_isAdjusting = false;
             return;
         }
 
         setEnabledAll(true);
 
-        final Photo photo = this.a_photoList.getPhoto(selection[0]);
+        final Photo photo = a_photoList.getPhoto(selection[0]);
         final String location = photo.getIndexData().getLocation().toLongString();
-        this.a_location.setText(location);
+        a_location.setText(location);
         final String subject = photo.getIndexData().getSubject().toString();
-        this.a_subject.setText(subject);
-        this.a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,this.a_subject.getPreferredSize().height));
+        a_subject.setText(subject);
+        a_subject.setMaximumSize(new Dimension(Integer.MAX_VALUE,a_subject.getPreferredSize().height));
         final PhotoQuality quality = photo.getIndexData().getQuality();
-        this.a_quality.setSelectedItem(quality);
+        a_quality.setSelectedItem(quality);
         final PhotoOriginality originality = photo.getIndexData().getOriginality();
-        this.a_originality.setSelectedItem(originality);
+        a_originality.setSelectedItem(originality);
         final PhotoPrivacy privacy = photo.getIndexData().getPrivacy();
-        this.a_privacy.setSelectedItem(privacy);
-        this.a_author.setSelectedItem(photo.getIndexData().getAuthor());
+        a_privacy.setSelectedItem(privacy);
+        a_author.setSelectedItem(photo.getIndexData().getAuthor());
         final String panorama = photo.getIndexData().getPanorama();
-        this.a_panorama.setText(panorama);
+        a_panorama.setText(panorama);
         final String panoramaFirst = photo.getIndexData().getPanoramaFirst();
-        this.a_panoramaFirst.setText(panoramaFirst);
+        a_panoramaFirst.setText(panoramaFirst);
         final int copies = photo.getIndexData().getCopies();
-        this.a_copies.setSelectedItem(Integer.valueOf(copies));
+        a_copies.setSelectedItem(Integer.valueOf(copies));
 
-        this.a_isAdjusting = false;
+        a_isAdjusting = false;
     }
 
     /**
@@ -292,14 +292,14 @@ public class PhotoEditor extends JFrame
      * @param b
      */
     private void setEnabledAll(final boolean b) {
-        this.a_location.setEnabled(b);
-        this.a_quality.setEnabled(b);
-        this.a_originality.setEnabled(b);
-        this.a_privacy.setEnabled(b);
-        this.a_author.setEnabled(b);
-        this.a_panorama.setEnabled(b);
-        this.a_panoramaFirst.setEnabled(b);
-        this.a_copies.setEnabled(b);
+        a_location.setEnabled(b);
+        a_quality.setEnabled(b);
+        a_originality.setEnabled(b);
+        a_privacy.setEnabled(b);
+        a_author.setEnabled(b);
+        a_panorama.setEnabled(b);
+        a_panoramaFirst.setEnabled(b);
+        a_copies.setEnabled(b);
     }
 
     /**
@@ -310,7 +310,7 @@ public class PhotoEditor extends JFrame
 
         super.dispose();
 
-        this.a_photoList.removeTableModelListener(this);
-        this.a_selection.removeListener(this);
+        a_photoList.removeTableModelListener(this);
+        a_selection.removeListener(this);
     }
 }

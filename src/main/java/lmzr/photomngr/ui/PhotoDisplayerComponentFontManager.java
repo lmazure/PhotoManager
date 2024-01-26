@@ -17,10 +17,10 @@ public class PhotoDisplayerComponentFontManager {
      *
      */
      public PhotoDisplayerComponentFontManager() {
-        this.a_annotationFont = null;
-        this.a_annotationFontSize = -1;
-        this.a_messageFont = null;
-        this.a_messageFontSize = -1;
+        a_annotationFont = null;
+        a_annotationFontSize = -1;
+        a_messageFont = null;
+        a_messageFontSize = -1;
     }
 
     /**
@@ -30,15 +30,21 @@ public class PhotoDisplayerComponentFontManager {
     public Font getAnnotationFont(final Dimension slotSize) {
 
         int fontSize = slotSize.width/40;
-        if (fontSize>10) fontSize=10;
-        if (fontSize<5) return null;
+        if (fontSize>10) {
+            fontSize=10;
+        }
+        if (fontSize<5) {
+            return null;
+        }
 
-        if (fontSize==this.a_annotationFontSize) return this.a_annotationFont;
+        if (fontSize==a_annotationFontSize) {
+            return a_annotationFont;
+        }
 
-        this.a_annotationFontSize = fontSize;
-        this.a_annotationFont = new Font("Arial", Font.PLAIN, this.a_annotationFontSize);
+        a_annotationFontSize = fontSize;
+        a_annotationFont = new Font("Arial", Font.PLAIN, a_annotationFontSize);
 
-        return this.a_annotationFont;
+        return a_annotationFont;
     }
 
     /**
@@ -49,12 +55,14 @@ public class PhotoDisplayerComponentFontManager {
 
         final int fontSize = slotSize.width/25;
 
-        if (fontSize==this.a_messageFontSize) return this.a_messageFont;
+        if (fontSize==a_messageFontSize) {
+            return a_messageFont;
+        }
 
-        this.a_messageFontSize = fontSize;
-        this.a_messageFont = new Font("Arial", Font.PLAIN, this.a_messageFontSize);
+        a_messageFontSize = fontSize;
+        a_messageFont = new Font("Arial", Font.PLAIN, a_messageFontSize);
 
-        return this.a_messageFont;
+        return a_messageFont;
     }
 
 }

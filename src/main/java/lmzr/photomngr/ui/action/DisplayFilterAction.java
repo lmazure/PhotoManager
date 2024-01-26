@@ -38,10 +38,10 @@ public class DisplayFilterAction extends PhotoManagerAction {
                                final FilteredPhotoList photoList,
                                final ListSelectionManager selection) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_photoDisplayer = photoDisplayer;
-        this.a_photoList = photoList;
-        this.a_selection = selection;
-        this.a_filter = null;
+        a_photoDisplayer = photoDisplayer;
+        a_photoList = photoList;
+        a_selection = selection;
+        a_filter = null;
     }
 
 
@@ -51,9 +51,10 @@ public class DisplayFilterAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        if ( this.a_filter == null)
-            this.a_filter = new FilterDisplay(this.a_photoDisplayer,this.a_photoList,this.a_selection);
+        if ( a_filter == null) {
+            a_filter = new FilterDisplay(a_photoDisplayer,a_photoList,a_selection);
+        }
 
-        this.a_filter.setVisible(true);
+        a_filter.setVisible(true);
     }
 }

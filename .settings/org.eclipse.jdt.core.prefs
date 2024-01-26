@@ -95,7 +95,7 @@ org.eclipse.jdt.core.compiler.problem.unlikelyCollectionMethodArgumentTypeStrict
 org.eclipse.jdt.core.compiler.problem.unlikelyEqualsArgumentType=warning
 org.eclipse.jdt.core.compiler.problem.unnecessaryElse=warning
 org.eclipse.jdt.core.compiler.problem.unnecessaryTypeCheck=warning
-org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess=warning
+org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess=ignore
 org.eclipse.jdt.core.compiler.problem.unstableAutoModuleName=warning
 org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownException=warning
 org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionExemptExceptionAndThrowable=enabled

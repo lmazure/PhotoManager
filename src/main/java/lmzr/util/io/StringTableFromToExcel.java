@@ -26,17 +26,21 @@ public class StringTableFromToExcel {
                             final String[][] data) throws IOException {
 
         try (final BufferedOutputStream file = new BufferedOutputStream(new FileOutputStream(filename))) {
-            for (int j = 0; j < data.length; j++) {
+            for (final String[] element : data) {
                 final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 final OutputStreamWriter stream = new OutputStreamWriter(buffer,"Cp1252");
-                for (int i = 0; i < data[j].length; i++) {
-                    if (i > 0) stream.write("\t");
-                    stream.write("\"" + data[j][i].replaceAll("\"", "\"\"") + "\"");
+                for (int i = 0; i < element.length; i++) {
+                    if (i > 0) {
+                        stream.write("\t");
+                    }
+                    stream.write("\"" + element[i].replaceAll("\"", "\"\"") + "\"");
                 }
                 stream.flush();
                 final byte buf[] = buffer.toByteArray();
-                for (int i=0; i<buf.length; i++) {
-                    if (buf[i]!='\r') file.write(buf[i]);
+                for (final byte element2 : buf) {
+                    if (element2!='\r') {
+                        file.write(element2);
+                    }
                 }
                 file.write('\r');
                 file.write('\n');

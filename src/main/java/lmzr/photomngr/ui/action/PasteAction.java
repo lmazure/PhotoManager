@@ -35,7 +35,7 @@ public class PasteAction extends PhotoManagerAction {
 
         super(text, mnemonic, accelerator, tooltipText);
 
-        this.a_table = table;
+        a_table = table;
     }
 
 
@@ -49,28 +49,28 @@ public class PasteAction extends PhotoManagerAction {
         String text = null;
 
         try {
-            if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                text = (String)t.getTransferData(DataFlavor.stringFlavor);
-            } else {
+            if ((t == null) || !t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 return;
             }
-        } catch (final UnsupportedFlavorException e1) {
-            e1.printStackTrace();
-            return;
-        } catch (final IOException e1) {
+            text = (String)t.getTransferData(DataFlavor.stringFlavor);
+        } catch (final UnsupportedFlavorException | IOException e1) {
             e1.printStackTrace();
             return;
         }
 
-        final ListSelectionModel selection = this.a_table.getSelectionModel();
-        if ( selection.getMinSelectionIndex() == -1 ) return;
+        final ListSelectionModel selection = a_table.getSelectionModel();
+        if ( selection.getMinSelectionIndex() == -1 ) {
+            return;
+        }
 
-        int selectedColumn = this.a_table.getSelectedColumn();
-        if ( selectedColumn == -1) return;
+        final int selectedColumn = a_table.getSelectedColumn();
+        if ( selectedColumn == -1) {
+            return;
+        }
 
         for (int i=selection.getMinSelectionIndex(); i<=selection.getMaxSelectionIndex(); i++) {
-            if ( selection.isSelectedIndex(i) &&  this.a_table.isCellEditable(i,selectedColumn) ) {
-                this.a_table.setValueAt(text,i,selectedColumn);
+            if ( selection.isSelectedIndex(i) &&  a_table.isCellEditable(i,selectedColumn) ) {
+                a_table.setValueAt(text,i,selectedColumn);
             }
         }
     }

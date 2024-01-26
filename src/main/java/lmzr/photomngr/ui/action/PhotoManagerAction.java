@@ -23,8 +23,14 @@ public abstract class PhotoManagerAction extends AbstractAction {
                                final KeyStroke accelerator,
                                final String tooltipText) {
         super(text);
-        if (mnemonic!=KeyEvent.CHAR_UNDEFINED) putValue(MNEMONIC_KEY, Integer.valueOf(mnemonic));
-        if (accelerator!=null) putValue(ACCELERATOR_KEY, accelerator);
-        if (tooltipText!=null) putValue(SHORT_DESCRIPTION, tooltipText);
+        if (mnemonic!=KeyEvent.CHAR_UNDEFINED) {
+            putValue(MNEMONIC_KEY, Integer.valueOf(mnemonic));
+        }
+        if (accelerator!=null) {
+            putValue(ACCELERATOR_KEY, accelerator);
+        }
+        if (tooltipText!=null) {
+            putValue(SHORT_DESCRIPTION, tooltipText);
+        }
     }
 }

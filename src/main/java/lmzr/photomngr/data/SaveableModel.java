@@ -10,5 +10,5 @@ public interface SaveableModel {
     /**
      * @throws IOException
      */
-    public void save() throws IOException;
+    void save() throws IOException;
 }

@@ -44,16 +44,16 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      * @param list
      */
     public FilteredPhotoList(final PhotoList list) {
-        this.a_list = list;
-        final int n = this.a_list.getRowCount();
-        this.a_indexFromSource = new int[n];
-        this.a_indexToSource = new int[n];
-        this.a_listOfListeners = new Vector<>();
-        this.a_listOfMetaDataListeners = new Vector<>();
-        this.a_listOfSaveListeners = new Vector<>();
-        this.a_list.addMetaListener(this);
-        this.a_list.addSaveListener(this);
-        this.a_list.addTableModelListener(this);
+        a_list = list;
+        final int n = a_list.getRowCount();
+        a_indexFromSource = new int[n];
+        a_indexToSource = new int[n];
+        a_listOfListeners = new Vector<>();
+        a_listOfMetaDataListeners = new Vector<>();
+        a_listOfSaveListeners = new Vector<>();
+        a_list.addMetaListener(this);
+        a_list.addSaveListener(this);
+        a_list.addTableModelListener(this);
         final FilterOnPhotoTrait filterOnOriginality = new FilterOnPhotoTrait(PhotoOriginality.getTraits(),PhotoList.PARAM_ORIGINALITY);
         final FilterOnPhotoTrait filterOnPrivacy = new FilterOnPhotoTrait(PhotoPrivacy.getTraits(),PhotoList.PARAM_PRIVACY);
         final FilterOnPhotoTrait filterOnQuality = new FilterOnPhotoTrait(PhotoQuality.getTraits(),PhotoList.PARAM_QUALITY);
@@ -83,7 +83,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public int getRowCount() {
-        return this.a_rowCount;
+        return a_rowCount;
     }
 
     /**
@@ -91,7 +91,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public int getColumnCount() {
-        return this.a_list.getColumnCount();
+        return a_list.getColumnCount();
     }
 
     /**
@@ -99,7 +99,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public Photo getPhoto(final int index) {
-        return this.a_list.getPhoto(this.a_indexFromSource[index]);
+        return a_list.getPhoto(a_indexFromSource[index]);
     }
 
     /**
@@ -107,7 +107,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public boolean isSaved() {
-        return this.a_list.isSaved();
+        return a_list.isSaved();
     }
 
     /**
@@ -115,7 +115,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public String getColumnName(final int columnIndex) {
-        return this.a_list.getColumnName(columnIndex);
+        return a_list.getColumnName(columnIndex);
     }
 
     /**
@@ -123,7 +123,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public Class<?> getColumnClass(final int columnIndex) {
-        return this.a_list.getColumnClass(columnIndex);
+        return a_list.getColumnClass(columnIndex);
     }
 
     /**
@@ -131,7 +131,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public boolean isCellEditable(final int rowIndex, final int columnIndex) {
-        return this.a_list.isCellEditable(this.a_indexFromSource[rowIndex],columnIndex);
+        return a_list.isCellEditable(a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
@@ -139,7 +139,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public Object getValueAt(final int rowIndex, final int columnIndex) {
-        return this.a_list.getValueAt(this.a_indexFromSource[rowIndex],columnIndex);
+        return a_list.getValueAt(a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
@@ -147,7 +147,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
-        this.a_list.setValueAt(value,this.a_indexFromSource[rowIndex],columnIndex);
+        a_list.setValueAt(value,a_indexFromSource[rowIndex],columnIndex);
     }
 
     /**
@@ -155,7 +155,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void addTableModelListener(final TableModelListener l) {
-        this.a_listOfListeners.add(l);
+        a_listOfListeners.add(l);
     }
 
     /**
@@ -163,7 +163,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void removeTableModelListener(final TableModelListener l) {
-        this.a_listOfListeners.remove(l);
+        a_listOfListeners.remove(l);
     }
 
     /**
@@ -171,7 +171,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void addMetaListener(final PhotoListMetaDataListener l) {
-        this.a_listOfMetaDataListeners.add(l);
+        a_listOfMetaDataListeners.add(l);
     }
 
     /**
@@ -179,7 +179,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void removeMetaListener(final PhotoListMetaDataListener l) {
-        this.a_listOfMetaDataListeners.remove(l);
+        a_listOfMetaDataListeners.remove(l);
     }
 
     /**
@@ -187,7 +187,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void addSaveListener(final SaveListener l) {
-        this.a_listOfSaveListeners.add(l);
+        a_listOfSaveListeners.add(l);
     }
 
     /**
@@ -195,7 +195,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void removeSaveListener(final SaveListener l) {
-        this.a_listOfSaveListeners.remove(l);
+        a_listOfSaveListeners.remove(l);
     }
 
     /**
@@ -203,7 +203,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void save() throws IOException {
-        this.a_list.save();
+        a_list.save();
     }
 
     /**
@@ -212,7 +212,9 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     @Override
     public void photoListMetaDataChanged(final PhotoListMetaDataEvent e) {
         final PhotoListMetaDataEvent f = new PhotoListMetaDataEvent(this,e.getChange());
-        for (PhotoListMetaDataListener l: this.a_listOfMetaDataListeners) l.photoListMetaDataChanged(f);
+        for (final PhotoListMetaDataListener l: a_listOfMetaDataListeners) {
+            l.photoListMetaDataChanged(f);
+        }
     }
 
     /**
@@ -221,7 +223,9 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     @Override
     public void saveChanged(final SaveEvent e) {
         final SaveEvent f = new SaveEvent(this,e.isSaved());
-        for (SaveListener l: this.a_listOfSaveListeners) l.saveChanged(f);
+        for (final SaveListener l: a_listOfSaveListeners) {
+            l.saveChanged(f);
+        }
     }
 
     /**
@@ -229,7 +233,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public HierarchicalCompoundStringFactory getLocationFactory() {
-        return this.a_list.getLocationFactory();
+        return a_list.getLocationFactory();
     }
 
     /**
@@ -237,7 +241,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
-        return this.a_list.getSubjectFactory();
+        return a_list.getSubjectFactory();
     }
 
     /**
@@ -245,7 +249,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public AuthorFactory getAuthorFactory() {
-        return this.a_list.getAuthorFactory();
+        return a_list.getAuthorFactory();
     }
 
 
@@ -258,25 +262,29 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         if ( e.getType()==TableModelEvent.UPDATE && e.getLastRow()!=Integer.MAX_VALUE ) {
 
             final int inFirstRow = e.getFirstRow();
-            final int inLastRow = (e.getLastRow()==Integer.MAX_VALUE) ? (this.a_list.getRowCount()-1)
+            final int inLastRow = (e.getLastRow()==Integer.MAX_VALUE) ? (a_list.getRowCount()-1)
                                                                       : e.getLastRow();
 
             int outFirstRow = -1;
             int outLastRow = -1;
             for (int i=inFirstRow; i<=inLastRow; i++) {
-                final int index = this.a_indexToSource[i];
+                final int index = a_indexToSource[i];
                 if (index!=-1) {
-                    if (outFirstRow==-1) outFirstRow = index;
+                    if (outFirstRow==-1) {
+                        outFirstRow = index;
+                    }
                     outLastRow = index;
                 }
             }
-            for (TableModelListener l : this.a_listOfListeners) l.tableChanged(new TableModelEvent(this, outFirstRow, outLastRow));
+            for (final TableModelListener l : a_listOfListeners) {
+                l.tableChanged(new TableModelEvent(this, outFirstRow, outLastRow));
+            }
 
         } else if ( e.getType()==TableModelEvent.INSERT ) {
 
-            final int n = this.a_list.getRowCount();
-            this.a_indexFromSource = new int[n];
-            this.a_indexToSource = new int[n];
+            final int n = a_list.getRowCount();
+            a_indexFromSource = new int[n];
+            a_indexToSource = new int[n];
 
             applyFilter();
 
@@ -284,9 +292,11 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
             int lastFilteredRow = -1;
 
             for (int i=e.getFirstRow(); i<=e.getLastRow(); i++) {
-                   final int index = this.a_indexToSource[i];
+                   final int index = a_indexToSource[i];
                     if ( index!=-1 ){
-                        if ( firstFilteredRow==-1 ) firstFilteredRow=index;
+                        if ( firstFilteredRow==-1 ) {
+                            firstFilteredRow=index;
+                        }
                         lastFilteredRow = index;
                     }
             }
@@ -297,11 +307,15 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
                                                                lastFilteredRow,
                                                                TableModelEvent.ALL_COLUMNS,
                                                                TableModelEvent.INSERT);
-                for (TableModelListener l : this.a_listOfListeners) l.tableChanged(ne);
+                for (final TableModelListener l : a_listOfListeners) {
+                    l.tableChanged(ne);
+                }
             }
 
         } else {
-            for (TableModelListener l : this.a_listOfListeners) l.tableChanged(new TableModelEvent(this));
+            for (final TableModelListener l : a_listOfListeners) {
+                l.tableChanged(new TableModelEvent(this));
+            }
         }
     }
 
@@ -312,7 +326,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     public void setFilter(final PhotoListFilter filter,
                           final ListSelectionManager selection) {
 
-        doTask(new Task() {@Override public void perform() { FilteredPhotoList.this.a_filter = filter; }},
+        doTask(() -> a_filter = filter,
                    selection);
     }
 
@@ -320,14 +334,14 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      * @return current filter
      */
     public PhotoListFilter getFilter() {
-        return this.a_filter;
+        return a_filter;
     }
 
     /**
      * @param filter
      */
     private void setFilter(final PhotoListFilter filter) {
-        this.a_filter = filter;
+        a_filter = filter;
         applyFilter();
     }
 
@@ -335,15 +349,15 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      *
      */
     private void applyFilter() {
-        final int n = this.a_list.getRowCount();
-        this.a_rowCount = 0;
+        final int n = a_list.getRowCount();
+        a_rowCount = 0;
         for (int i=0; i<n; i++) {
-            if (this.a_filter.filter(this.a_list,i)) {
-                this.a_indexFromSource[this.a_rowCount] = i;
-                this.a_indexToSource[i] = this.a_rowCount;
-                this.a_rowCount++;
+            if (a_filter.filter(a_list,i)) {
+                a_indexFromSource[a_rowCount] = i;
+                a_indexToSource[i] = a_rowCount;
+                a_rowCount++;
             } else {
-                this.a_indexToSource[i] = -1;
+                a_indexToSource[i] = -1;
             }
         }
 
@@ -356,7 +370,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     public void performSubjectMapTranslation(final Map<String, String> map,
                                              final ListSelectionManager selection) {
 
-        doTask(new Task() {@Override public void perform() { performSubjectMapTranslation(map); }},
+        doTask(() -> performSubjectMapTranslation(map),
                selection);
     }
 
@@ -368,7 +382,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
     public void performLocationMapTranslation(final Map<String, String> map,
                                               final ListSelectionManager selection) {
 
-        doTask(new Task() {@Override public void perform() { performLocationMapTranslation(map); }},
+        doTask(() -> performLocationMapTranslation(map),
                selection);
     }
 
@@ -377,7 +391,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void performSubjectMapTranslation(final Map<String, String> map) {
-        this.a_list.performSubjectMapTranslation(map);
+        a_list.performSubjectMapTranslation(map);
     }
 
     /**
@@ -385,7 +399,7 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
      */
     @Override
     public void performLocationMapTranslation(final Map<String, String> map) {
-        this.a_list.performLocationMapTranslation(map);
+        a_list.performLocationMapTranslation(map);
     }
 
     /**
@@ -398,7 +412,9 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         // record the current selection
         final int select[] = selection.getSelection();
         final int fromSelect[] = new int[select.length];
-        for (int i=0; i<select.length; i++) fromSelect[i] = this.a_indexFromSource[select[i]];
+        for (int i=0; i<select.length; i++) {
+            fromSelect[i] = a_indexFromSource[select[i]];
+        }
 
         // perform the task
         task.perform();
@@ -416,17 +432,19 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         final int toSelect[] = new int[ (select.length>0) ? select.length : 1 ];
         int toSelectLength = 0;
         for (int i=0; i<select.length; i++) {
-            final int index = this.a_indexToSource[fromSelect[i]];
+            final int index = a_indexToSource[fromSelect[i]];
             if ( index!=-1 ){
                 toSelect[toSelectLength++] = index;
             }
         }
-        if ( toSelectLength==0 && this.a_rowCount>0 ){
-            toSelect[0] = this.a_rowCount-1;
+        if ( toSelectLength==0 && a_rowCount>0 ){
+            toSelect[0] = a_rowCount-1;
             toSelectLength = 1;
         }
-        int finalSelect[] = new int[toSelectLength];
-        for (int i=0; i<toSelectLength; i++) finalSelect[i] = toSelect[i];
+        final int finalSelect[] = new int[toSelectLength];
+        for (int i=0; i<toSelectLength; i++) {
+            finalSelect[i] = toSelect[i];
+        }
         selection.setSelection(finalSelect);
     }
 }

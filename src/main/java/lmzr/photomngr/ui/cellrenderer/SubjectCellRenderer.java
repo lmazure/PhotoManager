@@ -20,7 +20,6 @@ public class SubjectCellRenderer extends JTextArea
      *
      */
     public SubjectCellRenderer() {
-        super();
     }
 
     /**
