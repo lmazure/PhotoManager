@@ -38,7 +38,6 @@ public class PasteAction extends PhotoManagerAction {
         a_table = table;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

@@ -33,7 +33,6 @@ public class PhotoQuality extends PhotoTrait {
         return other == this;
     }
 
-
     /**
      * @param str
      * @return PhotoQuality encoded by str
@@ -45,7 +44,6 @@ public class PhotoQuality extends PhotoTrait {
         }
         return p;
     }
-
 
     /**
      * @see java.lang.Object#toString()

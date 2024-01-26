@@ -35,7 +35,6 @@ public class CheckTreeCellRenderer extends JPanel
         a_checkBox.setOpaque(false);
     }
 
-
     @Override
     public Component getTreeCellRendererComponent(final JTree tree,
                                                   final Object value,

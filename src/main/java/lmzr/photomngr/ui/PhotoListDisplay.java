@@ -32,7 +32,6 @@ import lmzr.photomngr.ui.action.QuitAction;
 import lmzr.photomngr.ui.action.RenameFolderAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
-
 /**
  * @author Laurent
  */
@@ -50,7 +49,6 @@ public class PhotoListDisplay extends JFrame
     final private PasteAction a_actionPaste;
     final private CopyFromNextAction a_actionCopyFromNext;
     final private CopyFromPreviousAction a_actionCopyFromPrevious;
-
 
     /**
      * @param photoList

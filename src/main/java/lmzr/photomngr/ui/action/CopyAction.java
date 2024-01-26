@@ -42,7 +42,6 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
         a_table = table;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

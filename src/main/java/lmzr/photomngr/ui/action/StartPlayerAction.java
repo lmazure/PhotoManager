@@ -40,7 +40,6 @@ public class StartPlayerAction extends PhotoManagerAction {
         a_player = player;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

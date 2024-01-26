@@ -177,7 +177,6 @@ public class ConcretePhotoList extends Object
         return NB_PARAM;
     }
 
-
     /**
      * @param rowIndex
      * @return photo

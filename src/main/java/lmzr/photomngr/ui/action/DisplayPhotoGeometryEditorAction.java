@@ -37,7 +37,6 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
             a_PhotoGeometryEditor = null;
         }
 
-
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */

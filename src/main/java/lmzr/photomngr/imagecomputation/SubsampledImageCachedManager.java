@@ -49,7 +49,6 @@ public class SubsampledImageCachedManager {
         }
     }
 
-
     private final String a_cacheDirectory;
     private final double reductionFactor = 2;
     private final int minSize = 32;

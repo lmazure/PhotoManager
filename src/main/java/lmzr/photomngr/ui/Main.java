@@ -13,7 +13,6 @@ import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.util.chrono.Chrono;
 
-
 /**
  * @author Laurent Mazuré
  */

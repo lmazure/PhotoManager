@@ -44,7 +44,6 @@ public class DisplayFilterAction extends PhotoManagerAction {
         a_filter = null;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

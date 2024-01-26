@@ -32,7 +32,6 @@ public class DisplayGPSDatabaseAction extends PhotoManagerAction {
         a_GPSDisplay = null;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

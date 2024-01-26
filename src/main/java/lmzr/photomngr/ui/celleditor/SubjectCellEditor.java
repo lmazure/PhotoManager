@@ -105,7 +105,6 @@ public class SubjectCellEditor extends JComponent
                 return;
             }
 
-
             final String str = a_edit.getText();
             final HashMap<String,Integer> record = new HashMap<>();
             for (int i=0; i<a_photoList.getRowCount(); i++) {
@@ -291,7 +290,6 @@ public class SubjectCellEditor extends JComponent
             a_edit.requestFocusInWindow();
         }
     }
-
 
     /**
      * @param filteredList

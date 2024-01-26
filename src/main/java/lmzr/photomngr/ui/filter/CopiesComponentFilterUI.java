@@ -23,7 +23,6 @@ public class CopiesComponentFilterUI extends ComponentFilterUI {
                                    final FilterOnCopies filter) {
         super(label, filter);
 
-
         getPane().add(new JLabel("min"));
         a_min = new JFormattedTextField(NumberFormat.getIntegerInstance());
         getPane().add(a_min);

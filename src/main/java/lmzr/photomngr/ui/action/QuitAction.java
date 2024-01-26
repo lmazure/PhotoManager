@@ -42,7 +42,6 @@ public class QuitAction extends PhotoManagerAction {
         a_scheduler = scheduler;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

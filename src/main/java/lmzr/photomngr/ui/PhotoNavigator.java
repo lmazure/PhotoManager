@@ -60,7 +60,6 @@ public class PhotoNavigator extends JFrame
     final private JButton[] a_play;
     private int[] a_previousSelection;
 
-
     /**
      * @param photoList
      * @param GPSDatabase
@@ -239,7 +238,6 @@ public class PhotoNavigator extends JFrame
             }
         }
 
-
         if ( selection.length!=1 ) {
             // zero or more than one image is selected
             // -> empty the text fields and disable all the fields (except previous and next if at least one
@@ -251,7 +249,6 @@ public class PhotoNavigator extends JFrame
             pack();
             return;
         }
-
 
         final Photo photo = a_photoList.getPhoto(selection[0]);
         final Date date = photo.getHeaderData().getDate();

@@ -37,7 +37,6 @@ public class DisplayPhotoParametersAction extends PhotoManagerAction {
         a_PhotoParametersDisplay = null;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

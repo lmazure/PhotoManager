@@ -31,7 +31,6 @@ public class FullScreenAction extends PhotoManagerAction {
         a_photoDisplayer = photoDisplayer;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

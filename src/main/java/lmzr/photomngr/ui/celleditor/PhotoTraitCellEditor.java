@@ -12,7 +12,6 @@ import lmzr.photomngr.data.phototrait.PhotoTrait;
  */
 public class PhotoTraitCellEditor extends ComboBoxCellEditor {
 
-
     /**
      * @param traits
      */

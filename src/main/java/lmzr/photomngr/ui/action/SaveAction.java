@@ -33,7 +33,6 @@ public class SaveAction extends PhotoManagerAction {
         a_model = list;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

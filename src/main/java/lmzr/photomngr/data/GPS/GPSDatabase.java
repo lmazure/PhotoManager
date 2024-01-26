@@ -66,7 +66,6 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     final private Vector<SaveListener> a_listOfSaveListeners;
     private boolean a_isSaved;
 
-
     /**
      * A GPS record is a couple (location, GPS coordinates)
      */

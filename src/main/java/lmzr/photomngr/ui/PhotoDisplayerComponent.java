@@ -1,6 +1,5 @@
 package lmzr.photomngr.ui;
 
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.InputEvent;

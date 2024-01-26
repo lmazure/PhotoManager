@@ -33,7 +33,6 @@ public class ResetNumberOfCopiesAction extends PhotoManagerAction {
 
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

@@ -14,8 +14,6 @@ import lmzr.photomngr.data.GPS.GPSDatabase.GPSRecord;
 public class GPSDataDisplayMapCellRenderer extends JButton
                                            implements TableCellRenderer {
 
-
-
     /**
      * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
      */

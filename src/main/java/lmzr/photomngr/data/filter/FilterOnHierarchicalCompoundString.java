@@ -15,7 +15,6 @@ public class FilterOnHierarchicalCompoundString extends FilterBase {
     private final Set<HierarchicalCompoundString> a_values;
     final private int a_parameter;
 
-
     /**
      * @param parameter
      */

@@ -31,7 +31,6 @@ public class PreviousPhotoAction extends PhotoManagerAction {
         a_selection = selection;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -40,4 +39,3 @@ public class PreviousPhotoAction extends PhotoManagerAction {
         a_selection.previous(1);
     }
 }
-

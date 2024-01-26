@@ -2,7 +2,6 @@ package lmzr.photomngr.data;
 
 import java.util.EventObject;
 
-
 /**
  *
  */

@@ -37,7 +37,6 @@ public class DisplayPhotoEditorAction extends PhotoManagerAction {
         a_PhotoEditor = null;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

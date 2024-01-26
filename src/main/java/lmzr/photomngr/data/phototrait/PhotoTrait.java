@@ -17,7 +17,6 @@ public class PhotoTrait {
      */
     static final protected String UNDEFINED_TRAIT_STRING = "unclassified";
 
-
     /**
      * @param value
      */

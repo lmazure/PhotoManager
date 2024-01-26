@@ -8,7 +8,6 @@ import lmzr.photomngr.data.PhotoList;
  */
 public class FilterOnFormat extends FilterBase {
 
-
     final private DataFormat[] a_formats;
     final private boolean[] a_values;
 

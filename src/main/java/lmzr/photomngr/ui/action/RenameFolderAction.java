@@ -45,7 +45,6 @@ public class RenameFolderAction extends PhotoManagerAction {
         a_selection = selection;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

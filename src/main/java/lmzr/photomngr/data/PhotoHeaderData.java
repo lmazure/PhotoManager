@@ -181,7 +181,6 @@ public class PhotoHeaderData {
         try {
             final File file = new File(overridenFilename);
 
-
             final Metadata metadata = ImageMetadataReader.readMetadata(file);
 
             for (final Directory directory : metadata.getDirectories()) {

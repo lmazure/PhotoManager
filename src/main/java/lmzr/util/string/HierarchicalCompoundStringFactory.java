@@ -25,7 +25,6 @@ public class HierarchicalCompoundStringFactory implements TreeModel {
     final private Vector<TreeModelListener> a_listOfListeners;
     private SoftReference<Hashtable<String,HierarchicalCompoundString>> a_cacheSoftRef;
 
-
     /**
      * create a factory of HierarchicalCoumpountStrings
      */

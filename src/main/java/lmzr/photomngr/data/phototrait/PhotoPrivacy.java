@@ -21,7 +21,6 @@ public class PhotoPrivacy extends PhotoTrait {
         g_pool.put(Integer.toString(UNDEFINED_TRAIT_VALUE),g_undefined);
     }
 
-
     private PhotoPrivacy(final int value) {
         super(value);
     }
@@ -33,7 +32,6 @@ public class PhotoPrivacy extends PhotoTrait {
     public boolean equals(final Object other) {
         return other == this;
     }
-
 
     /**
      * @param str
@@ -47,7 +45,6 @@ public class PhotoPrivacy extends PhotoTrait {
         return p;
     }
 
-
     /**
      * @see java.lang.Object#toString()
      */
@@ -60,7 +57,6 @@ public class PhotoPrivacy extends PhotoTrait {
     public int hashCode() {
         return super.hashCode();
     }
-
 
     /**
      * @return traits

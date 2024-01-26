@@ -123,7 +123,6 @@ public class PhotoIndexData {
         return a_privacy;
     }
 
-
     /**
      * @param value
      */
@@ -241,7 +240,6 @@ public class PhotoIndexData {
     public void setFocusY(final float focusY) {
         a_focus_y = focusY;
     }
-
 
     /**
      * @return rotation

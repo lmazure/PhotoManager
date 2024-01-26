@@ -252,7 +252,6 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         return a_list.getAuthorFactory();
     }
 
-
     /**
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
      */
@@ -373,7 +372,6 @@ public class FilteredPhotoList implements PhotoList, PhotoListMetaDataListener, 
         doTask(() -> performSubjectMapTranslation(map),
                selection);
     }
-
 
     /**
      * @param map

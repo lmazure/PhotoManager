@@ -42,7 +42,6 @@ public class DisplayPhotoNavigatorAction extends PhotoManagerAction {
             a_PhotoNavigator = null;
         }
 
-
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */

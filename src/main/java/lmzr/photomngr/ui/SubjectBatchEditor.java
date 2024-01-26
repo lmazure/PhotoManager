@@ -136,7 +136,6 @@ public class SubjectBatchEditor extends JDialog {
         setSize(1000,700);
     }
 
-
     /**
      *
      */
@@ -144,7 +143,6 @@ public class SubjectBatchEditor extends JDialog {
         setVisible(false);
         dispose();
     }
-
 
     /**
      * @param panel

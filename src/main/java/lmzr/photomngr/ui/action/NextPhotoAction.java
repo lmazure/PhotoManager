@@ -31,7 +31,6 @@ public class NextPhotoAction extends PhotoManagerAction {
         a_selection = selection;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

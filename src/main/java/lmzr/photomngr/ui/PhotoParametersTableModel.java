@@ -39,7 +39,6 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
     final private ListSelectionManager a_selection;
     final private Vector<TableModelListener> a_listOfListeners;
 
-
     /**
      * @param photoList
      * @param selection
@@ -134,7 +133,6 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
         return a_maps.get(columnIndex-1).get(tag);
     }
 
-
     /**
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
@@ -143,7 +141,6 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
                                   final int columnIndex) {
         return false;
     }
-
 
     /**
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
@@ -192,7 +189,6 @@ public class PhotoParametersTableModel implements TableModel, ListSelectionListe
     private static Map<String,String> getTags(final String filename) {
 
         final Map<String,String> map = new HashMap<>();
-
 
         try {
             final Metadata metadata = ImageMetadataReader.readMetadata(new File(filename));

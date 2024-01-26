@@ -30,7 +30,6 @@ public class CloseAction extends PhotoManagerAction {
         a_frame = frame;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

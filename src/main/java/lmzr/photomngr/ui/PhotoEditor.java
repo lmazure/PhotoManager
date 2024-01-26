@@ -48,8 +48,7 @@ public class PhotoEditor extends JFrame
     final private CopiesCellEditor a_copies;
     private boolean a_isAdjusting;
 
-
-   /**
+   /*
      * @param photoList
      * @param selection
      */
@@ -222,8 +221,6 @@ public class PhotoEditor extends JFrame
         final int selection[] = a_selection.getSelection();
 
         a_isAdjusting = true;
-
-
 
         if ( selection.length!=1 ) {
             // zero or more than one image is selected

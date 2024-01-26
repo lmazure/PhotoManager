@@ -38,7 +38,6 @@ public class CreateCopiesForPrintingAction extends PhotoManagerAction {
         a_photoList = photoList;
     }
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

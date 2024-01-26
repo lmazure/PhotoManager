@@ -45,7 +45,6 @@ public class PhotoOriginality extends PhotoTrait {
         return p;
     }
 
-
     /**
      * @see java.lang.Object#toString()
      */

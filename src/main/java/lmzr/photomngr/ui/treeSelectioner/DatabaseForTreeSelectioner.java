@@ -36,7 +36,6 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
     final private String a_dataDescription;
     final private int a_mode;
 
-
     /**
      * @param locationFactory
      */
