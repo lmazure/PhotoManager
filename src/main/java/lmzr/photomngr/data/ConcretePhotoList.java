@@ -495,7 +495,7 @@ public class ConcretePhotoList extends Object
             break;
         case PARAM_FOCAL_LENGTH:
             final PhotoHeaderData d = getPhoto(rowIndex).getHeaderData();
-            value = Double.valueOf(d.getFocalLength());
+            value = d.getFocalLength();
             break;
         case PARAM_SELF_TIMER_MODE:
             value = getPhoto(rowIndex).getHeaderData().getSelfTimerMode();
@@ -623,7 +623,7 @@ public class ConcretePhotoList extends Object
                 copies = (Integer)value;
             } else {
                 try {
-                    copies = format.parse((String)value).intValue();
+                    copies = Integer.valueOf(format.parse((String)value).intValue());
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                     return;
@@ -639,7 +639,7 @@ public class ConcretePhotoList extends Object
                 zoom = (Float)value;
             } else {
                 try {
-                    zoom = format.parse((String)value).floatValue();
+                    zoom = Float.valueOf(format.parse((String)value).floatValue());
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                     return;
@@ -655,7 +655,7 @@ public class ConcretePhotoList extends Object
                 focusX = (Float)value;
             } else {
                 try {
-                    focusX = format.parse((String)value).floatValue();
+                    focusX = Float.valueOf(format.parse((String)value).floatValue());
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                     return;
@@ -671,7 +671,7 @@ public class ConcretePhotoList extends Object
                 focusY = (Float)value;
             } else {
                 try {
-                    focusY = format.parse((String)value).floatValue();
+                    focusY = Float.valueOf(format.parse((String)value).floatValue());
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                     return;
@@ -688,7 +688,7 @@ public class ConcretePhotoList extends Object
                 rotation = (Float)value;
             } else {
                 try {
-                    rotation = format.parse((String)value).floatValue();
+                    rotation = Float.valueOf(format.parse((String)value).floatValue());
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                     return;

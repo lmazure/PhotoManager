@@ -49,7 +49,7 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
      * @param dig
      * @return flag
      */
-    public boolean isPathSelected(TreePath path, boolean dig){
+    public boolean isPathSelected(TreePath path, final boolean dig){
         if(!dig)
             return super.isPathSelected(path);
         while(path!=null && !super.isPathSelected(path))
@@ -58,9 +58,9 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
     }
 
     // is path1 descendant of path2
-    private boolean isDescendant(TreePath path1, TreePath path2){
-        Object obj1[] = path1.getPath();
-        Object obj2[] = path2.getPath();
+    private static boolean isDescendant(final TreePath path1, final TreePath path2){
+    	final Object obj1[] = path1.getPath();
+    	final Object obj2[] = path2.getPath();
         for(int i = 0; i<obj2.length; i++){
             if(obj1[i]!=obj2[i])
                 return false;
@@ -72,7 +72,7 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
      * @see javax.swing.tree.TreeSelectionModel#setSelectionPaths(javax.swing.tree.TreePath[])
      */
     @Override
-    public void setSelectionPaths(TreePath[] paths){
+    public void setSelectionPaths(final TreePath[] paths){
         final TreePath selectedPaths[] = getSelectionPaths();
         if ( selectedPaths!=null ) removeSelectionPaths(selectedPaths);
         /*for (int i=0; i<paths.length; i++)*/ addSelectionPaths(paths);
@@ -82,7 +82,7 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
      * @see javax.swing.tree.TreeSelectionModel#addSelectionPaths(javax.swing.tree.TreePath[])
      */
     @Override
-    public void addSelectionPaths(TreePath[] paths){
+    public void addSelectionPaths(final TreePath[] paths){
         // unselect all descendants of paths[]
         for(int i = 0; i<paths.length; i++){
             TreePath path = paths[i];
@@ -126,8 +126,8 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
     }
 
     // tells whether all siblings of given path are selected.
-    private boolean areSiblingsSelected(TreePath path){
-        TreePath parent = path.getParentPath();
+    private boolean areSiblingsSelected(final TreePath path){
+    	final TreePath parent = path.getParentPath();
         if(parent==null)
             return true;
         Object node = path.getLastPathComponent();
@@ -148,7 +148,7 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
      * @see javax.swing.tree.TreeSelectionModel#removeSelectionPaths(javax.swing.tree.TreePath[])
      */
     @Override
-    public void removeSelectionPaths(TreePath[] paths){
+    public void removeSelectionPaths(final TreePath[] paths){
         for(int i = 0; i<paths.length; i++){
             TreePath path = paths[i];
             if(path.getPathCount()==1)
@@ -161,8 +161,8 @@ public class CheckTreeSelectionModel extends DefaultTreeSelectionModel {
     // if any ancestor node of given path is selected then unselect it
     //  and selection all its descendants except given path and descendants.
     // otherwise just unselect the given path
-    private void toggleRemoveSelection(TreePath path){
-        Stack<TreePath> stack = new Stack<>();
+    private void toggleRemoveSelection(final TreePath path){
+    	final Stack<TreePath> stack = new Stack<>();
         TreePath parent = path.getParentPath();
         while(parent!=null && !isPathSelected(parent)){
             stack.push(parent);
