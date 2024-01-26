@@ -108,6 +108,8 @@ public class PriorityExecutor extends ThreadPoolExecutor {
             case PRIORITY_VERY_LOW:
                 prio += 1;
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + priority);
             }
 
             prio += subpriority;

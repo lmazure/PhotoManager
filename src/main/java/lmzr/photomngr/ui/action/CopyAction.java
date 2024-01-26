@@ -71,6 +71,7 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
             str = ((PhotoTrait)value).toString();
         } else {
             if (value instanceof Integer) {
+                // nothing
             } else if (!(value instanceof Float)) {
                 throw new IllegalArgumentException("Unsupported type");
             }

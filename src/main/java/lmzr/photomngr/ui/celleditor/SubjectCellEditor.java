@@ -125,7 +125,7 @@ public class SubjectCellEditor extends JComponent
             }
 
             final Vector<Map.Entry<String, Integer>> list = new Vector<>(record.entrySet());
-            Collections.sort(list, (entry, entry1) -> (entry.getValue().equals(entry1.getValue()) ? 0 : (entry.getValue() > entry1.getValue() ? -1 : 1)));
+            Collections.sort(list, (entry, entry1) -> (entry.getValue().equals(entry1.getValue()) ? 0 : (entry.getValue().intValue() > entry1.getValue().intValue() ? -1 : 1)));
 
             for (int i=0; i<a_propositions.length; i++) {
                 if ( i<list.size()) {

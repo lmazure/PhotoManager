@@ -123,7 +123,6 @@ public class PhotoNavigator extends JFrame
 
         final JPanel viewerButtons = new JPanel();
 
-        final PlayerFactory playerFactory = new PlayerFactory();
         final Player[] players = PlayerFactory.getPlayers();
         a_play = new JButton[players.length];
         for (int i=0; i<players.length; i++) {
@@ -149,7 +148,6 @@ public class PhotoNavigator extends JFrame
         mapFull.add(a_map);
 
         final JPanel mapButtons = new JPanel();
-        final MapURICreatorFactory mapURICreatorFactory = new MapURICreatorFactory();
         final MapURICreator[] mapURICreators = MapURICreatorFactory.getMapDisplayers();
         a_mapDisplayers = new JButton[mapURICreators.length];
         for (int i=0; i<mapURICreators.length; i++) {

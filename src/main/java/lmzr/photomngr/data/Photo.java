@@ -105,7 +105,7 @@ public class Photo {
         final File file = new File(filename);
         try {
             return ImageIO.read(file);
-        } catch (final IOException e) {
+        } catch (@SuppressWarnings("unused") final IOException e) {
             System.out.println("failed to parse "+filename);
             a_isOK = false;
             return null;

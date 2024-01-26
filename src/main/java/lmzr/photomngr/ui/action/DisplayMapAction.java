@@ -1,7 +1,6 @@
 package lmzr.photomngr.ui.action;
 
 import java.awt.Desktop;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 

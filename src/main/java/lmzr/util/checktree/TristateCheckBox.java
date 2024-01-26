@@ -171,10 +171,9 @@ public void setSelected(final boolean b) {
     if (isSelected() && isArmed()) {
         // don't care grey tick
         return DONT_CARE;
-      } else {
-        // normal deselected
-        return NOT_SELECTED;
       }
+	// normal deselected
+	return NOT_SELECTED;
     }
     /** We rotate between NOT_SELECTED, SELECTED and DONT_CARE.*/
     private void nextState() {

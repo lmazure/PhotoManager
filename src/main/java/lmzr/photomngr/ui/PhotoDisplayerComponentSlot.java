@@ -57,8 +57,8 @@ public class PhotoDisplayerComponentSlot extends JComponent
      * @param subsampler
      * @param computationManager
      */
-    public PhotoDisplayerComponentSlot(final Scheduler scheduler,
-                                       final SubsampledImageCachedManager subsampler,
+    public PhotoDisplayerComponentSlot(@SuppressWarnings("unused") final Scheduler scheduler,
+                                       @SuppressWarnings("unused") final SubsampledImageCachedManager subsampler,
                                        final ImageComputationManager computationManager) {
         a_computationManager = computationManager;
 

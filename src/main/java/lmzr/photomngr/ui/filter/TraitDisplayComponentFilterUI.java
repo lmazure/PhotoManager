@@ -29,7 +29,7 @@ public class TraitDisplayComponentFilterUI extends ComponentFilterUI {
         a_check = new JCheckBox[filter.getTraits().length];
         for (int i=0; i<traits.length; i++) {
             a_check[i] = new JCheckBox(traits[i].toString());
-            a_check[i].setSelected((filter==null)?true:values[i]);
+            a_check[i].setSelected(values[i]);
             getPane().add(a_check[i]);
         }
     }

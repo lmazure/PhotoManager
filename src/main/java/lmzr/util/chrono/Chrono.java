@@ -48,7 +48,7 @@ public class Chrono {
         switch (mode) {
         case START:
             System.out.println("Chrono -- START -- time="+relativeCurrentTime/1000000000d);
-            s_records.put(tag, new Long(currentTime));
+            s_records.put(tag, Long.valueOf(currentTime));
             break;
         case MIDDLE: {
             final long startTime = s_records.get(tag).longValue();

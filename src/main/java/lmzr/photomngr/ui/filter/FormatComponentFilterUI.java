@@ -25,7 +25,7 @@ public class FormatComponentFilterUI extends ComponentFilterUI {
         a_check = new JCheckBox[filter.getFormats().length];
         for (int i=0; i<filter.getFormats().length; i++) {
             a_check[i] = new JCheckBox(filter.getFormats()[i].toString());
-            a_check[i].setSelected((filter==null)?true:filter.getValues()[i]);
+            a_check[i].setSelected(filter.getValues()[i]);
             getPane().add(a_check[i]);
         }
     }

@@ -63,9 +63,9 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
             return Boolean.class;
         case PARAM_SELECT_ALL:
             return Boolean.class;
+        default:
+            throw new IllegalArgumentException("Unknown column: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -88,9 +88,9 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
             return "(un)select";
         case PARAM_SELECT_ALL:
             return "(un)select all";
+        default:
+            throw new IllegalArgumentException("Unknown column: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -114,12 +114,12 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
         case PARAM_VALUE:
             return string.toShortString();
         case PARAM_SELECTED:
-            return a_selection.contains(string);
+            return Boolean.valueOf(a_selection.contains(string));
         case PARAM_SELECT_ALL:
             return Boolean.valueOf(isSubtreeSelected(string));
+        default:
+            throw new IllegalArgumentException("Unexpected value: " + columnIndex);
         }
-
-        return null;
     }
 
     /**
@@ -134,9 +134,9 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
         case PARAM_SELECTED:
         case PARAM_SELECT_ALL:
             return true;
+        default:
+            throw new IllegalArgumentException("Unknown column: " + columnIndex);
         }
-
-        return false;
     }
 
     /**
@@ -175,6 +175,8 @@ public class DatabaseForTreeSelectioner implements TreeTableModel {
             notifyUpperNodes(string);
             }
             break;
+        default:
+            throw new IllegalArgumentException("Unknown column: " + columnIndex);
         }
     }
 

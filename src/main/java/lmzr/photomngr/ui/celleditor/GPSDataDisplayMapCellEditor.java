@@ -2,7 +2,6 @@ package lmzr.photomngr.ui.celleditor;
 
 import java.awt.Component;
 import java.awt.Desktop;
-import java.awt.HeadlessException;
 import java.io.IOException;
 import java.util.EventObject;
 

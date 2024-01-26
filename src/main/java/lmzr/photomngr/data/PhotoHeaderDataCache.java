@@ -61,7 +61,7 @@ public class PhotoHeaderDataCache {
             String data[][] = null;
             try {
                 data = StringTableFromToExcel.read(getFilename());
-            } catch (final IOException e) {
+            } catch (@SuppressWarnings("unused") final IOException e) {
                 // do nothing if the file is not available
                 return;
             }
@@ -100,7 +100,7 @@ public class PhotoHeaderDataCache {
                 () -> {
                     try {
                         StringTableFromToExcel.save(getFilename(),Arrays.copyOf(data, size));
-                    } catch (final IOException e) {
+                    } catch (@SuppressWarnings("unused") final IOException e) {
                         System.err.println("failed to save header data cache in \""+getFilename()+"\"");
                         return;
                     }
