@@ -34,13 +34,16 @@ public class GoogleMapsURICreator extends MapURICreator {
 
     static final private String s_templateName = "googleMapsTemplate.html";
 
+    static final private String s_apiKeyVarEnvName = "GOOGLE_MAPS_API_KEY";
+
+    static final private String s_apiKeyPlaceholder = "__PLACEHOLDER_APIKEY__";
     static final private String s_areaListPlaceholder = "__PLACEHOLDER_AREALIST__";
     static final private String s_pointListPlaceholder = "__PLACEHOLDER_POINTLIST__";
     static final private String s_mapCenterPlaceholder = "__PLACEHOLDER_MAPCENTER__";
     static final private String s_zoomPlaceholder = "__PLACEHOLDER_ZOOM__";
 
-    static final private String defaultCenter = "47.0, 2.0";
-    static final private String defaultZoom = "6";
+    static final private String s_defaultCenter = "47.0, 2.0";
+    static final private String s_defaultZoom = "6";
 
     /**
      *
@@ -70,7 +73,7 @@ public class GoogleMapsURICreator extends MapURICreator {
         URI uri = null;
 
         try {
-            final String str = "http://maps.google.com/maps?q="+
+            final String str = "http://maps.google.com/maps?q="
                                + data.getLatitudeAsDouble()
                                + "+"
                                + data.getLongitudeAsDouble()
@@ -107,7 +110,8 @@ public class GoogleMapsURICreator extends MapURICreator {
      * @param locationToHighlight current location to highlight
      * @param gpsDatabase         GPS database
      * @return created file
-     * @throws IOException
+     * @throws IOException           if an I/O error occurs
+     * @throws IllegalStateException if environment variable GOOGLE_MAPS_API_KEY is undefined
      */
     public static File createMapURIForGPSDebug(final String cacheDirectory,
                                                final String folder,
@@ -116,6 +120,10 @@ public class GoogleMapsURICreator extends MapURICreator {
                                                final HierarchicalCompoundString locationToHighlight,
                                                final GPSDatabase gpsDatabase) throws IOException
     {
+        final String apiKey = System.getenv(s_apiKeyVarEnvName);
+        if (apiKey == null) {
+            throw new IllegalStateException("environment variable " + s_apiKeyVarEnvName + " is undefined");
+        }
         final File file = new File(cacheDirectory + File.separator + folder + File.separator + filename);
 
         final File directory = new File(cacheDirectory + File.separator + folder);
@@ -131,7 +139,7 @@ public class GoogleMapsURICreator extends MapURICreator {
              final Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"))) {
             String str;
             while  ( (str = in.readLine()) != null ) {
-                out.write(handleLine(str, photoList, locationToHighlight, gpsDatabase));
+                out.write(handleLine(str, apiKey, photoList, locationToHighlight, gpsDatabase));
                 out.write('\n');
             }
         } catch (final IOException e) {
@@ -144,18 +152,25 @@ public class GoogleMapsURICreator extends MapURICreator {
 
     /**
      * edit a line by replacing the placeholders by their real content
+     *
      * @param string              current template line
+     * @param apiKey              API key
      * @param photoList           list of photos
      * @param locationToHighlight current location to highlight
      * @param gpsDatabase         GPS database
      * @return
      */
     static private String handleLine(final String string,
+                                     final String apiKey,
                                      final PhotoList photoList,
                                      final HierarchicalCompoundString locationToHighlight,
                                      final GPSDatabase gpsDatabase) {
 
         String str = string;
+
+        if (string.indexOf(s_apiKeyPlaceholder) >= 0) {
+            str = str.replace(s_apiKeyPlaceholder, apiKey);
+        }
 
         if (string.indexOf(s_areaListPlaceholder) >= 0) {
             final Map<HierarchicalCompoundString,GPSRecord> locations = getLocations(photoList, gpsDatabase);
@@ -207,11 +222,11 @@ public class GoogleMapsURICreator extends MapURICreator {
     static private String center(final HierarchicalCompoundString locationToHighlight,
                                  final GPSDatabase gpsDatabase)
     {
-        String center = defaultCenter;
+        String center = s_defaultCenter;
         final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
-        if ( record!=null ) {
+        if (record != null) {
             final GPSData gps = record.getGPSData();
-            if ( gps!=null && gps.isComplete() ) {
+            if ((gps != null) && gps.isComplete()) {
                 final Double latitude = gps.getLatitudeAsDouble();
                 final Double longitude = gps.getLongitudeAsDouble();
                 center = latitude.toString() + "," + longitude.toString();
@@ -224,9 +239,9 @@ public class GoogleMapsURICreator extends MapURICreator {
     static private String zoom(final HierarchicalCompoundString locationToHighlight,
             final GPSDatabase gpsDatabase)
     {
-        String zoom = defaultZoom;
+        String zoom = s_defaultZoom;
         final GPSRecord record = gpsDatabase.getGPSData(locationToHighlight);
-        if ( record != null ) {
+        if (record != null) {
             final GPSData gps = record.getGPSData();
             if ( gps != null && gps.isComplete() ) {
                 final double rangeInMeters = getRangeInMeters(gps);
@@ -248,7 +263,7 @@ public class GoogleMapsURICreator extends MapURICreator {
         final StringBuilder str = new StringBuilder();
         boolean stringHasBeenAdded = false;
 
-        for (int i=0; i<photoList.getRowCount();i++) {
+        for (int i = 0; i < photoList.getRowCount(); i++) {
             final Photo photo = photoList.getPhoto(i);
             final PhotoHeaderData headerData = photo.getHeaderData();
             final double latitude = headerData.getLatitude();
@@ -283,7 +298,7 @@ public class GoogleMapsURICreator extends MapURICreator {
         final StringBuilder str = new StringBuilder();
         boolean stringHasBeenAdded = false;
 
-        for (HierarchicalCompoundString location: locations.keySet())
+        for (final HierarchicalCompoundString location: locations.keySet())
         {
             final GPSData data = locations.get(location).getGPSData();
             final String color = location.equals(locationToHighlight)?"#FF0000":"#0000FF";
