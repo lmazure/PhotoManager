@@ -29,19 +29,18 @@ public class ResetNumberOfCopiesAction extends PhotoManagerAction {
                                      final String tooltipText,
                                      final  FilteredPhotoList photoList) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_photoList = photoList;
+        a_photoList = photoList;
 
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        for (int i=0; i<this.a_photoList.getRowCount(); i++) {
-            if ( ((Integer)this.a_photoList.getValueAt(i, PhotoList.PARAM_COPIES)).intValue() > 0 ) {
-                this.a_photoList.setValueAt(Integer.valueOf(0),i, PhotoList.PARAM_COPIES);
+        for (int i=0; i<a_photoList.getRowCount(); i++) {
+            if ( ((Integer)a_photoList.getValueAt(i, PhotoList.PARAM_COPIES)).intValue() > 0 ) {
+                a_photoList.setValueAt(Integer.valueOf(0),i, PhotoList.PARAM_COPIES);
             }
         }
     }

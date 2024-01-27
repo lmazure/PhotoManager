@@ -15,14 +15,13 @@ public class FilterOnHierarchicalCompoundString extends FilterBase {
     private final Set<HierarchicalCompoundString> a_values;
     final private int a_parameter;
 
-
     /**
      * @param parameter
      */
     public FilterOnHierarchicalCompoundString(final int parameter) {
         super(false);
-        this.a_values = new HashSet<>();
-        this.a_parameter = parameter;
+        a_values = new HashSet<>();
+        a_parameter = parameter;
     }
 
     /**
@@ -34,8 +33,8 @@ public class FilterOnHierarchicalCompoundString extends FilterBase {
                                               final Set<HierarchicalCompoundString> values,
                                               final int parameter) {
         super(isEnabled);
-        this.a_values = values;
-        this.a_parameter = parameter;
+        a_values = values;
+        a_parameter = parameter;
     }
 
     /**
@@ -47,14 +46,18 @@ public class FilterOnHierarchicalCompoundString extends FilterBase {
     public boolean filter(final PhotoList list,
                           final int index) {
 
-        final Object value = list.getValueAt(index,this.a_parameter);
-        if ( list.getColumnClass(this.a_parameter)==HierarchicalCompoundString.class ) {
+        final Object value = list.getValueAt(index,a_parameter);
+        if ( list.getColumnClass(a_parameter)==HierarchicalCompoundString.class ) {
             final HierarchicalCompoundString hcs = (HierarchicalCompoundString)value;
-            if ( this.a_values.contains(hcs) ) return true;
-        } else if ( list.getColumnClass(this.a_parameter)==MultiHierarchicalCompoundString.class ) {
+            if ( a_values.contains(hcs) ) {
+                return true;
+            }
+        } else if ( list.getColumnClass(a_parameter)==MultiHierarchicalCompoundString.class ) {
             final MultiHierarchicalCompoundString mhcs = (MultiHierarchicalCompoundString)value;
-            for (HierarchicalCompoundString hcs : mhcs.getParts() ) {
-                if ( this.a_values.contains(hcs) ) return true;
+            for (final HierarchicalCompoundString hcs : mhcs.getParts() ) {
+                if ( a_values.contains(hcs) ) {
+                    return true;
+                }
             }
         } else {
             throw new ClassCastException("filter on HierarchicalCompoundString is corrupted");
@@ -67,6 +70,6 @@ public class FilterOnHierarchicalCompoundString extends FilterBase {
      * @return values of the filter
      */
     public Set<HierarchicalCompoundString> getValues() {
-        return this.a_values;
+        return a_values;
     }
 }

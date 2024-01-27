@@ -30,7 +30,7 @@ public abstract class MapURICreator {
      * @param data
      * @return longitude range in meters
      */
-    static public double getLongitudeRangeInMeters(GPSData data)
+    static public double getLongitudeRangeInMeters(final GPSData data)
     {
         return ( data.getLatitudeRangeAsDouble().doubleValue() / 180.0)  *  Math.PI * s_earthRadiusInMeters * Math.cos(data.getLatitudeRangeAsDouble().doubleValue() / 180.0);
     }
@@ -39,7 +39,7 @@ public abstract class MapURICreator {
      * @param data
      * @return latitude range in meters
      */
-    static public double getLatitudeRangeInMeters(GPSData data)
+    static public double getLatitudeRangeInMeters(final GPSData data)
     {
         return ( data.getLatitudeRangeAsDouble().doubleValue() / 180.0)  *  Math.PI * s_earthRadiusInMeters;
     }
@@ -48,7 +48,7 @@ public abstract class MapURICreator {
      * @param data
      * @return latitude range in meters
      */
-    static public double getRangeInMeters(GPSData data)
+    static public double getRangeInMeters(final GPSData data)
     {
         return Math.max(getLongitudeRangeInMeters(data), getLatitudeRangeInMeters(data));
     }

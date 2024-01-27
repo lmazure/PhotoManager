@@ -13,7 +13,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,18 +60,18 @@ public class ConcretePhotoList extends Object
                              final String cacheDir,
                              final Scheduler scheduler) {
 
-        this.a_listOfListeners = new Vector<>();
-        this.a_listOfMetaDataListeners = new Vector<>();
-        this.a_listOfSaveListeners = new Vector<>();
-        this.a_locationFactory = new HierarchicalCompoundStringFactory();
-        this.a_subjectFactory = new MultiHierarchicalCompoundStringFactory();
-        this.a_authorFactory = new AuthorFactory();
-        this.a_excelFilename = excelFilename;
-        this.a_scheduler = scheduler;
-        this.a_isSaved = true;
-        this.a_listOfPhotos = new Vector<>();
-        this.a_photoHeaderDataCache = new PhotoHeaderDataCache(rootDirPhoto, cacheDir, scheduler);
-        Photo.initializeByDirtyHack(rootDirPhoto, this.a_photoHeaderDataCache);
+        a_listOfListeners = new Vector<>();
+        a_listOfMetaDataListeners = new Vector<>();
+        a_listOfSaveListeners = new Vector<>();
+        a_locationFactory = new HierarchicalCompoundStringFactory();
+        a_subjectFactory = new MultiHierarchicalCompoundStringFactory();
+        a_authorFactory = new AuthorFactory();
+        a_excelFilename = excelFilename;
+        a_scheduler = scheduler;
+        a_isSaved = true;
+        a_listOfPhotos = new Vector<>();
+        a_photoHeaderDataCache = new PhotoHeaderDataCache(rootDirPhoto, cacheDir, scheduler);
+        Photo.initializeByDirtyHack(rootDirPhoto, a_photoHeaderDataCache);
 
         String data[][] = null;
         if (!Files.exists(Paths.get(excelFilename))) {
@@ -120,8 +119,8 @@ public class ConcretePhotoList extends Object
                 sortFolderContentByDateTime(rootDirPhoto,previousFolderName,currentFolderContent);
                 for (int j=0; j<currentFolderContent.size(); j++) {
                     final String fileName = currentFolderContent.get(j);
-                    final Photo photo = new Photo(previousFolderName,fileName,this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
-                    this.a_listOfPhotos.add(photo);
+                    final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
+                    a_listOfPhotos.add(photo);
                     System.err.println(photo.getFullPath()+" is missing from the index");
                     setAsUnsaved();
                 }
@@ -129,8 +128,8 @@ public class ConcretePhotoList extends Object
                 previousFolderName = folderName;
             }
             final String fileName = data[i][1];
-            final Photo photo = new Photo(data[i],this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
-            this.a_listOfPhotos.add(photo);
+            final Photo photo = new Photo(data[i],a_locationFactory,a_subjectFactory,a_authorFactory);
+            a_listOfPhotos.add(photo);
             if ( currentFolderContent.contains(fileName) ) {
                 currentFolderContent.remove(fileName);
             } else {
@@ -140,8 +139,8 @@ public class ConcretePhotoList extends Object
         sortFolderContentByDateTime(rootDirPhoto,previousFolderName,currentFolderContent);
         for (int j=0; j<currentFolderContent.size(); j++) {
             final String fileName = currentFolderContent.get(j);
-            final Photo photo = new Photo(previousFolderName,fileName,this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
-            this.a_listOfPhotos.add(photo);
+            final Photo photo = new Photo(previousFolderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
+            a_listOfPhotos.add(photo);
             System.err.println(photo.getFullPath()+" is missing from the index");
             setAsUnsaved();
         }
@@ -152,8 +151,8 @@ public class ConcretePhotoList extends Object
             sortFolderContentByDateTime(rootDirPhoto,folderName,currentFolderContent);
             for (int j=0; j<currentFolderContent.size(); j++) {
                 final String fileName = currentFolderContent.get(j);
-                final Photo photo = new Photo(folderName,fileName,this.a_locationFactory,this.a_subjectFactory,this.a_authorFactory);
-                this.a_listOfPhotos.add(photo);
+                final Photo photo = new Photo(folderName,fileName,a_locationFactory,a_subjectFactory,a_authorFactory);
+                a_listOfPhotos.add(photo);
                 System.err.println(photo.getFullPath()+" is missing from the index");
             }
             setAsUnsaved();
@@ -167,9 +166,7 @@ public class ConcretePhotoList extends Object
     @Override
     public int getRowCount() {
 
-        final int rowCount = this.a_listOfPhotos.size();
-
-        return rowCount;
+        return a_listOfPhotos.size();
     }
 
     /**
@@ -180,7 +177,6 @@ public class ConcretePhotoList extends Object
         return NB_PARAM;
     }
 
-
     /**
      * @param rowIndex
      * @return photo
@@ -188,9 +184,7 @@ public class ConcretePhotoList extends Object
     @Override
     public Photo getPhoto(final int rowIndex) {
 
-        final Photo photo = this.a_listOfPhotos.get(rowIndex);
-
-        return photo;
+        return a_listOfPhotos.get(rowIndex);
     }
 
     /**
@@ -199,9 +193,7 @@ public class ConcretePhotoList extends Object
     @Override
     public boolean isSaved() {
 
-        final boolean isSaved = this.a_isSaved;
-
-        return isSaved;
+        return a_isSaved;
     }
 
     /**
@@ -210,10 +202,12 @@ public class ConcretePhotoList extends Object
      */
     private void setAsUnsaved() {
 
-        if (this.a_isSaved) {
-            this.a_isSaved = false;
+        if (a_isSaved) {
+            a_isSaved = false;
             final SaveEvent f = new SaveEvent(this, false);
-            for (SaveListener l : this.a_listOfSaveListeners) l.saveChanged(f);
+            for (final SaveListener l : a_listOfSaveListeners) {
+                l.saveChanged(f);
+            }
         }
 
     }
@@ -223,10 +217,12 @@ public class ConcretePhotoList extends Object
      */
     private void setAsSaved() {
 
-        this.a_isSaved = true;
+        a_isSaved = true;
 
         final SaveEvent f = new SaveEvent(this, true);
-        for (SaveListener l : this.a_listOfSaveListeners) l.saveChanged(f);
+        for (final SaveListener l : a_listOfSaveListeners) {
+            l.saveChanged(f);
+        }
     }
 
     /**
@@ -234,78 +230,43 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public String getColumnName(final int columnIndex) {
-        switch (columnIndex) {
-        case PARAM_FOLDER:
-            return "folder";
-        case PARAM_FILENAME:
-            return "filename";
-        case PARAM_LOCATION:
-            return "location (index)";
-        case PARAM_ORIENTATION:
-            return "orientation (header)";
-        case PARAM_SUBJECT:
-            return "subject (index)";
-        case PARAM_QUALITY:
-            return "quality (index)";
-        case PARAM_ORIGINALITY:
-            return "originality (index)";
-        case PARAM_PRIVACY:
-            return "privacy (index)";
-        case PARAM_DATE:
-            return "date (header)";
-        case PARAM_PANORAMA:
-            return "panorama (index)";
-        case PARAM_PANORAMA_FIRST:
-            return "panorama first (index)";
-        case PARAM_AUTHOR:
-            return "author (index)";
-        case PARAM_COPIES:
-            return "copies (index)";
-        case PARAM_ZOOM:
-            return "zoom (index)";
-        case PARAM_FOCUS_X:
-            return "focus X (index)";
-        case PARAM_FOCUS_Y:
-            return "focus Y (index)";
-        case PARAM_ROTATION:
-            return "rotation (index)";
-        case PARAM_MANUFACTURER:
-            return "manufacturer (header)";
-        case PARAM_MODEL:
-            return "model (header)";
-        case PARAM_EXPOSURE_TIME:
-            return "exposure time (header)";
-        case PARAM_SHUTTER_SPEED:
-            return "shutter speed (header)";
-        case PARAM_APERTURE_VALUE:
-            return "aperture value (header)";
-        case PARAM_FLASH:
-            return "flash (header)";
-        case PARAM_FOCAL_LENGTH:
-            return "focal length (header)";
-        case PARAM_SELF_TIMER_MODE:
-            return "Self timer mode (header)";
-        case PARAM_CANON_SELF_TIMER_DELAY:
-            return "Canon self timer delay (header)";
-        case PARAM_CANON_FLASH_MODE:
-            return "Canon flash mode (header)";
-        case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
-            return "Canon continuous drive mode (header)";
-        case PARAM_CANON_FOCUS_MODE:
-            return "Canon focus mode (header)";
-        case PARAM_CANON_ISO:
-            return "Canon ISO (header)";
-        case PARAM_CANON_SUBJECT_DISTANCE:
-            return "Canon subject distance (header)";
-        case PARAM_HEIGHT:
-            return "Height (header)";
-        case PARAM_WITDH:
-            return "Width (header)";
-        case PARAM_FORMAT:
-            return "Format";
-        default:
-            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
-        }
+        return switch (columnIndex) {
+        case PARAM_FOLDER -> "folder";
+        case PARAM_FILENAME -> "filename";
+        case PARAM_LOCATION -> "location (index)";
+        case PARAM_ORIENTATION -> "orientation (header)";
+        case PARAM_SUBJECT -> "subject (index)";
+        case PARAM_QUALITY -> "quality (index)";
+        case PARAM_ORIGINALITY -> "originality (index)";
+        case PARAM_PRIVACY -> "privacy (index)";
+        case PARAM_DATE -> "date (header)";
+        case PARAM_PANORAMA -> "panorama (index)";
+        case PARAM_PANORAMA_FIRST -> "panorama first (index)";
+        case PARAM_AUTHOR -> "author (index)";
+        case PARAM_COPIES -> "copies (index)";
+        case PARAM_ZOOM -> "zoom (index)";
+        case PARAM_FOCUS_X -> "focus X (index)";
+        case PARAM_FOCUS_Y -> "focus Y (index)";
+        case PARAM_ROTATION -> "rotation (index)";
+        case PARAM_MANUFACTURER -> "manufacturer (header)";
+        case PARAM_MODEL -> "model (header)";
+        case PARAM_EXPOSURE_TIME -> "exposure time (header)";
+        case PARAM_SHUTTER_SPEED -> "shutter speed (header)";
+        case PARAM_APERTURE_VALUE -> "aperture value (header)";
+        case PARAM_FLASH -> "flash (header)";
+        case PARAM_FOCAL_LENGTH -> "focal length (header)";
+        case PARAM_SELF_TIMER_MODE -> "Self timer mode (header)";
+        case PARAM_CANON_SELF_TIMER_DELAY -> "Canon self timer delay (header)";
+        case PARAM_CANON_FLASH_MODE -> "Canon flash mode (header)";
+        case PARAM_CANON_CONTINUOUS_DRIVE_MODE -> "Canon continuous drive mode (header)";
+        case PARAM_CANON_FOCUS_MODE -> "Canon focus mode (header)";
+        case PARAM_CANON_ISO -> "Canon ISO (header)";
+        case PARAM_CANON_SUBJECT_DISTANCE -> "Canon subject distance (header)";
+        case PARAM_HEIGHT -> "Height (header)";
+        case PARAM_WITDH -> "Width (header)";
+        case PARAM_FORMAT -> "Format";
+        default -> throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+        };
     }
 
     /**
@@ -313,58 +274,24 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public Class<?> getColumnClass(final int columnIndex) {
-        switch (columnIndex) {
-        case PARAM_FOLDER:
-        case PARAM_FILENAME:
-        case PARAM_PANORAMA:
-        case PARAM_PANORAMA_FIRST:
-        case PARAM_AUTHOR:
-        case PARAM_MANUFACTURER:
-        case PARAM_MODEL:
-        case PARAM_EXPOSURE_TIME:
-        case PARAM_SHUTTER_SPEED:
-        case PARAM_APERTURE_VALUE:
-        case PARAM_FLASH:
-            return String.class;
-        case PARAM_FOCAL_LENGTH:
-            return Double.class;
-        case PARAM_SELF_TIMER_MODE:
-        case PARAM_CANON_SELF_TIMER_DELAY:
-        case PARAM_CANON_FLASH_MODE:
-        case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
-        case PARAM_CANON_FOCUS_MODE:
-        case PARAM_CANON_ISO:
-            return String.class;
-        case PARAM_CANON_SUBJECT_DISTANCE:
-            return Integer.class;
-        case PARAM_ZOOM:
-        case PARAM_FOCUS_X:
-        case PARAM_FOCUS_Y:
-        case PARAM_ROTATION:
-            return Float.class;
-        case PARAM_LOCATION:
-            return HierarchicalCompoundString.class;
-        case PARAM_SUBJECT:
-            return MultiHierarchicalCompoundString.class;
-        case PARAM_ORIENTATION:
-        case PARAM_HEIGHT:
-        case PARAM_WITDH:
-            return Integer.class;
-        case PARAM_QUALITY:
-            return PhotoQuality.class;
-        case PARAM_ORIGINALITY:
-            return PhotoOriginality.class;
-        case PARAM_PRIVACY:
-            return PhotoPrivacy.class;
-        case PARAM_DATE:
-            return Date.class;
-        case PARAM_COPIES:
-            return Integer.class;
-        case PARAM_FORMAT:
-            return DataFormat.class;
-        default:
-            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
-        }
+        return switch (columnIndex) {
+        case PARAM_FOLDER, PARAM_FILENAME, PARAM_PANORAMA, PARAM_PANORAMA_FIRST, PARAM_AUTHOR, PARAM_MANUFACTURER, PARAM_MODEL, PARAM_EXPOSURE_TIME, PARAM_SHUTTER_SPEED, PARAM_APERTURE_VALUE, PARAM_FLASH ->
+            String.class;
+        case PARAM_FOCAL_LENGTH -> Double.class;
+        case PARAM_SELF_TIMER_MODE, PARAM_CANON_SELF_TIMER_DELAY, PARAM_CANON_FLASH_MODE, PARAM_CANON_CONTINUOUS_DRIVE_MODE, PARAM_CANON_FOCUS_MODE, PARAM_CANON_ISO -> String.class;
+        case PARAM_CANON_SUBJECT_DISTANCE -> Integer.class;
+        case PARAM_ZOOM, PARAM_FOCUS_X, PARAM_FOCUS_Y, PARAM_ROTATION -> Float.class;
+        case PARAM_LOCATION -> HierarchicalCompoundString.class;
+        case PARAM_SUBJECT -> MultiHierarchicalCompoundString.class;
+        case PARAM_ORIENTATION, PARAM_HEIGHT, PARAM_WITDH -> Integer.class;
+        case PARAM_QUALITY -> PhotoQuality.class;
+        case PARAM_ORIGINALITY -> PhotoOriginality.class;
+        case PARAM_PRIVACY -> PhotoPrivacy.class;
+        case PARAM_DATE -> Date.class;
+        case PARAM_COPIES -> Integer.class;
+        case PARAM_FORMAT -> DataFormat.class;
+        default -> throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+        };
     }
 
     /**
@@ -373,46 +300,14 @@ public class ConcretePhotoList extends Object
     @Override
     public boolean isCellEditable(final int rowIndex,
                                   final int columnIndex) {
-        switch (columnIndex) {
-        case PARAM_PRIVACY:
-        case PARAM_QUALITY:
-        case PARAM_ORIGINALITY:
-        case PARAM_COPIES:
-        case PARAM_SUBJECT:
-        case PARAM_ZOOM:
-        case PARAM_FOCUS_X:
-        case PARAM_FOCUS_Y:
-        case PARAM_ROTATION:
-        case PARAM_AUTHOR:
-        case PARAM_LOCATION:
-            return true;
-        case PARAM_FOLDER:
-        case PARAM_FILENAME:
-        case PARAM_ORIENTATION:
-        case PARAM_PANORAMA:
-        case PARAM_PANORAMA_FIRST:
-        case PARAM_DATE:
-        case PARAM_MANUFACTURER:
-        case PARAM_MODEL:
-        case PARAM_EXPOSURE_TIME:
-        case PARAM_SHUTTER_SPEED:
-        case PARAM_APERTURE_VALUE:
-        case PARAM_FLASH:
-        case PARAM_FOCAL_LENGTH:
-        case PARAM_SELF_TIMER_MODE:
-        case PARAM_CANON_SELF_TIMER_DELAY:
-        case PARAM_CANON_FLASH_MODE:
-        case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
-        case PARAM_CANON_FOCUS_MODE:
-        case PARAM_CANON_ISO:
-        case PARAM_CANON_SUBJECT_DISTANCE:
-        case PARAM_HEIGHT:
-        case PARAM_WITDH:
-        case PARAM_FORMAT:
-            return false;
-        default:
-            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
-        }
+        return switch (columnIndex) {
+        case PARAM_PRIVACY, PARAM_QUALITY, PARAM_ORIGINALITY, PARAM_COPIES, PARAM_SUBJECT, PARAM_ZOOM, PARAM_FOCUS_X, PARAM_FOCUS_Y, PARAM_ROTATION, PARAM_AUTHOR, PARAM_LOCATION ->
+            true;
+        case PARAM_FOLDER, PARAM_FILENAME, PARAM_ORIENTATION, PARAM_PANORAMA, PARAM_PANORAMA_FIRST, PARAM_DATE, PARAM_MANUFACTURER, PARAM_MODEL, PARAM_EXPOSURE_TIME, PARAM_SHUTTER_SPEED, PARAM_APERTURE_VALUE, PARAM_FLASH,
+                PARAM_FOCAL_LENGTH, PARAM_SELF_TIMER_MODE, PARAM_CANON_SELF_TIMER_DELAY, PARAM_CANON_FLASH_MODE, PARAM_CANON_CONTINUOUS_DRIVE_MODE, PARAM_CANON_FOCUS_MODE, PARAM_CANON_ISO, PARAM_CANON_SUBJECT_DISTANCE, PARAM_HEIGHT, PARAM_WITDH, PARAM_FORMAT ->
+            false;
+        default -> throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+        };
     }
 
     /**
@@ -423,113 +318,46 @@ public class ConcretePhotoList extends Object
                              final int columnIndex) {
         Object value = null;
 
-        switch (columnIndex) {
-        case PARAM_FOLDER:
-            value = getPhoto(rowIndex).getFolder();
-            break;
-        case PARAM_FILENAME:
-            value = getPhoto(rowIndex).getFilename();
-            break;
-        case PARAM_LOCATION:
-            value = getPhoto(rowIndex).getIndexData().getLocation();
-            break;
-        case PARAM_ORIENTATION:
-            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getOrientation());
-            break;
-        case PARAM_SUBJECT:
-            value = getPhoto(rowIndex).getIndexData().getSubject();
-            break;
-        case PARAM_QUALITY:
-            value = getPhoto(rowIndex).getIndexData().getQuality();
-            break;
-        case PARAM_ORIGINALITY:
-            value = getPhoto(rowIndex).getIndexData().getOriginality();
-            break;
-        case PARAM_PRIVACY:
-            value = getPhoto(rowIndex).getIndexData().getPrivacy();
-            break;
-        case PARAM_DATE:
-            value = getPhoto(rowIndex).getHeaderData().getDate();
-            break;
-        case PARAM_PANORAMA:
-            value = getPhoto(rowIndex).getIndexData().getPanorama();
-            break;
-        case PARAM_PANORAMA_FIRST:
-            value = getPhoto(rowIndex).getIndexData().getPanoramaFirst();
-            break;
-        case PARAM_AUTHOR:
-            value = getPhoto(rowIndex).getIndexData().getAuthor();
-            break;
-        case PARAM_COPIES:
-            value = Integer.valueOf(getPhoto(rowIndex).getIndexData().getCopies());
-            break;
-        case PARAM_ZOOM:
-            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getZoom());
-            break;
-        case PARAM_FOCUS_X:
-            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getFocusX());
-            break;
-        case PARAM_FOCUS_Y:
-            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getFocusY());
-            break;
-        case PARAM_ROTATION:
-            value = Float.valueOf(getPhoto(rowIndex).getIndexData().getRotation());
-            break;
-        case PARAM_MANUFACTURER:
-            value = getPhoto(rowIndex).getHeaderData().getManufacturer();
-            break;
-        case PARAM_MODEL:
-            value = getPhoto(rowIndex).getHeaderData().getModel();
-            break;
-        case PARAM_EXPOSURE_TIME:
-            value = getPhoto(rowIndex).getHeaderData().getExposureTime();
-            break;
-        case PARAM_SHUTTER_SPEED:
-            value = getPhoto(rowIndex).getHeaderData().getShutterSpeed();
-            break;
-        case PARAM_APERTURE_VALUE:
-            value = getPhoto(rowIndex).getHeaderData().getApertureValue();
-            break;
-        case PARAM_FLASH:
-            value = getPhoto(rowIndex).getHeaderData().getFlash();
-            break;
-        case PARAM_FOCAL_LENGTH:
+        value = switch (columnIndex) {
+        case PARAM_FOLDER -> getPhoto(rowIndex).getFolder();
+        case PARAM_FILENAME -> getPhoto(rowIndex).getFilename();
+        case PARAM_LOCATION -> getPhoto(rowIndex).getIndexData().getLocation();
+        case PARAM_ORIENTATION -> Integer.valueOf(getPhoto(rowIndex).getHeaderData().getOrientation());
+        case PARAM_SUBJECT -> getPhoto(rowIndex).getIndexData().getSubject();
+        case PARAM_QUALITY -> getPhoto(rowIndex).getIndexData().getQuality();
+        case PARAM_ORIGINALITY -> getPhoto(rowIndex).getIndexData().getOriginality();
+        case PARAM_PRIVACY -> getPhoto(rowIndex).getIndexData().getPrivacy();
+        case PARAM_DATE -> getPhoto(rowIndex).getHeaderData().getDate();
+        case PARAM_PANORAMA -> getPhoto(rowIndex).getIndexData().getPanorama();
+        case PARAM_PANORAMA_FIRST -> getPhoto(rowIndex).getIndexData().getPanoramaFirst();
+        case PARAM_AUTHOR -> getPhoto(rowIndex).getIndexData().getAuthor();
+        case PARAM_COPIES -> Integer.valueOf(getPhoto(rowIndex).getIndexData().getCopies());
+        case PARAM_ZOOM -> Float.valueOf(getPhoto(rowIndex).getIndexData().getZoom());
+        case PARAM_FOCUS_X -> Float.valueOf(getPhoto(rowIndex).getIndexData().getFocusX());
+        case PARAM_FOCUS_Y -> Float.valueOf(getPhoto(rowIndex).getIndexData().getFocusY());
+        case PARAM_ROTATION -> Float.valueOf(getPhoto(rowIndex).getIndexData().getRotation());
+        case PARAM_MANUFACTURER -> getPhoto(rowIndex).getHeaderData().getManufacturer();
+        case PARAM_MODEL -> getPhoto(rowIndex).getHeaderData().getModel();
+        case PARAM_EXPOSURE_TIME -> getPhoto(rowIndex).getHeaderData().getExposureTime();
+        case PARAM_SHUTTER_SPEED -> getPhoto(rowIndex).getHeaderData().getShutterSpeed();
+        case PARAM_APERTURE_VALUE -> getPhoto(rowIndex).getHeaderData().getApertureValue();
+        case PARAM_FLASH -> getPhoto(rowIndex).getHeaderData().getFlash();
+        case PARAM_FOCAL_LENGTH -> {
             final PhotoHeaderData d = getPhoto(rowIndex).getHeaderData();
-            value = d.getFocalLength();
-            break;
-        case PARAM_SELF_TIMER_MODE:
-            value = getPhoto(rowIndex).getHeaderData().getSelfTimerMode();
-            break;
-        case PARAM_CANON_SELF_TIMER_DELAY:
-            value = getPhoto(rowIndex).getHeaderData().getCanonSelfTimerDelay();
-            break;
-        case PARAM_CANON_FLASH_MODE:
-            value = getPhoto(rowIndex).getHeaderData().getCanonFlashMode();
-            break;
-        case PARAM_CANON_CONTINUOUS_DRIVE_MODE:
-            value = getPhoto(rowIndex).getHeaderData().getCanonContinuousDriveMode();
-            break;
-        case PARAM_CANON_FOCUS_MODE:
-            value = getPhoto(rowIndex).getHeaderData().getCanonFocusMode();
-            break;
-        case PARAM_CANON_ISO:
-            value = getPhoto(rowIndex).getHeaderData().getCanonISO();
-            break;
-        case PARAM_CANON_SUBJECT_DISTANCE:
-            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance());
-            break;
-        case PARAM_HEIGHT:
-            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getHeight());
-            break;
-        case PARAM_WITDH:
-            value = Integer.valueOf(getPhoto(rowIndex).getHeaderData().getWidth());
-            break;
-        case PARAM_FORMAT:
-            value = getPhoto(rowIndex).getFormat();
-            break;
-        default:
-            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+            yield d.getFocalLength();
         }
+        case PARAM_SELF_TIMER_MODE -> getPhoto(rowIndex).getHeaderData().getSelfTimerMode();
+        case PARAM_CANON_SELF_TIMER_DELAY -> getPhoto(rowIndex).getHeaderData().getCanonSelfTimerDelay();
+        case PARAM_CANON_FLASH_MODE -> getPhoto(rowIndex).getHeaderData().getCanonFlashMode();
+        case PARAM_CANON_CONTINUOUS_DRIVE_MODE -> getPhoto(rowIndex).getHeaderData().getCanonContinuousDriveMode();
+        case PARAM_CANON_FOCUS_MODE -> getPhoto(rowIndex).getHeaderData().getCanonFocusMode();
+        case PARAM_CANON_ISO -> getPhoto(rowIndex).getHeaderData().getCanonISO();
+        case PARAM_CANON_SUBJECT_DISTANCE -> Integer.valueOf(getPhoto(rowIndex).getHeaderData().getCanonSubjectDistance());
+        case PARAM_HEIGHT -> Integer.valueOf(getPhoto(rowIndex).getHeaderData().getHeight());
+        case PARAM_WITDH -> Integer.valueOf(getPhoto(rowIndex).getHeaderData().getWidth());
+        case PARAM_FORMAT -> getPhoto(rowIndex).getFormat();
+        default -> throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+        };
 
         return value;
     }
@@ -560,7 +388,7 @@ public class ConcretePhotoList extends Object
             if ( value instanceof MultiHierarchicalCompoundString ) {
                 subject = (MultiHierarchicalCompoundString)value;
             } else {
-                subject = this.a_subjectFactory.create((String)value);
+                subject = a_subjectFactory.create((String)value);
             }
             if ( !subject.equals(getPhoto(rowIndex).getIndexData().getSubject()) ) {
                 getPhoto(rowIndex).getIndexData().setSubject(subject);
@@ -571,7 +399,7 @@ public class ConcretePhotoList extends Object
             if ( value instanceof HierarchicalCompoundString ) {
                 location = (HierarchicalCompoundString)value;
             } else {
-                location = this.a_locationFactory.create((String)value);
+                location = a_locationFactory.create((String)value);
             }
             if ( location!=getPhoto(rowIndex).getIndexData().getLocation() ) {
                 getPhoto(rowIndex).getIndexData().setLocation(location);
@@ -579,7 +407,7 @@ public class ConcretePhotoList extends Object
             break; }
         case PARAM_AUTHOR: {
             final String v = (String)value;
-            final String vv = this.a_authorFactory.create(v);
+            final String vv = a_authorFactory.create(v);
             if ( vv!=getPhoto(rowIndex).getIndexData().getAuthor() ) {
                 getPhoto(rowIndex).getIndexData().setAuthor(v);
             }
@@ -624,7 +452,7 @@ public class ConcretePhotoList extends Object
             } else {
                 try {
                     copies = Integer.valueOf(format.parse((String)value).intValue());
-                } catch (ParseException e1) {
+                } catch (final ParseException e1) {
                     e1.printStackTrace();
                     return;
                 }
@@ -640,7 +468,7 @@ public class ConcretePhotoList extends Object
             } else {
                 try {
                     zoom = Float.valueOf(format.parse((String)value).floatValue());
-                } catch (ParseException e1) {
+                } catch (final ParseException e1) {
                     e1.printStackTrace();
                     return;
                 }
@@ -656,7 +484,7 @@ public class ConcretePhotoList extends Object
             } else {
                 try {
                     focusX = Float.valueOf(format.parse((String)value).floatValue());
-                } catch (ParseException e1) {
+                } catch (final ParseException e1) {
                     e1.printStackTrace();
                     return;
                 }
@@ -672,7 +500,7 @@ public class ConcretePhotoList extends Object
             } else {
                 try {
                     focusY = Float.valueOf(format.parse((String)value).floatValue());
-                } catch (ParseException e1) {
+                } catch (final ParseException e1) {
                     e1.printStackTrace();
                     return;
                 }
@@ -689,15 +517,19 @@ public class ConcretePhotoList extends Object
             } else {
                 try {
                     rotation = Float.valueOf(format.parse((String)value).floatValue());
-                } catch (ParseException e1) {
+                } catch (final ParseException e1) {
                     e1.printStackTrace();
                     return;
                 }
             }
             float vnorm = rotation.floatValue();
             vnorm = vnorm % 360;
-            if (vnorm>180) vnorm -= 360;
-            if (vnorm<=-180) vnorm += 360;
+            if (vnorm>180) {
+                vnorm -= 360;
+            }
+            if (vnorm<=-180) {
+                vnorm += 360;
+            }
             if ( vnorm != getPhoto(rowIndex).getIndexData().getRotation() ) {
                 getPhoto(rowIndex).getIndexData().setRotation(vnorm);
             }
@@ -719,7 +551,9 @@ public class ConcretePhotoList extends Object
         }
 
         final TableModelEvent e = new TableModelEvent(this, rowIndex, rowIndex, columnIndex);
-        for (TableModelListener l : this.a_listOfListeners) l.tableChanged(e);
+        for (final TableModelListener l : a_listOfListeners) {
+            l.tableChanged(e);
+        }
 
         setAsUnsaved();
     }
@@ -729,7 +563,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public void addTableModelListener(final TableModelListener l) {
-        this.a_listOfListeners.add(l);
+        a_listOfListeners.add(l);
     }
 
     /**
@@ -737,7 +571,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public void removeTableModelListener(final TableModelListener l) {
-        this.a_listOfListeners.remove(l);
+        a_listOfListeners.remove(l);
     }
 
     /**
@@ -745,7 +579,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public void addMetaListener(final PhotoListMetaDataListener l) {
-        this.a_listOfMetaDataListeners.add(l);
+        a_listOfMetaDataListeners.add(l);
     }
 
     /**
@@ -753,7 +587,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public void removeMetaListener(final PhotoListMetaDataListener l) {
-        this.a_listOfMetaDataListeners.remove(l);
+        a_listOfMetaDataListeners.remove(l);
     }
 
     /**
@@ -761,7 +595,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public void addSaveListener(final SaveListener l) {
-        this.a_listOfSaveListeners.add(l);
+        a_listOfSaveListeners.add(l);
     }
 
     /**
@@ -769,7 +603,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public void removeSaveListener(final SaveListener l) {
-        this.a_listOfSaveListeners.remove(l);
+        a_listOfSaveListeners.remove(l);
     }
 
     /**
@@ -777,7 +611,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public HierarchicalCompoundStringFactory getLocationFactory() {
-        return this.a_locationFactory;
+        return a_locationFactory;
     }
 
     /**
@@ -785,7 +619,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public MultiHierarchicalCompoundStringFactory getSubjectFactory() {
-        return this.a_subjectFactory;
+        return a_subjectFactory;
     }
 
     /**
@@ -793,7 +627,7 @@ public class ConcretePhotoList extends Object
      */
     @Override
     public AuthorFactory getAuthorFactory() {
-        return this.a_authorFactory;
+        return a_authorFactory;
     }
 
     /**
@@ -803,12 +637,12 @@ public class ConcretePhotoList extends Object
     public void save() throws IOException {
 
         // check that the data is not already saved
-        if (this.a_isSaved) {
+        if (a_isSaved) {
             return;
         }
 
         // prepare the data
-        final String data[][] = new String[this.a_listOfPhotos.size()+1][];
+        final String data[][] = new String[a_listOfPhotos.size()+1][];
         data[0] = new String[15];
         data[0][0] = "directory";
         data[0][1] = "photo";
@@ -825,7 +659,7 @@ public class ConcretePhotoList extends Object
         data[0][12] = "focus X";
         data[0][13] = "focus Y";
         data[0][14] = "rotation";
-        for (int i=0; i<this.a_listOfPhotos.size(); i++) {
+        for (int i=0; i<a_listOfPhotos.size(); i++) {
             data[i+1] = new String[15];
             final Photo photo = getPhoto(i);
             final PhotoIndexData indexData = photo.getIndexData();
@@ -847,8 +681,8 @@ public class ConcretePhotoList extends Object
             data[i+1][14] = Float.toString(indexData.getRotation());
         }
 
-        this.a_scheduler.submitIO("save index file",
-                             new Runnable() { @Override public void run() { save(data); } });
+        a_scheduler.submitIO("save index file",
+                             () -> save(data));
 
         // notify the SaveListerners
         setAsSaved(); //TODO this is not correct if the saving fails
@@ -871,15 +705,15 @@ public class ConcretePhotoList extends Object
                                       "_" + f2.format(now.get(Calendar.MINUTE)) +
                                       "_" + f2.format(now.get(Calendar.SECOND)) +
                                       "_" + f3.format(now.get(Calendar.MILLISECOND));
-            final String name = this.a_excelFilename.replace(".txt","_"+backupName+".txt");
-            final File file = new File(this.a_excelFilename);
+            final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
+            final File file = new File(a_excelFilename);
             final File file2 = new File(name);
             if (!file.renameTo(file2)) {
-                System.err.println("Failed to rename "+this.a_excelFilename+" into "+name);
+                System.err.println("Failed to rename "+a_excelFilename+" into "+name);
             }
 
             // create the new file
-            StringTableFromToExcel.save(this.a_excelFilename,data);
+            StringTableFromToExcel.save(a_excelFilename,data);
         } catch (final IOException e) {
             System.err.println("failed to save index file");
             e.printStackTrace();
@@ -897,10 +731,10 @@ public class ConcretePhotoList extends Object
         if ( list == null ) {
             System.err.println("Cannot find the root directory \""+rootDir+"\"");
         } else {
-            for (int i=0; i<list.length; i++) {
-                if (list[i].isDirectory()) {
+            for (final File element : list) {
+                if (element.isDirectory()) {
                     // workaround the fact that MacOS returns filenames as decomposed Unicode strings
-                    final String name = Normalizer.normalize(list[i].getName(),Normalizer.Form.NFC);
+                    final String name = Normalizer.normalize(element.getName(),Normalizer.Form.NFC);
                     content.add(name);
                 }
             }
@@ -923,11 +757,15 @@ public class ConcretePhotoList extends Object
         final Vector<String> content = new Vector<>();
         final String list[] = folder.list();
 
-        if (list==null) return content;
+        if (list==null) {
+            return content;
+        }
 
-        for ( String str: list)
-            if ( DataFormatFactory.createFormat(folder.getAbsolutePath() + File.separator + str) != null )
+        for ( final String str: list) {
+            if ( DataFormatFactory.createFormat(folder.getAbsolutePath() + File.separator + str) != null ) {
                 content.add(str);
+            }
+        }
 
         return content;
     }
@@ -946,19 +784,16 @@ public class ConcretePhotoList extends Object
         final File folder = new File(rootDir + File.separator + folderName);
         final HashMap<String, Long> modificationDateTimes = new HashMap<>();
 
-        for (String s : content) {
+        for (final String s : content) {
             final File f = new File(folder + File.separator + s);
             final long modificationDateTime = f.lastModified();
             modificationDateTimes.put(s, Long.valueOf(modificationDateTime));
         }
 
-        Collections.sort(content, new Comparator<String>() {
-            @Override
-            public int compare(final String s1, final String s2) {
-                final Long lastModified1 = modificationDateTimes.get(s1);
-                final Long lastModified2 = modificationDateTimes.get(s2);
-                return lastModified1.compareTo(lastModified2);
-            }
+        Collections.sort(content, (s1, s2) -> {
+            final Long lastModified1 = modificationDateTimes.get(s1);
+            final Long lastModified2 = modificationDateTimes.get(s2);
+            return lastModified1.compareTo(lastModified2);
         });
     }
 
@@ -968,12 +803,12 @@ public class ConcretePhotoList extends Object
     @Override
     public void performSubjectMapTranslation(final Map<String, String> map) {
 
-        for (int i=0; i<this.a_listOfPhotos.size(); i++) {
+        for (int i=0; i<a_listOfPhotos.size(); i++) {
             final MultiHierarchicalCompoundString oldSubjects = getPhoto(i).getIndexData().getSubject();
             final HierarchicalCompoundString[] oldParts = oldSubjects.getParts();
             String newSubjectsAsString = "";
-            for (int j=0; j<oldParts.length; j++) {
-                final String oldPartAsString = oldParts[j].toLongString();
+            for (final HierarchicalCompoundString oldPart : oldParts) {
+                final String oldPartAsString = oldPart.toLongString();
                 if (map.containsKey(oldPartAsString)) {
                     newSubjectsAsString += "\n"+ map.get(oldPartAsString);
                 } else {
@@ -990,7 +825,7 @@ public class ConcretePhotoList extends Object
     @Override
     public void performLocationMapTranslation(final Map<String, String> map) {
 
-        for (int i=0; i<this.a_listOfPhotos.size(); i++) {
+        for (int i=0; i<a_listOfPhotos.size(); i++) {
             final String location = getPhoto(i).getIndexData().getLocation().toLongString();
             if (map.containsKey(location)) {
                 setValueAt(map.get(location),i,PARAM_LOCATION);

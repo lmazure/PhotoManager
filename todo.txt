@@ -1,6 +1,4 @@
-- crash si le fichier d'index n'a pas encore été créé
-- crash si le fichoer gps n'a pas encore été créé
-
+- subject pas remis à jour via F4
 
 - corriger affichage Google (failed to locate template "resources/googleMapsTemplate.html")
 - résoudre problème license Google

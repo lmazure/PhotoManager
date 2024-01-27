@@ -2,13 +2,13 @@ package lmzr.photomngr.ui;
 
 import javax.swing.table.TableColumnModel;
 
+import org.jdesktop.swingx.JXTreeTable;
+
 import lmzr.photomngr.data.GPS.GPSDatabase;
 import lmzr.photomngr.ui.celleditor.GPSDataDeleteCellEditor;
 import lmzr.photomngr.ui.celleditor.GPSDataDisplayMapCellEditor;
 import lmzr.photomngr.ui.cellrenderer.GPSDataDeleteCellRenderer;
 import lmzr.photomngr.ui.cellrenderer.GPSDataDisplayMapCellRenderer;
-
-import org.jdesktop.swingx.JXTreeTable;
 
 /**
  * @author Laurent Mazuré

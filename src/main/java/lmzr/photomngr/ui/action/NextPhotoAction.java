@@ -28,15 +28,14 @@ public class NextPhotoAction extends PhotoManagerAction {
                            final String tooltipText,
                            final ListSelectionManager selection) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_selection = selection;
+        a_selection = selection;
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        this.a_selection.next(1);
+        a_selection.next(1);
     }
 }

@@ -30,25 +30,24 @@ public class SubsampledImageCachedManager {
          */
         private SubsampledImage(final BufferedImage image,
                                 final double subsampling) {
-            this.a_image = image;
-            this.a_subsampling = subsampling;
+            a_image = image;
+            a_subsampling = subsampling;
         }
 
         /**
          * @return subsampling
          */
         public double getSubsampling() {
-            return this.a_subsampling;
+            return a_subsampling;
         }
 
         /**
          * @return image
          */
         public BufferedImage getImage() {
-            return this.a_image;
+            return a_image;
         }
     }
-
 
     private final String a_cacheDirectory;
     private final double reductionFactor = 2;
@@ -58,7 +57,7 @@ public class SubsampledImageCachedManager {
      * @param cacheDirectory directory where will be stored the cached files
      */
     public SubsampledImageCachedManager(final String cacheDirectory) {
-        this.a_cacheDirectory = cacheDirectory;
+        a_cacheDirectory = cacheDirectory;
     }
 
     /**
@@ -119,18 +118,20 @@ public class SubsampledImageCachedManager {
         double ff = f;
         double zz = 1.0;
 
-        while ( ( ff < subsamplingFactor/this.reductionFactor ) &&
-                ( headerHeight*zz > this.minSize ) &&
-                ( headerWidth*zz > this.minSize ) ) {
-            ff *= this.reductionFactor;
-            zz /= this.reductionFactor;
+        while ( ( ff < subsamplingFactor/reductionFactor ) &&
+                ( headerHeight*zz > minSize ) &&
+                ( headerWidth*zz > minSize ) ) {
+            ff *= reductionFactor;
+            zz /= reductionFactor;
             i++;
         }
 
         // no subsampling required
-        if (i==0) return new SubsampledImage(photo.getImage(),1.0);
+        if (i==0) {
+            return new SubsampledImage(photo.getImage(),1.0);
+        }
 
-        final File file = new File(this.a_cacheDirectory +
+        final File file = new File(a_cacheDirectory +
                                    File.separator +
                                    photo.getFolder() +
                                    File.separator +

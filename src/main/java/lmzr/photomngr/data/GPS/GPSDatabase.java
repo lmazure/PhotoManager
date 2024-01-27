@@ -66,14 +66,13 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     final private Vector<SaveListener> a_listOfSaveListeners;
     private boolean a_isSaved;
 
-
     /**
      * A GPS record is a couple (location, GPS coordinates)
      */
     public class GPSRecord {
 
-        private HierarchicalCompoundString a_location;
-        private GPSData a_GPSData;
+        private final HierarchicalCompoundString a_location;
+        private final GPSData a_GPSData;
 
         /**
          * @param location
@@ -82,22 +81,22 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
 
         public GPSRecord (final HierarchicalCompoundString location,
                           final GPSData GPSData) {
-            this.a_location = location;
-            this.a_GPSData = GPSData;
+            a_location = location;
+            a_GPSData = GPSData;
         }
 
         /**
          * @return location
          */
         public HierarchicalCompoundString getLocation() {
-            return this.a_location;
+            return a_location;
         }
 
         /**
          * @return GPS coordinates
          */
         public GPSData getGPSData() {
-            return this.a_GPSData;
+            return a_GPSData;
         }
     }
 
@@ -108,12 +107,12 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     public GPSDatabase(final String excelFilename,
                        final HierarchicalCompoundStringFactory locationFactory) {
 
-        this.a_support = new TreeModelSupport(this);
+        a_support = new TreeModelSupport(this);
 
-        this.a_excelFilename = excelFilename;
-        this.a_locationFactory = locationFactory;
-        this.a_data = new HashMap<>();
-        this.a_listOfSaveListeners = new Vector<>();
+        a_excelFilename = excelFilename;
+        a_locationFactory = locationFactory;
+        a_data = new HashMap<>();
+        a_listOfSaveListeners = new Vector<>();
         setAsSaved();
 
         if (!Files.exists(Paths.get(excelFilename))) {
@@ -135,7 +134,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                                            (data[i][2].length()==0) ? null : data[i][2],
                                            (data[i][3].length()==0) ? null : data[i][3],
                                            (data[i][4].length()==0) ? null : data[i][4] );
-            this.a_data.put(l,d);
+            a_data.put(l,d);
         }
     }
 
@@ -147,8 +146,10 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     public GPSRecord getGPSData(final HierarchicalCompoundString location) {
         HierarchicalCompoundString l = location;
         do {
-            final GPSData d = this.a_data.get(l);
-            if ( d != null) return new GPSRecord(l,d);
+            final GPSData d = a_data.get(l);
+            if ( d != null) {
+                return new GPSRecord(l,d);
+            }
             l = l.getParent();
         } while ( l != null);
         return null;
@@ -159,19 +160,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      */
     @Override
     public Class<?> getColumnClass(final int columnIndex) {
-        switch (columnIndex) {
-        case PARAM_LOCATION:
-        case PARAM_LATITUDE_MIN:
-        case PARAM_LATITUDE_MAX:
-        case PARAM_LONGITUDE_MIN:
-        case PARAM_LONGITUDE_MAX:
-            return String.class;
-        case PARAM_GPS_DATA_FOR_MAPPING:
-        case PARAM_GPS_DATA_FOR_DELETING:
-            return GPSRecord.class;
-        default:
-            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
-        }
+        return switch (columnIndex) {
+        case PARAM_LOCATION, PARAM_LATITUDE_MIN, PARAM_LATITUDE_MAX, PARAM_LONGITUDE_MIN, PARAM_LONGITUDE_MAX -> String.class;
+        case PARAM_GPS_DATA_FOR_MAPPING, PARAM_GPS_DATA_FOR_DELETING -> GPSRecord.class;
+        default -> throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+        };
     }
 
     /**
@@ -187,24 +180,16 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      */
     @Override
     public String getColumnName(final int columnIndex) {
-        switch (columnIndex) {
-        case PARAM_LOCATION:
-            return "location";
-        case PARAM_LATITUDE_MIN:
-            return "min. latitude";
-        case PARAM_LATITUDE_MAX:
-            return "max. latitude";
-        case PARAM_LONGITUDE_MIN:
-            return "min. longitude";
-        case PARAM_LONGITUDE_MAX:
-            return "max. longitude";
-        case PARAM_GPS_DATA_FOR_MAPPING:
-            return "Geoportail";
-        case PARAM_GPS_DATA_FOR_DELETING:
-            return "delete";
-        default:
-            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
-        }
+        return switch (columnIndex) {
+        case PARAM_LOCATION -> "location";
+        case PARAM_LATITUDE_MIN -> "min. latitude";
+        case PARAM_LATITUDE_MAX -> "max. latitude";
+        case PARAM_LONGITUDE_MIN -> "min. longitude";
+        case PARAM_LONGITUDE_MAX -> "max. longitude";
+        case PARAM_GPS_DATA_FOR_MAPPING -> "Geoportail";
+        case PARAM_GPS_DATA_FOR_DELETING -> "delete";
+        default -> throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+        };
     }
 
     /**
@@ -223,25 +208,33 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                              final int columnIndex) {
 
         final HierarchicalCompoundString location = (HierarchicalCompoundString)node;
-        final GPSData data = this.a_data.get(location);
+        final GPSData data = a_data.get(location);
 
         switch (columnIndex) {
         case PARAM_LOCATION:
             return location.toShortString();
         case PARAM_LATITUDE_MIN:
-            if (data==null) return "";
+            if (data==null) {
+                return "";
+            }
             final String latMin =  data.getLatitudeMin();
             return ( latMin == null ) ? "" : latMin;
         case PARAM_LATITUDE_MAX:
-            if (data==null) return "";
+            if (data==null) {
+                return "";
+            }
             final String latMax = data.getLatitudeMax();
             return ( latMax == null ) ? "" : latMax;
         case PARAM_LONGITUDE_MIN:
-            if (data==null) return "";
+            if (data==null) {
+                return "";
+            }
             final String longMin =  data.getLongitudeMin();
             return ( longMin == null ) ? "" : longMin;
         case PARAM_LONGITUDE_MAX:
-            if (data==null) return "";
+            if (data==null) {
+                return "";
+            }
             final String longMax = data.getLongitudeMax();
             return ( longMax == null ) ? "" : longMax;
         case PARAM_GPS_DATA_FOR_MAPPING:
@@ -258,20 +251,12 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     @Override
     public boolean isCellEditable(final Object node,
                                   final int columnIndex) {
-        switch (columnIndex) {
-        case PARAM_LOCATION:
-            return false;
-        case PARAM_LATITUDE_MIN:
-        case PARAM_LATITUDE_MAX:
-        case PARAM_LONGITUDE_MIN:
-        case PARAM_LONGITUDE_MAX:
-            return true;
-        case PARAM_GPS_DATA_FOR_MAPPING:
-        case PARAM_GPS_DATA_FOR_DELETING:
-            return true; // necessary because the column contains buttons and clicks are handled by the CellEditor
-        default:
-            throw new IllegalArgumentException("Unknown column index: " + columnIndex);
-        }
+        return switch (columnIndex) {
+        case PARAM_LOCATION -> false;
+        case PARAM_LATITUDE_MIN, PARAM_LATITUDE_MAX, PARAM_LONGITUDE_MIN, PARAM_LONGITUDE_MAX -> true;
+        case PARAM_GPS_DATA_FOR_MAPPING, PARAM_GPS_DATA_FOR_DELETING -> true; // necessary because the column contains buttons and clicks are handled by the CellEditor
+        default -> throw new IllegalArgumentException("Unknown column index: " + columnIndex);
+        };
     }
 
     /**
@@ -283,7 +268,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                            final int columnIndex) {
 
         final HierarchicalCompoundString location = (HierarchicalCompoundString)node;
-        GPSData data = this.a_data.get(location);
+        GPSData data = a_data.get(location);
         if ( data == null ) {
             data = new GPSData(null,null,null,null);
         }
@@ -294,38 +279,62 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
             case PARAM_LOCATION:
                 break;
             case PARAM_LATITUDE_MIN:
-                if ( str!=null && str.length()==0 ) str = null;
+                if ( str!=null && str.length()==0 ) {
+                    str = null;
+                }
                 if ( str == null ) {
-                    if ( data.getLatitudeMin() == null ) return;
+                    if ( data.getLatitudeMin() == null ) {
+                        return;
+                    }
                 } else {
-                    if ( str.equals(data.getLatitudeMin())) return;
+                    if ( str.equals(data.getLatitudeMin())) {
+                        return;
+                    }
                 }
                 data.setLatitudeMin(str);
                 break;
             case PARAM_LATITUDE_MAX:
-                if ( str!=null && str.length()==0 ) str = null;
+                if ( str!=null && str.length()==0 ) {
+                    str = null;
+                }
                 if ( str == null ) {
-                    if ( data.getLatitudeMax() == null ) return;
+                    if ( data.getLatitudeMax() == null ) {
+                        return;
+                    }
                 } else {
-                    if ( str.equals(data.getLatitudeMax())) return;
+                    if ( str.equals(data.getLatitudeMax())) {
+                        return;
+                    }
                 }
                 data.setLatitudeMax(str);
                 break;
             case PARAM_LONGITUDE_MIN:
-                if ( str!=null && str.length()==0 ) str = null;
+                if ( str!=null && str.length()==0 ) {
+                    str = null;
+                }
                 if ( str == null ) {
-                    if ( data.getLongitudeMin() == null ) return;
+                    if ( data.getLongitudeMin() == null ) {
+                        return;
+                    }
                 } else {
-                    if ( str.equals(data.getLongitudeMin())) return;
+                    if ( str.equals(data.getLongitudeMin())) {
+                        return;
+                    }
                 }
                 data.setLongitudeMin(str);
                 break;
             case PARAM_LONGITUDE_MAX:
-                if ( str!=null && str.length() == 0) str = null;
+                if ( str!=null && str.length() == 0) {
+                    str = null;
+                }
                 if ( str == null ) {
-                    if ( data.getLongitudeMax() == null ) return;
+                    if ( data.getLongitudeMax() == null ) {
+                        return;
+                    }
                 } else {
-                    if ( str.equals(data.getLongitudeMax())) return;
+                    if ( str.equals(data.getLongitudeMax())) {
+                        return;
+                    }
                 }
                 data.setLongitudeMax(str);
                 break;
@@ -336,13 +345,13 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                 throw new IllegalArgumentException("Unknown column index: " + columnIndex);
             }
             if ( data.isEmpty() ) {
-                this.a_data.remove(location);
+                a_data.remove(location);
             } else {
-                this.a_data.put(location, data);
+                a_data.put(location, data);
             }
             setAsUnsaved();
-            this.a_support.fireChildChanged(HierarchicalCompoundStringFactory.getPath(location.getParent()),
-                                       this.a_locationFactory.getIndexOfChild(location.getParent(),location),
+            a_support.fireChildChanged(HierarchicalCompoundStringFactory.getPath(location.getParent()),
+                                       a_locationFactory.getIndexOfChild(location.getParent(),location),
                                        location);
         } catch (final IllegalArgumentException e) {
               JOptionPane.showMessageDialog(null,
@@ -359,7 +368,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     @Override
     public Object getChild(final Object o,
                            final int index) {
-        return this.a_locationFactory.getChild(o, index);
+        return a_locationFactory.getChild(o, index);
     }
 
     /**
@@ -367,7 +376,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      */
     @Override
     public int getChildCount(final Object o) {
-        return this.a_locationFactory.getChildCount(o);
+        return a_locationFactory.getChildCount(o);
     }
 
     /**
@@ -376,7 +385,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     @Override
     public int getIndexOfChild(final Object o,
                                final Object c) {
-        return this.a_locationFactory.getIndexOfChild(o, c);
+        return a_locationFactory.getIndexOfChild(o, c);
     }
 
     /**
@@ -384,7 +393,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      */
     @Override
     public Object getRoot() {
-        return this.a_locationFactory.getRoot();
+        return a_locationFactory.getRoot();
     }
 
     /**
@@ -392,7 +401,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      */
     @Override
     public boolean isLeaf(final Object o) {
-        return this.a_locationFactory.isLeaf(o);
+        return a_locationFactory.isLeaf(o);
     }
 
     /**
@@ -400,8 +409,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      */
     @Override
     public void addTreeModelListener(final TreeModelListener listener) {
-        this.a_locationFactory.addTreeModelListener(listener);
-        this.a_support.addTreeModelListener(listener);
+        a_locationFactory.addTreeModelListener(listener);
+        a_support.addTreeModelListener(listener);
     }
 
    /**
@@ -409,8 +418,8 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      */
     @Override
     public void removeTreeModelListener(final TreeModelListener listener) {
-        this.a_locationFactory.removeTreeModelListener(listener);
-        this.a_support.removeTreeModelListener(listener);
+        a_locationFactory.removeTreeModelListener(listener);
+        a_support.removeTreeModelListener(listener);
     }
 
     /**
@@ -419,7 +428,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     @Override
     public void valueForPathChanged(final TreePath arg0,
                                     final Object arg1) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -428,10 +437,12 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
     @Override
     public void save() throws IOException {
 
-        if (this.a_isSaved) return;
+        if (a_isSaved) {
+            return;
+        }
 
         // prepare the data
-        final String data[][] = new String[this.a_data.size()+1][];
+        final String data[][] = new String[a_data.size()+1][];
         data[0] = new String[5];
         data[0][0] = "location";
         data[0][1] = "min. latitude";
@@ -440,18 +451,26 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         data[0][4] = "max. longitude";
 
         int i = 1;
-        for ( HierarchicalCompoundString location : this.a_data.keySet() ) {
+        for ( final HierarchicalCompoundString location : a_data.keySet() ) {
             data[i] = new String[5];
             data[i][0] = location.toLongString();
-            final GPSData gps = this.a_data.get(location);
+            final GPSData gps = a_data.get(location);
             data[i][1] = gps.getLatitudeMin();
-            if ( data[i][1] == null ) data[i][1]="";
+            if ( data[i][1] == null ) {
+                data[i][1]="";
+            }
             data[i][2] = gps.getLongitudeMin();
-            if ( data[i][2] == null ) data[i][2]="";
+            if ( data[i][2] == null ) {
+                data[i][2]="";
+            }
             data[i][3] = gps.getLatitudeMax();
-            if ( data[i][3] == null ) data[i][3]="";
+            if ( data[i][3] == null ) {
+                data[i][3]="";
+            }
             data[i][4] = gps.getLongitudeMax();
-            if ( data[i][4] == null ) data[i][4]="";
+            if ( data[i][4] == null ) {
+                data[i][4]="";
+            }
             i++;
         }
 
@@ -466,15 +485,15 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                                   "_" + f2.format(now.get(Calendar.MINUTE)) +
                                   "_" + f2.format(now.get(Calendar.SECOND)) +
                                   "_" + f3.format(now.get(Calendar.MILLISECOND));
-        final String name = this.a_excelFilename.replace(".txt","_"+backupName+".txt");
-        final File file = new File(this.a_excelFilename);
+        final String name = a_excelFilename.replace(".txt","_"+backupName+".txt");
+        final File file = new File(a_excelFilename);
         final File file2 = new File(name);
         if (!file.renameTo(file2)) {
-            System.err.println("Failed to rename " + this.a_excelFilename + " into " + name);
+            System.err.println("Failed to rename " + a_excelFilename + " into " + name);
         }
 
         // create the new file
-        StringTableFromToExcel.save(this.a_excelFilename, data);
+        StringTableFromToExcel.save(a_excelFilename, data);
 
         // notify the SaveListerners
         setAsSaved();
@@ -484,17 +503,19 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      * @return flag indicating if the current values are saved
      */
     public boolean isSaved() {
-        return this.a_isSaved;
+        return a_isSaved;
     }
 
     /**
      * record and notify that the data saved on disk is obsolete
      */
     private void setAsUnsaved() {
-        if (this.a_isSaved) {
-            this.a_isSaved = false;
+        if (a_isSaved) {
+            a_isSaved = false;
             final SaveEvent f = new SaveEvent(this, false);
-            for (SaveListener l : this.a_listOfSaveListeners) l.saveChanged(f);
+            for (final SaveListener l : a_listOfSaveListeners) {
+                l.saveChanged(f);
+            }
         }
     }
 
@@ -502,23 +523,25 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
      * record and notify that the data saved on disk is obsolete
      */
     private void setAsSaved() {
-        this.a_isSaved = true;
+        a_isSaved = true;
         final SaveEvent f = new SaveEvent(this, true);
-        for (SaveListener l : this.a_listOfSaveListeners) l.saveChanged(f);
+        for (final SaveListener l : a_listOfSaveListeners) {
+            l.saveChanged(f);
+        }
     }
 
     /**
      * @param l
      */
     public void addSaveListener(final SaveListener l) {
-        this.a_listOfSaveListeners.add(l);
+        a_listOfSaveListeners.add(l);
     }
 
     /**
      * @param l
      */
     public void removeSaveListener(final SaveListener l) {
-        this.a_listOfSaveListeners.remove(l);
+        a_listOfSaveListeners.remove(l);
     }
 
     /**
@@ -529,11 +552,11 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
         for ( final String oldLoc: map.keySet()) {
 
             final String newLoc = map.get(oldLoc);
-            final HierarchicalCompoundString oldLocation = this.a_locationFactory.create(oldLoc);
-            final HierarchicalCompoundString newLocation = this.a_locationFactory.create(newLoc);
+            final HierarchicalCompoundString oldLocation = a_locationFactory.create(oldLoc);
+            final HierarchicalCompoundString newLocation = a_locationFactory.create(newLoc);
 
-            final GPSData oldData = this.a_data.get(oldLocation);
-            final GPSData newData = this.a_data.get(newLocation);
+            final GPSData oldData = a_data.get(oldLocation);
+            final GPSData newData = a_data.get(newLocation);
 
             if ( oldData != null ) {
                 if ( newData != null ){
@@ -549,7 +572,7 @@ public class GPSDatabase implements TreeTableModel, SaveableModel {
                                            + ") because that one has already some different coordinates ");
                     }
                 } else {
-                    this.a_data.put(newLocation, oldData.clone());
+                    a_data.put(newLocation, oldData.clone());
                     setAsUnsaved();
                 }
             }

@@ -49,12 +49,12 @@ public class Photo {
                  final MultiHierarchicalCompoundStringFactory subjectFactory,
                  final AuthorFactory authorFactory) {
 
-        this.a_folder = s_pool.replace(data[0]);
-        this.a_filename = data[1];
-        this.a_format = DataFormatFactory.createFormat(getFullPath());
-        this.a_indexData = new PhotoIndexData(data, locationFactory, subjectFactory, authorFactory);
-        this.a_headerData = null;
-        this.a_isOK = true;
+        a_folder = s_pool.replace(data[0]);
+        a_filename = data[1];
+        a_format = DataFormatFactory.createFormat(getFullPath());
+        a_indexData = new PhotoIndexData(data, locationFactory, subjectFactory, authorFactory);
+        a_headerData = null;
+        a_isOK = true;
     }
 
     /**
@@ -69,37 +69,45 @@ public class Photo {
                  final HierarchicalCompoundStringFactory locationFactory,
                  final MultiHierarchicalCompoundStringFactory subjectFactory,
                  final AuthorFactory authorFactory) {
-        this.a_folder = s_pool.replace(folderName);
-        this.a_filename = filename;
-        this.a_format = DataFormatFactory.createFormat(getFullPath());
-        this.a_indexData = new PhotoIndexData(locationFactory, subjectFactory, authorFactory);
-        this.a_headerData = null;
-        this.a_isOK = true;
+        a_folder = s_pool.replace(folderName);
+        a_filename = filename;
+        a_format = DataFormatFactory.createFormat(getFullPath());
+        a_indexData = new PhotoIndexData(locationFactory, subjectFactory, authorFactory);
+        a_headerData = null;
+        a_isOK = true;
     }
     /**
      * @return the image
      */
     public BufferedImage getImage() {
 
-        if ( !this.a_isOK ) return null;
+        if ( !a_isOK ) {
+            return null;
+        }
         String filename = getFullPath();
 
         // if this is an AVI file, try to read the corresponding THM file
-        if ( this.a_format == DataFormat.AVI ) {
+        if ( a_format == DataFormat.AVI ) {
             String f = "";
-            if ( filename.endsWith(".AVI") ) f = filename.substring(0,filename.length()-3) + "THM";
-            if ( filename.endsWith(".avi") ) f = filename.substring(0,filename.length()-3) + "thm";
+            if ( filename.endsWith(".AVI") ) {
+                f = filename.substring(0,filename.length()-3) + "THM";
+            }
+            if ( filename.endsWith(".avi") ) {
+                f = filename.substring(0,filename.length()-3) + "thm";
+            }
             final File ff = new File(f);
-            if ( !ff.exists()) return null;
+            if ( !ff.exists()) {
+                return null;
+            }
             filename = f;
         }
 
         final File file = new File(filename);
         try {
             return ImageIO.read(file);
-        } catch (final IOException e) {
+        } catch (@SuppressWarnings("unused") final IOException e) {
             System.out.println("failed to parse "+filename);
-            this.a_isOK = false;
+            a_isOK = false;
             return null;
         }
     }
@@ -108,7 +116,7 @@ public class Photo {
      * @return folder
      */
     public String getFolder() {
-        return this.a_folder;
+        return a_folder;
     }
 
     /**
@@ -116,14 +124,14 @@ public class Photo {
      * @param folder
      */
     void overrideFolder(final String folder) {
-        this.a_folder = folder;
+        a_folder = folder;
     }
 
     /**
      * @return filename
      */
     public String getFilename() {
-        return this.a_filename;
+        return a_filename;
     }
 
     /**
@@ -131,38 +139,38 @@ public class Photo {
      * @param filename
      */
     void overrideFilename(final String filename) {
-        this.a_filename = filename;
+        a_filename = filename;
     }
 
     /**
      * @return data extracted from the index data
      */
     public PhotoIndexData getIndexData() {
-        return this.a_indexData;
+        return a_indexData;
     }
 
     /**
      * @return data extracted from the photo header
      */
     public PhotoHeaderData getHeaderData() {
-        if ( this.a_headerData == null ) {
-            this.a_headerData = a_photoHeaderDataCache.getHeaderData(this.a_folder, this.a_filename, this.a_format);
+        if ( a_headerData == null ) {
+            a_headerData = a_photoHeaderDataCache.getHeaderData(a_folder, a_filename, a_format);
         }
 
-        return this.a_headerData;
+        return a_headerData;
     }
 
     /**
      * @return full path of the photo file
      */
     public String getFullPath() {
-        return a_rootDir + File.separator + this.a_folder + File.separator + this.a_filename;
+        return a_rootDir + File.separator + a_folder + File.separator + a_filename;
     }
 
     /**
      * @return format of the file
      */
     public DataFormat getFormat() {
-        return this.a_format;
+        return a_format;
     }
 }

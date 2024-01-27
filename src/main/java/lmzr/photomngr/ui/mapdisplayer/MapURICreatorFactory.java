@@ -5,7 +5,7 @@ package lmzr.photomngr.ui.mapdisplayer;
  */
 public class MapURICreatorFactory {
 
-    final static MapURICreator[] s_mapDisplayers = new MapURICreator[] {
+    final static MapURICreator[] s_mapDisplayers = {
         new BingMapURICreator(),
         new GeoportailMapURICreator(),
         new GoogleMapsURICreator()

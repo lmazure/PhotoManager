@@ -83,32 +83,32 @@ public class PhotoHeaderData {
                            final String fileName,
                            final DataFormat format) {
 
-        this.a_filename = fileName;
+        a_filename = fileName;
 
         if ((format != DataFormat.JPEG) && (format != DataFormat.AVI)) {
             // the other formats are not supported for the time being
-            this.a_isCorrectlyParsed = false;
-            this.a_width = 0;
-            this.a_height= 0;
-            this.a_orientation = DEFAULT_ORIENTATION;
-            this.a_date = DEFAULT_DATE;
-            this.a_manufacturer = DEFAULT_MANUFACTURER;
-            this.a_model = DEFAULT_MODEL;
-            this.a_exposure_time = DEFAULT_EXPOSURE_TIME;
-            this.a_shutter_speed = DEFAULT_SHUTTER_SPEED;
-            this.a_aperture_value = DEFAULT_APERTURE_VALUE;
-            this.a_flash = DEFAULT_FLASH;
-            this.a_focal_length = DEFAULT_FOCAL_LENGTH;
-            this.a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
-            this.a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
-            this.a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
-            this.a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
-            this.a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
-            this.a_canon_iso = DEFAULT_CANON_ISO;
-            this.a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
-            this.a_latitude = DEFAULT_LATITUDE;
-            this.a_longitude = DEFAULT_LONGITUDE;
-            this.a_altitude = DEFAULT_ALTITUDE;
+            a_isCorrectlyParsed = false;
+            a_width = 0;
+            a_height= 0;
+            a_orientation = DEFAULT_ORIENTATION;
+            a_date = DEFAULT_DATE;
+            a_manufacturer = DEFAULT_MANUFACTURER;
+            a_model = DEFAULT_MODEL;
+            a_exposure_time = DEFAULT_EXPOSURE_TIME;
+            a_shutter_speed = DEFAULT_SHUTTER_SPEED;
+            a_aperture_value = DEFAULT_APERTURE_VALUE;
+            a_flash = DEFAULT_FLASH;
+            a_focal_length = DEFAULT_FOCAL_LENGTH;
+            a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
+            a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
+            a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
+            a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
+            a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
+            a_canon_iso = DEFAULT_CANON_ISO;
+            a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+            a_latitude = DEFAULT_LATITUDE;
+            a_longitude = DEFAULT_LONGITUDE;
+            a_altitude = DEFAULT_ALTITUDE;
             return;
         }
 
@@ -117,32 +117,36 @@ public class PhotoHeaderData {
         // if this is an AVI file, try to read the corresponding THM file (for Canon videos)
         if ( format == DataFormat.AVI ) {
             String f = "";
-            if (overridenFilename.endsWith(".AVI")) f = overridenFilename.substring(0,overridenFilename.length()-3) + "THM";
-            if (overridenFilename.endsWith(".avi")) f = overridenFilename.substring(0,overridenFilename.length()-3) + "thm";
+            if (overridenFilename.endsWith(".AVI")) {
+                f = overridenFilename.substring(0,overridenFilename.length()-3) + "THM";
+            }
+            if (overridenFilename.endsWith(".avi")) {
+                f = overridenFilename.substring(0,overridenFilename.length()-3) + "thm";
+            }
             final File ff = new File(f);
             if (!ff.exists()) {
-                this.a_isCorrectlyParsed = false;
-                this.a_width = 0;
-                this.a_height= 0;
-                this.a_orientation = DEFAULT_ORIENTATION;
-                this.a_date = DEFAULT_DATE;
-                this.a_manufacturer = DEFAULT_MANUFACTURER;
-                this.a_model = DEFAULT_MODEL;
-                this.a_exposure_time = DEFAULT_EXPOSURE_TIME;
-                this.a_shutter_speed = DEFAULT_SHUTTER_SPEED;
-                this.a_aperture_value = DEFAULT_APERTURE_VALUE;
-                this.a_flash = DEFAULT_FLASH;
-                this.a_focal_length = DEFAULT_FOCAL_LENGTH;
-                this.a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
-                this.a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
-                this.a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
-                this.a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
-                this.a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
-                this.a_canon_iso = DEFAULT_CANON_ISO;
-                this.a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
-                this.a_latitude = DEFAULT_LATITUDE;
-                this.a_longitude = DEFAULT_LONGITUDE;
-                this.a_altitude = DEFAULT_ALTITUDE;
+                a_isCorrectlyParsed = false;
+                a_width = 0;
+                a_height= 0;
+                a_orientation = DEFAULT_ORIENTATION;
+                a_date = DEFAULT_DATE;
+                a_manufacturer = DEFAULT_MANUFACTURER;
+                a_model = DEFAULT_MODEL;
+                a_exposure_time = DEFAULT_EXPOSURE_TIME;
+                a_shutter_speed = DEFAULT_SHUTTER_SPEED;
+                a_aperture_value = DEFAULT_APERTURE_VALUE;
+                a_flash = DEFAULT_FLASH;
+                a_focal_length = DEFAULT_FOCAL_LENGTH;
+                a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
+                a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
+                a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
+                a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
+                a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
+                a_canon_iso = DEFAULT_CANON_ISO;
+                a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+                a_latitude = DEFAULT_LATITUDE;
+                a_longitude = DEFAULT_LONGITUDE;
+                a_altitude = DEFAULT_ALTITUDE;
                 return;
             }
             overridenFilename = f;
@@ -177,7 +181,6 @@ public class PhotoHeaderData {
         try {
             final File file = new File(overridenFilename);
 
-
             final Metadata metadata = ImageMetadataReader.readMetadata(file);
 
             for (final Directory directory : metadata.getDirectories()) {
@@ -191,7 +194,7 @@ public class PhotoHeaderData {
                         System.out.println("value="+tag.getDescription());
                         System.out.println("--------------------------------");
                     } catch (@SuppressWarnings("unused") final Exception e) {
-                    	// do nothing
+                        // do nothing
                     }
                     */
                     try {
@@ -203,9 +206,9 @@ public class PhotoHeaderData {
                             }
                         } else if (tag.getDirectoryName().equals("Exif IFD0")) {
                             if (tag.getTagType() == ExifDirectoryBase.TAG_ORIENTATION) {
-                            	System.out.println(directory.getDescription(tag.getTagType()));
-                            	System.out.println(directory.getInt(tag.getTagType()));
-                            	System.out.println("---------------------------------------------------");
+                                System.out.println(directory.getDescription(tag.getTagType()));
+                                System.out.println(directory.getInt(tag.getTagType()));
+                                System.out.println("---------------------------------------------------");
                                 orientation = directory.getInt(tag.getTagType());
                             } else if (tag.getTagType() == ExifDirectoryBase.TAG_DATETIME) {
                                 date = directory.getDate(tag.getTagType());
@@ -280,28 +283,28 @@ public class PhotoHeaderData {
             isCorrectlyParsed = false;
             System.err.println("failed to parse " + overridenFilename);
             e.printStackTrace();
-            this.a_isCorrectlyParsed = false;
-            this.a_width = 0;
-            this.a_height= 0;
-            this.a_orientation = DEFAULT_ORIENTATION;
-            this.a_date = DEFAULT_DATE;
-            this.a_manufacturer = DEFAULT_MANUFACTURER;
-            this.a_model = DEFAULT_MODEL;
-            this.a_exposure_time = DEFAULT_EXPOSURE_TIME;
-            this.a_shutter_speed = DEFAULT_SHUTTER_SPEED;
-            this.a_aperture_value = DEFAULT_APERTURE_VALUE;
-            this.a_flash = DEFAULT_FLASH;
-            this.a_focal_length = DEFAULT_FOCAL_LENGTH;
-            this.a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
-            this.a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
-            this.a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
-            this.a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
-            this.a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
-            this.a_canon_iso = DEFAULT_CANON_ISO;
-            this.a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
-            this.a_latitude = DEFAULT_LATITUDE;
-            this.a_longitude = DEFAULT_LONGITUDE;
-            this.a_altitude = DEFAULT_ALTITUDE;
+            a_isCorrectlyParsed = false;
+            a_width = 0;
+            a_height= 0;
+            a_orientation = DEFAULT_ORIENTATION;
+            a_date = DEFAULT_DATE;
+            a_manufacturer = DEFAULT_MANUFACTURER;
+            a_model = DEFAULT_MODEL;
+            a_exposure_time = DEFAULT_EXPOSURE_TIME;
+            a_shutter_speed = DEFAULT_SHUTTER_SPEED;
+            a_aperture_value = DEFAULT_APERTURE_VALUE;
+            a_flash = DEFAULT_FLASH;
+            a_focal_length = DEFAULT_FOCAL_LENGTH;
+            a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
+            a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
+            a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
+            a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
+            a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
+            a_canon_iso = DEFAULT_CANON_ISO;
+            a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+            a_latitude = DEFAULT_LATITUDE;
+            a_longitude = DEFAULT_LONGITUDE;
+            a_altitude = DEFAULT_ALTITUDE;
             return;
         }
 
@@ -317,72 +320,72 @@ public class PhotoHeaderData {
                 } catch (final IOException e) {
                     isCorrectlyParsed = false;
                     System.err.println("failed to parse "+overridenFilename);
-                    e.printStackTrace();            this.a_isCorrectlyParsed = false;
-                    this.a_width = 0;
-                    this.a_height= 0;
-                    this.a_orientation = DEFAULT_ORIENTATION;
-                    this.a_date = DEFAULT_DATE;
-                    this.a_manufacturer = DEFAULT_MANUFACTURER;
-                    this.a_model = DEFAULT_MODEL;
-                    this.a_exposure_time = DEFAULT_EXPOSURE_TIME;
-                    this.a_shutter_speed = DEFAULT_SHUTTER_SPEED;
-                    this.a_aperture_value = DEFAULT_APERTURE_VALUE;
-                    this.a_flash = DEFAULT_FLASH;
-                    this.a_focal_length = DEFAULT_FOCAL_LENGTH;
-                    this.a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
-                    this.a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
-                    this.a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
-                    this.a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
-                    this.a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
-                    this.a_canon_iso = DEFAULT_CANON_ISO;
-                    this.a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
-                    this.a_latitude = DEFAULT_LATITUDE;
-                    this.a_longitude = DEFAULT_LONGITUDE;
-                    this.a_altitude = DEFAULT_ALTITUDE;
+                    e.printStackTrace();            a_isCorrectlyParsed = false;
+                    a_width = 0;
+                    a_height= 0;
+                    a_orientation = DEFAULT_ORIENTATION;
+                    a_date = DEFAULT_DATE;
+                    a_manufacturer = DEFAULT_MANUFACTURER;
+                    a_model = DEFAULT_MODEL;
+                    a_exposure_time = DEFAULT_EXPOSURE_TIME;
+                    a_shutter_speed = DEFAULT_SHUTTER_SPEED;
+                    a_aperture_value = DEFAULT_APERTURE_VALUE;
+                    a_flash = DEFAULT_FLASH;
+                    a_focal_length = DEFAULT_FOCAL_LENGTH;
+                    a_self_timer_mode = DEFAULT_SELF_TIMER_MODE;
+                    a_canon_self_timer_delay = DEFAULT_CANON_SELF_TIMER_DELAY;
+                    a_canon_flash_mode = DEFAULT_CANON_FLASH_MODE;
+                    a_canon_continuous_drive_mode = DEFAULT_CANON_CONTINUOUS_DRIVE_MODE;
+                    a_canon_focus_mode = DEFAULT_CANON_FOCUS_MODE;
+                    a_canon_iso = DEFAULT_CANON_ISO;
+                    a_canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
+                    a_latitude = DEFAULT_LATITUDE;
+                    a_longitude = DEFAULT_LONGITUDE;
+                    a_altitude = DEFAULT_ALTITUDE;
                     return;
                 }
             }
         }
 
-        this.a_isCorrectlyParsed = isCorrectlyParsed;
-        this.a_width = width;
-        this.a_height = height;
-        this.a_orientation = orientation;
-        this.a_date = date;
-        this.a_manufacturer = manufacturer;
-        this.a_model = model;
-        this.a_exposure_time = exposure_time;
-        this.a_shutter_speed = shutter_speed;
-        this.a_aperture_value = aperture_value;
-        this.a_flash = flash;
-        this.a_focal_length = focal_length;
-        this.a_self_timer_mode = self_timer_mode;
-        this.a_canon_self_timer_delay = canon_self_timer_delay;
-        this.a_canon_flash_mode = canon_flash_mode;
-        this.a_canon_continuous_drive_mode = canon_continuous_drive_mode;
-        this.a_canon_focus_mode = canon_focus_mode;
-        this.a_canon_iso = canon_iso;
-        this.a_canon_subject_distance = canon_subject_distance;
+        a_isCorrectlyParsed = isCorrectlyParsed;
+        a_width = width;
+        a_height = height;
+        a_orientation = orientation;
+        a_date = date;
+        a_manufacturer = manufacturer;
+        a_model = model;
+        a_exposure_time = exposure_time;
+        a_shutter_speed = shutter_speed;
+        a_aperture_value = aperture_value;
+        a_flash = flash;
+        a_focal_length = focal_length;
+        a_self_timer_mode = self_timer_mode;
+        a_canon_self_timer_delay = canon_self_timer_delay;
+        a_canon_flash_mode = canon_flash_mode;
+        a_canon_continuous_drive_mode = canon_continuous_drive_mode;
+        a_canon_focus_mode = canon_focus_mode;
+        a_canon_iso = canon_iso;
+        a_canon_subject_distance = canon_subject_distance;
 
         final Double lat = parseLatitude(latitude, latitudeRef);
         if (lat != null) {
-            this.a_latitude = lat.doubleValue();
+            a_latitude = lat.doubleValue();
         } else {
-            this.a_latitude = DEFAULT_LONGITUDE;
+            a_latitude = DEFAULT_LONGITUDE;
         }
 
         final Double lon = parseLongitude(longitude, longitudeRef);
         if (lon != null) {
-            this.a_longitude = lon.doubleValue();
+            a_longitude = lon.doubleValue();
         } else {
-            this.a_longitude = DEFAULT_LONGITUDE;
+            a_longitude = DEFAULT_LONGITUDE;
         }
 
         final Double alt = parseAltitude(altitude, altitudeRef);
         if (alt != null) {
-            this.a_altitude = alt.doubleValue();
+            a_altitude = alt.doubleValue();
         } else {
-            this.a_altitude = DEFAULT_ALTITUDE;
+            a_altitude = DEFAULT_ALTITUDE;
         }
     }
 
@@ -393,9 +396,9 @@ public class PhotoHeaderData {
      */
     public PhotoHeaderData(final String data[]) {
 
-        this.a_filename = data[0];
+        a_filename = data[0];
 
-        this.a_isCorrectlyParsed = true;
+        a_isCorrectlyParsed = true;
 
         int width;
         try {
@@ -405,7 +408,7 @@ public class PhotoHeaderData {
             e.printStackTrace();
             width = 0;
         }
-        this.a_width = width;
+        a_width = width;
 
         int height;
         try {
@@ -415,7 +418,7 @@ public class PhotoHeaderData {
             e.printStackTrace();
             height = 0;
         }
-        this.a_height = height;
+        a_height = height;
 
         int orientation;
         try {
@@ -425,7 +428,7 @@ public class PhotoHeaderData {
             e.printStackTrace();
             orientation = DEFAULT_ORIENTATION;
         }
-        this.a_orientation = orientation;
+        a_orientation = orientation;
 
         Date date;
         try {
@@ -435,14 +438,14 @@ public class PhotoHeaderData {
             e.printStackTrace();
             date = DEFAULT_DATE;
         }
-        this.a_date = date;
+        a_date = date;
 
-        this.a_manufacturer = s_pool.replace(data[5]);
-        this.a_model = s_pool.replace(data[6]);
-        this.a_exposure_time = s_pool.replace(data[7]);
-        this.a_shutter_speed = s_pool.replace(data[8]);
-        this.a_aperture_value = s_pool.replace(data[9]);
-        this.a_flash = s_pool.replace(data[10]);
+        a_manufacturer = s_pool.replace(data[5]);
+        a_model = s_pool.replace(data[6]);
+        a_exposure_time = s_pool.replace(data[7]);
+        a_shutter_speed = s_pool.replace(data[8]);
+        a_aperture_value = s_pool.replace(data[9]);
+        a_flash = s_pool.replace(data[10]);
 
         double focal_length;
         try {
@@ -453,14 +456,14 @@ public class PhotoHeaderData {
             e.printStackTrace();
             focal_length = DEFAULT_FOCAL_LENGTH;
         }
-        this.a_focal_length = focal_length;
+        a_focal_length = focal_length;
 
-        this.a_self_timer_mode = s_pool.replace(data[12]);
-        this.a_canon_self_timer_delay = s_pool.replace(data[13]);
-        this.a_canon_flash_mode = s_pool.replace(data[14]);
-        this.a_canon_continuous_drive_mode = s_pool.replace(data[15]);
-        this.a_canon_focus_mode = s_pool.replace(data[16]);
-        this.a_canon_iso = s_pool.replace(data[17]);
+        a_self_timer_mode = s_pool.replace(data[12]);
+        a_canon_self_timer_delay = s_pool.replace(data[13]);
+        a_canon_flash_mode = s_pool.replace(data[14]);
+        a_canon_continuous_drive_mode = s_pool.replace(data[15]);
+        a_canon_focus_mode = s_pool.replace(data[16]);
+        a_canon_iso = s_pool.replace(data[17]);
 
         int canon_subject_distance;
         try {
@@ -470,11 +473,11 @@ public class PhotoHeaderData {
             e.printStackTrace();
             canon_subject_distance = DEFAULT_CANON_SUBJECT_DISTANCE;
         }
-        this.a_canon_subject_distance = canon_subject_distance;
+        a_canon_subject_distance = canon_subject_distance;
 
-        this.a_latitude = Double.parseDouble(data[19]);
-        this.a_longitude = Double.parseDouble(data[20]);
-        this.a_altitude = Double.parseDouble(data[21]);
+        a_latitude = Double.parseDouble(data[19]);
+        a_longitude = Double.parseDouble(data[20]);
+        a_altitude = Double.parseDouble(data[21]);
     }
 
     /**
@@ -487,28 +490,28 @@ public class PhotoHeaderData {
 
         final String array[] = new String[22];
 
-        array[0] = this.a_filename;
-        array[1] = Integer.toString(this.a_width);
-        array[2] = Integer.toString(this.a_height);
-        array[3] = Integer.toString(this.a_orientation);
-        array[4] = Long.toString(this.a_date.getTime());
-        array[5] = this.a_manufacturer;
-        array[6] = this.a_model;
-        array[7] = this.a_exposure_time;
-           array[8] = this.a_shutter_speed;
-           array[9] = this.a_aperture_value;
-        array[10] = this.a_flash;
-        array[11] = Double.toString(this.a_focal_length);
-        array[12] = this.a_self_timer_mode;
-        array[13] = this.a_canon_self_timer_delay;
-        array[14] = this.a_canon_flash_mode;
-        array[15] = this.a_canon_continuous_drive_mode;
-        array[16] = this.a_canon_focus_mode;
-        array[17] = this.a_canon_iso;
-        array[18] = Integer.toString(this.a_canon_subject_distance);
-        array[19] = Double.toString(this.a_latitude);
-        array[20] = Double.toString(this.a_longitude);
-        array[21] = Double.toString(this.a_altitude);
+        array[0] = a_filename;
+        array[1] = Integer.toString(a_width);
+        array[2] = Integer.toString(a_height);
+        array[3] = Integer.toString(a_orientation);
+        array[4] = Long.toString(a_date.getTime());
+        array[5] = a_manufacturer;
+        array[6] = a_model;
+        array[7] = a_exposure_time;
+           array[8] = a_shutter_speed;
+           array[9] = a_aperture_value;
+        array[10] = a_flash;
+        array[11] = Double.toString(a_focal_length);
+        array[12] = a_self_timer_mode;
+        array[13] = a_canon_self_timer_delay;
+        array[14] = a_canon_flash_mode;
+        array[15] = a_canon_continuous_drive_mode;
+        array[16] = a_canon_focus_mode;
+        array[17] = a_canon_iso;
+        array[18] = Integer.toString(a_canon_subject_distance);
+        array[19] = Double.toString(a_latitude);
+        array[20] = Double.toString(a_longitude);
+        array[21] = Double.toString(a_altitude);
 
         return array;
     }
@@ -517,21 +520,21 @@ public class PhotoHeaderData {
      * @return true is the file was correctly parse, false otherwise
      */
     public boolean isCorrectlyParsed() {
-        return this.a_isCorrectlyParsed;
+        return a_isCorrectlyParsed;
     }
 
     /**
      * @return image height
      */
     public int getHeight() {
-       return this.a_height;
+       return a_height;
     }
 
     /**
      * @return image width
      */
     public int getWidth() {
-       return this.a_width;
+       return a_width;
     }
 
     /**
@@ -547,133 +550,133 @@ public class PhotoHeaderData {
      * @return orientation of the photo (tag 0x0112)
      */
     public int getOrientation() {
-        return this.a_orientation;
+        return a_orientation;
     }
 
     /**
      * @return date when the photo has been taken (tag 0x0132)
      */
     public Date getDate() {
-        return this.a_date;
+        return a_date;
     }
 
     /**
      * @return manufacturer (tag 0x010F)
      */
     public String getManufacturer() {
-        return this.a_manufacturer;
+        return a_manufacturer;
     }
 
     /**
      * @return model (tag 0x0110)
      */
     public String getModel() {
-        return this.a_model;
+        return a_model;
     }
 
     /**
      * @return exposure time (tag 0x829A)
      */
     public String getExposureTime() {
-        return this.a_exposure_time;
+        return a_exposure_time;
     }
 
     /**
      * @return shutter speed (tag 0x9201)
      */
     public String getShutterSpeed() {
-        return this.a_shutter_speed;
+        return a_shutter_speed;
     }
 
     /**
      * @return aperture value (tag 0x9202)
      */
     public String getApertureValue() {
-        return this.a_aperture_value;
+        return a_aperture_value;
     }
 
     /**
      * @return flash (tag 0x9209)
      */
     public String getFlash() {
-        return this.a_flash;
+        return a_flash;
     }
 
     /**
      * @return focal length (tag 0x920A)
      */
     public Double getFocalLength() {
-        return Double.valueOf(this.a_focal_length);
+        return Double.valueOf(a_focal_length);
     }
 
     /**
      * @return Self timer mode
      */
     public String getSelfTimerMode() {
-        return this.a_self_timer_mode;
+        return a_self_timer_mode;
     }
 
     /**
      * @return Canon self timer delay (tag 0xC102)
      */
     public String getCanonSelfTimerDelay() {
-        return this.a_canon_self_timer_delay;
+        return a_canon_self_timer_delay;
     }
 
     /**
      * @return Canon flash mode(tag 0xC104)
      */
     public String getCanonFlashMode() {
-        return this.a_canon_flash_mode;
+        return a_canon_flash_mode;
     }
 
     /**
      * @return Canon continuous drive mode (tag 0xC105)
      */
     public String getCanonContinuousDriveMode() {
-        return this.a_canon_continuous_drive_mode;
+        return a_canon_continuous_drive_mode;
     }
 
     /**
      * @return Canon focus mode(tag 0xC107)
      */
     public String getCanonFocusMode() {
-        return this.a_canon_focus_mode;
+        return a_canon_focus_mode;
     }
 
     /**
      * @return Canon ISO (tag 0xC110)
      */
     public String getCanonISO() {
-        return this.a_canon_iso;
+        return a_canon_iso;
     }
 
     /**
      * @return Canon subject distance (tag 0xC213), -1 if undefined
      */
     public int getCanonSubjectDistance() {
-        return this.a_canon_subject_distance;
+        return a_canon_subject_distance;
     }
 
     /**
      * @return the latitude, NaN if undefined
      */
     public double getLatitude() {
-        return this.a_latitude;
+        return a_latitude;
     }
 
     /**
      * @return the longitude, NaN if undefined
      */
     public double getLongitude() {
-        return this.a_longitude;
+        return a_longitude;
     }
 
     /**
      * @return the altitude, NaN if undefined
      */
     public double getAltitude() {
-        return this.a_altitude;
+        return a_altitude;
     }
 
     /**
@@ -685,13 +688,23 @@ public class PhotoHeaderData {
     private static Double parseLatitude(final String latitude,
                                         final String latitudeRef)
     {
-        if (latitude==null) return null;
+        if (latitude==null) {
+            return null;
+        }
         final Double x = parseXxitude(latitude);
-        if ( x == null ) return null;
+        if ( x == null ) {
+            return null;
+        }
 
-        if ( latitudeRef==null ) return null;
-        if ( latitudeRef.equals("N")) return x;
-        if ( latitudeRef.equals("S")) return Double.valueOf(-x.doubleValue());
+        if ( latitudeRef==null ) {
+            return null;
+        }
+        if ( latitudeRef.equals("N")) {
+            return x;
+        }
+        if ( latitudeRef.equals("S")) {
+            return Double.valueOf(-x.doubleValue());
+        }
         return null;
     }
 
@@ -704,13 +717,23 @@ public class PhotoHeaderData {
     private static Double parseLongitude(final String longitude,
                                          final String longitudeRef)
     {
-        if (longitude==null) return null;
+        if (longitude==null) {
+            return null;
+        }
         final Double x = parseXxitude(longitude);
-        if ( x == null ) return null;
+        if ( x == null ) {
+            return null;
+        }
 
-        if ( longitudeRef==null ) return null;
-        if ( longitudeRef.equals("E")) return x;
-        if ( longitudeRef.equals("O")) return Double.valueOf(-x.doubleValue());
+        if ( longitudeRef==null ) {
+            return null;
+        }
+        if ( longitudeRef.equals("E")) {
+            return x;
+        }
+        if ( longitudeRef.equals("O")) {
+            return Double.valueOf(-x.doubleValue());
+        }
         return null;
     }
 
@@ -721,21 +744,23 @@ public class PhotoHeaderData {
      */
     private static Double parseXxitude(final String Xxitude)
     {
-    	// TODO this is a pile of crap,I need to used the proper API to get the location instead of this silliness
+        // TODO this is a pile of crap,I need to used the proper API to get the location instead of this silliness
         final Pattern pattern = Pattern.compile( "(\\d+)° (\\d+)' (\\d+),(\\d*)\"");
         final Matcher matcher = pattern.matcher(Xxitude);
-        if ( !matcher.matches() ) return null;
+        if ( !matcher.matches() ) {
+            return null;
+        }
 
         final String s1 = matcher.group(1);
-        int value1 = Integer.parseInt(s1);
+        final int value1 = Integer.parseInt(s1);
         final String s2 = matcher.group(2);
-        int value2 = Integer.parseInt(s2);
+        final int value2 = Integer.parseInt(s2);
         final String s3 = matcher.group(3);
-        int value3 = Integer.parseInt(s3);
+        final int value3 = Integer.parseInt(s3);
         final String s4 = matcher.group(4);
-        int value4 = Integer.parseInt(s4);
+        final int value4 = Integer.parseInt(s4);
 
-        double value = value1 + value2/60.0 + value3/3600.0 + value4/360000.0;
+        final double value = value1 + value2/60.0 + value3/3600.0 + value4/360000.0;
 
         return Double.valueOf(value);
     }
@@ -749,20 +774,30 @@ public class PhotoHeaderData {
     private static Double parseAltitude(final String altitude,
                                         final String altitudeRef)
     {
-        if (altitude==null) return null;
-        if (altitudeRef==null) return null;
+        if (altitude==null) {
+            return null;
+        }
+        if (altitudeRef==null) {
+            return null;
+        }
 
-        if ( !altitudeRef.equals("Sea level")) return null;
+        if ( !altitudeRef.equals("Sea level")) {
+            return null;
+        }
 
         final Pattern pattern = Pattern.compile( "(\\d+)/(\\d+) metres");
         final Matcher matcher = pattern.matcher(altitude);
-        if ( !matcher.matches() ) return null;
+        if ( !matcher.matches() ) {
+            return null;
+        }
 
         final String s1 = matcher.group(1);
-        int value1 = Integer.parseInt(s1);
+        final int value1 = Integer.parseInt(s1);
         final String s2 = matcher.group(2);
-        int value2 = Integer.parseInt(s2);
-        if (value2==0) return null;
+        final int value2 = Integer.parseInt(s2);
+        if (value2==0) {
+            return null;
+        }
 
         return Double.valueOf((double)value1/(double)value2);
     }

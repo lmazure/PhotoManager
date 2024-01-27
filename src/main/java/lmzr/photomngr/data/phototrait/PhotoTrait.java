@@ -17,24 +17,23 @@ public class PhotoTrait {
      */
     static final protected String UNDEFINED_TRAIT_STRING = "unclassified";
 
-
     /**
      * @param value
      */
     protected PhotoTrait(final int value) {
-        this.a_value = value;
+        a_value = value;
     }
 
     @Override
     public int hashCode() {
-        return this.a_value;
+        return a_value;
     }
 
     /**
      * @return value
      */
     public int getValue() {
-        return this.a_value;
+        return a_value;
     }
 
     /**
@@ -42,8 +41,10 @@ public class PhotoTrait {
      * @return String encoding the PhotoTrait
      */
     protected String toString(final String[] encoding) {
-        if ( this.a_value==UNDEFINED_TRAIT_VALUE ) return UNDEFINED_TRAIT_STRING;
-        return encoding[this.a_value];
+        if ( a_value==UNDEFINED_TRAIT_VALUE ) {
+            return UNDEFINED_TRAIT_STRING;
+        }
+        return encoding[a_value];
     }
 
 }

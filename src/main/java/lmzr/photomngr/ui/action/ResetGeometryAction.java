@@ -21,24 +21,24 @@ public class ResetGeometryAction extends PhotoManagerAction {
     public ResetGeometryAction(final PhotoList photoList,
                                    final ListSelectionManager selection) {
         super("reset geometry", 0, null, "reset geometry");
-        this.a_photoList = photoList;
-        this.a_selection = selection;
+        a_photoList = photoList;
+        a_selection = selection;
     }
 
     @Override
     public void actionPerformed(final ActionEvent arg0) {
-        for (int i=0; i<this.a_selection.getSelection().length; i++) {
-            this.a_photoList.setValueAt(Float.valueOf(1.0f),
-                                   this.a_selection.getSelection()[i],
+        for (int i=0; i<a_selection.getSelection().length; i++) {
+            a_photoList.setValueAt(Float.valueOf(1.0f),
+                                   a_selection.getSelection()[i],
                                    PhotoList.PARAM_ZOOM);
-            this.a_photoList.setValueAt(Float.valueOf(0.0f),
-                                   this.a_selection.getSelection()[i],
+            a_photoList.setValueAt(Float.valueOf(0.0f),
+                                   a_selection.getSelection()[i],
                                    PhotoList.PARAM_ROTATION);
-            this.a_photoList.setValueAt(Float.valueOf(0.0f),
-                                   this.a_selection.getSelection()[i],
+            a_photoList.setValueAt(Float.valueOf(0.0f),
+                                   a_selection.getSelection()[i],
                                    PhotoList.PARAM_FOCUS_X);
-            this.a_photoList.setValueAt(Float.valueOf(0.0f),
-                                   this.a_selection.getSelection()[i],
+            a_photoList.setValueAt(Float.valueOf(0.0f),
+                                   a_selection.getSelection()[i],
                                    PhotoList.PARAM_FOCUS_Y);
          }
     }

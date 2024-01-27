@@ -11,20 +11,20 @@ public class FilterBase {
      * @param isEnabled
      */
     protected FilterBase(final boolean isEnabled) {
-        this.a_isEnabled = isEnabled;
+        a_isEnabled = isEnabled;
     }
 
     /**
      * @return true if the filter is enabled, false otherwise
      */
     public boolean isEnabled() {
-        return this.a_isEnabled;
+        return a_isEnabled;
     }
 
     /**
      * @param isEnabled
      */
     public void setEnabled(final boolean isEnabled) {
-        this.a_isEnabled = isEnabled;
+        a_isEnabled = isEnabled;
     }
 }

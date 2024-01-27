@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class PhotoOriginality extends PhotoTrait {
 
-    static final private String[] g_encoding =  new String[] {"overused", "too common", "common", "rare", "exceptional"};
+    static final private String[] g_encoding =  {"overused", "too common", "common", "rare", "exceptional"};
     static final private HashMap<String, PhotoOriginality> g_pool = new HashMap<>();
     static final private PhotoOriginality g_undefined = new PhotoOriginality(UNDEFINED_TRAIT_VALUE);
 
@@ -44,7 +44,6 @@ public class PhotoOriginality extends PhotoTrait {
         }
         return p;
     }
-
 
     /**
      * @see java.lang.Object#toString()

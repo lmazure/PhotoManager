@@ -32,7 +32,6 @@ import lmzr.photomngr.ui.action.QuitAction;
 import lmzr.photomngr.ui.action.RenameFolderAction;
 import lmzr.photomngr.ui.action.SaveAction;
 
-
 /**
  * @author Laurent
  */
@@ -51,7 +50,6 @@ public class PhotoListDisplay extends JFrame
     final private CopyFromNextAction a_actionCopyFromNext;
     final private CopyFromPreviousAction a_actionCopyFromPrevious;
 
-
     /**
      * @param photoList
      * @param filteredPhotoList
@@ -62,27 +60,25 @@ public class PhotoListDisplay extends JFrame
                             final PhotoList filteredPhotoList,
                               final GPSDatabase GPSDatabase,
                               final Scheduler scheduler) {
-        super();
+        a_list = photoList;
 
-        this.a_list = photoList;
-
-        this.a_table = new PhotoListTable(photoList, filteredPhotoList,this);
+        a_table = new PhotoListTable(photoList, filteredPhotoList,this);
 
         // listen to change of the selection column(s)
-        this.a_selection = new ListSelectionManager(photoList,getLineSelectionListModel());
-        this.a_selection.addListener(this);
+        a_selection = new ListSelectionManager(photoList,getLineSelectionListModel());
+        a_selection.addListener(this);
 
         // listen to change of the selection row(s)
         getColumnSelectionListModel().addListSelectionListener(this);
 
-        this.a_menubar = new JMenuBar();
-        setJMenuBar(this.a_menubar);
+        a_menubar = new JMenuBar();
+        setJMenuBar(a_menubar);
 
         final JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic(KeyEvent.VK_F);
-        this.a_menubar.add(menuFile);
-        this.a_actionSave = new SaveAction("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",this.a_list);
-        final JMenuItem itemSave = new JMenuItem(this.a_actionSave);
+        a_menubar.add(menuFile);
+        a_actionSave = new SaveAction("Save photo data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_list);
+        final JMenuItem itemSave = new JMenuItem(a_actionSave);
         menuFile.add(itemSave);
         final QuitAction a_actionQuit = new QuitAction("Quit", KeyEvent.VK_Q, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),"Exit",photoList,GPSDatabase,scheduler);
         final JMenuItem itemQuit = new JMenuItem(a_actionQuit);
@@ -90,43 +86,43 @@ public class PhotoListDisplay extends JFrame
 
         final JMenu menuEdit = new JMenu("Edit");
         menuEdit.setMnemonic(KeyEvent.VK_E);
-        this.a_menubar.add(menuEdit);
-        this.a_actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",this.a_table);
-        final JMenuItem itemCopy = new JMenuItem(this.a_actionCopy);
+        a_menubar.add(menuEdit);
+        a_actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_table);
+        final JMenuItem itemCopy = new JMenuItem(a_actionCopy);
         menuEdit.add(itemCopy);
-        this.a_actionCut = new CutAction("Cut", KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),"Cut",this.a_table);
-        final JMenuItem itemCut = new JMenuItem(this.a_actionCut);
+        a_actionCut = new CutAction("Cut", KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),"Cut",a_table);
+        final JMenuItem itemCut = new JMenuItem(a_actionCut);
         menuEdit.add(itemCut);
-        this.a_actionPaste = new PasteAction("Paste", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",this.a_table);
-        final JMenuItem itemPaste = new JMenuItem(this.a_actionPaste);
+        a_actionPaste = new PasteAction("Paste", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_table);
+        final JMenuItem itemPaste = new JMenuItem(a_actionPaste);
         menuEdit.add(itemPaste);
-        this.a_actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",this.a_table);
-        final JMenuItem itemCopyFromPrevious = new JMenuItem(this.a_actionCopyFromPrevious);
+        a_actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
+        final JMenuItem itemCopyFromPrevious = new JMenuItem(a_actionCopyFromPrevious);
         menuEdit.add(itemCopyFromPrevious);
-        this.a_actionCopyFromNext = new CopyFromNextAction("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",this.a_table);
-        final JMenuItem itemCopyFromNext = new JMenuItem(this.a_actionCopyFromNext);
+        a_actionCopyFromNext = new CopyFromNextAction("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_table);
+        final JMenuItem itemCopyFromNext = new JMenuItem(a_actionCopyFromNext);
         menuEdit.add(itemCopyFromNext);
-        this.a_actionRenameFolder = new RenameFolderAction("Rename folder", KeyEvent.CHAR_UNDEFINED, null,"Rename the folder",this,this.a_list,this.a_selection);
-        final JMenuItem itemRenameFolder = new JMenuItem(this.a_actionRenameFolder);
+        a_actionRenameFolder = new RenameFolderAction("Rename folder", KeyEvent.CHAR_UNDEFINED, null,"Rename the folder",this,a_list,a_selection);
+        final JMenuItem itemRenameFolder = new JMenuItem(a_actionRenameFolder);
         menuEdit.add(itemRenameFolder);
 
         final Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
-        final JScrollPane scrollPane = new JScrollPane(this.a_table);
+        final JScrollPane scrollPane = new JScrollPane(a_table);
         pane.add(scrollPane, BorderLayout.CENTER);
 
-        this.a_table.getInputMap().put((KeyStroke)this.a_actionCopy.getValue(Action.ACCELERATOR_KEY),this.a_actionCopy.getValue(Action.NAME));
-        this.a_table.getActionMap().put(this.a_actionCopy.getValue(Action.NAME),this.a_actionCopy);
-        this.a_table.getInputMap().put((KeyStroke)this.a_actionCut.getValue(Action.ACCELERATOR_KEY),this.a_actionCut.getValue(Action.NAME));
-        this.a_table.getActionMap().put(this.a_actionCut.getValue(Action.NAME),this.a_actionCut);
-        this.a_table.getInputMap().put((KeyStroke)this.a_actionPaste.getValue(Action.ACCELERATOR_KEY),this.a_actionPaste.getValue(Action.NAME));
-        this.a_table.getActionMap().put(this.a_actionPaste.getValue(Action.NAME),this.a_actionPaste);
+        a_table.getInputMap().put((KeyStroke)a_actionCopy.getValue(Action.ACCELERATOR_KEY),a_actionCopy.getValue(Action.NAME));
+        a_table.getActionMap().put(a_actionCopy.getValue(Action.NAME),a_actionCopy);
+        a_table.getInputMap().put((KeyStroke)a_actionCut.getValue(Action.ACCELERATOR_KEY),a_actionCut.getValue(Action.NAME));
+        a_table.getActionMap().put(a_actionCut.getValue(Action.NAME),a_actionCut);
+        a_table.getInputMap().put((KeyStroke)a_actionPaste.getValue(Action.ACCELERATOR_KEY),a_actionPaste.getValue(Action.NAME));
+        a_table.getActionMap().put(a_actionPaste.getValue(Action.NAME),a_actionPaste);
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         new WindowClosingListener(this,
-                new WindowClosingListener.Callback() { @Override public void windowClosing() { a_actionQuit.controlledExit(); }});
+                () -> a_actionQuit.controlledExit());
 
-        saveChanged(new SaveEvent(photoList,this.a_list.isSaved()));
+        saveChanged(new SaveEvent(photoList,a_list.isSaved()));
         photoList.addSaveListener(this);
     }
 
@@ -134,14 +130,14 @@ public class PhotoListDisplay extends JFrame
      * @return selection list model
      */
     public ListSelectionModel getLineSelectionListModel() {
-        return this.a_table.getSelectionModel();
+        return a_table.getSelectionModel();
     }
 
     /**
      * @return selection list model
      */
     public ListSelectionModel getColumnSelectionListModel() {
-        return this.a_table.getColumnModel().getSelectionModel();
+        return a_table.getColumnModel().getSelectionModel();
     }
 
     /**
@@ -154,7 +150,7 @@ public class PhotoListDisplay extends JFrame
 
         setTitle("photo list - [photo data is " + (e.isSaved() ? "saved]" : "modified]") );
 
-        this.a_actionSave.setEnabled(!photoListIsSaved);
+        a_actionSave.setEnabled(!photoListIsSaved);
     }
 
     /**
@@ -163,28 +159,28 @@ public class PhotoListDisplay extends JFrame
     @Override
     public void valueChanged(final ListSelectionEvent e) {
 
-        final int select[] = this.a_selection.getSelection();
+        final int select[] = a_selection.getSelection();
 
-        this.a_actionRenameFolder.setEnabled( select.length == 1 );
+        a_actionRenameFolder.setEnabled( select.length == 1 );
 
-        this.a_actionCopy.setEnabled(this.a_table.getSelectedColumn()!=-1);
+        a_actionCopy.setEnabled(a_table.getSelectedColumn()!=-1);
 
         // ne marche pas car il faut aussi �couter la s�lection de la colonne
         boolean editable;
 
         if ( select.length==0 ||
-             this.a_table.getSelectedColumn()==-1 ) {
+             a_table.getSelectedColumn()==-1 ) {
             editable = false;
         } else {
-            final int col = this.a_table.convertColumnIndexToModel(this.a_table.getSelectedColumn());
+            final int col = a_table.convertColumnIndexToModel(a_table.getSelectedColumn());
             editable = true;
-            for (int i=0; i<select.length; i++) {
-                editable &= this.a_list.isCellEditable(select[i],col);
+            for (final int element : select) {
+                editable &= a_list.isCellEditable(element,col);
             }
         }
 
-        this.a_actionPaste.setEnabled(editable);
-        this.a_actionCopyFromNext.setEnabled( editable && (select[select.length-1]!=this.a_list.getRowCount()-1));
-        this.a_actionCopyFromPrevious.setEnabled( editable && (select[0]!=0));
+        a_actionPaste.setEnabled(editable);
+        a_actionCopyFromNext.setEnabled( editable && (select[select.length-1]!=a_list.getRowCount()-1));
+        a_actionCopyFromPrevious.setEnabled( editable && (select[0]!=0));
     }
 }

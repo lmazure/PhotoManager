@@ -89,10 +89,7 @@ public class GoogleMapsURICreator extends MapURICreator {
                                + data.getLongitudeRangeAsDouble()
                                + "&t=h&hl=fr";
             uri = new URI(str);
-        } catch (final UnsupportedEncodingException e) {
-            // this should never occur
-            e.printStackTrace();
-        } catch (final URISyntaxException e) {
+        } catch (final UnsupportedEncodingException | URISyntaxException e) {
             // this should never occur
             e.printStackTrace();
         }

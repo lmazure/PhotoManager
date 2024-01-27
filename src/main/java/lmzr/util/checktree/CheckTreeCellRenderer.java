@@ -27,14 +27,13 @@ public class CheckTreeCellRenderer extends JPanel
      */
     public CheckTreeCellRenderer(final TreeCellRenderer delegate,
                                  final CheckTreeSelectionModel selectionModel){
-        this.a_delegate = delegate;
-        this.a_selectionModel = selectionModel;
-        this.a_checkBox = new TristateCheckBox();
+        a_delegate = delegate;
+        a_selectionModel = selectionModel;
+        a_checkBox = new TristateCheckBox();
         setLayout(new BorderLayout());
         setOpaque(false);
-        this.a_checkBox.setOpaque(false);
+        a_checkBox.setOpaque(false);
     }
-
 
     @Override
     public Component getTreeCellRendererComponent(final JTree tree,
@@ -44,17 +43,18 @@ public class CheckTreeCellRenderer extends JPanel
                                                   final boolean leaf,
                                                   final int row,
                                                   final boolean hasFocus){
-        final Component renderer = this.a_delegate.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        final Component renderer = a_delegate.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
         final TreePath path = tree.getPathForRow(row);
         if(path!=null){
-            if(this.a_selectionModel.isPathSelected(path, true))
-                this.a_checkBox.setState(TristateCheckBox.SELECTED);
-            else
-                this.a_checkBox.setState(this.a_selectionModel.isPartiallySelected(path) ? TristateCheckBox.DONT_CARE : TristateCheckBox.NOT_SELECTED);
+            if(a_selectionModel.isPathSelected(path, true)) {
+                a_checkBox.setState(TristateCheckBox.SELECTED);
+            } else {
+                a_checkBox.setState(a_selectionModel.isPartiallySelected(path) ? TristateCheckBox.DONT_CARE : TristateCheckBox.NOT_SELECTED);
+            }
         }
         removeAll();
-        add(this.a_checkBox, BorderLayout.WEST);
+        add(a_checkBox, BorderLayout.WEST);
         add(renderer, BorderLayout.CENTER);
         return this;
     }

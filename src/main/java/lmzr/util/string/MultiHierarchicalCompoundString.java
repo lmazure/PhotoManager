@@ -11,7 +11,7 @@ public class MultiHierarchicalCompoundString {
      * @param parts
      */
     MultiHierarchicalCompoundString(final HierarchicalCompoundString parts[]) {
-        this.a_parts = parts;
+        a_parts = parts;
     }
 
     /**
@@ -20,9 +20,11 @@ public class MultiHierarchicalCompoundString {
     @Override
     public String toString() {
         String s = "";
-        for (int i=0; i<this.a_parts.length; i++) {
-            if (i>0) s = s + '\n';
-            s = s + this.a_parts[i].toLongString();
+        for (int i=0; i<a_parts.length; i++) {
+            if (i>0) {
+                s = s + '\n';
+            }
+            s = s + a_parts[i].toLongString();
         }
         return s;
     }
@@ -31,16 +33,20 @@ public class MultiHierarchicalCompoundString {
      * @return parts
      */
     public HierarchicalCompoundString[] getParts() {
-        return this.a_parts;
+        return a_parts;
     }
 
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object o) {
-        if ( this == o ) return true;
-        if ( !(o instanceof MultiHierarchicalCompoundString) ) return false;
+    public boolean equals(final Object o) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( !(o instanceof MultiHierarchicalCompoundString) ) {
+            return false;
+        }
         return toString().equals(o.toString());
     }
 

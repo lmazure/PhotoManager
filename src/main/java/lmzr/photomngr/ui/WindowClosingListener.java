@@ -20,7 +20,7 @@ public class WindowClosingListener implements WindowListener {
         void windowClosing();
     }
 
-    private Callback a_callback;
+    private final Callback a_callback;
 
     /**
      * @param window
@@ -29,7 +29,7 @@ public class WindowClosingListener implements WindowListener {
     public WindowClosingListener(final Window window,
                                  final Callback callback) {
         window.addWindowListener(this);
-        this.a_callback = callback;
+        a_callback = callback;
     }
 
     /**
@@ -37,7 +37,7 @@ public class WindowClosingListener implements WindowListener {
      */
     @Override
     public void windowActivated(final WindowEvent arg0) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -45,7 +45,7 @@ public class WindowClosingListener implements WindowListener {
      */
     @Override
     public void windowClosed(final WindowEvent arg0) {
-    	// do noting
+        // do noting
     }
 
     /**
@@ -53,7 +53,7 @@ public class WindowClosingListener implements WindowListener {
      */
     @Override
     public void windowClosing(final WindowEvent arg0) {
-        this.a_callback.windowClosing();
+        a_callback.windowClosing();
     }
 
     /**
@@ -61,7 +61,7 @@ public class WindowClosingListener implements WindowListener {
      */
     @Override
     public void windowDeactivated(final WindowEvent arg0) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -69,7 +69,7 @@ public class WindowClosingListener implements WindowListener {
      */
     @Override
     public void windowDeiconified(final WindowEvent arg0) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -77,7 +77,7 @@ public class WindowClosingListener implements WindowListener {
      */
     @Override
     public void windowIconified(final WindowEvent arg0) {
-    	// do nothing
+        // do nothing
     }
 
     /**
@@ -85,6 +85,6 @@ public class WindowClosingListener implements WindowListener {
      */
     @Override
     public void windowOpened(final WindowEvent arg0) {
-    	// do nothing
+        // do nothing
     }
 }

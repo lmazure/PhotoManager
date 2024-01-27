@@ -16,8 +16,10 @@ public class DataFormatFactory {
      * @return format of the file
      */
     public static DataFormat createFormat(final String filename) {
-        for (DataFormat format: DataFormat.getAllFormats() ) {
-            if ( format.hasFormat(filename)) return format;
+        for (final DataFormat format: DataFormat.getAllFormats() ) {
+            if ( format.hasFormat(filename)) {
+                return format;
+            }
         }
         return null;
     }

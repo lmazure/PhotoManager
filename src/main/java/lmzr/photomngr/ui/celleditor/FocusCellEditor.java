@@ -9,6 +9,5 @@ public class FocusCellEditor extends TextFieldForFloatCellEditor {
      *
      */
     public FocusCellEditor() {
-        super();
     }
 }

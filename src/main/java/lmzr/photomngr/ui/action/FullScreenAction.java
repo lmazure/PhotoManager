@@ -2,7 +2,6 @@ package lmzr.photomngr.ui.action;
 
 import java.awt.event.ActionEvent;
 
-
 import javax.swing.KeyStroke;
 
 import lmzr.photomngr.ui.PhotoDisplayer;
@@ -29,15 +28,14 @@ public class FullScreenAction extends PhotoManagerAction {
                              final String tooltipText,
                              final PhotoDisplayer photoDisplayer) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_photoDisplayer = photoDisplayer;
+        a_photoDisplayer = photoDisplayer;
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        this.a_photoDisplayer.setFullScreen(!this.a_photoDisplayer.getFullScreen());
+        a_photoDisplayer.setFullScreen(!a_photoDisplayer.getFullScreen());
     }
 }

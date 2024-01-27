@@ -42,20 +42,18 @@ public class GPSDataDisplay extends JFrame
      */
     public GPSDataDisplay(final GPSDatabase GPSDatabase) {
 
-        super();
+        a_GPSdatabase = GPSDatabase;
 
-        this.a_GPSdatabase = GPSDatabase;
+        a_treeTable = new GPSTreeTable(a_GPSdatabase);
+        a_treeTable.setRootVisible(true);
 
-        this.a_treeTable = new GPSTreeTable(this.a_GPSdatabase);
-        this.a_treeTable.setRootVisible(true);
-
-        this.a_menubar = new JMenuBar();
-        setJMenuBar(this.a_menubar);
+        a_menubar = new JMenuBar();
+        setJMenuBar(a_menubar);
 
         final JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic(KeyEvent.VK_F);
-        this.a_menubar.add(menuFile);
-        final SaveAction a_actionSave = new SaveAction("Save GPS data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",this.a_GPSdatabase);
+        a_menubar.add(menuFile);
+        final SaveAction a_actionSave = new SaveAction("Save GPS data", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),"Save",a_GPSdatabase);
         final JMenuItem itemSave = new JMenuItem(a_actionSave);
         menuFile.add(itemSave);
         final CloseAction a_actionClose = new CloseAction("Close", KeyEvent.VK_UNDEFINED, null,"Close the window",this);
@@ -64,38 +62,38 @@ public class GPSDataDisplay extends JFrame
 
         final JMenu menuEdit = new JMenu("Edit");
         menuEdit.setMnemonic(KeyEvent.VK_E);
-        this.a_menubar.add(menuEdit);
-        final CopyAction actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",this.a_treeTable);
+        a_menubar.add(menuEdit);
+        final CopyAction actionCopy = new CopyAction("Copy", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),"Copy",a_treeTable);
         final JMenuItem itemCopy = new JMenuItem(actionCopy);
         menuEdit.add(itemCopy);
-        final CutAction actionCut = new CutAction("Cut", KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),"Cut",this.a_treeTable);
+        final CutAction actionCut = new CutAction("Cut", KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),"Cut",a_treeTable);
         final JMenuItem itemCut = new JMenuItem(actionCut);
         menuEdit.add(itemCut);
-        final PasteAction actionPaste = new PasteAction("Paste", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",this.a_treeTable);
+        final PasteAction actionPaste = new PasteAction("Paste", KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),"Paste",a_treeTable);
         final JMenuItem itemPaste = new JMenuItem(actionPaste);
         menuEdit.add(itemPaste);
-        final CopyFromPreviousAction actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",this.a_treeTable);
+        final CopyFromPreviousAction actionCopyFromPrevious = new CopyFromPreviousAction("Copy parameter from previous", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_treeTable);
         final JMenuItem itemCopyFromPrevious = new JMenuItem(actionCopyFromPrevious);
         menuEdit.add(itemCopyFromPrevious);
-        final CopyFromNextAction actionCopyFromNext = new CopyFromNextAction("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",this.a_treeTable);
+        final CopyFromNextAction actionCopyFromNext = new CopyFromNextAction("Copy parameter from next", KeyEvent.CHAR_UNDEFINED, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),"Copy the parameter from the previous photo",a_treeTable);
         final JMenuItem itemCopyFromNext = new JMenuItem(actionCopyFromNext);
         menuEdit.add(itemCopyFromNext);
 
         final Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
-        final JScrollPane scrollPane = new JScrollPane(this.a_treeTable);
+        final JScrollPane scrollPane = new JScrollPane(a_treeTable);
         pane.add(scrollPane, BorderLayout.CENTER);
 
-        this.a_treeTable.getInputMap().put((KeyStroke)actionCopy.getValue(Action.ACCELERATOR_KEY),actionCopy.getValue(Action.NAME));
-        this.a_treeTable.getActionMap().put(actionCopy.getValue(Action.NAME),actionCopy);
-        this.a_treeTable.getInputMap().put((KeyStroke)actionCut.getValue(Action.ACCELERATOR_KEY),actionCut.getValue(Action.NAME));
-        this.a_treeTable.getActionMap().put(actionCut.getValue(Action.NAME),actionCut);
-        this.a_treeTable.getInputMap().put((KeyStroke)actionPaste.getValue(Action.ACCELERATOR_KEY),actionPaste.getValue(Action.NAME));
-        this.a_treeTable.getActionMap().put(actionPaste.getValue(Action.NAME),actionPaste);
+        a_treeTable.getInputMap().put((KeyStroke)actionCopy.getValue(Action.ACCELERATOR_KEY),actionCopy.getValue(Action.NAME));
+        a_treeTable.getActionMap().put(actionCopy.getValue(Action.NAME),actionCopy);
+        a_treeTable.getInputMap().put((KeyStroke)actionCut.getValue(Action.ACCELERATOR_KEY),actionCut.getValue(Action.NAME));
+        a_treeTable.getActionMap().put(actionCut.getValue(Action.NAME),actionCut);
+        a_treeTable.getInputMap().put((KeyStroke)actionPaste.getValue(Action.ACCELERATOR_KEY),actionPaste.getValue(Action.NAME));
+        a_treeTable.getActionMap().put(actionPaste.getValue(Action.NAME),actionPaste);
 
-        this.a_GPSdatabase.addSaveListener(this);
+        a_GPSdatabase.addSaveListener(this);
 
-        saveChanged(new SaveEvent(this.a_GPSdatabase, this.a_GPSdatabase.isSaved()));
+        saveChanged(new SaveEvent(a_GPSdatabase, a_GPSdatabase.isSaved()));
 
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
@@ -110,7 +108,7 @@ public class GPSDataDisplay extends JFrame
 
         super.dispose();
 
-        this.a_GPSdatabase.removeSaveListener(this);
+        a_GPSdatabase.removeSaveListener(this);
     }
 
     /**

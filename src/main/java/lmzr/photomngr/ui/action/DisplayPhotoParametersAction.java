@@ -32,11 +32,10 @@ public class DisplayPhotoParametersAction extends PhotoManagerAction {
                                         final PhotoList photoList,
                                         final ListSelectionManager selection) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_photoList = photoList;
-        this.a_selection = selection;
-        this.a_PhotoParametersDisplay = null;
+        a_photoList = photoList;
+        a_selection = selection;
+        a_PhotoParametersDisplay = null;
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -44,10 +43,11 @@ public class DisplayPhotoParametersAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        if (this.a_PhotoParametersDisplay==null)
-            this.a_PhotoParametersDisplay = new PhotoParametersDisplay(this.a_photoList, this.a_selection);
+        if (a_PhotoParametersDisplay==null) {
+            a_PhotoParametersDisplay = new PhotoParametersDisplay(a_photoList, a_selection);
+        }
 
-        this.a_PhotoParametersDisplay.setVisible(true);
+        a_PhotoParametersDisplay.setVisible(true);
 
     }
 }

@@ -27,15 +27,14 @@ public class CloseAction extends PhotoManagerAction {
                        final String tooltipText,
                        final JFrame frame) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_frame = frame;
+        a_frame = frame;
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        this.a_frame.dispose();
+        a_frame.dispose();
     }
 }

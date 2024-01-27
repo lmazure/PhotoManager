@@ -13,7 +13,6 @@ import lmzr.photomngr.imagecomputation.SubsampledImageCachedManager;
 import lmzr.photomngr.scheduler.Scheduler;
 import lmzr.util.chrono.Chrono;
 
-
 /**
  * @author Laurent Mazuré
  */
@@ -41,9 +40,7 @@ public class Main {
      */
     public Main(final String root,
                 final String cache) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override public void run() {start(root, cache); }
-        });
+        SwingUtilities.invokeLater(() -> start(root, cache));
 
     }
 
@@ -83,7 +80,7 @@ public class Main {
         final ListSelectionManager selection = new ListSelectionManager(a_filteredList,
                                                                         a_listDisplay.getLineSelectionListModel());
 
-        this.a_displayer = new PhotoDisplayer(scheduler,
+        a_displayer = new PhotoDisplayer(scheduler,
                                               a_filteredList,
                                               a_GPSDatabase,
                                               new SubsampledImageCachedManager(cache),
@@ -96,8 +93,8 @@ public class Main {
         a_listDisplay.setBounds(new Rectangle(0, 0, 1280, 300));
         a_listDisplay.setVisible(true);
 
-        this.a_displayer.setBounds(new Rectangle(100, 300, 1000, 720));
-        this.a_displayer.setVisible(true);
+        a_displayer.setBounds(new Rectangle(100, 300, 1000, 720));
+        a_displayer.setVisible(true);
 
         Chrono.getTime(Chrono.EVENT, "end of start");
     }

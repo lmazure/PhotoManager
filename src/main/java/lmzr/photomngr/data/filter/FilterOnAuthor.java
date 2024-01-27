@@ -16,7 +16,7 @@ public class FilterOnAuthor extends FilterBase {
      */
     public FilterOnAuthor() {
         super(false);
-        this.a_filteredAuthors = null;
+        a_filteredAuthors = null;
     }
 
     /**
@@ -27,7 +27,7 @@ public class FilterOnAuthor extends FilterBase {
     public FilterOnAuthor(final boolean isEnabled,
                           final HashSet<String> filteredAuthors) {
         super(isEnabled);
-        this.a_filteredAuthors = filteredAuthors;
+        a_filteredAuthors = filteredAuthors;
     }
 
     /**
@@ -40,13 +40,13 @@ public class FilterOnAuthor extends FilterBase {
                           final int index) {
 
         final String author = (String)list.getValueAt(index,PhotoList.PARAM_AUTHOR);
-        return this.a_filteredAuthors.contains(author);
+        return a_filteredAuthors.contains(author);
     }
 
     /**
      * @return formats handled by this filter
      */
     public HashSet<String> getFilteredAuthors() {
-        return this.a_filteredAuthors;
+        return a_filteredAuthors;
     }
 }

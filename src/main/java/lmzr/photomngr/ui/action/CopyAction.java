@@ -39,9 +39,8 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
                       final JTable table) {
         super(text, mnemonic, accelerator, tooltipText);
 
-        this.a_table = table;
+        a_table = table;
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -49,13 +48,17 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        final ListSelectionModel selection = this.a_table.getSelectionModel();
-        if ( selection.getMinSelectionIndex() == -1 ) return;
+        final ListSelectionModel selection = a_table.getSelectionModel();
+        if ( selection.getMinSelectionIndex() == -1 ) {
+            return;
+        }
 
-        final int selectedColumn = this.a_table.getSelectedColumn();
-        if ( selectedColumn == -1) return;
+        final int selectedColumn = a_table.getSelectedColumn();
+        if ( selectedColumn == -1) {
+            return;
+        }
 
-        Object value = this.a_table.getValueAt(selection.getMinSelectionIndex(),selectedColumn);
+        final Object value = a_table.getValueAt(selection.getMinSelectionIndex(),selectedColumn);
         String str;
         if (value instanceof String) {
             str = (String)value;
@@ -65,12 +68,13 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
             str = ((MultiHierarchicalCompoundString)value).toString();
         } else if (value instanceof PhotoTrait) {
             str = ((PhotoTrait)value).toString();
-        } else if (value instanceof Integer) {
-            str = NumberFormat.getInstance().format(value);
-        } else if (value instanceof Float) {
-            str = NumberFormat.getInstance().format(value);
         } else {
-            throw new IllegalArgumentException("Unsupported type");
+            if (value instanceof Integer) {
+                // nothing
+            } else if (!(value instanceof Float)) {
+                throw new IllegalArgumentException("Unsupported type");
+            }
+            str = NumberFormat.getInstance().format(value);
         }
         final StringSelection fieldContent = new StringSelection(str);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);
@@ -82,6 +86,6 @@ public class CopyAction extends PhotoManagerAction implements ClipboardOwner {
     @Override
     public void lostOwnership(final Clipboard clipboard,
                               final Transferable contents) {
-    	// do nothing
+        // do nothing
     }
 }

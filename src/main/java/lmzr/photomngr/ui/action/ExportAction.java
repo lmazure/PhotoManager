@@ -35,7 +35,7 @@ public abstract class ExportAction extends PhotoManagerAction {
                         final String tooltipText,
                         final JFrame frame) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_frame = frame;
+        a_frame = frame;
     }
 
     private void dump(final BufferedWriter out,
@@ -43,15 +43,17 @@ public abstract class ExportAction extends PhotoManagerAction {
         try {
             out.write(string.toLongString());
             out.write("\n");
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
             System.err.println("failed to export subjects");
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(this.a_frame,
+            JOptionPane.showMessageDialog(a_frame,
                     "Failed to export subjects\n"+e1.toString(),
                     "Save error",
                     JOptionPane.ERROR_MESSAGE);
         }
-        for (HierarchicalCompoundString s: string.getChildren()) dump(out,s);
+        for (final HierarchicalCompoundString s: string.getChildren()) {
+            dump(out,s);
+        }
     }
 
     /**
@@ -59,16 +61,20 @@ public abstract class ExportAction extends PhotoManagerAction {
      */
     protected void dumpRoot(final HierarchicalCompoundString root) {
         final JFileChooser fc = new JFileChooser((File)null);
-        fc.showSaveDialog(this.a_frame);
+        fc.showSaveDialog(a_frame);
         final File f = fc.getSelectedFile();
-        if ( f == null ) return;
+        if ( f == null ) {
+            return;
+        }
         try (final BufferedWriter out = new BufferedWriter(new FileWriter(f))) {
-            for (HierarchicalCompoundString s: root.getChildren()) dump(out,s);
+            for (final HierarchicalCompoundString s: root.getChildren()) {
+                dump(out,s);
+            }
             out.close();
         } catch (final IOException e1) {
             System.err.println("failed to export subjects");
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(this.a_frame,
+            JOptionPane.showMessageDialog(a_frame,
                     "Failed to export subjects\n"+e1.toString(),
                     "Save error",
                     JOptionPane.ERROR_MESSAGE);

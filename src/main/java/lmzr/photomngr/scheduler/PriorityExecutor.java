@@ -56,7 +56,7 @@ public class PriorityExecutor extends ThreadPoolExecutor {
                             final T result) {
             super(runnable, result);
 
-            this.a_prio = computePriority(category,priority,subpriority);
+            a_prio = computePriority(category,priority,subpriority);
         }
 
         /**
@@ -64,9 +64,13 @@ public class PriorityExecutor extends ThreadPoolExecutor {
          */
         @Override
         public int compareTo(final PriorityTask<T> o) {
-            final double diff = o.a_prio - this.a_prio;
-            if (diff<0) return -1;
-            if (diff>0) return 1;
+            final double diff = o.a_prio - a_prio;
+            if (diff<0) {
+                return -1;
+            }
+            if (diff>0) {
+                return 1;
+            }
             return 0;
         }
 
@@ -82,17 +86,11 @@ public class PriorityExecutor extends ThreadPoolExecutor {
 
             double prio = 0;
 
-            switch (category) {
-            case CATEGORY_NOW:
-                prio = 20;
-                break;
-            case CATEGORY_FUTURE:
-                  prio = 10;
-                  break;
-            case CATEBORY_BACKGROUND:
-                prio = 0;
-                break;
-            }
+            prio = switch (category) {
+            case CATEGORY_NOW -> 20;
+            case CATEGORY_FUTURE -> 10;
+            case CATEBORY_BACKGROUND -> 0;
+            };
 
             switch (priority) {
             case PRIORITY_VERY_HIGH:
@@ -110,6 +108,8 @@ public class PriorityExecutor extends ThreadPoolExecutor {
             case PRIORITY_VERY_LOW:
                 prio += 1;
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + priority);
             }
 
             prio += subpriority;

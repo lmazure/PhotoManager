@@ -28,10 +28,9 @@ public class DisplayGPSDatabaseAction extends PhotoManagerAction {
                                     final String tooltipText,
                                     final GPSDatabase GPSDatabase) {
         super(text, mnemonic, accelerator, tooltipText);
-        this.a_GPSDatabase = GPSDatabase;
-        this.a_GPSDisplay = null;
+        a_GPSDatabase = GPSDatabase;
+        a_GPSDisplay = null;
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -39,11 +38,11 @@ public class DisplayGPSDatabaseAction extends PhotoManagerAction {
     @Override
     public void actionPerformed(final ActionEvent e) {
 
-        if ( this.a_GPSDisplay == null ) {
-            this.a_GPSDisplay = new GPSDataDisplay(this.a_GPSDatabase);
+        if ( a_GPSDisplay == null ) {
+            a_GPSDisplay = new GPSDataDisplay(a_GPSDatabase);
         }
 
-        this.a_GPSDisplay.setVisible(true);
+        a_GPSDisplay.setVisible(true);
 
     }
 }

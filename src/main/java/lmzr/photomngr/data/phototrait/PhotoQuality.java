@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class PhotoQuality extends PhotoTrait {
 
-    static final private String[] g_encoding = new String[] {"awful", "very bad", "bad", "middle", "good", "very good", "excellent"};
+    static final private String[] g_encoding = {"awful", "very bad", "bad", "middle", "good", "very good", "excellent"};
     static final private HashMap<String, PhotoQuality> g_pool = new HashMap<>();
     static final private PhotoQuality g_undefined = new PhotoQuality(UNDEFINED_TRAIT_VALUE);
 
@@ -33,7 +33,6 @@ public class PhotoQuality extends PhotoTrait {
         return other == this;
     }
 
-
     /**
      * @param str
      * @return PhotoQuality encoded by str
@@ -45,7 +44,6 @@ public class PhotoQuality extends PhotoTrait {
         }
         return p;
     }
-
 
     /**
      * @see java.lang.Object#toString()

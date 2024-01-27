@@ -45,20 +45,29 @@ public class Chrono {
         final long currentTime = System.nanoTime();
         final long relativeCurrentTime = currentTime - s_startTime;
 
-        if ( mode == START ) {
+        switch (mode) {
+        case START:
             System.out.println("Chrono -- START -- time="+relativeCurrentTime/1000000000d);
-            s_records.put(tag, new Long(currentTime));
-        } else if ( mode == MIDDLE ) {
+            s_records.put(tag, Long.valueOf(currentTime));
+            break;
+        case MIDDLE: {
             final long startTime = s_records.get(tag).longValue();
             final long duration = currentTime - startTime;
             System.out.println("Chrono -- MIDDLE -- time="+relativeCurrentTime/1000000000d+" -- duration="+duration/1000000000d);
-        } else if ( mode == END ) {
+            break;
+        }
+        case END: {
             final long startTime = s_records.get(tag).longValue();
             s_records.remove(tag);
             final long duration = currentTime - startTime;
             System.out.println("Chrono -- END -- time="+relativeCurrentTime/1000000000d+" -- duration="+duration/1000000000d);
-        } else if ( mode == EVENT ) {
+            break;
+        }
+        case EVENT:
             System.out.println("Chrono -- START -- time="+relativeCurrentTime/1000000000d);
+            break;
+        default:
+            break;
         }
     }
 }

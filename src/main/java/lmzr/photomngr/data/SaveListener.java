@@ -10,5 +10,5 @@ public interface SaveListener extends EventListener {
     /**
      * @param e
      */
-    public void saveChanged(final SaveEvent e);
+    void saveChanged(final SaveEvent e);
 }

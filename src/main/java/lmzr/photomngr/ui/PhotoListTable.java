@@ -15,8 +15,8 @@ import lmzr.photomngr.ui.celleditor.AuthorCellEditor;
 import lmzr.photomngr.ui.celleditor.CopiesCellEditor;
 import lmzr.photomngr.ui.celleditor.FocusCellEditor;
 import lmzr.photomngr.ui.celleditor.LocationCellEditor;
-import lmzr.photomngr.ui.celleditor.RotationCellEditor;
 import lmzr.photomngr.ui.celleditor.PhotoTraitCellEditor;
+import lmzr.photomngr.ui.celleditor.RotationCellEditor;
 import lmzr.photomngr.ui.celleditor.SubjectCellEditor;
 import lmzr.photomngr.ui.celleditor.ZoomCellEditor;
 import lmzr.photomngr.ui.cellrenderer.DateCellRenderer;
@@ -63,7 +63,7 @@ public class PhotoListTable extends EnhancedJTable {
         getColumnModel().getColumn(PhotoList.PARAM_ROTATION).setCellEditor(new RotationCellEditor());
         getColumnModel().getColumn(PhotoList.PARAM_AUTHOR).setCellEditor(new AuthorCellEditor(filteredPhotoList.getAuthorFactory()));
 
-        this.a_setVisibility = true;
+        a_setVisibility = true;
     }
 
     /**
@@ -71,9 +71,9 @@ public class PhotoListTable extends EnhancedJTable {
      */
     @Override
     protected void processEvent(final AWTEvent e) {
-        this.a_setVisibility = false;
+        a_setVisibility = false;
         super.processEvent(e);
-        this.a_setVisibility = true;
+        a_setVisibility = true;
     }
 
     /**
@@ -85,7 +85,7 @@ public class PhotoListTable extends EnhancedJTable {
         super.valueChanged(e);
         repaint(new Rectangle());
 
-        if ( !this.a_setVisibility ) {
+        if ( !a_setVisibility ) {
             // the user is manipulating the table itself -> we do not override its scrolling
             return;
         }
@@ -96,7 +96,11 @@ public class PhotoListTable extends EnhancedJTable {
         }
 
         final int row = getSelectionModel().getMinSelectionIndex();
-        if ( row == -1 ) return;
-        if (!isCellVisible(row,0)) scrollToVisible(row,0);
+        if ( row == -1 ) {
+            return;
+        }
+        if (!isCellVisible(row,0)) {
+            scrollToVisible(row,0);
+        }
     }
 }

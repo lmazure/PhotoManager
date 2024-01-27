@@ -2,10 +2,10 @@ package lmzr.photomngr.ui.treeSelectioner;
 
 import java.util.Set;
 
+import org.jdesktop.swingx.JXTreeTable;
+
 import lmzr.util.string.HierarchicalCompoundString;
 import lmzr.util.string.HierarchicalCompoundStringFactory;
-
-import org.jdesktop.swingx.JXTreeTable;
 
 /**
  * @author Laurent Mazuré
@@ -65,7 +65,7 @@ public class TreeSelectioner extends JXTreeTable {
 
         ((DatabaseForTreeSelectioner)getTreeTableModel()).setSelection(selection);
 
-        for (HierarchicalCompoundString h : selection ) {
+        for (final HierarchicalCompoundString h : selection ) {
             expandPath(HierarchicalCompoundStringFactory.getPath(h.getParent()));
         }
     }

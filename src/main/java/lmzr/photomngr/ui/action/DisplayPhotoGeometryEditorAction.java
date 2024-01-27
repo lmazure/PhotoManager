@@ -32,11 +32,10 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
                                                 final PhotoList photoList,
                                                 final ListSelectionManager selection) {
             super(text, mnemonic, accelerator, tooltipText);
-            this.a_photoList = photoList;
-            this.a_selection = selection;
-            this.a_PhotoGeometryEditor = null;
+            a_photoList = photoList;
+            a_selection = selection;
+            a_PhotoGeometryEditor = null;
         }
-
 
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -44,10 +43,11 @@ public class DisplayPhotoGeometryEditorAction extends PhotoManagerAction {
         @Override
         public void actionPerformed(final ActionEvent e) {
 
-            if (this.a_PhotoGeometryEditor==null)
-                this.a_PhotoGeometryEditor = new PhotoGeometryEditor(this.a_photoList, this.a_selection);
+            if (a_PhotoGeometryEditor==null) {
+                a_PhotoGeometryEditor = new PhotoGeometryEditor(a_photoList, a_selection);
+            }
 
-            this.a_PhotoGeometryEditor.setVisible(true);
+            a_PhotoGeometryEditor.setVisible(true);
         }
 
 }

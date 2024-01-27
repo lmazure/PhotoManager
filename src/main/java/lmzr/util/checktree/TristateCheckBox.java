@@ -2,10 +2,22 @@
 
 package lmzr.util.checktree;
 
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JCheckBox;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ActionMapUIResource;
-import java.awt.event.*;
 
 /**
  * Maintenance tip - There were some tricks to getting this code
@@ -46,43 +58,43 @@ public static final State DONT_CARE = new State();
  * @param icon
  * @param initial
  */
-public TristateCheckBox(String text, Icon icon, State initial){
+public TristateCheckBox(final String text, final Icon icon, final State initial){
     super(text, icon);
     // Add a listener for when the mouse is pressed
     super.addMouseListener(new MouseAdapter() {
       @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
         grabFocus();
-        TristateCheckBox.this._model.nextState();
+        _model.nextState();
       }
     });
     // Reset the keyboard action map
-    ActionMap map = new ActionMapUIResource();
+    final ActionMap map = new ActionMapUIResource();
     map.put("pressed", new AbstractAction() {
       @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         grabFocus();
-        TristateCheckBox.this._model.nextState();
+        _model.nextState();
       }
     });
     map.put("released", null);
     SwingUtilities.replaceUIActionMap(this, map);
     // set the model to the adapted model
-    this._model = new TristateDecorator(getModel());
-    setModel(this._model);
+    _model = new TristateDecorator(getModel());
+    setModel(_model);
     setState(initial);
   }
   /**
  * @param text
  * @param initial
  */
-public TristateCheckBox(String text, State initial) {
+public TristateCheckBox(final String text, final State initial) {
     this(text, null, initial);
   }
   /**
  * @param text
  */
-public TristateCheckBox(String text) {
+public TristateCheckBox(final String text) {
     this(text, DONT_CARE);
   }
   /**
@@ -94,22 +106,22 @@ public TristateCheckBox() {
 
   /** No one may add mouse listeners, not even Swing! */
   @Override
-public synchronized void addMouseListener(MouseListener l) {
-  	// do nothing
-	  
+public synchronized void addMouseListener(final MouseListener l) {
+      // do nothing
+
   }
   /**
    * Set the new state to either SELECTED, NOT_SELECTED or
    * DONT_CARE.  If state == null, it is treated as DONT_CARE.
  * @param state
    */
-  public void setState(State state) { this._model.setState(state); }
+  public void setState(final State state) { _model.setState(state); }
   /** Return the current state, which is determined by the
    * selection status of the model.
  * @return */
-  public State getState() { return this._model.getState(); }
+  public State getState() { return _model.getState(); }
   @Override
-public void setSelected(boolean b) {
+public void setSelected(final boolean b) {
     if (b) {
       setState(SELECTED);
     } else {
@@ -124,20 +136,20 @@ public void setSelected(boolean b) {
    */
   private class TristateDecorator implements ButtonModel {
     private final ButtonModel _other;
-    private TristateDecorator(ButtonModel other) {
-      this._other = other;
+    private TristateDecorator(final ButtonModel other) {
+      _other = other;
     }
-    private void setState(State state) {
+    private void setState(final State state) {
       if (state == NOT_SELECTED) {
-        this._other.setArmed(false);
+        _other.setArmed(false);
         setPressed(false);
         setSelected(false);
       } else if (state == SELECTED) {
-        this._other.setArmed(false);
+        _other.setArmed(false);
         setPressed(false);
         setSelected(true);
       } else { // either "null" or DONT_CARE
-        this._other.setArmed(true);
+        _other.setArmed(true);
         setPressed(true);
         setSelected(false);
       }
@@ -155,17 +167,17 @@ public void setSelected(boolean b) {
       if (isSelected() && !isArmed()) {
         // normal black tick
         return SELECTED;
-      } else if (isSelected() && isArmed()) {
+      }
+    if (isSelected() && isArmed()) {
         // don't care grey tick
         return DONT_CARE;
-      } else {
-        // normal deselected
-        return NOT_SELECTED;
       }
+	// normal deselected
+	return NOT_SELECTED;
     }
     /** We rotate between NOT_SELECTED, SELECTED and DONT_CARE.*/
     private void nextState() {
-      State current = getState();
+      final State current = getState();
       if (current == NOT_SELECTED) {
         setState(SELECTED);
       } else if (current == SELECTED) {
@@ -176,77 +188,77 @@ public void setSelected(boolean b) {
     }
     /** Filter: No one may change the armed status except us. */
     @Override
-    public void setArmed(boolean b) {
-    	// do nothing
+    public void setArmed(final boolean b) {
+        // do nothing
     }
     /** We disable focusing on the component when it is not
      * enabled. */
     @Override
-    public void setEnabled(boolean b) {
+    public void setEnabled(final boolean b) {
       setFocusable(b);
-      this._other.setEnabled(b);
+      _other.setEnabled(b);
     }
     /** All these methods simply delegate to the "other" model
      * that is being decorated. */
     @Override
-    public boolean isArmed() { return this._other.isArmed(); }
+    public boolean isArmed() { return _other.isArmed(); }
     @Override
-    public boolean isSelected() { return this._other.isSelected(); }
+    public boolean isSelected() { return _other.isSelected(); }
     @Override
-    public boolean isEnabled() { return this._other.isEnabled(); }
+    public boolean isEnabled() { return _other.isEnabled(); }
     @Override
-    public boolean isPressed() { return this._other.isPressed(); }
+    public boolean isPressed() { return _other.isPressed(); }
     @Override
-    public boolean isRollover() { return this._other.isRollover(); }
+    public boolean isRollover() { return _other.isRollover(); }
     @Override
-    public void setSelected(boolean b) { this._other.setSelected(b); }
+    public void setSelected(final boolean b) { _other.setSelected(b); }
     @Override
-    public void setPressed(boolean b) { this._other.setPressed(b); }
+    public void setPressed(final boolean b) { _other.setPressed(b); }
     @Override
-    public void setRollover(boolean b) { this._other.setRollover(b); }
+    public void setRollover(final boolean b) { _other.setRollover(b); }
     @Override
-    public void setMnemonic(int key) { this._other.setMnemonic(key); }
+    public void setMnemonic(final int key) { _other.setMnemonic(key); }
     @Override
-    public int getMnemonic() { return this._other.getMnemonic(); }
+    public int getMnemonic() { return _other.getMnemonic(); }
     @Override
-    public void setActionCommand(String s) {
-      this._other.setActionCommand(s);
+    public void setActionCommand(final String s) {
+      _other.setActionCommand(s);
     }
     @Override
     public String getActionCommand() {
-      return this._other.getActionCommand();
+      return _other.getActionCommand();
     }
     @Override
-    public void setGroup(ButtonGroup group) {
-      this._other.setGroup(group);
+    public void setGroup(final ButtonGroup group) {
+      _other.setGroup(group);
     }
     @Override
-    public void addActionListener(ActionListener l) {
-      this._other.addActionListener(l);
+    public void addActionListener(final ActionListener l) {
+      _other.addActionListener(l);
     }
     @Override
-    public void removeActionListener(ActionListener l) {
-      this._other.removeActionListener(l);
+    public void removeActionListener(final ActionListener l) {
+      _other.removeActionListener(l);
     }
     @Override
-    public void addItemListener(ItemListener l) {
-      this._other.addItemListener(l);
+    public void addItemListener(final ItemListener l) {
+      _other.addItemListener(l);
     }
     @Override
-    public void removeItemListener(ItemListener l) {
-      this._other.removeItemListener(l);
+    public void removeItemListener(final ItemListener l) {
+      _other.removeItemListener(l);
     }
     @Override
-    public void addChangeListener(ChangeListener l) {
-      this._other.addChangeListener(l);
+    public void addChangeListener(final ChangeListener l) {
+      _other.addChangeListener(l);
     }
     @Override
-    public void removeChangeListener(ChangeListener l) {
-      this._other.removeChangeListener(l);
+    public void removeChangeListener(final ChangeListener l) {
+      _other.removeChangeListener(l);
     }
     @Override
     public Object[] getSelectedObjects() {
-      return this._other.getSelectedObjects();
+      return _other.getSelectedObjects();
     }
   }
 }

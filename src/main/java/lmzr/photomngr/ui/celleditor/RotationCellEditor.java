@@ -9,6 +9,5 @@ public class RotationCellEditor extends TextFieldForFloatCellEditor {
      *
      */
     public RotationCellEditor() {
-        super();
     }
 }
